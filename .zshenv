@@ -11,11 +11,19 @@ import_exec () {
 
 # fallbacks if nothing below gets set (minimum expectations)
 
-export TMPDIR="/tmp"
-export LANG="en_US.UTF-8" LANGUAGE="en_US.UTF-8" LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+export LANGUAGE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
+export TERM="${TERM:-xterm-256color}"
 export PAGER="less --RAW-CONTROL-CHARS --LONG-PROMPT --HILITE-UNREAD --status-column --chop-long-lines --shift .3"
-export EDITOR="vim"
-export BROWSER="curl"
+export EDITOR="$(import_exec vim && echo "vim" || echo "nano")"
+export BROWSER="$(import_exec w3m && echo "w3m" || { import_exec curl && echo "curl" || echo "wget"; })"
+
+export TMPDIR="/tmp"
+
+# local bin for home made binary blobs
+[ -d "${HOME}/bin" ] && export PATH="${HOME}/bin:${PATH}"
 
 # required for setting the Windows codepage to UTF8 
 case "$(uname --kernel-name)" in
@@ -24,17 +32,10 @@ case "$(uname --kernel-name)" in
     ;;
 esac
 
+# override some environment variables when running X (GUI)
 if [ -n "$DISPLAY" ]; then
-
-    # environment variables set during X (GUI)
 
     import_exec emacs && export EDITOR="emacs" VISUAL="emacs"
     import_exec firefox && export BROWSER="firefox"
-
-else 
-
-    # environment variables set during just linux console or SSH
-
-    import_exec w3m && export BROWSER="w3m"
 
 fi
