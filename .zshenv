@@ -11,6 +11,7 @@ import_exec () {
 
 # fallbacks if nothing below gets set (minimum expectations)
 
+export TMPDIR="/tmp"
 export LANG="en_US.UTF-8" LANGUAGE="en_US.UTF-8" LC_ALL="en_US.UTF-8"
 export PAGER="less --RAW-CONTROL-CHARS --LONG-PROMPT --HILITE-UNREAD --status-column --chop-long-lines --shift .3"
 export EDITOR="vim"
