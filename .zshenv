@@ -22,8 +22,8 @@ export BROWSER="$(import_exec w3m && echo "w3m" || { import_exec curl && echo "c
 
 export TMPDIR="/tmp"
 
-# local bin for home made binary blobs
-[ -d "${HOME}/bin" ] && export PATH="${HOME}/bin:${PATH}"
+# local bin for home made executables
+[ -d "${HOME}/.bin" ] && export PATH="${HOME}/.bin:${PATH}"
 
 # required for setting the Windows codepage to UTF8 
 case "$(uname --kernel-name)" in
