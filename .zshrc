@@ -25,10 +25,30 @@ setopt \
 unsetopt beep
 bindkey -v
 
+# Functions
+
+# Create NTFS (Windows) links, still usable by Cygwin
+# Use this for creating links to files that have to be transparent to Windows applications
+# Unix symlinks are not transparent to Windows applications
+# mklink link target    - file symbolic link
+# mklink /D link target - directory symbolic link
+# mklink /H link target - hard link
+# mklink /J link target - directory junction (you should prefer directory symbolic link instead)
+mklink () {
+    
+    if [ "$#" -ge "3" ]; then
+        cmd /c mklink "$1" "$2" "$3"
+    else
+        cmd /c mklink "$1" "$2"
+    fi
+
+}
+
 # Aliases
 
 alias cp="cp --interactive --verbose"
 alias mv="mv --interactive --verbose"
+alias ln="ln --interactive --verbose"
 alias df="df --human-readable"
 alias du="du --human-readable"
 alias grep="grep --color=auto"
@@ -40,3 +60,7 @@ alias ssh="ssh -F <(cat ~/.ssh/config ~/.ssh/hosts)"
 alias scp="scp -F <(cat ~/.ssh/config ~/.ssh/hosts) -C"
 alias sftp="sftp -F <(cat ~/.ssh/config ~/.ssh/hosts) -C"
 alias sshf="ssh -F <(cat ~/.ssh/config ~/.ssh/hosts) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
+# Windows related things
+# We need to run console.exe along with this to allow this work flawlessly in Cygwin mintty
+alias powershell="powershell -NoLogo –ExecutionPolicy Bypass"
