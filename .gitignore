@@ -5,3 +5,13 @@
 !.ssh/authorized_keys
 .xmonad/*
 !.xmonad/xmonad.hs
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+*~
+*.swp
+*.swo

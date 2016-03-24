@@ -1,0 +1,7 @@
+[user]
+    name = Roger Qiu
+    email = roger.qiu@polycademy.com
+[core]
+    autocrlf = false
+    eol = lf
+    excludesfile = ~/.gitignore_global
