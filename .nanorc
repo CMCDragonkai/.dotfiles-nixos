@@ -1,0 +1,12 @@
+set tabstospaces
+set tabsize 4
+set smooth
+set nonewlines
+set softwrap
+set noconvert
+set locking
+set historylog
+set poslog
+set const
+set autoindent
+set morespace
