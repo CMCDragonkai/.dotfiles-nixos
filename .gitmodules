@@ -1,4 +1,8 @@
-[submodule "prezto"]
-	path = prezto
+[submodule "modules/prezto"]
+	path = modules/prezto
 	url = https://github.com/sorin-ionescu/prezto.git
+	branch = master
+[submodule "modules/bashpp"]
+	path = modules/bashpp
+	url = https://github.com/CMCDragonkai/bashpp.git
 	branch = master

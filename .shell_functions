@@ -1,0 +1,29 @@
+# Functions
+
+#ifndef CYGWIN
+
+#else
+
+:'
+mklink - Create NTFS (Windows) links that is usable by Windows and Cygwin
+
+Usage: mklink [/D | /H | /J] <link-path> <target-path>
+
+Options:
+    /D    Directory Symbolic Link
+    /H    Hardlink
+    /J    Directory Junction (you should prefer /D)
+
+With no options, it creates a NTFS file symlink.
+'
+mklink () {
+    
+    if [ "$#" -ge "3" ]; then
+        cmd /c mklink "$1" "$(cygpath --windows --absolute "$2")" "$(cygpath --windows --absolute "$3")"
+    else
+        cmd /c mklink "$(cygpath --windows --absolute "$1")" "$(cygpath --windows --absolute "$2")"
+    fi
+
+}
+
+#endif

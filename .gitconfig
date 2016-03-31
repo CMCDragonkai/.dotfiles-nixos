@@ -1,7 +1,9 @@
-[user]
-    name = Roger Qiu
-    email = roger.qiu@polycademy.com
 [core]
     autocrlf = false
     eol = lf
     excludesfile = ~/.gitignore_global
+[user]
+    name = Roger Qiu
+    email = roger.qiu@polycademy.com
+[credential]
+    helper = cache --timeout=1800

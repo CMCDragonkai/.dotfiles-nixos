@@ -65,3 +65,150 @@ setx CYGWIN "nodosfilewarning"
 The first step on Windows, is to first get Cygwin. And then run any build tools. Such a build tool needs to be immediately accessible from Linux and Cygwin easily. That makes Shake a bad idea. Even Make a bad idea. Ultimately we just need a simple `install.sh` script.
 
 Linux install script shouldn't symlink things that have `.ps1` or `.exe` or `.bat` or `.cmd` in them! And empty folders should also be ignored once files are ignored.
+
+Interesting resource: http://stackoverflow.com/a/21233990/582917
+
+Scrollback buffer search in Mintty doesn't work because of ConEmu. Can ConEmu replace this functionality? Or somehow let this pass?
+
+Mintty
+------
+
+Useful shortcuts (see the rest at the Mintty manual `man mintty`):
+
+* <kbd>Alt</kbd> + <kbd>Enter</kbd> - Enter and Exit Full Screen - doesn't work
+* <kbd>Ctrl</kbd> + <kbd>+</kbd>/<kbd>-</kbd> - Font Zooming
+* <kbd>Shift</kbd> + <kbd>Up</kbd>/<kbd>Down</kbd> - Scroll Line Up and Down
+* <kbd>Shift</kbd> + <kbd>PgUp</kbd>/<kbd>PgDn</kbd> - Scroll Page Up and Down
+* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>/<kbd>V</kbd> - Copy & Paste
+* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> - Search Scrollback Buffer
+* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> - Switch screens between orimary buffer and secondary buffer (like between shell and less or shell and vim)
+
+Some shortcuts are not available because they are replaced by ConEmu equivalents.
+
+We prefer ASCII DEL `^?` to be used for backwards delete instead of ASCII BS `^H`. Instead `^H` can be mapped to nother functions. Forwards delete still uses `\e[3~`. Preferably if the design of keyboards and terminals were standardised, we could have ASCII DEL for forwards delete, and ASCII BS for backwards delete, but alas it is not so.
+
+Consolas is the chosen font at 13 point size for Mintty. Consolas is a monospaced programming font, and is already installed with Windows. It also has a wide range of glyphs and supports interesting kinds of unicode glyphs.
+
+We're using a solarized dark scheme.
+
+Use http://terminal.sexy/ to produce new colour schemes, and to translate them between different terminals or shells or editors.
+
+ConEmu
+------
+
+Full screen doesn't work properly. We need to intercept and add full screen to ConEmu, not Mintty. Then we can disable `Alt + Enter/Space` buttons.
+
+Terminal Emulator
+-----------------
+
+Our terminal emulator would preferably support sixel graphics, W3M images, and ligatures. Here we have the different terminal emulators to work with:
+
+* Konsole - Supports Ligatures, only on Linux
+* Gnome-Terminal - Supports W3m Images, only on Linux.
+* Xterm - Supports sixel graphics, w3m images, only on Linux. Probably no ligature support.
+* Mintty - No sixel, no w3m images, no ligatures, only on Windows.
+* Conhost - Windows default terminal emulator for Powershell and CMD.
+* ConEmu - Wraps up both Mintty and ConHost and other gui applications and manages them.
+
+So for Windows, the stack is: ConEmu + Mintty/Conhost.
+
+For Linux, the stack will be: Konsole. Because w3m images isn't that important, and sixel graphics is an oddity. We can use graphical Emacs instead for graphics and executable documents, no need for the terminal. But in the future if Konsole could support sixel graphics or w3m images, then it would be great! That being said, over SSH, support for sixel depends on client terminal emulator. And w3mimages doesn't work on Linux console anyway. The only way to get image support into terminals in modern day systems is to create a new standard such as iTerm2, or Black screen, or use support sixel graphics eventually. Until that day comes, we stick with KDE Konsole.
+
+Editor
+------
+
+
+
+
+Fonts
+-----
+
+I desire fonts usable for both the terminal and editor, the most ideal ones are those that are multilingual, monospaced, supports ligatures, supports box drawing, supports powerline, supports a good number of unicode symbols and support even APL, but this probably doesn't exist. So we have a number fonts available to choose from in different situations:
+
+* Anonymous Pro
+* Source Code Pro
+* FiraCode
+* Monoid
+* Hasklig
+
+Paid Fonts:
+
+* PragmataPro - Paid
+
+Fallback Fonts:
+
+* Consolas - Windows
+* Inconsalata - Linux
+
+Performance
+-----------
+
+To improve performance we need to use a macro language and produce a `.build` folder. This way we can generate the correct .zshrc and other rc files and eliminate sections from the language when we don't need it. It's simple conditional macro language. I wonder if there's a bash version around, so we don't need to use m4 or anything.
+
+Windows
+-------
+
+# TODO: We need to run console.exe along with this to allow this work flawlessly in Cygwin mintty See the aliases for Cygwin, they mostly need to use `console`. Or `winpty`. #
+
+Installation
+------------
+
+Installation and regeneration is 2 things. Installation is a complete installation from scratch. Regeneration is regenerating the confguration files. Activation is calling regeneration then running the triggers.
+
+Regeneration needs to use md5sum or rsync or scp and not copy things that are not changed.
+
+Copies are made, not symlinks. 
+
+The copies in the HOME directory IS the build cache. So we need to save a `.dotfiles_checksum.md5` in the `.dotfiles` repo. Or in the home directory. If it doesn't exist, everything is generated and saved to the home. If it does exist, we check for differences, and only ones that is different will be regenerated and copied over. Or just `.dotfiles_checksum`. It should be in the repo, as it is just an implementation detail. However it could be a sha1sum checksum or sha256checksum. I think git uses sha1sum, so we should match its implementation. However we must create a sum from the generated and saved files, not all files in home directory. So perhaps a list of files that should be in the home directory `.dotfiles_generated`, and then use that list to iterate and create an md5sum.
+
+Note that `.dotfiles_generated` needs to be nullbyte terminated.
+
+```
+xargs --arg-file="./.dotfiles_generated" --null md5sum > "./.dotfiles_checksum"
+md5sum --check --quiet "./.dotfiles_checksum" 2>/dev/null
+```
+
+What out for relative pathing. Checksum will only check for relative directory!
+
+To create the `./.dotfiles_generated`, we need printf to print `\0`. http://unix.stackexchange.com/questions/174016/how-do-i-use-null-bytes-in-bash
+
+It also should be the absolute path to be certain. If not absolute path, then the generation of `./.dotfiles_generated` needs to be in the same directory as the checking of `./.dotfiles_generated`. To main consistency, otherwise md5sum doesn't know where to find the files.
+
+We can also use `sha1sum`.
+
+Each file outputed from the check is a file that requires regeneration.
+
+```
+echo ":ba:shp:p/RE:ADME.md: FAILED" | rev | cut --delimiter=':' --fields="2-" | rev
+```
+
+The problem with --null or `\0` is that `./.dotfiles_checksum` will contain newlines... So how would you even deal with this? Actuall this is solved via md5sum.
+
+> If file contains a backslash or newline, the line is started with a backslash, and each problematic character in the file name is escaped with a backslash, making the output unambiguous even in the presence of arbitrary file names. If file is omitted or specified as ‘-’, standard input is read. 
+
+So that means we just need:
+
+```
+md5sum --check --quiet "./.dotfiles_checksum" 2>/dev/null | xargs 
+```
+
+ACTUALLY this is not solved, because it renders it with newlines. While the .dotfiles_generated works. The result of `md5sum --check` doesn't work. Becuase it renders the newlines in the filenames.
+
+I'm beginning to think, we should just use a local build temp, and then just rsync the shit. This is getting complicated due to newlines in filenames. It's probably faster too to just use rsync.
+
+```
+# where --archive means: --recursive --links --perms --times --group --owner
+rsync --update --checksum --archive "./dotfiles/.build/" "${HOME}/"
+```
+
+We do need a local build cache now inside `.build` though.
+
+Look the problem is that even if we create regex to handle the splitting of md5sum output, which we can do! We still have the problem of converting that to a variable that can be used by `mv` or `cp`. The point being is that having something like `"lol\ncat"` doesn't work. Actually we don't need to convert it. It works as just being assigned to a variable and you can cat it like `cat "$x"` where `$x = $(...)`. The command to produce the output.
+
+Ok then, well other than that you require md5sum and splitting it out according to new delimitation scheme. A regex scheme to be precise:
+
+```
+/(.*?):\sFAILED(?:\n|$)/gs
+```
+
+But what unix tool supports that regex. Also this is stupid.

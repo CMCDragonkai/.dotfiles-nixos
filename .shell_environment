@@ -1,0 +1,54 @@
+# Environment
+
+import_exec () {
+    for e in $@; do
+        hash "$e" 2>/dev/null || { return 1; }
+    done
+    return 0
+}
+
+export LANG="en_US.UTF-8"
+export LANGUAGE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
+export TERM="${TERM:-xterm-256color}"
+export PAGER="less --RAW-CONTROL-CHARS --LONG-PROMPT --HILITE-UNREAD --status-column --chop-long-lines --shift .3"
+export EDITOR="$(import_exec vim && echo "vim" || echo "nano")"
+export BROWSER="$(import_exec w3m && echo "w3m" || { import_exec curl && echo "curl" || echo "wget"; })"
+
+export TMPDIR="/tmp"
+export TMP="/tmp"
+export TEMP="/tmp"
+
+[ -d "${HOME}/.bin" ] && export PATH="${HOME}/.bin:${PATH}"
+
+#ifndef CYGWIN
+
+# linux X
+if [ -n "$DISPLAY" ]; then
+
+    import_exec emacs && export EDITOR="emacs" VISUAL="emacs"
+    export BROWSER="$(import_exec firefox && echo "firefox" || { import_exec chromium && echo "chromium" || echo "$BROWSER"; })"
+
+fi
+
+#else
+
+# setting windows code page to UTF8
+chcp 65001 >/dev/null
+
+# if we're not in an SSH session, then the Windows GUI is available
+if [ -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a -z "$SSH_CONNECTION" ] -a ; then
+
+    export BROWSER="$(import_exec firefox && echo "firefox" || { import_exec chrome && echo "chrome" || echo "$BROWSER"; })"
+
+fi
+
+# cygwin X
+if [ -n "$DISPLAY" ]; then
+    
+    # ...
+
+fi
+
+#endif

@@ -15,3 +15,7 @@
 # will need to try the above to see what it means
 
 # consider removing orphans or pruning, we want it to be somewhat idempotent, and without leaving a lot of garbage
+
+
+# ok so this installs Cygwin, then uses bash to launch `install.sh`.
+# nothing else!
