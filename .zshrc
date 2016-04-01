@@ -32,3 +32,20 @@ bindkey -v
 #include "./.shell_aliases"
 
 # zsh aliases
+
+# zsh keys
+
+: '
+Allows one to use Ctrl + Z to switch between foreground and background.
+'
+_ctrl-z () {
+    if [[ $#BUFFER -eq 0 ]]; then
+        BUFFER="fg"
+        zle accept-line
+    else
+        zle push-input
+        zle clear-screen
+    fi
+}
+zle -N _ctrl-z
+bindkey '^Z' _ctrl-z

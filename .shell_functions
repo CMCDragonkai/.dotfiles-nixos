@@ -1,10 +1,31 @@
 # Functions
 
+: '
+killjobs - Run kill on all jobs in a Bash or ZSH shell, allowing one to optionally pass in kill parameters
+
+Usage: killjobs [zsh-kill-options | bash-kill-options]
+
+With no options, it sends `SIGTERM` to all jobs.
+'
+killjobs () {
+
+    local kill_list="$(jobs)"
+    if [ -n "$kill_list" ]; then
+        # this runs the shell builtin kill, not unix kill, otherwise jobspecs cannot be killed
+        # the `$@` list must not be quoted to allow one to pass any number parameters into the kill
+        # the kill list must not be quoted to allow the shell builtin kill to recognise them as jobspec parameters
+        kill $@ $(sed --regexp-extended --quiet 's/\[([[:digit:]]+)\].*/%\1/gp' <<< "$kill_list" | tr '\n' ' ')
+    else
+        return 0
+    fi
+
+}
+
 #ifndef CYGWIN
 
 #else
 
-:'
+: '
 mklink - Create NTFS (Windows) links that is usable by Windows and Cygwin
 
 Usage: mklink [/D | /H | /J] <link-path> <target-path>

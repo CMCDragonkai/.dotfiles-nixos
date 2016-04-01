@@ -212,3 +212,114 @@ Ok then, well other than that you require md5sum and splitting it out according 
 ```
 
 But what unix tool supports that regex. Also this is stupid.
+
+---
+
+```
+> cd project
+> mkdir --parents modules
+> # add a new submodule and put in particular path relative to project root directory optionally
+> git submodule add --branch master <repository> [<path>]
+> # shows the status, commit hash, path and branch for immediate submodules 
+> git submodule status
+> # ...recursively
+> git submodule status --recursive
+> # + means out of sync if the currently checked out submodule commit does not match the SHA-1 found in the index of the containing repository
+ 5e94d3c285f4424f3fa4c6ddf036f405688b1d51 modules/bashpp (heads/master)
+ 4f19700919c8ebbaf75755fc0d03716d13183f49 modules/prezto (heads/master)
+-f0a745576ff69fa608421ee7214d4cd77b43e62f modules/prezto/modules/autosuggestions/external
+-3a2bb8781d32d05d1bf05deeeb476beb651e8272 modules/prezto/modules/completion/external
+-7a4b54b708ab88e0421097614f1acaa7a973c795 modules/prezto/modules/history-substring-search/external
+-43cb371f361eecf62e9dac7afc73a1c16edf89c7 modules/prezto/modules/prompt/external/agnoster
+-8e81152340c4beb2d941340d1feb2dc29bbcc309 modules/prezto/modules/prompt/external/powerline
+-fb4c37dad3c5cbdebca61a8ff5545397c11d450f modules/prezto/modules/prompt/external/pure
+-7044c1986e2f6b15eec27a03651207fccb0a2fbe modules/prezto/modules/syntax-highlighting/external
+
+
+> # clones the repo and all submodules
+> git clone --recursive <repository>
+> # updates all submodules and initialises non-initialised repo, while having recursive depth
+> git submodule update --init --recursive
+> # updates just the submodule with depth = 1
+> git submodule update
+> 
+> # remove the submodule from the worktree, but keep tracking the submodule, not really useful here
+> git submodule deinit <path>
+> # ...forced including any local changes
+> git submodule deinit --force <path>
+> # actually remove the submodule (along with any local changes) and (-r is required for recursive directory)
+> git rm --force -r <path>
+
+> # update the submodule to latest changes in the tracking branch (set to master previously)
+> # it will auto fetch and merge if necessary
+> git submodule update --remote "modules/prezto"
+
+# runs git branch -vv on each submodule
+> git submodule foreach 'git branch -vv'
+Entering 'modules/bashpp'
+* master 5e94d3c [origin/master] Merge remote-tracking branch 'upstream/master'
+Entering 'modules/prezto'
+* master 4f19700 [origin/master] Add missing syntax highlighter
+
+> # checks the status of each git submodule
+> git submodule foreach 'git status'
+
+> # change .gitmodules URL for a given submodule, and then synchronise this change to the .git index
+> # make sure to commit the change later, and push it the repo
+> # this is used when the upstream URL has changed!
+> git config --file=".gitmodules" "submodule.modules/prezto.url" "https://github.com/sorin-ionescu/prezto.git"
+> git submodule sync
+
+> # change the branch of the submodule, update the submodule to the latest in the branch from the given remote
+> git config --file=".gitmodules" "submodule.modules/prezto.url" "development"
+> git submodule update --init --recursive --remote
+
+> # take a look at all the submodule settings
+> git config --file=".gitmodules" --list
+
+> # update from remote and the tracking branch and merge the new changes
+> # isn't merge redundant here, because it should automerge
+> git submodule update --remote --recursive --init --merge
+> 
+> # by default submodule update uses --checkout, meaning it checks out the superproject's recorded commit for the submodule
+> 
+> # it makes sense to use --depth 1 if we're just using it as a dependency, then a shallow clone of the submodules is correct, this causes all the dependencies to be at detached heads, don't develop on submodules here, instead fork your dependency, and work on your fork, and push updates here, can however work on the detached submodules, just be wary of your lack of history
+
+> git submodule add --branch master --depth 1 <repository> [<path>]
+> 
+
+# now if you want a project that uses submodules, you just use:
+# however this will pull in all history, you can't specify depth just for submodules
+# therefore instead of running this, prefer just normal clone, then run
+# git submodule update --remote --init --merge --depth 1 --recursive
+git clone <repository>
+git submodule update --remote --init --merge --depth 1 --recursive
+
+git clone --recursive <repository>
+
+# adds one repository optionally into a particular path relative the project root
+git submodule add --branch master --depth 1 <repository> [<path>]
+# updates all submodules and downloads all recursive submodules (the add command does not have recursion at this moment), optionally for a particular submodule, or without means all submodules
+git submodule update --remote --init --merge --depth 1 --recursive [<path>]
+
+# the --depth 1 works best at git 2.8 released on March 2016
+# see: http://stackoverflow.com/a/17692710/582917
+# git submodules is the bleeding edge of git features!
+
+# another usecase is to say, you have a shahash, and you want acquire a submodule at that particular hash
+# what's the best way to do this?
+# furthermore, once you can acquire the submodule at that particular hash, you want to get it for a depth of 1
+# so it's the most lighest way of acquiring the dependencies
+# one way is the archive links, but that's not really going through git, as so much as going through github
+# http://stackoverflow.com/questions/2144406/git-shallow-submodules#comment60341398_17692710
+# ok it seems that there's no easy way to acquire a submodule at a particular hash with a depth of 1
+# you can do it with a branch, a tag, but not a commit id
+# the only way with commit id right now is to do something which clones everything and checks out a particular commit id
+# if that commit id is related to something on the a branch or tag, then you're all set to go
+# i'm not sure if -b open accepts a tag
+# in that case, forking is really required, and also git ls-remote will come in handy too!
+```
+
+The `-` means those repos were not initialised.
+
+

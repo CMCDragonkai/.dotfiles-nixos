@@ -7,3 +7,5 @@
     email = roger.qiu@polycademy.com
 [credential]
     helper = cache --timeout=1800
+[alias]
+    cloner = clone --recursive
