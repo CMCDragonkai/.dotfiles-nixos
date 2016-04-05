@@ -171,6 +171,7 @@ rsync --update --checksum --archive "./dotfiles/.build/" "${HOME}/"
 
 But also Make to run the rest.
 
+Remember the correct permissions: `chmod 600 -R ~/.ssh`. And use the preprocessor on all relevant files including `~/.ssh/config`.
 
 On installing this repository for development:
 
@@ -220,3 +221,15 @@ On checking submodule status:
 cd "$(git rev-parse --show-toplevel)"
 git submodule status --recursive
 ```
+
+---
+
+On Windows, open `Run` application and copy paste this command:
+
+```
+powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Noninteractive -NoExit -File .\install.ps1
+```
+
+This script will not manage Windows GUI applications except for ConEmu.
+
+The rest should be installed directly or using Chocolatey. But Chocolatey is outside the realm of this particular repository. This does mean dealing with things like Haskell Platform is outside the realm of this `.dotfiles`, except as configuration files.

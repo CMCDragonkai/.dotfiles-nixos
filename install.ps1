@@ -1,21 +1,84 @@
 #!/usr/bin/env powershell
 
-# installation for windows
-# download https://cygwin.com/setup-x86_64.exe
-# download https://cygwin.com/setup-x86
-# put it in .bin/cygwin-setup-x86.exe
-# put it in .bin/cygwin-setup-x86_64.exe
+param (
+    [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
+    [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports", 
+    [string]$PortKey = "http://cygwinports.org/ports.gpg", 
+    [string]$InstallationDirectory = "$Env:UserProfile"
+)
 
-# for cygwin main pacakges
-# .bin/cygwin-setup --quiet-mode --no-shortcuts --no-startmenu --no-desktop --arch x86_64 --no-admin --upgrade-also --root $env:home/cygwin64 --local-package-dir $env:home/cygwin/packages --site http://mirrors.kernel.org/ --packages wget,tar,qawk,bzip2,subversion,vim
+# Create the necessary directories
 
-# for cygwin ports packages
-# .bin/cygwin-setup --quiet-mode --no-shortcuts --no-startmenu --no-desktop --arch x86_64 --no-admin --upgrade-also --root $env:home/cygwin64 --local-package-dir $env:home/cygwin/packages --site ftp://ftp.cygwinports.org/pub/cygwinports --pubkey http://cygwinports.org/ports.gpg --packages wget,tar,qawk,bzip2,subversion,vim
+New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64"
+New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64/packages"
 
-# will need to try the above to see what it means
+# Acquire Package Lists
 
-# consider removing orphans or pruning, we want it to be somewhat idempotent, and without leaving a lot of garbage
+$MainPackages = (Get-Content "./cygwin_main_packages.txt" | Where-Object { 
+    $_.trim() -ne '' -or $_.trim() -notmatch '^#' 
+}) -Join ','
+$PortPackages = (Get-Content "./cygwin_port_packages.txt" | Where-Object { 
+    $_.trim() -ne '' -or $_.trim() -notmatch '^#' 
+}) -Join ','
 
+# Main Packages
 
-# ok so this installs Cygwin, then uses bash to launch `install.sh`.
-# nothing else!
+if ($MainPackages) {
+    Start-Process -FilePath "./.bin/cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+        "
+            --quiet-mode 
+            --no-shortcuts 
+            --no-startmenu 
+            --no-desktop 
+            --arch x86_64 
+            --upgrade-also 
+            --delete-orphans 
+            --root `"$InstallationDirectory/cygwin64`" 
+            --local-package-dir `"$InstallationDirectory/cygwin64/packages`" 
+            --site `"$MainMirror`" 
+            --packages `"$MainPackages`"
+        "
+}
+
+# Cygwin Port Packages
+
+if ($PortPackages) {
+    Start-Process -FilePath "./.bin/cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+        "
+            --quiet-mode 
+            --no-shortcuts 
+            --no-startmenu 
+            --no-desktop 
+            --arch x86_64 
+            --upgrade-also 
+            --delete-orphans 
+            --root `"$InstallationDirectory/cygwin64`" 
+            --local-package-dir `"$InstallationDirectory/cygwin64/packages`" 
+            --site `"$PortMirror`" 
+            --pubkey `"$PortKey`" 
+            --packages `"$PortPackages`"
+        "
+}
+
+# Setup some Windows Environment Variables and Configuration
+
+setx Home "$Env:UserProfile"
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser
+
+# Installing Windows Specific Applications
+
+# ConEmu
+& {
+    Set Ver "alpha"; 
+    Set Dst "$InstallationDirectory/ConEmu"
+    Set Lnk $False 
+    Set Run $False
+    Set Xml './.ConEmu.xml'
+    Invoke-Expression ((New-Object Net.WebClient).DownloadString('https://conemu.github.io/install2.ps1'))
+}
+
+# Close the PowerShell, and Open ConEmu to Mintty and ZSH, while executing `./install.sh` from ZSH using Mintty
+# Not sure it can work, Bash would use exec for such a purpose.
+# It's simple, all you do is run `Start-Process` without `-Wait`, and then just close PowerShell using Exit
+# But won't this destroy all the information about the installation? Perhaps we should not Exit directly.
+# 

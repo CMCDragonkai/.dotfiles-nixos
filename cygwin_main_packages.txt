@@ -1,0 +1,54 @@
+# shell/system utilities
+zsh
+ncurses
+gnupg
+pv
+utils-linux
+psmisc
+procps
+cygutils-extra
+cygutils
+pkg-config
+
+# network
+openssh
+openssl
+wget
+curl
+whois
+weechat
+inetutils
+inetutils-server
+nc
+socat
+rsync
+
+# filesystem
+mkisofs
+
+# development
+vim
+nano
+make
+git
+mercurial
+dos2unix
+binutils
+bison
+gcc
+autoconf
+automake
+diffutils
+patch
+cmake
+mingw64-x86_64-gcc-g++
+php
+
+# media
+GraphicsMagick
+
+# libraries
+libxml2
+libyaml
+libboost
+libboost-devel

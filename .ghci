@@ -1,0 +1,5 @@
+:set prompt "%l-λ:> "
+:set prompt2 "%l-λ:> | "
+:set +t
+:set +s
+:set +m

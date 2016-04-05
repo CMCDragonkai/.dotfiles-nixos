@@ -1,0 +1,14 @@
+# shell/system utilities
+parallel
+
+# network
+putty
+
+# filesystem
+
+# development
+
+# media
+ffmpeg
+
+# libraries
