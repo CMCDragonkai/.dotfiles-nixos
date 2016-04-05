@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
+    
+    cat<<EOF
+git-submodule-rm - Remove a Git submodule completely
+
+Usage: 
+    git-submodule-rm <submodule-path>
+    git-submodule-rm -h | --help
+
+Options:
+    -h --help    Show this help text.
+EOF
+
+    exit 0
+
+fi
+
+import_exec git || { echo 'Error: git executable is missing.'; exit 1; }
+
+submodule="$1"
+current_revision="$(git rev-parse HEAD)"
+
+if [[ ! ( -d "$submodule" ) || ! ( "$(git ls-tree "$current_revision" "$submodule")" == "160000"* ) ]]; then
+    echo >&2 "Error: \"$submodule\" is not a submodule or the submodule has not be committed."
+    exit 1
+fi
+
+project_root="$(git rev-parse --show-toplevel)"
+module_path_at_project_root="$(git ls-files --full-name "$submodule")"
+
+cd "$project_root" || { 
+    echo >&2 "Error: Cannot change directory to \"$project_root\", the root of the working tree."
+    exit 1 
+}
+
+git submodule deinit --force "$module_path_at_project_root"
+git rm --force "$module_path_at_project_root"
+rm --recursive --force --dir ".git/modules/$module_path_at_project_root"

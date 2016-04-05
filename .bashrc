@@ -33,10 +33,10 @@ PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u ➜ \h  ➜ \[\e[33m\]\w\[\e[0m\]\n \$ '
 PS2='$> ';
 PS4='$0 - $LINENO $+ '
 
-#include "./.shell_functions"
+#include ".includes/shell_functions.conf"
 
 # bash functions
 
-#include "./.shell_aliases"
+#include ".includes/shell_aliases.conf"
 
 # bash aliases

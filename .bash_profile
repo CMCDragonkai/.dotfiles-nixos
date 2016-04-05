@@ -1,7 +1,7 @@
 # .bash_profile is sourced for login shells which can be interactive
 # it should be mostly setting up shell wide environment variables
 
-#include "./.shell_environment"
+#include ".includes/shell_environment.conf"
 
 # bash environment
 

@@ -25,11 +25,11 @@ setopt \
 unsetopt beep
 bindkey -v
 
-#include "./.shell_functions"
+#include ".includes/shell_functions.conf"
 
 # zsh functions
 
-#include "./.shell_aliases"
+#include ".includes/shell_aliases.conf"
 
 # zsh aliases
 
