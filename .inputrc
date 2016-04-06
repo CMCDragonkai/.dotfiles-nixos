@@ -1,0 +1,79 @@
+# This ~/.inputrc is used by the readline library
+# Note that ZSH does not use readline, so these settings don't apply to ZSH
+# But these do apply to Bash
+
+# Ring the bell visibly
+set bell-style visible
+
+# Make Tab autocomplete apply insensitivity to case
+set completion-ignore-case On
+
+# Make Tab autocomplete apply insensitivity to hyphens and underscores
+set completion-map-case On
+
+# List all matches in case multiple possible completions are possible
+set show-all-if-ambiguous on
+
+# Immediately add a trailing slash when autocompleting directories or symlinks to directories
+set mark-directories on
+set mark-symlinked-directories on
+
+# Use the text that has already been typed as the prefix for searching through
+# commands (i.e. more intelligent Up/Down behavior)
+"\e[B": history-search-forward
+"\e[A": history-search-backward
+
+# incremental history search, both reverse and forward with Ctrl-r/]
+"\C-r": reverse-search-history
+"\C-]": forward-search-history
+
+# Do not autocomplete hidden files unless the pattern explicitly begins with a dot
+set match-hidden-files off
+
+# If there are more than 100 possible completions for a word, ask to show them all
+set completion-query-items 100
+
+# Show extra file information when completing, like `ls -F` does
+set visible-stats on
+set colored-stats On
+
+# Be more intelligent when autocompleting by also looking at the text after
+# the cursor. For example, when the current line is "cd ~/src/mozil", and
+# the cursor is on the "z", pressing Tab will not autocomplete it to "cd
+# ~/src/mozillail", but to "cd ~/src/mozilla". (This is supported by the
+# Readline used by Bash 4.)
+set skip-completed-text on
+
+# Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# Equivalent to "\C-?": delete-char
+"\e[3~": delete-char
+
+# VT
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+
+# kvt
+"\e[H": beginning-of-line
+"\e[F": end-of-line
+
+# rxvt and konsole (i.e. the KDE-app...)
+"\e[7~": beginning-of-line
+"\e[8~": end-of-line
+
+# VT220
+"\eOH": beginning-of-line
+"\eOF": end-of-line
+
+$if Bash
+
+    # Expand the ~
+    set expand-tilde on
+
+    # Do history expansion on !$/!^/!!/!* when space is pressed
+    Space: magic-space
+
+$endif

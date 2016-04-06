@@ -233,3 +233,35 @@ powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Noninteractive -NoExit -F
 This script will not manage Windows GUI applications except for ConEmu.
 
 The rest should be installed directly or using Chocolatey. But Chocolatey is outside the realm of this particular repository. This does mean dealing with things like Haskell Platform is outside the realm of this `.dotfiles`, except as configuration files.
+
+---
+
+Remember to properly configure Cygwin's home menu to be `%USERPROFILE%`.
+
+Also note that there are 3 temporary directories for Cygwin use:
+
+* User Local Temporary - `TEMP=%USERPROFILE%\AppData\Local\Temp`
+* System Temporary - `TEMP=%SystemRoot%\TEMP`
+* Cygwin Temporary - `export TMPDIR=/tmp`
+
+We need a differentiation between the temporary directories due to different expectations of permissions between Cygwin (Linux) and Windows. So when clearing the temporary directory, feel free to clear `/tmp` and also the user local temporary. System temporary should be carefully cleaned. In order to allow access to the windows tmp, in Cygwin, the `WINTMP` is set to the original user local temporary. System temporary is not directly accessible, but that's alright.
+
+---
+
+`%ALLUSERSPROFILE%` - Points to a common user profile directory (that is viewable by all users on the OS). We should create a `%ALLUSERSPROFILE%/bin` directory to add PATH symlinks to all Windows executables that we install into here (this makes sense as installed Windows executables are usually installed on the entire system, not for a particular user). This refers to any natively installed Windows executable, or any extracted Windows executable. This does not refer to Chocolatey's installed executables, which has its own bin path at `%ALLUSERSPROFILE%/chocolatey/bin`. Note that Chocolatey will not necessarily install bin links for every package. Look for packages with a suffix of `.portable`. Do not use `.install` unless you verify its behaviour. Note that `.install` refers to natively installed packages, and these packages cannot be auto-uninstalled, without first uninstalling it natively, then uninstalling it from Chocolatey. Packages without a suffix are usually meta-packages. But make sure to review them before installing.
+
+This means we need specifically, PATH needs to be set up in this way:
+
+* Default Windows Paths (on Windows): `C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\`
+* Prepend Chocolatey path (on Windows): `%ALLUSERSPROFILE%\chocolatey\bin`
+* Prepend custom Windows path (on Windows): `%ALLUSERSPROFILE%\bin`
+* Prepend Cygwin paths (on Cygwin): `/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin`
+* Prepend Home paths (on Cygwin): `~/bin`
+
+What this means is that Windows executables will always be available to Windows executables, but both Windows and Cygwin executables will be available to Cygwin executables and Windows executables executed through Cygwin.
+
+Only one problem, Powershell scripts in `~/bin` won't be available to Powershell by default. The way to solve this is to put in `~/Documents/WindowsPowerShell/profile.ps1` an extra piece of code to set `%USERPROFILE%/bin` as prepended as well. This way, all user executed powershells will gain access to `~/bin`. Also to make sure that `PATHEXT` also contains `.PS1`. All of this is done currently.
+
+As for `CMD`, this is fixed via `~/.cmd_profile`. Which you need to hook into any call via `cmd /K %USERPROFILE%/.cmd_profile`.
+
+You must RAID your Windows Disks to get a single disk. Don't spread out the disks. This prevents problems with Chocolatey not allowing one to install into different drive letters.

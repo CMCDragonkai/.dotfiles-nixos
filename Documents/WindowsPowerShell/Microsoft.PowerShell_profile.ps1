@@ -1,3 +1,5 @@
+# This is for the current user only and only for Microsoft.Powershell console host
+
 $host.ui.rawui.foregroundcolor = "white"
 $host.ui.rawui.backgroundcolor = "black"
 
