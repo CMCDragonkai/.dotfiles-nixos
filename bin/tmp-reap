@@ -1,0 +1,57 @@
+#!/usr/bin/env zsh
+
+if [[ "$@" == *-h* || "$@" == *--help* ]]; then
+    
+    cat<<EOF
+tmp-reap - Reap the temporary directories! Works on Windows as well!
+           By default, the expiration is 7 days passed the last change time.
+
+Usage: 
+    tmp-reap [expiration-duration-in-days-as-natural-numbers]
+    tmp-reap -h | --help
+
+Options:
+    -h --help    Show this help text.
+EOF
+
+    exit 0
+
+fi
+
+expiration="${${1}:-7}"
+
+tmp_dirs=()
+
+# dealing with Windows System TMP
+if [ -n "$SYSTEMROOT" -a -d "$SYSTEMROOT/Temp" ]; then
+    tmp_dirs+="$SYSTEMROOT/Temp"
+fi
+
+# dealing with Windows Local TMP
+if [ -n "$USERPROFILE" -a -d "$USERPROFILE/AppData/Local/Temp" ]; then
+    tmp_dirs+="$USERPROFILE/AppData/Local/Temp"
+fi
+
+# dealing with unix TMP, TMPDIR is the most canonical variable, then TMP and TEMP, before defaulting on /tmp
+tmp_dirs+="${${${TMPDIR:-$TMP}:-$TEMP}:-/tmp}"
+
+printf "Reaping these directories:\n"
+printf ">> %s\n" "${tmp_dirs[@]}"
+
+for dir in "${tmp_dirs[@]}"; do
+
+    # list files with a change time older than 7 days (change time is more comprehensive than modification time)
+    # find flags:
+    # -mindepth 1 is needed to prevent it trying to delete its own directory
+    # -depth is needed so that it processes the files first before the directory
+    # -readable is needed so we can run fuser on it
+    # -writable is needed, deletion requires writability
+    # rm flags:
+    # --force ignore non-existent files/directories, perhaps they got already deleted 
+    # --dir removes empty directories 
+    # --verbose shows what's being deleted 
+    find "$dir" -mindepth 1 -depth -readable -writable \
+    -ctime +"$expiration" -and -not -exec fuser --silent {} ';' \
+    -and -exec rm --force --dir --verbose {} ';'
+
+done

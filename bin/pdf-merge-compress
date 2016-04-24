@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
+    
+    cat<<EOF
+pdf-merge-compress - Merge N pdfs into 1 pdf, it uses ghostscript.
+                     This means it can merge 1 pdf into 1 pdf.
+                     It will compress the input pdfs based on in-built 
+                     heuristics.
+
+Usage: 
+    pdf-merge (/screen | /ebook | /printer | /prepress | /default) <output-pdf> <input-pdf>...
+    pdf-merge -h | --help
+
+Options:
+    -h --help    Show this help text.
+    /default     Almost identical to /screen.
+    /screen      Screen-view-only quality, 72 dpi images.
+    /ebook       Low quality, 150 dpi images.
+    /printer     High quality, 300 dpi images.
+    /prepress    High quality, color preserving, 300 dpi imgs. Most of the time you want this.
+
+See http://stackoverflow.com/a/12254582/582917 for more information.
+EOF
+
+    exit 0
+
+fi
+
+gs -dQUIET -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS="$1" -sOutputFile="$2" ${@:3}

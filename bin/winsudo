@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+# to run something as administrator, we must elevate to the windows system
+# but this makes windows run the executable as a completely separate program 
+# which means IO is not inlined into the existing terminal you ran sudo with
+# however, this is fastest way to run something as administrator through cygwin 
+# note that many commands will make the terminal window exit, if you need 
+# to see output, you must wrap the program in a shell
+# further note, that pipes will not work here either
+
+exec cygstart --action=runas $@

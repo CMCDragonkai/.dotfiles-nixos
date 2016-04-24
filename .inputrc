@@ -1,6 +1,10 @@
 # This ~/.inputrc is used by the readline library
 # Note that ZSH does not use readline, so these settings don't apply to ZSH
 # But these do apply to Bash
+# Note that:
+# \e => escape (not a modifier key, but representing a portion of the keycode, like arrow down is \e[B)
+# \C => control
+# \M => meta/alt
 
 # Ring the bell visibly
 set bell-style visible
@@ -20,8 +24,10 @@ set mark-symlinked-directories on
 
 # Use the text that has already been typed as the prefix for searching through
 # commands (i.e. more intelligent Up/Down behavior)
-"\e[B": history-search-forward
+
+# Use Up/Down keys for prefix history search
 "\e[A": history-search-backward
+"\e[B": history-search-forward
 
 # incremental history search, both reverse and forward with Ctrl-r/]
 "\C-r": reverse-search-history
@@ -75,5 +81,21 @@ $if Bash
 
     # Do history expansion on !$/!^/!!/!* when space is pressed
     Space: magic-space
+
+    # Shift Enter creates a quoted insert for literal newline which doesn't execute the command
+    # It also adds a \ for Bash to escape the newline. 
+    # The advantage is that you can completely edit the multiline command
+    # This can actually be used for any readline compatible REPL
+    # For Konsole:
+    "\eOM":"\\\C-v\C-j"
+    # For Cygwin Mintty:
+    "\C-j":"\\\C-v\C-j"
+    # Xterm and Gnome-Terminal and Any terminal that Only gives ^M is out of luck
+
+    # Shift Tab creates a quoted insert for literal tab
+    # For Konsole:
+    # ...? 
+    # For Cygwin Mintty (Shift + Tab):
+    "\e[Z":"\C-v\C-i"
 
 $endif

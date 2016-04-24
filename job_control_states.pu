@@ -1,0 +1,62 @@
+@startuml
+
+[*] --> Running
+
+Running --> Done
+Running : all processes start out running 
+
+
+Suspended TTY Input
+
+Suspended TTY Output
+
+Suspended 
+
+Continued
+
+Done
+
+State1 -> State2
+State2 --> [*]
+
+@enduml
+
+
+@startuml
+
+[*] --> Running
+
+Running : All processes start out running 
+Running --> Done : Execution
+Running --> Suspended : SIGTSTP
+
+SuspendedTTYInput : SIGTTIN
+SuspendedTTYOutput : SIGTTOU
+
+SuspendedSignal : SIGSTOP
+
+Done -> [*]
+Done: Process has exited normally.
+
+Terminated -> [*]
+Terminated: Process has been terminated using SIGTERM. `kill -TERM $PID`. By default as well
+
+Killed -> [*]
+Killed: Process has been killed. SIGKILL
+
+Interrupt -> [*]
+Interrupt: Process got interrupted. SIGINT
+
+Quit -> [*]
+Quit: Process quitted.
+
+Hangup -> [*]
+Hangup: Process hung up.
+
+>  SIGQUIT: Terminates a process. This is different from both SIGKILL and SIGTERM in the sense that it generates a core dump of the process and also cleans up resources held up by a process. Like SIGINT, this can also be sent from the terminal as input characters. It can be handled, ignored or caught in code. This is the signal generated when a user presses Ctrl+\. 
+
+>  SIGHUP: (From Wikipedia): Hangs up a process when the controlling terminal is disconnected. This especially relates to modem/dial in connections. A process has to explicitly handle this signal for it to work. A good use is to "poke" a process and letting the process (as defined by the programmer) decide what to do with the signal is described here. Hence, SIGHUP can be handled, ignored or caught. This is the signal generated when a user presses Ctrl+D. (not EOF?)
+
+
+
+@enduml

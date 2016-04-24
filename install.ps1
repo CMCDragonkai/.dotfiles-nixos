@@ -1,5 +1,8 @@
 #!/usr/bin/env powershell
 
+# RUN THIS IN ADMINISTRATOR MODE
+# It needs to add some permissions.. etc
+
 param (
     [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
     [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports", 
@@ -104,6 +107,8 @@ CMD /C 'ftype Microsoft.PowerShellScript.1="%SystemRoot%\system32\WindowsPowerSh
 Set-ExecutionPolicy Unrestricted -Scope CurrentUser
 
 # Installing Windows Specific Applications
+# This should be replaced with using Chocolatey...
+# Depends if Cygwin and Cygwin packages can be managed with Chocolatey as well
 
 # ConEmu
 & {

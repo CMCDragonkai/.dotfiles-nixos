@@ -3,6 +3,7 @@
 # if not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
+# huponexit - makes sure child processes are sent SIGHUP when login interactive bash exits
 # xpg_echo - align with ZSH behaviour
 # lastpipe - align with ZSH behaviour
 # no_empty_cmd_completion - align with ZSH behaviour
@@ -16,6 +17,7 @@ cmdhist:\
 extglob:\
 globstar:\
 histappend:\
+huponexit:\
 interactive_comments:\
 lastpipe:\
 lithist:\
@@ -29,14 +31,22 @@ HISTFILESIZE=10000
 HISTCONTROL='ignoreboth'
 HISTTIMEFORMAT='%F %T '
 
-PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u ➜ \h  ➜ \[\e[33m\]\w\[\e[0m\]\n \$ '
-PS2='$> ';
-PS4='$0 - $LINENO $+ '
-
 #include ".includes/shell_functions.conf"
 
 # bash functions
+# ...
 
 #include ".includes/shell_aliases.conf"
 
 # bash aliases
+#...
+
+# bash environment
+
+TTY="$(tty)"
+
+# bash prompt
+
+PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u ➜ \h  ➜ \[\e[33m\]\w\[\e[0m\]\n \$ '
+PS2='$> ';
+PS4='$0 - $LINENO $+ '

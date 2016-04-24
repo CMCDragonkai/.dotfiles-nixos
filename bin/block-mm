@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Get the block device name from major minor numbers
+grep 'DEVNAME=' /sys/dev/block/"$1":"$2"/uevent | cut --delimiter='=' --fields='2-'

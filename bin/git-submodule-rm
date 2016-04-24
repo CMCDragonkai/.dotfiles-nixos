@@ -5,7 +5,7 @@ set -o errexit
 if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
     
     cat<<EOF
-git-submodule-rm - Remove a Git submodule completely
+git-submodule-rm - Remove a Git submodule completely.
 
 Usage: 
     git-submodule-rm <submodule-path>

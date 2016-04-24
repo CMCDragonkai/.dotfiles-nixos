@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# try one of them until one succeeds
+
+# if dig exists
+dig +short myip.opendns.com @resolver1.opendns.com | tr -d "\n"
+dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | tr -d '"'
+
+# if dig doesn't exist
+host myip.opendns.com resolver1.opendns.com | grep 'myip.opendns.com has address ' | cut -c 30-
+
+# if all of the above didn't work, try one of the below
+# echo is required to make sure we always get a newline
+echo $(curl ipecho.net/plain 2>/dev/null)
+echo $(curl icanhazip.com 2>/dev/null)
+echo $(curl ip.appspot.com 2>/dev/null)
+echo $(curl eth0.me 2>/dev/null)

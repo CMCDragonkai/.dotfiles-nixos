@@ -1,0 +1,9 @@
+# auto-indent.sh
+# should auto detect the code (doesn't need to be smart, just the indentation characters of () [] {}) and just
+# automatically create newlines between those characters
+# can be a bit heuristic about it, shorter lines (within 70 characters will be left as is)
+# longer will be indented
+# will not deal with ones that are already indented
+# indentation should be 4 spaces or a tab
+# what if things are partially indented? kind of like (\n\n blah \n), it's not a code formatter or beautifer
+# also things like `;`...?

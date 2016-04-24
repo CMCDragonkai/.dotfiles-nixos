@@ -1,3 +1,5 @@
+! ~/.Xresources configures X applications
+
 ! xmessage
 
 Xmessage*international: true

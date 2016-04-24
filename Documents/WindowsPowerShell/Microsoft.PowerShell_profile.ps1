@@ -21,7 +21,7 @@ function prompt {
         @{ prompt = " >" ; color = "darkred" } 
     }
 
-    Write-Host -nonewline ($prompt_prefix + $env:user + " | " + $env:computername + " | " + (get-location) + "`n") -foregroundColor "cyan"
+    Write-Host -nonewline ($prompt_prefix + $env:username + " | " + $env:computername + " | " + (get-location) + "`n") -foregroundColor "cyan"
     Write-Host -nonewline $status_prompt.prompt -foregroundColor $status_prompt.color
 
     $global:LASTEXITCODE = $realLASTEXITCODE

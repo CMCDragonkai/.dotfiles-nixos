@@ -1,0 +1,171 @@
+#!/usr/bin/env bash
+
+if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
+    
+    cat<<EOF
+curl-upload-file - Upload a single file via curl. 
+                   It uses the content type of the file itself.
+                   This is not a form submission.
+                   Using \`-\` allows you to read from stdin.
+                   
+Usage: 
+    curl-upload-file <url> (<file-path> | -) [file-name]
+    curl-upload-file <url> (<file-path> | -) [file-name] -- [curl-flags]...
+    curl-upload-file (-po | --post | -pu | --put) <url> (<file-path> | -) [file-name]
+    curl-upload-file [-c | --chunked] <url> (<file-path> | -) [file-name]
+    curl-upload-file [-g | --gzip] <url> (<file-path> | -) [file-name]
+    curl-upload-file -h | --help
+
+Options:
+    -h --help       Show this help text.
+    -po --post      POST the file (default)
+    -pu --put       PUT the file
+    -c --chunked    Use chunked encoding, and stream upload the file, this is useful for large files.
+                    The upload server must accept chunked transfer encoding.
+                    The chunk size is currently not controllable from the \`curl\` command.
+    -g --gzip       Gzip the contents prior to sending, this is also useful for large files.
+                    The upload server must accept gzipped content encoding.
+
+To view upload contents, use \`-- --trace-ascii /dev/stderr\`.
+To see progress statistics, redirect the output \`>./curloutput\`.
+The \`curl\` has the \`--upload-file\` has deficient behaviour with regards to HTTP headers.
+Combine this with \`chunk.io\` (it uses PUT, not POST) for spectacular results!
+EOF
+
+    exit 0
+
+fi
+
+# default parameters
+
+request_type='POST'
+chunked=false
+gzipped=false
+
+# parse optional flags
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -po|--post)
+            request_type='POST'
+        ;;
+        -pu|--put)
+            request_type='PUT'
+        ;;
+        -c|--chunked)
+            chunked=true
+        ;;
+        -g|--gzip)
+            gzipped=true
+        ;;
+        *)
+            # finished flags, jump to positional arguments
+            break
+        ;;
+    esac
+    shift # shift past the key or value (in this case, it's all keys)
+done
+
+# parse positional parameters
+
+url="$1"
+file_path="$2"
+file_name=''
+curl_flags=''
+
+if [ "$3" != '--' ]; then 
+
+    file_name="$3"
+    
+    # check whether there's -- for curl flags
+    if [ "$4" == '--' ]; then
+        shift 4
+        curl_flags="$*"
+    fi
+
+else 
+
+    # no file name, we just have '--', so acquire the curl flags
+    shift 3
+    curl_flags="$*"
+
+fi
+
+# test for emptyness including just whitespace
+
+if [ -z "${url// }" ]; then 
+    printf 'Error: You need an URL!\n' >&2 
+    exit 1
+fi
+
+if [ -z "${file_path// }" ]; then
+    printf 'Error: You need an input file!\n' >&2 
+    exit 1
+fi
+
+if [ "$file_path" == '-' ]; then 
+
+    # while `file` can read from stdin as well, its difficult to do process orchestration to split stdin
+    # and it may require streaming over the file twice, which is annoying
+    file_content_type='application/octet-stream'
+
+else 
+
+    if [ ! -r "$file_path" ]; then 
+        printf 'Error: Input file does not exist or is not readable!\n' >&2 
+        exit 1
+    fi
+
+    if ! file_content_type="$(file --mime --brief -E "$file_path" 2>/dev/null)"; then
+        file_content_type='application/octet-stream'
+    fi
+
+fi
+
+command="curl '$url'"
+
+if [ "$request_type" == 'POST' ]; then 
+    command="$command --request 'POST'"
+elif [ "$request_type" == 'PUT' ]; then
+    command="$command --request 'PUT'"
+fi
+
+command="$command --header 'Content-Type: $file_content_type'"
+
+if [ -n "${file_name// }" ]; then 
+    command="$command --header 'Content-Disposition: attachment; filename=\"$file_name\"'"
+fi
+
+if "$gzipped"; then
+    command="$command --header 'Content-Encoding: gzip'"
+fi
+
+if "$chunked"; then
+    command="$command --header 'Transfer-Encoding: chunked'"
+fi
+
+if [ "$file_path" == '-' ]; then
+
+    if "$gzipped"; then
+        command="gzip | $command --data-binary '@-'"
+    else
+        command="$command --data-binary '@-'"
+    fi
+    
+else 
+
+    if "$gzipped"; then
+        command="$command --data-binary @<(gzip --stdout '$file_path')"
+    else
+        command="$command --data-binary '@$file_path'"
+    fi
+    
+fi 
+
+if [ -n "${curl_flags// }" ]; then
+    command="$command $curl_flags"
+fi
+
+printf "==> %s\n" "$command" >&2
+
+eval "$command"
