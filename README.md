@@ -991,12 +991,6 @@ Core dumps are only enabled upon using `ulimit -c unlimited && kill -QUIT comman
 
 ---
 
-Write up the FSM for the process states in ZSH job control.
-Write up about ulimit -c for SIGQUIT
-Write up about PGID, SID and PPID and PID in a shell.
-Write up about orphaned vs zombie processes.
-Write up about stty tostop vs stty -tostop
-
 On Linux:
 
 ```sh
@@ -1048,3 +1042,74 @@ However this command only is available from the Carbon module: http://get-carbon
 Get that as a submodule dependency from Bitbucket.
 
 Or instead of loading an entire module, consider: http://www.leeholmes.com/blog/2010/09/24/adjusting-token-privileges-in-powershell/
+
+---
+
+Try out:
+
+`ktrash`, `gvfs-trash`, or `trash-cli`.
+
+http://www.bramschoenmakers.nl/node/610.html
+http://superuser.com/questions/324128/two-commands-to-move-files-to-trash-whats-the-difference
+
+Would be good to create an alias depending on what's installed, and an adapter to Powershell.
+
+---
+
+Try out Cyberduck on Windows, specifically https://duck.sh/ or Dolphin network filesystem or Ranger/Total Commander. I need some sort of file browser (preferably command line and GUI) that can transparently access local and remote filesystems over multiple protocols. So not only SFTP, SCP, FTP, FTPS, but also things like S3, Backblaze, Azure would be great. Support mounting on the filesystem, so other programs can also utilise it.
+
+---
+
+SQL IDE:
+
+* DBeaver - Cross Platform, Cross Database
+* SQL Power Architect Community Edition - Cross Platform, Cross Database
+* MySQL WorkBench - Only MySQL
+* Valentina Studio - Cross Platform, Cross Database
+* HeidiSQL - Windows, Cross Database
+* Kexi - Linux version of Microsoft Access
+
+---
+
+Control the buffering:
+
+* `unbuffer` or `zpty` - uses PTY (which forces line buffering or byte buffering, no idea)
+* `stdbuf` - uses LD_PRELOAD (you can choose to do block buffering, line buffering, or no buffering)!
+
+---
+
+Local source goes into `~/src`. Local binaries goes into `~/bin`. Anything here is unmanaged by Nix and unmanaged by Cygwin. And I'm not following `/opt` or `/usr/local` because that goes against Nix. And is system wide. Anything system wide should be managed by Nix. And on Cygwin, the main user is the only one that matters.
+
+---
+
+Install picocom (because Cygwin doesn't have the package):
+
+```
+mkdir --parents ~/man/man1
+cd ~/src \
+&& git clone https://github.com/npat-efault/picocom \
+&& cd picocom \
+&& make \
+&& ln --symbolic --force $(pwd)/picocom.exe ~/bin/picocom \
+&& ln --symbolic --force $(pwd)/picocom.1 ~/man/man1/picocom.1
+```
+
+Why use `ln` instead of `install`? The `install` copies into the directories. That may not be a good thing. That being said, linking to the finished executable might involve less headaches? The advantage is that installing means you can delete the source if necessary. While linking means less duplication if you're keeping the source around. Also some packages already have `make install` as well, which may not be a good thing to run, if you want to use symlinks.... Yea for `~/src` packages, they should also use only `make` and direct `symlinking` to acquire. That way we know where all installed stuff from src is located in a central place. Easy enough to cleanup. Perhaps even a hardlink might be useful here.
+
+It also means we know everything will be installed into `~/man`, `~/bin` or `~/info`.
+
+---
+
+Use http://rmlint.readthedocs.io/en/latest/index.html to clean up local directories. Especially for broken symlinks.
+
+---
+
+We should only have `~/man/man1`. Nothing else should be there. As for `~/info`. It's all just `~/info/program.info`. Always.
+
+---
+
+Asynchronous ZSH/Bash startup: http://stackoverflow.com/questions/20017805/bash-capture-output-of-command-run-in-background Some of our complicated startup can be used like `stty < ./.cygwin_stty &`. At the end run `wait`. But the point is, in some cases we need to capture the output of the asynchronous command. So the command needs to buffer up the output.
+
+---
+
+https://en.wikipedia.org/wiki/K-Lite_Codec_Pack

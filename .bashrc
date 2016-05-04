@@ -34,7 +34,19 @@ HISTTIMEFORMAT='%F %T '
 #include ".includes/shell_functions.conf"
 
 # bash functions
-# ...
+
+$ '
+repeat - Repeatedly run a command. Basically the same as ZSH \`repeat\`.
+
+Usage: repeat <times> <command>
+'
+repeat () {
+
+    times="$1"
+    shift
+    seq "$times" | xargs -I -- $*
+
+}
 
 #include ".includes/shell_aliases.conf"
 

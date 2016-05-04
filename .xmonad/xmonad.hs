@@ -55,6 +55,7 @@ matrixHooks =
     composeAll [
         -- make xmessage float in the center
         className =? "Xmessage" --> doCenterFloat
+        className =? "feh" --> doCenterFloat
     ] 
 
 -- mouse macros

@@ -35,17 +35,23 @@
                     firefox 
                     chromium 
                     # Data Science 
+                    sqlite-interactive # personal database
+                    sqlite3_analyzer # analysers statistics about sqlite databases
                     jq 
+                    goPackages.json2csv 
                     gnuplot 
+                    sc-im # console spreadsheet
                     # csvkit # doesn't exist!
                     # Documents 
                     zathura 
                     libreoffice 
+                    sc-im # console spreed sheet
                     # Secrets 
                     keybase 
                     pass 
                     qtpass 
                     # Network 
+                    mailutils # command line emailing (not mutt)
                     httpie # better than curl for JSON 
                     bind # dns
                     rsync # file transfer 
@@ -53,13 +59,19 @@
                     wireshark # packet analysis analysis
                     nmap # network scanner including nping packet generator
                     ncat # replaces netcat and socat
+                    socat # still need socat for obscure protocols (rs232 and tun) 
                     hans # ipv4 over icmp (bypass firewall) 
                     iodine # ipv4 over dns (bypass firewall) 
                     udptunnel # tcp/ip over udp (bypass firewall) 
                     httptunnel # tcp/ip over http (bypass firewall) 
                     pwnnat # ip through NAT (bypass NAT) 
                     caddy # simple http server 
-                    ngrok # simple local tunnel
+                    ngrok # simple local tunnel 
+                    picocom # rs232 embedded terminal emulator
+                    python35Packages.youtube-dl # download media from media sites
+                    speedtest-cli # use speedtest.net to test internet bandwidth 
+                    geoipWithDatabase # geolocate IPs
+                    iperf # test internet performance
                     # Archive Management
                     zip 
                     unzip 
@@ -74,14 +86,20 @@
                     conky # local system monitoring 
                     proot # user space chroot 
                     synergy # share a mouse between multiple computers 
+                    ncdu # file disk analyser
                     # Shell Utilities 
                     tree 
-                    bc 
                     parallel 
                     asciinema 
                     reptyr 
                     fuser 
                     lsof 
+                    rmlint 
+                    pv 
+                    cv 
+                    # Math 
+                    bc # for simple math calculations
+                    R # for simple stats calculations
                     # Development 
                     nix-prefetch-scripts 
                     nix-repl 
@@ -110,15 +128,20 @@
                     # Pulseaudio 
                     ponymix # CLI control (probably better than pactl, not as powerful as pacmd)
                     pavucontrol # GUI control
+                    # Windows Management
+                    hsetroot # to set background wallpaper
                     # Media 
-                    vlc 
-                    mplayer 
+                    feh # image viewer
+                    imagemagick # used by feh for SVG viewing
+                    vlc # standard media player
+                    mplayer # a more fleixble media player, also has mencoder
                     pavucontrol # pulseaudio GUI control 
                     graphicsmagick # swiss army knife for image processing 
                     ffmpeg # swiss army knife for video processing
                     sox # swiss army knife for sound processing
                     v4l_utils # utilities for interacting with video capture 
-                    icecast # streaming media server 
+                    mediainfo # better than ffprobe
+                    dcraw # process RAW images
                     # Radio 
                     gnuradio-with-packages # software defined radio 
                     gqrx # GUI SDR receiver
@@ -129,9 +152,6 @@
                     kde5.dolphin-plugins 
                     kde5.ffmpegthumbs 
                     kde5.kdegraphics-thumbnailers 
-                    # Accounting 
-                    haskellPackages.hledger 
-                    haskellPackages.hledger-web 
                     # File Synchronisation
                     dropbox 
                     dropbox-cli 
