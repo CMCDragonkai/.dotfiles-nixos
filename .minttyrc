@@ -44,8 +44,8 @@ CursorBlinks=no
 
 BoldAsFont=yes
 BoldAsColour=no
-FontHeight=13
-Font=Consolas
+FontHeight=12
+Font=DejaVu Sans Mono
 FontSmoothing=full
 
 # Keyboard

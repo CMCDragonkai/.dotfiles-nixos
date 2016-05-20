@@ -1,0 +1,54 @@
+#!/usr/bin/env zsh
+
+if [[ "$@" == *-h* || "$@" == *--help* ]]; then
+    
+    cat<<EOF
+vim-clean - Cleans Vim Swap, Undo and Backup Files Recursively.
+            It will trace then prompt before deleting.
+                   
+Usage: 
+    vim-clean
+    vim-clean <directory>
+
+Options:
+    -h --help       Show this help text.
+EOF
+
+    exit 0
+
+fi
+
+directory="$1"
+if [ -z "$directory" ]; then
+    directory="$(pwd)"
+fi
+directory="$(readlink --canonicalize "$directory")"
+
+printf "Tracing Vim Swap and Undo and Backup Files at: $directory\n"
+
+files=""
+find "$directory" -type f \( -name '.*.sw[m-p]' -or -name '.*.un~' -or -name '*\~' \) -print0 | \
+while read -r -d $'\0' x; do
+    printf "$x\n"
+    if [ -z "$files" ]; then
+        files="$x"$'\0'
+    else
+        files="${files}${x}"$'\0'
+    fi
+done
+
+if [ -z "$files" ]; then
+    printf "No files to delete.\n"
+    exit 0
+fi
+
+read -q "?Delete these files (y/n)? " answer
+
+case ${answer:0:1} in
+    y|Y)
+        xargs -0 -I{} rm --force '{}' <<< "$files"
+    ;;
+    *)
+        exit 0
+    ;;
+esac

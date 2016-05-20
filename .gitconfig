@@ -9,3 +9,6 @@
     helper = cache --timeout=1800
 [alias]
     cloner = clone --recursive
+    tree = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit
+    tree-stat = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit --stat
+    tree-patch = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit --patch

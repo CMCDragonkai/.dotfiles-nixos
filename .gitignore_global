@@ -1,9 +1,11 @@
 # OS generated files #
-######################
 .DS_Store
 .DS_Store?
 ehthumbs.db
 Thumbs.db
-*~
-[._]*.swp
-[._]*.swo
+
+# Vim Files #
+*~             # backup files
+.*.un~         # undo files
+.*.sw[m-p]     # swap files
+Session.vim    # session files

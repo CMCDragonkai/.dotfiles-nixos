@@ -1113,3 +1113,56 @@ Asynchronous ZSH/Bash startup: http://stackoverflow.com/questions/20017805/bash-
 ---
 
 https://en.wikipedia.org/wiki/K-Lite_Codec_Pack
+
+---
+
+Skype on Linux is a bit weird, especially with Xmonad. Basically closing it with keyboard doesn't really close it. It's still running in the background. The GUI just disappears. It probably minimises to the tray. You need to use `kill <pid-of-skype-processes>` or just the quit button in the menu. Also the layout can be modifier with XMonad as well.
+
+---
+
+One of the problems with using pass or keybase, is that the database is one single file. Now to tranport any kind of secret, or even be able to share a secret, you have to share the entire dump. Unlocking to get a single secret means unlocking the entire thing. The thing is too bulky, and is not modular. That is the secrets are all lumped into one single thing, and it's not cohesive. We need to make secret management more cohesive, so an application or a usecase situation can demand just a specific secret, and not all. It's all about the principle of least privilege. This means fundamentally we need a secret server, not just a single secret file dump. A secret server that can provide API access (filtered and time constrained access) to secrets while also supporting privilege groups, and secret changing. And of course very detailed logging of where secrets are being requested from. Integrated password rotation. But that may be difficult. It needs to alert about password rotation, but the password manager may itself not have the privileges to do so. As in higher level privileges may be required for secret rotation.
+
+---
+
+The most common font that I can install for terminal emulators has got to be `DejaVu Sans Mono`.
+
+Folds work by levels. As in, there's a invisible column called the fold column. And as you move this fold column around, it will fold things, or unfold them. 
+
+We basically set the fold column to 1 + the highest fold level, you can see the fold levels in your code using `set foldcolumn=1`.
+
+---
+
+You actually need to do `chmod 700 -R ~/.ssh`. Not `600`. Without the `executable` permission, you can't view the directory.
+
+---
+
+So vim has buffers and tabs. And `:buffers` or `:ls` and `:vsplit` is awesome.
+
+The commands:
+
+```
+:split
+:vsplit
+```
+
+Split the windows equally, and always shows a duplicated view of the buffer you're currently looking at. This sounds likes what you're looking for in your hybrid TUI and GUI. The idea of always duplicating your current buffer is a good idea.
+
+And also focus is always placed on the new buffer being split. So horizontal split means the new buffer should be the bottom one, while vertical split means the new buffer should the right one. Focus is always placed onto the new window.
+
+Wait so now we have XMonad -> Tmux -> Vim Buffers/Windows???
+
+And also Explorer -> ConEmu -> Tmux -> Vim.
+
+Vim tabs are meant to be a different layout. Actually vim tabs is similar meaning to XMonad workspace. Workspaces usually is placed onto another monitor. But it doesn't need to be. It can be overlayed and stacked on top of each other.
+
+1 X Screen -> X Monitors -> Y Workspaces(Tabs) -> Z Windows
+
+Sometimes like ConEmu, the tabs themselves are windows. So they don't have a separate workspace. Except as program tabs inside explorer. Like having a different ConEmu.
+
+Basically the concept of "tabs" is amorphous. For XMonad, tabs refers to workspaces. For Vim, tabs is also a form of workspaces. However in Sublime, tabs are actually per-buffer. While ConEmu, tabs is equivalent to windows. Basically the concept of a tab is kind of different across different things. One can make Vim do 1 buffer 1 tab. But that's what it was originally designed for.
+
+Vim currently keeps the focus on the original buffer. And instead I would suggest the new buffer should be the focus. But I guess that's configurable.
+
+> A buffer is the in-memory text of a file.
+> A window is a viewport on a buffer.
+> A tab page is a collection of windows.

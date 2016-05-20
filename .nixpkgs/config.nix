@@ -35,59 +35,70 @@
                     firefox 
                     chromium 
                     # Data Science 
-                    sqlite-interactive # personal database
-                    sqlite3_analyzer # analysers statistics about sqlite databases
-                    jq 
-                    goPackages.json2csv 
-                    gnuplot 
-                    sc-im # console spreadsheet
-                    # csvkit # doesn't exist!
-                    # Documents 
-                    zathura 
-                    libreoffice 
-                    sc-im # console spreed sheet
+                    sqlite-interactive  # personal database
+                    sqlite3_analyzer    # analysers statistics about sqlite databases
+                    jq                  # command line json querying
+                    goPackages.json2csv # json to csv
+                    gnuplot             # command line plotting
+                    sc-im               # console spreadsheet
+                    # csvkit            # csv transformation
+                    # Productivity and Documents and Office Applications 
+                    zathura      # document viewer
+                    libreoffice  # office suite
+                    ghostscriptX # ps and pdf
+                    synergy      # control multiple computers
                     # Secrets 
-                    keybase 
-                    pass 
-                    qtpass 
-                    # Network 
-                    mailutils # command line emailing (not mutt)
-                    httpie # better than curl for JSON 
-                    bind # dns
-                    rsync # file transfer 
-                    aria # download management including bittorrent
-                    wireshark # packet analysis analysis
-                    nmap # network scanner including nping packet generator
-                    ncat # replaces netcat and socat
-                    socat # still need socat for obscure protocols (rs232 and tun) 
-                    hans # ipv4 over icmp (bypass firewall) 
-                    iodine # ipv4 over dns (bypass firewall) 
-                    udptunnel # tcp/ip over udp (bypass firewall) 
-                    httptunnel # tcp/ip over http (bypass firewall) 
-                    pwnnat # ip through NAT (bypass NAT) 
-                    caddy # simple http server 
-                    ngrok # simple local tunnel 
-                    picocom # rs232 embedded terminal emulator
-                    python35Packages.youtube-dl # download media from media sites
-                    speedtest-cli # use speedtest.net to test internet bandwidth 
-                    geoipWithDatabase # geolocate IPs
-                    iperf # test internet performance
+                    keybase # social cryptography
+                    keepass # password manager that works cross platform 
+                    kpcli   # cli for keepass
                     # Archive Management
-                    zip 
-                    unzip 
-                    # peazip # doesn't exist!
-                    # System Management 
-                    kde5.konsole 
-                    kde4.ksystemlog # try this for visual system log analysis 
-                    lnav # ncurses log viewer, no direct support for journalctl (but we can pipe and send syslog)
-                    goaccess # web log analyzer, consider something that centralises log analysis later on 
-                    smem # better than ps for memory reporting 
-                    htop # better than top 
-                    conky # local system monitoring 
-                    proot # user space chroot 
-                    synergy # share a mouse between multiple computers 
-                    ncdu # file disk analyser
-                    # Shell Utilities 
+                    zip      # zip
+                    unzip    # extract zip
+                    gzip     # gz
+                    bzip2    # bz
+                    lzma     # xz
+                    # peazip # anything and GUI
+                    # System Management & Monitoring
+                    kde4.ksystemlog          # gui log viewer
+                    lnav                     # ncurses log viewer
+                    goaccess                 # web log analyzer
+                    smem                     # memory monitoring
+                    numactl                  # numa management
+                    ncdu                     # filesystem usage
+                    htop                     # process monitoring 
+                    atop                     # process resource monitoring
+                    iftop                    # network monitoring per-host
+                    iptraf                   # network monitoring per-interface
+                    iotop                    # filesystem io monitoring
+                    conky                    # gui system monitoring 
+                    python35packages.glances # terminal system monitoring
+                    # Network 
+                    putty                       # alternative SSH implementation
+                    wget                        # for downloading web pages
+                    httpie                      # for interacting with APIs
+                    aria                        # for downloading large files and bittorrent
+                    mailutils                   # command line emailing (not mutt) 
+                    bind                        # dns
+                    rsync                       # file transfer 
+                    aria                        # download management including bittorrent
+                    wireshark                   # packet analysis analysis
+                    nmap                        # network scanner including nping packet generator
+                    ncat                        # replaces netcat and socat
+                    socat                       # socat for obscure protocols (rs232 and tun) 
+                    hans                        # ipv4 over icmp (bypass firewall) 
+                    iodine                      # ipv4 over dns (bypass firewall) 
+                    udptunnel                   # tcp/ip over udp (bypass firewall) 
+                    httptunnel                  # tcp/ip over http (bypass firewall) 
+                    pwnnat                      # ip through NAT (bypass NAT) 
+                    caddy                       # simple http server 
+                    ngrok                       # simple reverse tunnel 
+                    picocom                     # rs232 embedded terminal emulator
+                    python35Packages.youtube-dl # download media from media sites
+                    speedtest-cli               # use speedtest.net to test internet bandwidth 
+                    geoipWithDatabase           # geolocate IPs
+                    iperf                       # test internet performance 
+                    # Terminal and Shell Utilities 
+                    kde5.konsole
                     tree 
                     parallel 
                     asciinema 
@@ -97,19 +108,27 @@
                     rmlint 
                     pv 
                     cv 
+                    proot # user space chroot 
+                    lsof  # like fuser and netstat
+                    # File & Folder Exploration
+                    kde5.dolphin 
+                    kde5.dolphin-plugins 
+                    kde5.ffmpegthumbs 
+                    kde5.kdegraphics-thumbnailers 
                     # Math 
-                    bc # for simple math calculations
-                    R # for simple stats calculations
+                    bc            # console math
+                    qalculate-gtk # gui calculator
+                    sage          # math IDE
+                    R             # statistics
                     # Development 
-                    nix-prefetch-scripts 
-                    nix-repl 
-                    emacs 
-                    vim 
-                    sage 
-                    tmux 
-                    vagrant 
-                    binutils 
-                    python35packages.httpbin # check if this works, it can be a local mock HTTP server! 
+                    nix-prefetch-scripts     # fetch scripts for nix expressions
+                    nix-repl                 # nix and nixos repl
+                    emacs                    # gui text editor
+                    vim                      # console text editor
+                    tmux                     # terminal multiplexer
+                    vagrant                  # virtual machine automation
+                    binutils                 # manipulating binaries
+                    python35packages.httpbin # mock HTTP server
                     # gdb  # use shell.nix instead  
                     # lldb # use shell.nix instead 
                     # rr # use shell.nix instead 
@@ -119,8 +138,8 @@
                     graphviz 
                     # Chat 
                     weechat 
-                    # Calculator 
-                    qalculate-gtk 
+                    skype 
+                    slack 
                     # X
                     xorg.xwininfo # information on the display windows
                     xorg.xdpyinfo # information on the display devices
@@ -147,14 +166,10 @@
                     gqrx # GUI SDR receiver
                     # Gaming 
                     steam 
-                    # File & Folder Exploration
-                    kde5.dolphin 
-                    kde5.dolphin-plugins 
-                    kde5.ffmpegthumbs 
-                    kde5.kdegraphics-thumbnailers 
-                    # File Synchronisation
+                    # External Storage
                     dropbox 
                     dropbox-cli 
+                    awscli 
                 ];
             };
         };
