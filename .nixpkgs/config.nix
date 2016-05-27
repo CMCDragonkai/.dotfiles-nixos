@@ -35,13 +35,15 @@
                     firefox 
                     chromium 
                     # Data Science 
-                    sqlite-interactive  # personal database
-                    sqlite3_analyzer    # analysers statistics about sqlite databases
-                    jq                  # command line json querying
-                    goPackages.json2csv # json to csv
-                    gnuplot             # command line plotting
-                    sc-im               # console spreadsheet
-                    # csvkit            # csv transformation
+                    sqlite-interactive      # personal database
+                    sqlite3_analyzer        # analysers statistics about sqlite databases
+                    jq                      # command line json querying
+                    goPackages.json2csv     # json to csv
+                    gnuplot                 # command line plotting
+                    sc-im                   # console spreadsheet
+                    python35Packages.csvkit # csv transformation
+                    xidel                   # parsing html, JSON and APIs on command line
+                    go-pup                  # parsing html on command line
                     # Productivity and Documents and Office Applications 
                     zathura      # document viewer
                     libreoffice  # office suite
@@ -115,6 +117,13 @@
                     kde5.dolphin-plugins 
                     kde5.ffmpegthumbs 
                     kde5.kdegraphics-thumbnailers 
+                    # Desktop Configuration
+                    xdg_utils 
+                    xdg-users-dirs
+                    # Network Attached Storage
+                    nfs-utils # filesystem shares between Unix computers 
+                    sambaFull # interoperate with SMB/CIFS (Microsoft Windows) 
+                    netatalk # interoperate with AFP (Apple Macintosh)
                     # Math 
                     bc            # console math
                     qalculate-gtk # gui calculator
@@ -144,22 +153,25 @@
                     xorg.xwininfo # information on the display windows
                     xorg.xdpyinfo # information on the display devices
                     xdotool # for X server automation
+                    xclip # for copy paste
                     # Pulseaudio 
                     ponymix # CLI control (probably better than pactl, not as powerful as pacmd)
                     pavucontrol # GUI control
                     # Windows Management
                     hsetroot # to set background wallpaper
                     # Media 
+                    beets # music tagger and organiser
                     feh # image viewer
-                    imagemagick # used by feh for SVG viewing
+                    imagemagick # used by feh for SVG viewing, and image processing
+                    graphicsmagick # swiss army knife for image processing 
                     vlc # standard media player
                     mplayer # a more fleixble media player, also has mencoder
                     pavucontrol # pulseaudio GUI control 
-                    graphicsmagick # swiss army knife for image processing 
                     ffmpeg # swiss army knife for video processing
                     sox # swiss army knife for sound processing
                     v4l_utils # utilities for interacting with video capture 
-                    mediainfo # better than ffprobe
+                    mediainfo # for acquiring video and audio metadata
+                    perlPackages.ImageExifTool # for acquiring image metadata
                     dcraw # process RAW images
                     # Radio 
                     gnuradio-with-packages # software defined radio 

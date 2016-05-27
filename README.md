@@ -1054,6 +1054,18 @@ http://superuser.com/questions/324128/two-commands-to-move-files-to-trash-whats-
 
 Would be good to create an alias depending on what's installed, and an adapter to Powershell.
 
+Actually Dolphin has already created its own trash folder. I'm not sure if this is a Dolphin creation or something different. It's located inside `~/.local/share/Trash`. It's not just a directory containing trash, but it's also 2 directories of `files` and `info`. The `info` keeps track of the trash metadata, such as being able to restore from trash.
+
+I'm not sure how to integrate that into the command line.
+
+By default on KDE, a command line helper is `ktrash`, while on Gnome it's `gvfs-trash`.
+
+However I guess both can be trumped by `trash-cli` which is independent but does use the same trash location.
+
+This also means ever user has its own trash.
+
+Also plugged in USB drives will have a hidden folder for trash too.
+
 ---
 
 Try out Cyberduck on Windows, specifically https://duck.sh/ or Dolphin network filesystem or Ranger/Total Commander. I need some sort of file browser (preferably command line and GUI) that can transparently access local and remote filesystems over multiple protocols. So not only SFTP, SCP, FTP, FTPS, but also things like S3, Backblaze, Azure would be great. Support mounting on the filesystem, so other programs can also utilise it.
@@ -1166,3 +1178,179 @@ Vim currently keeps the focus on the original buffer. And instead I would sugges
 > A buffer is the in-memory text of a file.
 > A window is a viewport on a buffer.
 > A tab page is a collection of windows.
+
+---
+
+Moving processes between terminal emulators, screens, shells... etc. And also changing their redirection parameters (such as after suspending and backgrounding), this is useful for actual process management.
+
+* http://monkeypatch.me/blog/move-a-running-process-to-a-new-screen-shell.html
+* https://github.com/nelhage/reptyr
+* http://stackoverflow.com/questions/1323956/how-to-redirect-output-of-an-already-running-process
+* https://github.com/jerome-pouiller/reredirect/
+
+---
+
+When reinstalling old versions of Windows, the update system will most likely fail to work. Instead of using the automatic updates. It's recommended to use https://catalog.update.microsoft.com/ which can only be accessed by Internet Explorer 6 or higher. Visiting it will ask you to install an extension, you can then proceed to use this site to download any update you need.
+
+There are "rollup" updates that will install many updates that have been released for a certain time period for a given Windows version.
+
+These rollups should be released near the end of the mainstream support listed here: http://windows.microsoft.com/en-au/windows/lifecycle
+
+It's however still kind of complicated, as it seems Microsoft no longer cares about old operating system versions. For example, here is one person's journey reinstalling Windows 7 and attempting to bring it to the latest version: https://www.thurrott.com/windows/67305/convenience-rollup-makes-big-difference-windows-7-updating-still-broken
+
+It's just much easier to use free Windows 10 upgrade directly. Burn it onto a CD or deploy it onto a USB drive, and install that instead. Make sure you first installed your old version of Windows, and activated it.
+
+---
+
+On Windows, we shall be using 2 independent package manaegrs.
+
+1. Cygwin
+2. Chocolatey
+
+The reason why I don't want to get Chocolatey to install Cygwin, is because I need to modify Cygwin's installation directory. And Chocolatey is sometimes slow on the installation.
+
+Prefer `.portable` applications on Chocolatey. But for everything else, download through Chocolatey, and when you need to uninstall, first uninstall from the Control Panel, and then uninstall from Chocolatey.
+
+Apps that installed as `*.install` should be updated through their own routines. Don't bother trying to update using Chocolatey.
+
+Only `*.portable` applications can be updated properly.
+
+```
+get-packageprovider -name chocolatey
+```
+
+---
+
+Installing Windows 7 -> 10. 
+
+* Install Windows 7
+* Install Shuttle Drivers (to acquire Network Adapter Driver)
+* Activate Windows 7 (Go to Computer Properties)
+* Install Windows 10 (from USB) (do not install upgrades)
+* Replace Windows 7 with Windows 10
+* Install NVIDIA drivers and DVD Writer Drivers
+
+Windows 7 updates no longer work, so we need to change to Windows 10.
+
+---
+
+The Cygwin setup and Chocolatey-install.ps1 are both content addressed and version controlled. This means Chocolatey-install.ps1 is currently fixed to 0.9.9.12. While the Cygwin setup is fixed to 2.8.73. When I want to update the versions, I'll put in new content addressed dependencies into the 2 areas.
+
+---
+
+Using OneGet/PackageManagement instead of Chocolatey directly:
+
+* https://github.com/OneGet/oneget/wiki/Provider-Requests
+* https://blogs.technet.microsoft.com/packagemanagement/2015/05/05/10-things-about-oneget-that-are-completely-different-than-you-think/
+* https://github.com/OneGet/oneget/issues/182
+* http://superuser.com/questions/976697/understand-difference-between-oneget-and-chocolatey-and-get-started-using-onege
+* https://technet.microsoft.com/en-us/library/dn890711.aspx
+
+Also use `Update-Help -Force` on Administrator to download all the help files in Powershell commands using `-?`.
+
+---
+
+Power monitoring:
+
+https://github.com/fenrus75/powertop
+http://upower.freedesktop.org/
+https://github.com/Spirals-Team/powerapi
+
+Which one should we use?
+
+---
+
+Figure out these:
+
+* https://www.freedesktop.org/wiki/Software/xdg-utils/
+* https://freedesktop.org/wiki/Software/xdg-user-dirs/
+
+---
+
+Windows Sharing Settings are pretty messed up. There are permissions to share which is of course separate from permissions in Cygwin.
+
+---
+
+Package Management has finally arrived on Windows 10!
+
+```
+> Get-Command -Module PackageManagement
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Cmdlet          Find-Package                                       1.0.0.1    PackageManagement
+Cmdlet          Find-PackageProvider                               1.0.0.1    PackageManagement
+Cmdlet          Get-Package                                        1.0.0.1    PackageManagement
+Cmdlet          Get-PackageProvider                                1.0.0.1    PackageManagement
+Cmdlet          Get-PackageSource                                  1.0.0.1    PackageManagement
+Cmdlet          Import-PackageProvider                             1.0.0.1    PackageManagement
+Cmdlet          Install-Package                                    1.0.0.1    PackageManagement
+Cmdlet          Install-PackageProvider                            1.0.0.1    PackageManagement
+Cmdlet          Register-PackageSource                             1.0.0.1    PackageManagement
+Cmdlet          Save-Package                                       1.0.0.1    PackageManagement
+Cmdlet          Set-PackageSource                                  1.0.0.1    PackageManagement
+Cmdlet          Uninstall-Package                                  1.0.0.1    PackageManagement
+Cmdlet          Unregister-PackageSource                           1.0.0.1    PackageManagement
+
+```
+
+It used be called OneGet, but its official name is the PackageManagement
+
+We can install a module called Carbon.
+
+Using
+
+```
+Update-Help -Force
+Import-Module PackageManagement
+Install-PackageProvider –Name 'chocolatey' -Force
+Install-Package -Name 'carbon' -RequiredVersion '2.2.0' -ProviderName 'chocolatey' -Force
+```
+
+The Carbon module will not always be loaded into our system.
+
+---
+
+Windows Homegroups AKA CIFS/SMB, you can view currently shared folders using:
+
+```
+net view \\polyhack-surf1
+```
+
+It only shows top level folders, not subsequent folders.
+
+---
+
+Recommend autocreating shortcuts for chrome apps that you use.
+
+All you need is the relevant target as set below.
+You need the path to Chrome executable.
+Chrome needs to be on the PATH.
+In PowerShell you can do `Get-Command chrome | Select-Object -ExpandProperty Source` or `(Get-Command chrome).Source`. There's a problem... though. Because now I'm installing through the Chocolatey Provider, I'm not getting the BinRoot setup automatically. And many packages are installed through some custom installer which again doesn't put it into the BinRoot anyway. This means we cannot expect to know where things are being installed through the provider. The Get-Package only tells us where the package was installed from OneGet's perspective, not where exactly the package is. This is STUPID!
+
+So we need to find out a way to get the file path to the executable. I guess we can assume where it is going to be, and hard code it for now.
+
+```
+Target: "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --app=https://app.fullcontact.com/
+Start In: "C:\Program Files (x86)\Google\Chrome\Application"
+```
+
+Also another problem is that the icon isn't setup properly.
+
+Icon for Full Contact:
+
+```
+%USERPROFILE%\AppData\Local\Google\Chrome\User Data\Default\Web Applications\app.fullcontact.com\https_80\FullContact.ico
+```
+
+Yea, so Chrome only downloads the icon when we tell it to setup an application.
+
+What we can do is save the ICO files in this directory. These ICO files are generated from the Website FAVICON.
+
+While we could curl the website and parse out the HTML for the favicon.ico. It turns out that this is quite complex. Overall I can just save the favicon.ico files that I need for my Chrome applications. Oh well..
+
+---
+
+Instead of editing the stuff directly inside Powershell, use the `windows_registry.reg`.
+
+Then from powershell, just call the windows_registry.reg like `/s .\windows_registry.reg` or something like that to set the settings.

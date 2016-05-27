@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+; Removing the NTFS compression arrow icons
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
+"179"="empty.ico,0"
+
+; Removing NTFS compression arrow icons
+[HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
+"179"="empty.ico,0"
