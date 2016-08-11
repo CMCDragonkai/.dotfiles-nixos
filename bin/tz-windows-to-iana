@@ -1,0 +1,189 @@
+#!/usr/bin/env bash
+
+if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
+    
+    cat<<EOF
+tz-windows-to-iana - Convert Windows timezone CLDR to IANA Identifiers.
+                     You can acquire Windows timezone CLDR by using the CMD tool \`tzutil\`.
+                     There are 2 protocols for identifying timezones.
+                     There is the IANA timezone database: https://en.wikipedia.org/wiki/Tz_database
+                     There is the Unicode Common Locale Data Repository: http://cldr.unicode.org/
+                     This just utilises some databases to map Unicode CLDR to IANA timezones.
+                     The mapping isn't completely bidirectional. But we make a best choice possible.
+                     We used data from https://github.com/nodatime/nodatime/blob/master/data/cldr/ 
+                     and https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+                     Timezone information changes over time, so this data can require updating.
+
+Usage: 
+    tz-windows-to-iana ["unicode-cldr"]
+    tz-windows-to-iana -h | --help
+
+Options:
+    -h --help    Show this help text.
+EOF
+
+    exit 0
+
+fi
+
+declare -A windows_to_iana
+
+windows_to_iana["(UTC-12:00) International Date Line West"]="Etc/GMT+12"
+windows_to_iana["(UTC-11:00) Coordinated Universal Time-11"]="Etc/GMT+11"
+windows_to_iana["(UTC-10:00) Hawaii"]="Pacific/Honolulu"
+windows_to_iana["(UTC-09:30) Marquesas Islands"]="Pacific/Marquesas"
+windows_to_iana["(UTC-09:00) Alaska"]="America/Anchorage"
+windows_to_iana["(UTC-09:00) Co-ordinated Universal Time-09"]="Etc/GMT+9"
+windows_to_iana["(UTC-08:00) Baja California"]="America/Tijuana"
+windows_to_iana["(UTC-08:00) Co-ordinated Universal Time-08"]="Etc/GMT+8"
+windows_to_iana["(UTC-08:00) Pacific Time (US & Canada)"]="America/Los_Angeles"
+windows_to_iana["(UTC-07:00) Arizona"]="America/Phoenix"
+windows_to_iana["(UTC-07:00) Chihuahua, La Paz, Mazatlan"]="America/Chihuahua"
+windows_to_iana["(UTC-07:00) Mountain Time (US & Canada)"]="America/Denver"
+windows_to_iana["(UTC-06:00) Central America"]="America/Guatemala"
+windows_to_iana["(UTC-06:00) Central Time (US & Canada)"]="America/Chicago"
+windows_to_iana["(UTC-06:00) Easter Island"]="Pacific/Easter"
+windows_to_iana["(UTC-06:00) Guadalajara, Mexico City, Monterrey"]="America/Mexico_City"
+windows_to_iana["(UTC-06:00) Saskatchewan"]="America/Regina"
+windows_to_iana["(UTC-05:00) Bogota, Lima, Quito, Rio Branco"]="America/Bogota"
+windows_to_iana["(UTC-05:00) Chetumal"]="America/Cancun"
+windows_to_iana["(UTC-05:00) Eastern Time (US & Canada)"]="America/New_York"
+windows_to_iana["(UTC-05:00) Haiti"]="America/Port-au-Prince"
+windows_to_iana["(UTC-05:00) Havana"]="America/Havana"
+windows_to_iana["(UTC-05:00) Indiana (East)"]="America/Indianapolis"
+windows_to_iana["(UTC-04:00) Asuncion"]="America/Asuncion"
+windows_to_iana["(UTC-04:00) Atlantic Time (Canada)"]="America/Halifax"
+windows_to_iana["(UTC-04:00) Caracas"]="America/Caracas"
+windows_to_iana["(UTC-04:00) Cuiaba"]="America/Cuiaba"
+windows_to_iana["(UTC-04:00) Georgetown, La Paz, Manaus, San Juan"]="America/La_Paz"
+windows_to_iana["(UTC-04:00) Santiago"]="America/Santiago"
+windows_to_iana["(UTC-04:00) Turks and Caicos"]="America/Grand_Turk"
+windows_to_iana["(UTC-03:30) Newfoundland"]="America/St_Johns"
+windows_to_iana["(UTC-03:00) Araguaina"]="America/Araguaina"
+windows_to_iana["(UTC-03:00) Brasilia"]="America/Sao_Paulo"
+windows_to_iana["(UTC-03:00) Cayenne, Fortaleza"]="America/Cayenne"
+windows_to_iana["(UTC-03:00) City of Buenos Aires"]="America/Buenos_Aires"
+windows_to_iana["(UTC-03:00) Greenland"]="America/Godthab"
+windows_to_iana["(UTC-03:00) Montevideo"]="America/Montevideo"
+windows_to_iana["(UTC-03:00) Saint Pierre and Miquelon"]="America/Miquelon"
+windows_to_iana["(UTC-03:00) Salvador"]="America/Bahia"
+windows_to_iana["(UTC-02:00) Co-ordinated Universal Time-02"]="Etc/GMT+2"
+windows_to_iana["(UTC-01:00) Azores"]="Atlantic/Azores"
+windows_to_iana["(UTC-01:00) Cabo Verde Is."]="Atlantic/Cape_Verde"
+windows_to_iana["(UTC) Co-ordinated Universal Time"]="Etc/GMT"
+windows_to_iana["(UTC+00:00) Casablanca"]="Africa/Casablanca"
+windows_to_iana["(UTC+00:00) Dublin, Edinburgh, Lisbon, London"]="Europe/London"
+windows_to_iana["(UTC+00:00) Monrovia, Reykjavik"]="Atlantic/Reykjavik"
+windows_to_iana["(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"]="Europe/Berlin"
+windows_to_iana["(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague"]="Europe/Budapest"
+windows_to_iana["(UTC+01:00) Brussels, Copenhagen, Madrid, Paris"]="Europe/Paris"
+windows_to_iana["(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb"]="Europe/Warsaw"
+windows_to_iana["(UTC+01:00) West Central Africa"]="Africa/Lagos"
+windows_to_iana["(UTC+01:00) Windhoek"]="Africa/Windhoek"
+windows_to_iana["(UTC+02:00) Amman"]="Asia/Amman"
+windows_to_iana["(UTC+02:00) Athens, Bucharest"]="Europe/Bucharest"
+windows_to_iana["(UTC+02:00) Beirut"]="Asia/Beirut"
+windows_to_iana["(UTC+02:00) Cairo"]="Africa/Cairo"
+windows_to_iana["(UTC+02:00) Chisinau"]="Europe/Chisinau"
+windows_to_iana["(UTC+02:00) Damascus"]="Asia/Damascus"
+windows_to_iana["(UTC+02:00) Gaza, Hebron"]="Asia/Gaza"
+windows_to_iana["(UTC+02:00) Harare, Pretoria"]="Africa/Johannesburg"
+windows_to_iana["(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius"]="Europe/Kiev"
+windows_to_iana["(UTC+02:00) Istanbul"]="Europe/Istanbul"
+windows_to_iana["(UTC+02:00) Jerusalem"]="Asia/Jerusalem"
+windows_to_iana["(UTC+02:00) Kaliningrad"]="Europe/Kaliningrad"
+windows_to_iana["(UTC+02:00) Tripoli"]="Africa/Tripoli"
+windows_to_iana["(UTC+03:00) Baghdad"]="Asia/Baghdad"
+windows_to_iana["(UTC+03:00) Kuwait, Riyadh"]="Asia/Riyadh"
+windows_to_iana["(UTC+03:00) Minsk"]="Europe/Minsk"
+windows_to_iana["(UTC+03:00) Moscow, St. Petersburg, Volgograd"]="Europe/Moscow"
+windows_to_iana["(UTC+03:00) Nairobi"]="Africa/Nairobi"
+windows_to_iana["(UTC+03:30) Tehran"]="Asia/Tehran"
+windows_to_iana["(UTC+04:00) Abu Dhabi, Muscat"]="Asia/Dubai"
+windows_to_iana["(UTC+04:00) Astrakhan, Ulyanovsk"]="Europe/Samara"
+windows_to_iana["(UTC+04:00) Baku"]="Asia/Baku"
+windows_to_iana["(UTC+04:00) Izhevsk, Samara"]="Europe/Samara"
+windows_to_iana["(UTC+04:00) Port Louis"]="Indian/Mauritius"
+windows_to_iana["(UTC+04:00) Tbilisi"]="Asia/Tbilisi"
+windows_to_iana["(UTC+04:00) Yerevan"]="Asia/Yerevan"
+windows_to_iana["(UTC+04:30) Kabul"]="Asia/Kabul"
+windows_to_iana["(UTC+05:00) Ashgabat, Tashkent"]="Asia/Tashkent"
+windows_to_iana["(UTC+05:00) Ekaterinburg"]="Asia/Yekaterinburg"
+windows_to_iana["(UTC+05:00) Islamabad, Karachi"]="Asia/Karachi"
+windows_to_iana["(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi"]="Asia/Calcutta"
+windows_to_iana["(UTC+05:30) Sri Jayawardenepura"]="Asia/Colombo"
+windows_to_iana["(UTC+05:45) Kathmandu"]="Asia/Kathmandu"
+windows_to_iana["(UTC+06:00) Astana"]="Asia/Almaty"
+windows_to_iana["(UTC+06:00) Dhaka"]="Asia/Dhaka"
+windows_to_iana["(UTC+06:00) Novosibirsk"]="Asia/Novosibirsk"
+windows_to_iana["(UTC+06:30) Yangon (Rangoon)"]="Asia/Rangoon"
+windows_to_iana["(UTC+07:00) Bangkok, Hanoi, Jakarta"]="Asia/Bangkok"
+windows_to_iana["(UTC+07:00) Barnaul, Gorno-Altaysk"]="Asia/Krasnoyarsk"
+windows_to_iana["(UTC+07:00) Hovd"]="Asia/Hovd"
+windows_to_iana["(UTC+07:00) Krasnoyarsk"]="Asia/Krasnoyarsk"
+windows_to_iana["(UTC+07:00) Tomsk"]="Asia/Tomsk"
+windows_to_iana["(UTC+08:00) Beijing, Chongqing, Hong Kong SAR, Urumqi"]="Asia/Shanghai"
+windows_to_iana["(UTC+08:00) Irkutsk"]="Asia/Irkutsk"
+windows_to_iana["(UTC+08:00) Kuala Lumpur, Singapore"]="Asia/Singapore"
+windows_to_iana["(UTC+08:00) Perth"]="Australia/Perth"
+windows_to_iana["(UTC+08:00) Taipei"]="Asia/Taipei"
+windows_to_iana["(UTC+08:00) Ulaanbaatar"]="Asia/Ulaanbaatar"
+windows_to_iana["(UTC+08:30) Pyongyang"]="Asia/Pyongyang"
+windows_to_iana["(UTC+08:45) Eucla"]="Australia/Eucla"
+windows_to_iana["(UTC+09:00) Chita"]="Asia/Chita"
+windows_to_iana["(UTC+09:00) Osaka, Sapporo, Tokyo"]="Asia/Tokyo"
+windows_to_iana["(UTC+09:00) Seoul"]="Asia/Seoul"
+windows_to_iana["(UTC+09:00) Yakutsk"]="Asia/Yakutsk"
+windows_to_iana["(UTC+09:30) Adelaide"]="Australia/Adelaide"
+windows_to_iana["(UTC+09:30) Darwin"]="Australia/Darwin"
+windows_to_iana["(UTC+10:00) Brisbane"]="Australia/Brisbane"
+windows_to_iana["(UTC+10:00) Canberra, Melbourne, Sydney"]="Australia/Sydney"
+windows_to_iana["(UTC+10:00) Guam, Port Moresby"]="Pacific/Port_Moresby"
+windows_to_iana["(UTC+10:00) Hobart"]="Australia/Hobart"
+windows_to_iana["(UTC+10:00) Vladivostok"]="Asia/Vladivostok"
+windows_to_iana["(UTC+10:30) Lord Howe Island"]="Australia/Lord_Howe"
+windows_to_iana["(UTC+11:00) Bougainville Island"]="Pacific/Bougainville"
+windows_to_iana["(UTC+11:00) Chokurdakh"]="Asia/Srednekolymsk"
+windows_to_iana["(UTC+11:00) Magadan"]="Asia/Magadan"
+windows_to_iana["(UTC+11:00) Norfolk Island"]="Pacific/Norfolk"
+windows_to_iana["(UTC+11:00) Sakhalin"]="Asia/Sakhalin"
+windows_to_iana["(UTC+11:00) Solomon Is., New Caledonia"]="Pacific/Guadalcanal"
+windows_to_iana["(UTC+12:00) Anadyr, Petropavlovsk-Kamchatsky"]="Asia/Kamchatka"
+windows_to_iana["(UTC+12:00) Auckland, Wellington"]="Pacific/Auckland"
+windows_to_iana["(UTC+12:00) Co-ordinated Universal Time+12"]="Etc/GMT-12"
+windows_to_iana["(UTC+12:00) Fiji"]="Pacific/Fiji"
+windows_to_iana["(UTC+12:45) Chatham Islands"]="Pacific/Chatham"
+windows_to_iana["(UTC+13:00) Nuku'alofa"]="Pacific/Tongatapu"
+windows_to_iana["(UTC+13:00) Samoa"]="Pacific/Apia"
+windows_to_iana["(UTC+14:00) Kiritimati Island"]="Pacific/Kiritimati"
+
+trimlr () {
+    
+    # Determine if 'extglob' is currently on.
+    local extglobWasOff=1
+    shopt extglob >/dev/null && extglobWasOff=0 
+    
+    # Turn 'extglob' on, if currently turned off.
+    (( extglobWasOff )) && shopt -s extglob 
+    
+    # Trim leading and trailing whitespace
+    local var=$1
+    var=${var##+([[:space:]])}
+    var=${var%%+([[:space:]])}
+
+    # If 'extglob' was off before, turn it back off.
+    (( extglobWasOff )) && shopt -u extglob 
+    
+    printf "%s" "$var"
+
+}
+
+windows_cldr="$(trimlr "$1")"
+
+result="${windows_to_iana["$windows_cldr"]}"
+
+if [ -z "$result" ]; then
+    exit 1
+else
+    printf "%s\n" "$result"
+fi
