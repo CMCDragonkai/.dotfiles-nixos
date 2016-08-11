@@ -1,0 +1,54 @@
+# If any file is text, convert to LF
+* text=auto
+
+# Archives
+*.gz binary
+*.xz binary
+*.bz2 binary
+*.tar binary
+*.phar binary
+*.zip binary
+*.rar binary
+*.7z binary
+
+# Images
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.png binary
+*.ico binary
+*.tif binary
+*.tiff binary
+*.bmp binary
+*.webp binary
+
+# Executables
+*.exe binary
+*.so binary
+*.o binary
+*.dll binary
+
+# Documents
+*.pdf binary
+*.PDF binary
+*.doc binary
+*.DOC binary
+*.docx binary
+
+# Font files
+*.eot binary
+*.ttf binary
+*.woff binary
+
+# Multimedia
+*.swf binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.ogg binary
+*.flv binary
+*.fla binary
+*.psd binary
+*.eps binary
+*.ai binary
+*.flac binary
