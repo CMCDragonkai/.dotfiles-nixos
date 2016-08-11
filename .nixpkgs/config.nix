@@ -198,7 +198,6 @@
     # iced tea is an opensource JRE
 
     firefox = {
-        enableGeckoMediaPlayer = true;
         enableAdobeFlash = true;
         icedtea = true;
         enableAdobeReader = true;
