@@ -1,7 +1,10 @@
-# .bashrc is sourced for interactive shells which can be login
+# This .bashrc is sourced only on interactive sessions.
+# This script sets up interactive utilities.
 
-# if not running interactively, don't do anything
+# If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
+
+# Global options
 
 # huponexit - makes sure child processes are sent SIGHUP when login interactive bash exits
 # xpg_echo - align with ZSH behaviour
@@ -31,9 +34,13 @@ HISTFILESIZE=10000
 HISTCONTROL='ignoreboth'
 HISTTIMEFORMAT='%F %T '
 
-#include ".includes/shell_functions.conf"
+# Bash Environment Variables
 
-# bash functions
+TTY="$(tty)"
+
+# Bash Functions
+
+include(shell_functions.conf)
 
 $ '
 repeat - Repeatedly run a command. Basically the same as ZSH \`repeat\`.
@@ -48,16 +55,11 @@ repeat () {
 
 }
 
-# bash environment
+# Bash Aliases
 
-TTY="$(tty)"
+include(shell_aliases.conf)
 
-#include ".includes/shell_aliases.conf"
-
-# bash aliases
-#...
-
-# bash prompt
+# Bash Prompt
 
 PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u ➜ \h  ➜ \[\e[33m\]\w\[\e[0m\]\n \$ '
 PS2='$> ';

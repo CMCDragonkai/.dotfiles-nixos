@@ -1,12 +1,7 @@
-# .zshrc is sourced only on interactive sessions
-# this script sets up interactive utilities
+# This .zshrc is sourced only on interactive sessions.
+# This script sets up interactive utilities.
 
-# The following lines were added by compinstall
-zstyle :compinstall filename '/home/cmcdragonkai/.zshrc'
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
+# Global options
 
 HISTFILE='~/.zsh_history'
 HISTSIZE=10000
@@ -26,54 +21,50 @@ setopt \
     monitor \
     notify
 
-# auto_continue
-# check_jobs
-# hup
-# monitor 
-# notify
-# are all required to make sure jobs are killed when exited
-
 unsetopt beep
 
-bindkey -v
+# Completions
 
-#include ".includes/shell_functions.conf"
+zstyle :compinstall filename "${HOME}/.zshrc"
+autoload -Uz compinit
+compinit
 
-## ZSH Functions
-## ...
-
-## ZSH Environment
+# ZSH Environment Variables
 
 TTY="$(tty)"
 
-## NixOS should already define this
-#ifdef NIXOS
-HELPDIR="${HELPDIR:-/run/current-system/sw/share/zsh/${ZSH_VERSION}/help}"
-#endif
+ifelse(PH_SYSTEM, NIXOS, 
+    HELPDIR="${HELPDIR:-/run/current-system/sw/share/zsh/${ZSH_VERSION}/help}"
+, PH_SYSTEM, CYGWIN, 
+    HELPDIR="${HELPDIR:-/usr/share/zsh/${ZSH_VERSION}/help}"
+)
 
-#ifdef CYGWIN
-HELPDIR="${HELPDIR:-/usr/share/zsh/${ZSH_VERSION}/help}"
-#endif
+# ZSH Functions
 
-#include ".includes/shell_aliases.conf"
+include(shell_functions.conf.m4)
 
-# zsh environment
+# ZSH Aliases
 
-## Sets up `help` command similar to bash.
+include(shell_aliases.conf.m4)
+
+# Sets up `help` command similar to bash.
 unalias run-help 2>/dev/null
 autoload run-help
 alias help='run-help'
 
-# zsh prompt
+# ZSH Prompt
 
 PROMPT='%{$fg[green]%}%n%{$reset_color%} ➜ %{$fg[yellow]%}%m%{$reset_color%} ➜ %{$fg_bold[green]%}${PWD/#$HOME/~}%{$reset_color%} 
  ೱ ' 
 
 RPROMPT='%{$fg[cyan]%}%D %*' 
 
-# zsh keys
+# ZSH keys
 
-# Allows one to use Ctrl + Z to switch between foreground and background.
+# Enable Vi key bindings
+bindkey -v
+
+# Allows one to use Ctrl + Z to switch between foreground and background
 _ctrl-z () {
     if [[ $#BUFFER -eq 0 ]]; then
         BUFFER="fg"

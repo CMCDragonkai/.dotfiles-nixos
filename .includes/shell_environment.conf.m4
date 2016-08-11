@@ -1,6 +1,6 @@
 # Environment (for interactive and automated)
 
-#include "shell_environment_functions.conf"
+include(shell_environment_functions.conf.m4)
 
 export LANG="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
@@ -33,43 +33,43 @@ export INFOPATH="${HOME}/info:${INFOPATH}"
 # default umask setting
 umask 022
 
-#ifndef CYGWIN
+ifelse(PH_SYSTEM, CYGWIN,
 
-export TMP="/tmp"
-export TEMP="/tmp"
-export TMPDIR="/tmp"
+    # Acquire the Windows TEMP, and store it here before setting all temporaries to point to Cygwin temporary
+    export WINTMP="$TMP"
+    export TMP="/tmp"
+    export TEMP="/tmp"
+    export TMPDIR="/tmp"
 
-# linux X
-if [ -n "$DISPLAY" ]; then
+    # setting windows code page to UTF8
+    chcp 65001 >/dev/null
 
-    import_exec emacs && export EDITOR="emacs" VISUAL="emacs"
-    export BROWSER="$(import_exec firefox && echo "firefox" || { import_exec chromium && echo "chromium" || echo "$BROWSER"; })"
+    # if we're not in an SSH session, then the Windows GUI is available
+    if [ -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a -z "$SSH_CONNECTION" ] -a ; then
 
-fi
+        export BROWSER="$(import_exec firefox && echo "firefox" || { import_exec chrome && echo "chrome" || echo "$BROWSER"; })"
 
-#else
+    fi
 
-# Acquire the Windows TEMP, and store it here before setting all temporaries to point to Cygwin temporary
-export WINTMP="$TMP"
-export TMP="/tmp"
-export TEMP="/tmp"
-export TMPDIR="/tmp"
+    # cygwin X
+    if [ -n "$DISPLAY" ]; then
+        
+        # ...
 
-# setting windows code page to UTF8
-chcp 65001 >/dev/null
+    fi
 
-# if we're not in an SSH session, then the Windows GUI is available
-if [ -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a -z "$SSH_CONNECTION" ] -a ; then
+,
 
-    export BROWSER="$(import_exec firefox && echo "firefox" || { import_exec chrome && echo "chrome" || echo "$BROWSER"; })"
+    export TMP="/tmp"
+    export TEMP="/tmp"
+    export TMPDIR="/tmp"
 
-fi
+    # linux X
+    if [ -n "$DISPLAY" ]; then
 
-# cygwin X
-if [ -n "$DISPLAY" ]; then
-    
-    # ...
+        import_exec emacs && export EDITOR="emacs" VISUAL="emacs"
+        export BROWSER="$(import_exec firefox && echo "firefox" || { import_exec chromium && echo "chromium" || echo "$BROWSER"; })"
 
-fi
+    fi
 
-#endif
+)

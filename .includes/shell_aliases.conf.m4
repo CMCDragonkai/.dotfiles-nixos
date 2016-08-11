@@ -43,32 +43,31 @@ alias archive-web='wget --mirror --convert-links --adjust-extension'
 # calendar
 alias cal='cal --monday --color'
 
-#ifndef CYGWIN
-
-alias open='xdg-open' # Open things like your desktop environment would 
-alias copy-clip='xclip -selection c'
-alias paste-clib='xclip -selection clipboard -o'
-# scale-down scales down large images
-# auto-zoom scales up small images
-# keep-zoom-vp is required if there very different sized images, we don't want the window jumping up and down
-# magick-timeout allows using imagemagick to lookup SVG files
-alias feh='feh \
-           --scale-down \
-           --auto-zoom \
-           --borderless \
-           --image-bg black \
-           --draw-filename \
-           --draw-tinted \
-           --keep-zoom-vp \
-           --magick-timeout 1'
-
-#else
-
-alias open='cygstart' # Open things like Windows would 
-alias powershell='powershell -NoLogo –ExecutionPolicy Bypass'
-alias copy-clip='putclip'
-alias paste-clip='getclip'
-alias winln='winln --verbose'
-
-#endif
+ifelse(PH_SYSTEM, CYGWIN, 
     
+    # aliases for Cygwin
+    alias open='cygstart' # Open things like Windows would 
+    alias powershell='powershell -NoLogo –ExecutionPolicy Bypass'
+    alias copy-clip='putclip'
+    alias paste-clip='getclip'
+    alias winln='winln --verbose'
+
+,
+    # aliases for non-Cygwin
+    alias open='xdg-open' # Open things like your desktop environment would 
+    alias copy-clip='xclip -selection c'
+    alias paste-clib='xclip -selection clipboard -o'
+    # scale-down scales down large images
+    # auto-zoom scales up small images
+    # keep-zoom-vp is required if there very different sized images, we don't want the window jumping up and down
+    # magick-timeout allows using imagemagick to lookup SVG files
+    alias feh='feh \
+               --scale-down \
+               --auto-zoom \
+               --borderless \
+               --image-bg black \
+               --draw-filename \
+               --draw-tinted \
+               --keep-zoom-vp \
+               --magick-timeout 1'
+)

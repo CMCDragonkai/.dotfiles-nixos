@@ -86,9 +86,3 @@ date-ord () {
     date --date="$year-01-01 + $days days - 1 day" $@
 
 }
-
-#ifndef CYGWIN
-
-#else
-
-#endif
