@@ -4,6 +4,7 @@ PSReadline,1.2,PSGallery
 ConEmu,16.5.22.0,chocolatey
 keepass,2.33,chocolatey
 procexp,*,chocolatey
+procmon,*,chocolatey
 ccleaner,*,chocolatey
 RapidEE,*,chocolatey
 sysinternals,*,chocolatey
@@ -21,11 +22,14 @@ opera,*,chocolatey
 
 # gaming
 steam,*,chocolatey
+origin,*,chocolatey
+battle.net,*,chocolatey
+retroarch,*,chocolatey
 
 # filesystem
 dropbox,*,chocolatey
 cyberduck,*,chocolatey
-peazip.portable,6.02,chocolatey
+peazip.portable,6.03,chocolatey
 
 # development
 jdk8,8.0.92,chocolatey

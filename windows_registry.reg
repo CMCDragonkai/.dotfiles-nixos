@@ -1,9 +1,29 @@
 Windows Registry Editor Version 5.00
 
-; Removing the NTFS compression arrow icons
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
-"179"="empty.ico,0"
+; Works for Windows 10 version 1607!
 
-; Removing NTFS compression arrow icons
+; When running this, does it replace, or just append...? I'm not sure here. I need to check that this should append, instead of replacing the entire key.
+
+; Removing NTFS compression arrow icons (requires transparent.ico to be loaded into %SYSTEMROOT%/system32/transparent.ico)
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
+"179"="transparent.ico"
+
+; Removing NTFS compression arrow icons from 32 bit applications
 [HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
-"179"="empty.ico,0"
+"179"="transparent.ico"
+
+; Removing Videos folder from Frequent Places ("This PC")
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag]
+"ThisPCPolicy"="Hide"
+
+; Disabling Cortana the personal assistant
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Search]
+"AllowCortana"=dword:00000000
+
+; Removing suggested application adverts from start menu
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"SystemPaneSuggestionsEnabled"=dword:00000000
+
+; Use higher transparency for task bar
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"UseOLEDTaskbarTransparency"=dword:00000001
