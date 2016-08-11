@@ -48,14 +48,14 @@ repeat () {
 
 }
 
+# bash environment
+
+TTY="$(tty)"
+
 #include ".includes/shell_aliases.conf"
 
 # bash aliases
 #...
-
-# bash environment
-
-TTY="$(tty)"
 
 # bash prompt
 
