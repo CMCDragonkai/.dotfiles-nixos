@@ -1,5 +1,6 @@
 [core]
-    autocrlf = false
+    autocrlf = input 
+    safecrlf = true 
     eol = lf
     excludesfile = ~/.gitignore_global
 [user]
