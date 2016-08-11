@@ -130,6 +130,8 @@
                     sage          # math IDE
                     R             # statistics
                     # Development 
+                    man-pages                # linux manpages (sections: 1, 4, 5, 6, 7, 8)
+                    man-pages.docdev         # linux manpages (sections: 2, 3)
                     nix-prefetch-scripts     # fetch scripts for nix expressions
                     nix-repl                 # nix and nixos repl
                     emacs                    # gui text editor
@@ -138,6 +140,7 @@
                     vagrant                  # virtual machine automation
                     binutils                 # manipulating binaries
                     python35packages.httpbin # mock HTTP server
+                    binwalk-full             # binary extraction and manipulation
                     # gdb  # use shell.nix instead  
                     # lldb # use shell.nix instead 
                     # rr # use shell.nix instead 
