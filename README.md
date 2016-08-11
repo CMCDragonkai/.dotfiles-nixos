@@ -145,6 +145,10 @@ Performance
 
 To improve performance we need to use a macro language and produce a `.build` folder. This way we can generate the correct .zshrc and other rc files and eliminate sections from the language when we don't need it. It's simple conditional macro language. I wonder if there's a bash version around, so we don't need to use m4 or anything.
 
+Currently using the macro language bashpp. But I reckon I should probably use just the CPP or m4.
+
+I'm going to assume there's macro constants that is: `CYGWIN` or `NIXOS`. These should be independent of each other, as in one cannot set `CYGWIN` and `NIXOS` at the same time. Or else bad things can happen! If neither `CYGWIN` nor `NIXOS` is set, then bad things can happen.
+
 Windows
 -------
 
@@ -246,6 +250,18 @@ Also note that there are 3 temporary directories for Cygwin use:
 
 We need a differentiation between the temporary directories due to different expectations of permissions between Cygwin (Linux) and Windows. So when clearing the temporary directory, feel free to clear `/tmp` and also the user local temporary. System temporary should be carefully cleaned. In order to allow access to the windows tmp, in Cygwin, the `WINTMP` is set to the original user local temporary. System temporary is not directly accessible, but that's alright.
 
+It's possible to unify the Windows User Local temporary with Cygwin temporary (since Cygwin is installed user-specific here), then this is probably the right way:
+
+https://cygwin.com/cygwin-ug-net/using.html#usertemp
+
+Basically we put this `none /tmp usertemp binary,posix=0 0 0` into `/etc/fstab`.
+
+We basically mount the Windows temporary as the `/tmp`. Now they are unified, and we only have 2 separate temporaries we have to worry about. The system temp and the user temp.
+
+Note that the above requires a reboot, as fstab simply persists the mounting options. To actually mount it on a live system, we would need to use `mount -a` command. Which mounts everything inside `/etc/fstab`.
+
+It also appears acl is by default for Cygwin.
+
 ---
 
 `%ALLUSERSPROFILE%` - Points to a common user profile directory (that is viewable by all users on the OS). We should create a `%ALLUSERSPROFILE%/bin` directory to add PATH symlinks to all Windows executables that we install into here (this makes sense as installed Windows executables are usually installed on the entire system, not for a particular user). This refers to any natively installed Windows executable, or any extracted Windows executable. This does not refer to Chocolatey's installed executables, which has its own bin path at `%ALLUSERSPROFILE%/chocolatey/bin`. Note that Chocolatey will not necessarily install bin links for every package. Look for packages with a suffix of `.portable`. Do not use `.install` unless you verify its behaviour. Note that `.install` refers to natively installed packages, and these packages cannot be auto-uninstalled, without first uninstalling it natively, then uninstalling it from Chocolatey. Packages without a suffix are usually meta-packages. But make sure to review them before installing.
@@ -253,7 +269,7 @@ We need a differentiation between the temporary directories due to different exp
 This means we need specifically, PATH needs to be set up in this way:
 
 * Default Windows Paths (on Windows): `C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\`
-* Prepend Chocolatey path (on Windows): `%ALLUSERSPROFILE%\chocolatey\bin`
+* Prepend Chocolatey path (on Windows): `%ALLUSERSPROFILE%\chocolatey\bin` (use `$env:ChocolateyPath\bin` instead)
 * Prepend custom Windows path (on Windows): `%ALLUSERSPROFILE%\bin`
 * Prepend Cygwin paths (on Cygwin): `/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin`
 * Prepend Home paths (on Cygwin): `~/bin`
@@ -265,6 +281,10 @@ Only one problem, Powershell scripts in `~/bin` won't be available to Powershell
 As for `CMD`, this is fixed via `~/.cmd_profile`. Which you need to hook into any call via `cmd /K %USERPROFILE%/.cmd_profile`.
 
 You must RAID your Windows Disks to get a single disk. Don't spread out the disks. This prevents problems with Chocolatey not allowing one to install into different drive letters.
+
+Wait Package Manager or OneGet using chocolatey provider isn't installing Chocolatey packages into `%ALLUSERSPROFILE%/chocolatey/bin`. Instead it's putting into `C:\Chocolatey\bin`. And of course only for portable packages. Also `%ALLUSERSPROFILE%` is just `C:\ProgramData`. So I think while official chocolatey puts stuff into `%ALLUSERSPROFILE%/chocolatey`. I think a better idea is to utilise the Chocolatey install path `$env:ChocolateyPath`.
+
+We can however still use this: `%ALLUSERSPROFILE%\bin` as our own personal bin path for Windows executables that are installed globally. Note that we would be setting this up ourselves (setting it manually for like steam and stuff). Generally this will be done for installer packages.
 
 ---
 
@@ -406,11 +426,13 @@ Based on installation of tzcode package in Cygwin. Note that Linux the package i
 
 Run:
 tzselect
-Or automatically acquire from tzutil, but then you need to map it.
+Or automatically acquire from Windows tzutil, but then you need to map it.
 
+```
 echo "$timezone" > /etc/timezone
 ln --symbolic --force /usr/share/zoneinfo/"$timezone" /etc/localtime
 ln --symbolic --force /usr/share/zoneinfo /etc/zoneinfo
+```
 
 Then automatically set `TZDIR=/usr/share/zoneinfo` and `TZ="$timezone"`.
 
@@ -418,13 +440,34 @@ OH so this explains it: http://man7.org/linux/man-pages/man3/tzset.3.html
 
 Windows:
 
-tzutils /g -> shows current timezone id
-tzutils /l -> list of timezones
-tzutilz /s -> sets the timezone
+```
+tzutil /g -> shows current timezone id
+tzutil /l -> list of timezones
+tzutil /s -> sets the timezone
+```
 
 The timeone ids for Windows is not the same as the POSIX timezone ids. 
 
 Why did nobody just use goddamn UTC+X or UTC-X, and be done with it.. instead, everybody has different codes.
+
+```
+TZ="$(tzutil /l \
+| grep --before-context=1 "$(tzutil /g)" \
+| head --lines=1 \
+| sed --regexp-extended 's/\((.*)\).*/\1/' \
+| tr --delete '-' \
+| tr '+' '-')"
+```
+
+INSTEAD use this:
+
+```
+TZ="$(tz-windows-to-iana "$(tzutil /l | grep --before-context=1 "$(tzutil /g)" | head --lines=1)")"
+```
+
+This needs to run as a macro and set at the very beginning.
+
+Then the correct value should be placed into the `PH_TZ` macro variable. And put into `TZ=...`.
 
 ---
 
@@ -1248,6 +1291,8 @@ Using OneGet/PackageManagement instead of Chocolatey directly:
 
 Also use `Update-Help -Force` on Administrator to download all the help files in Powershell commands using `-?`.
 
+Ok so basically, One-Get (or PackageManagement) replaces Chocolatey. This is because it's a meta-package manager. It's meant to on-top of existing package management protocols. This should mean that one-get can also replace cygwin for installing packages. But for now, Cygwin is installed independently (you have the setup.exe encoded into this repository), and then you use PackageManagement to install the rest of the applications. We already have this done inside `windows_packages.txt`.
+
 ---
 
 Power monitoring:
@@ -1354,3 +1399,71 @@ While we could curl the website and parse out the HTML for the favicon.ico. It t
 Instead of editing the stuff directly inside Powershell, use the `windows_registry.reg`.
 
 Then from powershell, just call the windows_registry.reg like `/s .\windows_registry.reg` or something like that to set the settings.
+
+---
+
+Use `:tabe` to open a new tab. Then use `:qa` to close everything, thus saving the entire session.
+
+http://wincdemu.sysprogs.org/
+
+---
+
+The cygserver is the Cygwin daemon. It starts up every process as part of its own process tree!
+
+---
+
+I added a new folder called `data` this folder will hold data necessary for installation. Right now there's a transparent.ico. It needs to be put into as `%SYSTEMROOT%/system32/transparent.ico`. Make sure to unblock it. In the future replace with dynamic generation using imagemagick or graphicsmagick?
+
+Note that we may require unblocking the file just in case. Use the powershell command:
+
+```
+Unblock-File -Path "$env:SYSTEMROOT/system32/transparent.ico"
+```
+
+Then the regedit will remove the NTFS compression arrow icons from the filesystem.
+
+---
+
+Remote Desktop
+
+http://ishanaba.com/blog/2012/11/graphical-remote-desktop-protocols-rfbvncrdp-and-x11-2/
+
+Ok so there are 3 main protocols:
+
+* VNC (a.k.a. RFP)
+* RDP
+* X11 (a.k.a. XDMCP (well not exactly, the XDMCP is a protocol built on top of X11))
+
+VNC works pretty much everywhere.
+RDP is a proprietary protocol, but there are open implementations of it.
+XDMCP was designed solely for X.
+
+There are clients for every OS (Win,Linux,Mac) that support 1 or all of the protocols. 2 clients that support most things are "Remmina" and "Guacamole". Xephyr is a cool client for XDMCP only.
+
+Linux:
+
+* RDP - rdesktop, remmina, guacamole
+* XDMCP - xnest, xephyr
+* VNC - vncviewer 
+
+Servers are more specific to the OS. Generally Linux has serving solutions for VNC, RDP and XDMCP. For Windows, generally there are VNC and RDP servers.
+
+Linux:
+
+* RDP - xrdp
+* XDMCP - xorg
+* VNC - tigervnc, x11vnc... etc
+
+Windows:
+
+* RDP - native
+* XDMCP - Cygwin X
+* VNC - lots
+
+Generally RDP works best when remoting to Windows. While XDMCP works best when remoting to Linux.
+
+The choice of the protocol depends on what the remote server supports, and your bandwidth/latency tradeoff.
+
+VNC works best for high bandwidth.
+RDP works best for low latency.
+XDMCP
