@@ -34,21 +34,35 @@ setopt \
 # are all required to make sure jobs are killed when exited
 
 unsetopt beep
+
 bindkey -v
 
 #include ".includes/shell_functions.conf"
 
-# zsh functions
-# ...
+## ZSH Functions
+## ...
+
+## ZSH Environment
+
+TTY="$(tty)"
+
+## NixOS should already define this
+#ifdef NIXOS
+HELPDIR="${HELPDIR:-/run/current-system/sw/share/zsh/${ZSH_VERSION}/help}"
+#endif
+
+#ifdef CYGWIN
+HELPDIR="${HELPDIR:-/usr/share/zsh/${ZSH_VERSION}/help}"
+#endif
 
 #include ".includes/shell_aliases.conf"
 
-# zsh aliases
-# ...
-
 # zsh environment
 
-TTY="$(tty)" # this may already be set up by ZSH by default 
+## Sets up `help` command similar to bash.
+unalias run-help 2>/dev/null
+autoload run-help
+alias help='run-help'
 
 # zsh prompt
 
