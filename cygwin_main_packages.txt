@@ -10,6 +10,8 @@ cygutils-extra
 cygutils
 pkg-config
 tzcode
+gpg
+pass
 
 # network
 openssh
@@ -44,6 +46,10 @@ patch
 cmake
 mingw64-x86_64-gcc-g++
 php
+
+# geodetics
+proj
+gdal
 
 # media
 GraphicsMagick

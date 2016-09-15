@@ -1,7 +1,7 @@
 # Functions (for interactive only)
 
 : '
-killjobs - Run kill on all jobs in a Bash or ZSH shell, allowing one to optionally pass in kill parameters
+killjobs - Run kill on all jobs in a Bash or ZSH shell, allowing one to optionally pass in kill parameters.
 
 Usage: killjobs [zsh-kill-options | bash-kill-options]
 
@@ -22,7 +22,7 @@ killjobs () {
 }
 
 : '
-umask-calc - Calculate target permissions given octal umask and octal source permissions
+umask-calc - Calculate target permissions given octal umask and octal source permissions.
 
 Usage: umask-calc "$(umask)" 777
 '
@@ -46,7 +46,16 @@ umask-calc () {
 }
 
 : '
-ssh-private-ppk - Convert an openssh private key to a putty ppk
+ssh-private-public - Convert an openssh private key to an openssh public key.
+
+Usage: ssh-private-public <path-to-key> <path-to-key.pub>
+'
+ssh-private-public () {
+    ssh-keygen -f "$1" -y >"$2"
+}
+
+: '
+ssh-private-ppk - Convert an openssh private key to a putty ppk.
 
 Usage: ssh-private-ppk <path-to-key> <path-to-key.ppk>
 '
@@ -55,7 +64,7 @@ ssh-private-ppk () {
 }
 
 : '
-ssh-ppk-public - Convert a putty ppk to an openssh public key
+ssh-ppk-public - Convert a putty ppk to an openssh public key.
 
 Usage: ssh-ppk-public <path-to-key.ppk> <path-to-key.pub>
 '
@@ -64,7 +73,7 @@ ssh-ppk-public () {
 }
 
 : '
-ssh-ppk-private - Convert a putty ppk to an openssh private key
+ssh-ppk-private - Convert a putty ppk to an openssh private key.
 
 Usage: ssh-ppk-private <path-to-key.ppk> <path-to-key>
 '
@@ -73,7 +82,7 @@ ssh-ppk-private () {
 }
 
 : '
-date-ord - Convert from ordinal day of the year to another date format
+date-ord - Convert from ordinal day of the year to another date format.
 
 Usage: date-ord <year> <day-of-the-year> [date-flags]...
 '
@@ -85,4 +94,41 @@ date-ord () {
     shift
     date --date="$year-01-01 + $days days - 1 day" $@
 
+}
+
+: '
+self-signed-cert - Create a self-signed SSL/TLS certificate for 100 years using RSA 2048.
+                   If you don't pass in a day length, it will create a certificate of 100 years.
+
+Usage: self-signed-cert <path-to-key.key> <path-to-cert.pem> [length-in-days]
+
+Try to create one for localhost as your FQDN.
+'
+self-signed-cert () {
+    if [ -n "$3" ]; then
+        case "$3" in
+            ''|*[!0-9]*) return 1 ;;
+            *)           openssl req -x509 -nodes -days "$3" -newkey rsa:2048 -keyout "$1" -out "$2" ;;
+        esac
+    else
+        openssl req -x509 -nodes -days 36500 -newkey rsa:2048 -keyout "$1" -out "$2"
+    fi
+}
+
+: '
+find-in-files - Find files based on string matching the contents
+
+Usage: find-in-files <path> <string> [-f | --filenames]
+
+Options:
+    -f --filenames    Show only file names instead of file names with matching content.
+'
+find-in-files () {
+
+    if [ "$3" == "-f" -o "$3" == '--filenames' ]; then
+        find "$1" -type f -print0 | xargs -0 grep --files-with-matches "$2"
+    else
+        find "$1" -type f -print0 | xargs -0 grep "$2"
+    fi
+    
 }

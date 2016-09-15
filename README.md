@@ -1364,6 +1364,47 @@ net view \\polyhack-surf1
 
 It only shows top level folders, not subsequent folders.
 
+Within Windows, there are 2 main ways of sharing files over a network.
+
+The first is the Windows Workgroup concept, which was later called "Homegroup". It encompasses several features including the standard file sharing protocol called CIFS/SMB, but also things like printer sharing and internet connection sharing. (Note that CIFS/SMB can run on top of the NetBIOS protocol, which is a networking protocol that allows computers using the old NetBIOS API to run on TCP/IP.)
+
+The second is the Windows Domain, which unlike Windows Workgroup/Homegroup, is a client-server architecture. There is one computer designated the domain controller, and this domain controller is what controls authentication into the sharing network.
+
+The client-server architecture scales better than the p2p system in this case (which isn't always necessarily true with things like supernodes in P2P networks, which can have hybrid p2p2 and client-server), and allows more stringent security controls, and is one of the main features of Active Directory. https://en.wikipedia.org/wiki/Windows_domain One of the key features of Windows Domaisn is roaming user profiles, which allows transfer of the user profile for any user to any computer over LAN or WAN.
+
+> Workgroups are considered difficult to manage beyond a dozen clients, and lack single sign on, scalability, resilience/disaster recovery functionality, and many security features. Windows Workgroups are more suitable for small or home-office networks.
+> https://en.wikipedia.org/wiki/Windows_domain
+
+Another key feature of Windows domains is the application of group policy, which allows sysadmins to configure many Windows computers part of the same domain.
+
+Opensource Alternatives of Windows Active Directory include:
+
+* ApacheDS + Apache Directory (runs on Linux/Windows/Mac)
+* OpenLDAP (runs on Linux/Windows/Mac)
+* Univention Corporate Server (runs on Linux)
+* Samba + Winbind (runs on Linux) (Samba can act as a domain controller as well!)
+
+Basically the above implement the domain controller daemons, and can perform single sign on for a domain of Windows computers.
+
+It appears that Active Directory is the main official configuration management tool of Windows computers.
+
+> A server running Active Directory Domain Services (AD DS) is called a domain controller. It authenticates and authorizes all users and computers in a Windows domain type network—assigning and enforcing security policies for all computers and installing or updating software. For example, when a user logs into a computer that is part of a Windows domain, Active Directory checks the submitted password and determines whether the user is a system administrator or normal user.
+
+But unlike many configuration management systems, it expects Windows are used live and interactively, which means many features are designed to deal with user profile migration, and user based security. Whereas Linux CM systems are usually designed around installing and deploying software onto machines that are not intended to be used interactively by users directly. Linux servers are meant to be cattle not special snowflakes.
+
+Active Directory is included in most Windows Server editions.
+
+This also means active directory is often ran as a daemon, not just as single batch transformational program. Also it's very complicated, as is used to share services and tightly integrate into Windows technology stacks. I guess this is used by enterprises that are deeply into Windows technologies.
+
+
+
+
+
+
+
+
+
+
 ---
 
 Recommend autocreating shortcuts for chrome apps that you use.
@@ -1467,3 +1508,7 @@ The choice of the protocol depends on what the remote server supports, and your 
 VNC works best for high bandwidth.
 RDP works best for low latency.
 XDMCP
+
+---
+
+Explanation of Windows User Profile Folders and Files: https://en.wikipedia.org/wiki/User_profiles_in_Microsoft_Windows

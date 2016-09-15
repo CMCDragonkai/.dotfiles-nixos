@@ -51,8 +51,7 @@
                     synergy      # control multiple computers
                     # Secrets 
                     keybase # social cryptography
-                    keepass # password manager that works cross platform 
-                    kpcli   # cli for keepass
+                    pass    # password manager 
                     # Archive Management
                     zip      # zip
                     unzip    # extract zip
@@ -99,6 +98,8 @@
                     speedtest-cli               # use speedtest.net to test internet bandwidth 
                     geoipWithDatabase           # geolocate IPs
                     iperf                       # test internet performance 
+                    # Security
+                    kde5.polkit-kde-agent       # needed for pkexec
                     # Terminal and Shell Utilities 
                     kde5.konsole
                     tree 
@@ -119,7 +120,7 @@
                     kde5.kdegraphics-thumbnailers 
                     # Desktop Configuration
                     xdg_utils 
-                    xdg-users-dirs
+                    xdg-users-dirs 
                     # Network Attached Storage
                     nfs-utils # filesystem shares between Unix computers 
                     sambaFull # interoperate with SMB/CIFS (Microsoft Windows) 
@@ -132,6 +133,7 @@
                     # Development 
                     man-pages                # linux manpages (sections: 1, 4, 5, 6, 7, 8)
                     man-pages.docdev         # linux manpages (sections: 2, 3)
+                    libcap_manpages          # libcap manpages
                     nix-prefetch-scripts     # fetch scripts for nix expressions
                     nix-repl                 # nix and nixos repl
                     emacs                    # gui text editor

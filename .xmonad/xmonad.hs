@@ -70,3 +70,5 @@ matrixMouse (XConfig { modMask }) =
 
 main = do 
     xmonad $ matrixConfig
+
+-- we still need to launch polkit agent upon launching XMonad

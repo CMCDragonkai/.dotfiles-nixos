@@ -1,4 +1,10 @@
 # Aliases (for interactive only)
+# Remember to use the `\` prefix to avoid alias recursion.
+
+# enable alias expansion when using sudo
+alias sudo='sudo '
+# explicit PATH propagation for sudo
+alias sudop='\sudo PATH="$PATH" '
 
 # file manipulation
 alias cp='cp --interactive --verbose'
@@ -24,10 +30,13 @@ alias la='ls --classify --color=auto --human-readable -l --almost-all --group-di
 alias bc='bc -l'
 
 # ssh related
-alias ssh="ssh -F <(cat ~/.ssh/config ~/.ssh/hosts)"
-alias scp="scp -F <(cat ~/.ssh/config ~/.ssh/hosts) -C"
-alias sftp="sftp -F <(cat ~/.ssh/config ~/.ssh/hosts) -C"
-alias sshf="ssh -F <(cat ~/.ssh/config ~/.ssh/hosts) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+alias ssh='ssh -F <(cat ~/.ssh/config ~/.ssh/hosts)'
+alias scp='scp -F <(cat ~/.ssh/config ~/.ssh/hosts) -C'
+alias sftp='sftp -F <(cat ~/.ssh/config ~/.ssh/hosts) -C'
+alias sshf='\ssh -F <(cat ~/.ssh/config ~/.ssh/hosts) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+alias sshv='\ssh -F <(vagrant ssh-config) default'
+alias scpv='\scp -F <(vagrant ssh-config) default -C'
+alias sftpv='\sftp -F <(vagrant ssh-config) -C'
 
 # networked dead drops (remember to use GPG encryption)
 alias droptext='nc termbin.com 9999'
