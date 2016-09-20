@@ -36,11 +36,13 @@ HISTTIMEFORMAT='%F %T '
 
 # Bash Environment Variables
 
+source "${HOME}/.bash_env"
+
 TTY="$(tty)"
 
 # Bash Functions
 
-include(shell_functions.conf)
+include(shell_functions.conf.m4)
 
 $ '
 repeat - Repeatedly run a command. Basically the same as ZSH \`repeat\`.
@@ -57,7 +59,7 @@ repeat () {
 
 # Bash Aliases
 
-include(shell_aliases.conf)
+include(shell_aliases.conf.m4)
 
 # Bash Prompt
 

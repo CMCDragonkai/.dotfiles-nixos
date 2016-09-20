@@ -262,6 +262,8 @@ Note that the above requires a reboot, as fstab simply persists the mounting opt
 
 It also appears acl is by default for Cygwin.
 
+This feature will need to be added into the `install.ps1`, I've used it and it works, but I haven't added it yet.
+
 ---
 
 `%ALLUSERSPROFILE%` - Points to a common user profile directory (that is viewable by all users on the OS). We should create a `%ALLUSERSPROFILE%/bin` directory to add PATH symlinks to all Windows executables that we install into here (this makes sense as installed Windows executables are usually installed on the entire system, not for a particular user). This refers to any natively installed Windows executable, or any extracted Windows executable. This does not refer to Chocolatey's installed executables, which has its own bin path at `%ALLUSERSPROFILE%/chocolatey/bin`. Note that Chocolatey will not necessarily install bin links for every package. Look for packages with a suffix of `.portable`. Do not use `.install` unless you verify its behaviour. Note that `.install` refers to natively installed packages, and these packages cannot be auto-uninstalled, without first uninstalling it natively, then uninstalling it from Chocolatey. Packages without a suffix are usually meta-packages. But make sure to review them before installing.
@@ -1512,3 +1514,42 @@ XDMCP
 ---
 
 Explanation of Windows User Profile Folders and Files: https://en.wikipedia.org/wiki/User_profiles_in_Microsoft_Windows
+
+---
+
+We need to convert all `import_exec` into compile time macros. Otherwise it will be slow checking for the presence of executables every time. Especially since the environment variables is now sourced on every invocation including automated scripts.
+
+We can use `sysval`:
+
+```
+syscmd(`false')
+=>
+ifelse(sysval, 0, zero, non-zero)
+=>non-zero
+syscmd(`true')
+=>
+sysval
+=>0
+```
+
+Or perhaps:
+
+```
+define(`vice', `esyscmd(grep Vice ../COPYING)')
+=>
+vice
+=>  Ty Coon, President of Vice
+=>
+```
+
+The `esyscmd` could be applied like:
+
+```
+ifelse(esyscmd(`hash "firefox" 2>/dev/null && { printf "1"; } || { printf "0"; }'), 1, 
+FIREFOX IS INSTALLED
+, 
+FIREFOX IS NOT INSTALLED
+)
+```
+
+The nesting of my expressions will be more difficult I guess.

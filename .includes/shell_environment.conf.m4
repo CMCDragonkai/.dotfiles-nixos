@@ -2,18 +2,21 @@
 
 include(shell_environment_functions.conf.m4)
 
-export LANG="en_US.UTF-8"
-export LANGUAGE="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
+# language and locale settings
+export LANG='en_US.UTF-8'
+export LANGUAGE='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
 
-# these are to be replaced by the macros
+# these are to be replaced by the macros on deployment
 export TZ="$TZ"
 export TZDIR="$TZDIR"
 
+# configuration variables for general commands
+export BASH_ENV="${HOME}/.bash_env"
 export TERM="${TERM:-xterm-256color}"
-export PAGER="less --RAW-CONTROL-CHARS --LONG-PROMPT --HILITE-UNREAD --status-column --chop-long-lines --shift .3"
-export EDITOR="$(import_exec vim && echo "vim" || echo "nano")"
-export BROWSER="$(import_exec w3m && echo "w3m" || { import_exec curl && echo "curl" || echo "wget"; })"
+export PAGER='less --RAW-CONTROL-CHARS --LONG-PROMPT --HILITE-UNREAD --status-column --chop-long-lines --shift .3'
+export EDITOR='vim'
+export BROWSER='w3m'
 
 # coloured man pages
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')       # enter blinking mode
@@ -35,11 +38,12 @@ umask 022
 
 ifelse(PH_SYSTEM, CYGWIN,
 
-    # Acquire the Windows TEMP, and store it here before setting all temporaries to point to Cygwin temporary
+    # Windows sets TMP, and we shall persist it as WINTMP
+    # Then we set all other temporary environment variables to /tmp
     export WINTMP="$TMP"
-    export TMP="/tmp"
-    export TEMP="/tmp"
-    export TMPDIR="/tmp"
+    export TMPDIR='/tmp'
+    export TMP='/tmp'
+    export TEMP='/tmp'
 
     # setting windows code page to UTF8
     chcp 65001 >/dev/null
@@ -60,15 +64,17 @@ ifelse(PH_SYSTEM, CYGWIN,
 
 ,
 
-    export TMP="/tmp"
-    export TEMP="/tmp"
-    export TMPDIR="/tmp"
+    # TMPDIR is the canonical UNIX environment variable
+    export TMPDIR="${TMPDIR:/tmp}"
+    export TMP="${TMPDIR:/tmp}"
+    export TEMP="${TMPDIR:/tmp}"
 
     # linux X
     if [ -n "$DISPLAY" ]; then
 
         import_exec emacs && export EDITOR="emacs" VISUAL="emacs"
         export BROWSER="$(import_exec firefox && echo "firefox" || { import_exec chromium && echo "chromium" || echo "$BROWSER"; })"
+        export SUDO_ASKPASS="${HOME}/bin/dpass"
 
     fi
 

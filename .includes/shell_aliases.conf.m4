@@ -1,10 +1,15 @@
 # Aliases (for interactive only)
 # Remember to use the `\` prefix to avoid alias recursion.
 
-# enable alias expansion when using sudo
+# enable alias expansion when using sudo or pkexec
 alias sudo='sudo '
+alias pkexec='pkexec '
+
 # explicit PATH propagation for sudo
 alias sudop='\sudo PATH="$PATH" '
+# pkexec is only useful for GUI applications, it makes sense to make this the default
+# unfortunately changing policykit's action for org.freedesktop.policykit.policy seems difficult
+alias pkexecp='\pkexec env PATH="$PATH" DISPLAY="$DISPLAY" XAUTHORITY="$XAUTHORITY" '
 
 # file manipulation
 alias cp='cp --interactive --verbose'

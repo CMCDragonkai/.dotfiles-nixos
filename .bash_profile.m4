@@ -1,10 +1,7 @@
-# This .bash_profile is sourced for login shells which can be interactive
-# It should be mostly setting up shell wide environment variables
+# This .bash_profile is sourced for login shells which can be interactive/non-interactive.
+# If this is read, then ~/.bashrc will not automatically be read.
+# This file will setup things related to initial logins.
 
-include(shell_environment.conf.m4)
-
-# Bash Environment
-
-export SHELL="bash"
-
-source "${HOME}/.bashrc"
+# if it is interactive, load ~/.bashrc, which will subsequently load ~/.bash_env
+# if it is not interactive, only load the ~/.bash_env
+[[ $- == *i* ]] && source "${HOME}/.bashrc" || source "${HOME}/.bash_env"

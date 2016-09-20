@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+# This command intended to be set in SUDO_ASKPASS environment variable.
+# It allows dmenu to be a graphical sudo agent.
+
+# The `-p "$1"` causes dmenu to substitute `$1` as the prompt text, 
+# this is what SUDO_ASKPASS must do.
+
+# Then we set the foreground and background colours.
+# We also set the foreground and background selected colours.
+# This intended to make sure the password cannot be seen.
+
+# The `<&-` will close STDIN, and dmenu will show an empty menu.
+
+# Once the user enters their password dmenu will output the resulting text.
+# Finally we will output a literal newline as sudo expects a terminating newline.
+
+dmenu -p "$1" -nf '#000000' -nb '#000000' -sf '#cccccc' -sb '#cccccc' <&- && printf '\n'

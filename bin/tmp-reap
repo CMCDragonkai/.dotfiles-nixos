@@ -5,35 +5,77 @@ if [[ "$@" == *-h* || "$@" == *--help* ]]; then
     cat<<EOF
 tmp-reap - Reap the temporary directories! Works on Windows as well!
            By default, the expiration is 7 days passed the last change time.
+           If flags are specified, only the specified TMPs will be reaped.
+           If no flags are specified, then only Linux TMP will be reaped.
 
 Usage: 
-    tmp-reap [expiration-duration-in-days-as-natural-numbers]
+    tmp-reap [-w | --windows] [-l | --linux] [expiration-duration-in-days-as-natural-numbers]
+    tmp-reap [-wu | --windows-user] [expiration-duration-in-days-as-natural-numbers]
+    tmp-reap [-ws | --windows-system] [expiration-duration-in-days-as-natural-numbers]
     tmp-reap -h | --help
 
 Options:
-    -h --help    Show this help text.
+    -l --linux              Reap the Linux TMP.
+    -w --windows            Reap the Windows system TMP and user TMP.
+    -wu --windows-user      Reap the Windows user TMP.
+    -ws --windows-system    Reap the Windows system TMP.
+    -h --help               Show this help text.
 EOF
 
     exit 0
 
 fi
 
+reap_linux=false
+reap_windows_user=false
+reap_windows_system=false
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -l|--linux)
+            reap_linux=true
+        ;;
+        -w|--windows)
+            reap_windows_user=true
+            reap_windows_system=true
+        ;;
+        -wu|--windows-user)
+            reap_windows_user=true
+        ;;
+        -ws|--windows-system)
+            reap_windows_system=true
+        ;;
+        *)
+            # finished flags, jump to positional arguments
+            break
+        ;;
+    esac
+    shift # shift past the key or value (in this case, it's all keys)
+done
+
+# if no flags, are passed, then by default reap the linux TMP
+if [ "$reap_linux" = false ] && [ "$reap_windows_user" = false ] && [ "$reap_windows_system" = false ]; then
+    reap_linux=true
+fi
+
 expiration="${${1}:-7}"
 
 tmp_dirs=()
 
-# dealing with Windows System TMP
-if [ -n "$SYSTEMROOT" -a -d "$SYSTEMROOT/Temp" ]; then
-    tmp_dirs+="$SYSTEMROOT/Temp"
+# dealing with unix TMP, TMPDIR is the most canonical variable, then TMP and TEMP, before defaulting on /tmp
+if [ "$reap_linux" = true ]; then
+    tmp_dirs+=("${${${TMPDIR:-$TMP}:-$TEMP}:-/tmp}")
 fi
 
 # dealing with Windows Local TMP
-if [ -n "$USERPROFILE" -a -d "$USERPROFILE/AppData/Local/Temp" ]; then
-    tmp_dirs+="$USERPROFILE/AppData/Local/Temp"
+if [ "$reap_windows_user" = true ] && [ -n "$USERPROFILE" ] && [ -d "$USERPROFILE/AppData/Local/Temp" ]; then
+    tmp_dirs+=("$USERPROFILE/AppData/Local/Temp")
 fi
 
-# dealing with unix TMP, TMPDIR is the most canonical variable, then TMP and TEMP, before defaulting on /tmp
-tmp_dirs+="${${${TMPDIR:-$TMP}:-$TEMP}:-/tmp}"
+# dealing with Windows System TMP
+if [ "$reap_windows_system" = true ] && [ -n "$SYSTEMROOT" ] && [ -d "$SYSTEMROOT/Temp" ]; then
+    tmp_dirs+=("$SYSTEMROOT/Temp")
+fi
 
 printf "Reaping these directories:\n"
 printf ">> %s\n" "${tmp_dirs[@]}"
