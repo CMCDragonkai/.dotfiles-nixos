@@ -116,7 +116,7 @@ self-signed-cert () {
 }
 
 : '
-find-in-files - Find files based on string matching the contents
+find-in-files - Find files based on string matching the contents.
 
 Usage: find-in-files <path> <string> [-f | --filenames]
 
@@ -131,4 +131,29 @@ find-in-files () {
         find "$1" -type f -print0 | xargs -0 grep "$2"
     fi
     
+}
+
+: '
+process-starttime - Get start time of a process using its PID.
+                    Time is returned as Unix time.
+                    You can also just use `ps -o lstart= --pid ...`.
+
+Usage: process_starttime <pid>
+'
+process_starttime () {
+
+    uptime=($(cat "/proc/uptime"))
+    process_statistics=($(cat "/proc/$1/stat")) || return 1
+    clock_hertz="$(getconf CLK_TCK)"
+
+    seconds_the_computer_is_up="${uptime[1]}"
+    jiffies_the_process_is_up="${process_statistics[22]}"
+    seconds_the_process_is_up="$(bc <<< "scale=3; $jiffies_the_process_is_up / $clock_hertz")"
+
+    now_seconds="$(date +%s)"
+
+    seconds_the_process_started=$((now_seconds - (seconds_the_computer_is_up - seconds_the_process_is_up)))
+    
+    printf "$seconds_the_process_started\n"
+
 }

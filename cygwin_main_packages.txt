@@ -45,7 +45,15 @@ diffutils
 patch
 cmake
 mingw64-x86_64-gcc-g++
+
+# php
 php
+
+# python
+python
+python-setuptools
+python3
+python3-setuptools
 
 # geodetics
 proj
@@ -59,3 +67,6 @@ libxml2
 libyaml
 libboost
 libboost-devel
+liblapack0
+liblapack-devel
+libopenblas

@@ -8,17 +8,21 @@ procmon,*,chocolatey
 ccleaner,*,chocolatey
 RapidEE,*,chocolatey
 sysinternals,*,chocolatey
+regshot,1.9.3,chocolateyget
 
 # network
 Firefox,*,chocolatey
 GoogleChrome,*,chocolatey
 qbittorrent,3.3.4,chocolatey
 winscp,5.7.7,chocolatey
-fiddler4,*,chocolatey
+npcap,*,chocolatey
 wireshark,*,chocolatey
+nmap,*,chocolatey
+fiddler4,*,chocolatey
 ngrok.portable,2.0,chocolatey
 namebench,1.3.1,chocolatey
 opera,*,chocolatey
+putty.portable,*,chocolatey
 
 # gaming
 steam,*,chocolatey
@@ -37,10 +41,13 @@ heidisql,9.3.0.4984,chocolatey
 virtualbox,5.0.16.105871,chocolatey
 vagrant,1.8.1,chocolatey
 sourcetree,1.9.1.1,chocolatey
+microsoft-build-tools,*,chocolatey
+# try the first one, then this one: visualstudio2015community,*,chocolatey
 
 # documents
 libreoffice,*,chocolatey
 adobereader,*,chocolatey
+adobereader-update,*,chocolateyget
 calibre,*,chocolatey
 evernote,*,chocolatey
 rufus.portable,*,chocolatey
@@ -75,4 +82,3 @@ nexusfont,*,chocolatey
 # netsetman
 # protege
 # manager
-# bullzippdfprinter

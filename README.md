@@ -1350,11 +1350,26 @@ Using
 ```
 Update-Help -Force
 Import-Module PackageManagement
-Install-PackageProvider –Name 'chocolatey' -Force
+Install-PackageProvider -Name 'chocolatey' -Force
 Install-Package -Name 'carbon' -RequiredVersion '2.2.0' -ProviderName 'chocolatey' -Force
 ```
 
 The Carbon module will not always be loaded into our system.
+
+The current `Chocolatey` provider has some serious bugs. It is just a prototype that isn't being developed anyhmore. There is a new Chocolatey provider developed here: https://github.com/chocolatey/chocolatey-oneget But it isn't finished, and it's not available for installation. A third chocolatey provider is here: https://github.com/jianyunt/ChocolateyGet and it is ready for installation, but isn't much used. It seems to be an alternative to the `Chocolatey` provider in case you meet some problems installing things.
+
+We can use it like this:
+
+```
+Install-PackageProvider -Name 'ChocolateyGet' -Force
+Import-PackageProvider -Name 'ChocolateyGet'
+```
+
+The last command may not be necessary:
+
+> As a side question, will there ever be Upgrade-Package or equivalent? Also if I install something like Firefox from Chocolatey, I can't exactly uninstall it from Chocolatey, I need to first uninstall it normally, then finally remove it from Chocolatey. Oneget has this same problem right?
+
+It appears that `ChocolateyGet` is superior to the current `Chocolatey` provider, and perhaps it is a stop-gap between getting to the final chocolatey provider at https://github.com/chocolatey/chocolatey-oneget.
 
 ---
 
@@ -1553,3 +1568,64 @@ FIREFOX IS NOT INSTALLED
 ```
 
 The nesting of my expressions will be more difficult I guess.
+
+---
+
+Windows Application Installers can automatically add firewall rules that allow their application to communicate. See: https://msdn.microsoft.com/en-us/library/windows/desktop/ee417690(v=vs.85).aspx
+
+This means things like Steam will automatically trigger invisible firewall changes when you install a game.
+
+In Windows 10: by default, all inbound connections are blocked, unless they are already solicited by an outbound connection, or that they are allowed with a specific firewall rule. At the same time, all outbound connections are allowed, unless they are specifically matched by an outbound firewall rule which blocks them.
+
+It is important to be declarative about the connections we want to allow.
+
+In this case, we want to allow ping, 55555 TCP & UDP (as our custom port), and 22 for SSH. And retain some ability to enable port 80 or whatever for random services we may want to provide.
+
+And HOLY SHIT Windows 10 has an embedded SSH server. It is automatically and silently activated when switching on developer mode. It is automatically bound to port 22. A firewall is automatically added which exposes port 22 to all networks (private, public and domain networks). This allows anybody to SSH into your computer (which goes into cmd), as long as they know your password. To see whether its running on your Windows 10, use `telnet localhost 22`. OMG.
+
+This needs to be shutdown immediately if you're using developer mode: https://noise.paulos.cz/post/windows10-14352-ssh-server/
+
+Firstly because its not configurable like OpenSSH. And secondly you'll probably want to use Cygwin's OpenSSH anyway. And binding to port 22 would fail because SSH Server Proxy is binding to it.
+
+We want to get powershell commands to make shut to close this rule. Shutdown the 2 services (Microsoft SSH Server for Windows), and also set Developer Mode on.
+
+See this for more information: https://noise.paulos.cz/post/windows10-14352-ssh-server/
+
+Note that this is not the SSH port found on Github: https://msdn.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development
+
+Wow so stupid.
+
+Find out how to disable it!
+
+For some reason 9089 is exposed on my surface. Why? It's caused by "VMware vCenter Converter Standalone - Agent". And it's allowing 9089 completely on everything. That's stupid. Anyway I disabled because why does vcenter need to accept 9089 on all interfaces, that's a huge security vulnerability.
+
+This is a good command to show vulnerable ports: `netsh firewall show state`. Basically anything that is fully open will be listed there.
+
+---
+
+The pip requirements.txt is only for Python, and only for Cygwin, Nixos systems are not meant to use those. Because execcutables would be installed via user profile nixpkgs, and development libraries would be using or nix-shell.
+
+```
+pip2 --user --requirements pip2_requirements.txt
+pip3 --user --requirements pip3_requirements.txt
+```
+
+The above will install the executables into `~/.local/bin`. The path has to be added to the environment when running in Cygwin.
+
+Executables should be part of pip3_requirements, and only libraries should be part of both. There's no need to have both a python3 and python 2 version of the requirements.
+
+This should only run at the very end.
+
+The finally installation scripts shouldn't be generated at the deplolyment site, instead they should be pregenerated and turned into a distribution. We could use something like automake on this. But nah, simple m4 should be all that's necessary.
+
+---
+
+Install Git Subtree. (For Cygwin).
+These are like post-installation hooks.
+Like raw installation without package managers.
+
+```
+wget "https://rawgit.com/git/git/v$(git --version | cut --delimiter=' ' --fields=3)/contrib/subtree/git-subtree.sh"
+install git-subtree.sh /usr/local/bin/git-subtree
+git subtree
+```

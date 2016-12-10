@@ -28,15 +28,13 @@ export LESS_TERMCAP_ue=$(printf '\e[0m')           # leave underline mode
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m') # enter underline mode
 export GROFF_NO_SGR=1
 
-# private bin, man and info paths, for software that isn't managed by the package manager
-export PATH="${HOME}/bin:${PATH}"
-export MANPATH="${HOME}/man:${MANPATH}"
-export INFOPATH="${HOME}/info:${INFOPATH}"
-
 # default umask setting
 umask 022
 
 ifelse(PH_SYSTEM, CYGWIN,
+
+    # Cygwin will use pip to install python executables
+    export PATH="${HOME}/.local/bin:${PATH}"
 
     # Windows sets TMP, and we shall persist it as WINTMP
     # Then we set all other temporary environment variables to /tmp
@@ -79,3 +77,8 @@ ifelse(PH_SYSTEM, CYGWIN,
     fi
 
 )
+
+# private bin, man and info paths, for software that isn't managed by the package manager
+export PATH="${HOME}/bin:${PATH}"
+export MANPATH="${HOME}/man:${MANPATH}"
+export INFOPATH="${HOME}/info:${INFOPATH}"

@@ -1,8 +1,12 @@
 Windows Registry Editor Version 5.00
 
-; Works for Windows 10 version 1607!
+; Verified for Windows 10 version 1607 (OS Build 14393.447)!
 
 ; When running this, does it replace, or just append...? I'm not sure here. I need to check that this should append, instead of replacing the entire key.
+
+; Disable UAC
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"EnableLUA"=dword:00000000
 
 ; Removing NTFS compression arrow icons (requires transparent.ico to be loaded into %SYSTEMROOT%/system32/transparent.ico)
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
@@ -27,3 +31,41 @@ Windows Registry Editor Version 5.00
 ; Use higher transparency for task bar
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
 "UseOLEDTaskbarTransparency"=dword:00000001
+
+; Activate developer mode in Windows 10
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock]
+"AllowAllTrustedApps"=dword:00000001
+"AllowDevelopmentWithoutDevLicense"=dword:00000001
+
+; Change the default folder view options
+; Show hidden files, folders and drives
+; Don't hide file extensions
+; Don't hide empty drives
+; Don't hide folder merge conflicts
+; Replace CMD with Powershell on the start menu
+; Display file size information in folder tips 
+; Do hide protected OS files
+; Remember opened explorer windows
+; Don't highlight files when compressed or encrypted
+; Enable checkboxes for selection
+; By default make folder explorer open to the PC
+; Show the open folder on the nav panel
+; Show all folders in nav panel
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"Hidden"=dword:00000001
+"HideFileExit"=dword:00000000
+"HideDrivesWithNoMedia"=dword:00000000
+"HideMergeConflicts"=dword:00000000 
+"DontUsePowerShellOnWinX"=dword:00000000
+"FolderContentsInfoTip"=dword:00000001
+"ShowSuperHidden"=dword:00000000
+"PersistBrowsers"=dword:00000001
+"ShowEncryptCompressedColor"=dword:00000000
+"AutoCheckSelect"=dword:00000001
+"LaunchTo"=dword:00000001
+"NavPaneExpandToCurrentFolder"=dword:00000001
+"NavPaneShowAllFolders"=dword:00000001
+
+; Always show full path on the title bar
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CabinetState]
+"FullPath"=dword:00000001
