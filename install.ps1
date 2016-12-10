@@ -84,9 +84,11 @@ function ScheduleRebootTask {
 
 # We need to first setup Windows before setting up Cygwin (requiring a reboot)
 # We need to make sure the reboot results in a powershell terminal still running (upon logon)
+# Switch to using Powershell Terminal Directly
 if ($Stage -eq 0) {
 
-    Write-Host "Before you started installation, you should switch on NTFS compression on your drive"
+    Write-Host "Before you continue the installation, you should switch on NTFS compression on your drive"
+    Read-Host "Press any Key to Continue"
 
     # Allow Powershell scripts to be executable
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
@@ -164,6 +166,17 @@ if ($Stage -eq 0) {
         -Action Allow `
         -Profile "Domain,Private" `
         -Program "${InstallationDirectory}\cygwin64\usr\sbin\sshd.exe" `
+        -Enabled True
+
+    # Port 80 for HTTP, but blocked by default (switch it on when you need to)
+    Remove-NetFirewallRule -DisplayName "Polyhack - HTTP (TCP-In)" -ErrorAction SilentlyContinue
+    New-NetFirewallRule `
+        -DisplayName "Polyhack - HTTP (TCP-In)" `
+        -Direction Inbound `
+        -EdgeTraversalPolicy Allow `
+        -Protocol TCP `
+        -LocalPort 80 `
+        -Action Block `
         -Enabled True
 
     # Reboot
