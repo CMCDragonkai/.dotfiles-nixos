@@ -79,12 +79,6 @@ So for Windows, the stack is: ConEmu + Mintty/Conhost.
 
 For Linux, the stack will be: Konsole. Because w3m images isn't that important, and sixel graphics is an oddity. We can use graphical Emacs instead for graphics and executable documents, no need for the terminal. But in the future if Konsole could support sixel graphics or w3m images, then it would be great! That being said, over SSH, support for sixel depends on client terminal emulator. And w3mimages doesn't work on Linux console anyway. The only way to get image support into terminals in modern day systems is to create a new standard such as iTerm2, or Black screen, or use support sixel graphics eventually. Until that day comes, we stick with KDE Konsole.
 
-Editor
-------
-
-
-
-
 Fonts
 -----
 
@@ -95,6 +89,7 @@ I desire fonts usable for both the terminal and editor, the most ideal ones are 
 * FiraCode
 * Monoid
 * Hasklig
+* Input
 
 Paid Fonts:
 
@@ -197,21 +192,7 @@ Also note that there are 3 temporary directories for Cygwin use:
 * System Temporary - `TEMP=%SystemRoot%\TEMP`
 * Cygwin Temporary - `export TMPDIR=/tmp`
 
-We need a differentiation between the temporary directories due to different expectations of permissions between Cygwin (Linux) and Windows. So when clearing the temporary directory, feel free to clear `/tmp` and also the user local temporary. System temporary should be carefully cleaned. In order to allow access to the windows tmp, in Cygwin, the `WINTMP` is set to the original user local temporary. System temporary is not directly accessible, but that's alright.
-
-It's possible to unify the Windows User Local temporary with Cygwin temporary (since Cygwin is installed user-specific here), then this is probably the right way:
-
-https://cygwin.com/cygwin-ug-net/using.html#usertemp
-
-Basically we put this `none /tmp usertemp binary,posix=0 0 0` into `/etc/fstab`.
-
-We basically mount the Windows temporary as the `/tmp`. Now they are unified, and we only have 2 separate temporaries we have to worry about. The system temp and the user temp.
-
-Note that the above requires a reboot, as fstab simply persists the mounting options. To actually mount it on a live system, we would need to use `mount -a` command. Which mounts everything inside `/etc/fstab`.
-
-It also appears acl is by default for Cygwin.
-
-This feature will need to be added into the `install.ps1`, I've used it and it works, but I haven't added it yet.
+Unified windows temporary with Cygwin temporary with this: `none /tmp usertemp binary,posix=0 0 0` into `/etc/fstab`.
 
 ---
 
@@ -231,47 +212,23 @@ Only one problem, Powershell scripts in `~/bin` won't be available to Powershell
 
 As for `CMD`, this is fixed via `~/.cmd_profile`. Which you need to hook into any call via `cmd /K %USERPROFILE%/.cmd_profile`.
 
-You must RAID your Windows Disks to get a single disk. Don't spread out the disks. This prevents problems with Chocolatey not allowing one to install into different drive letters.
-
 Wait Package Manager or OneGet using chocolatey provider isn't installing Chocolatey packages into `%ALLUSERSPROFILE%/chocolatey/bin`. Instead it's putting into `C:\Chocolatey\bin`. And of course only for portable packages. Also `%ALLUSERSPROFILE%` is just `C:\ProgramData`. So I think while official chocolatey puts stuff into `%ALLUSERSPROFILE%/chocolatey`. I think a better idea is to utilise the Chocolatey install path `$env:ChocolateyPath`.
 
 We can however still use this: `%ALLUSERSPROFILE%\bin` as our own personal bin path for Windows executables that are installed globally. Note that we would be setting this up ourselves (setting it manually for like steam and stuff). Generally this will be done for installer packages.
 
 ---
 
-Search.
-
-The Search Field in ConEmu only applies to ConHost applications.
-
-Things like Powershell and CMD that uses Windows ConHost.
-
-If you are running mintty, the search field in ConEmu does not work.
-
-Instead Mintty has its own search functionality.
-
-This is because mintty is a terminal emulator itself, and ConHost is  Windows terminal emulator!
-
-Also scrollbars on ConEmu only applies to ConHost applications as well. Mintty manages its own scrollbar.
-
-Hey double clicking on a tab will max/restore a ConEmu panel.
+The Search Field in ConEmu only applies to ConHost applications. Things like Powershell and CMD that uses Windows ConHost. If you are running mintty, the search field in ConEmu does not work. Instead Mintty has its own search functionality. This is because mintty is a terminal emulator itself, and ConHost is  Windows terminal emulator! Also scrollbars on ConEmu only applies to ConHost applications as well. Mintty manages its own scrollbar.
 
 Perhaps we should no be using ConEmu for terminal window management for Mintty. But instead tmux. Whereas ConEmu's terminal window management is relegated to Windows ConHost terminals. So right now I'm interesting in making the tab switching work, which should easily transition to panel switching. In fact switching between tabs is switching between different panels right now. It's just that CTRL+TAB doesn't work because Mintty/Putty captures it and prevents it from being used. Furthermore, more than just tab/panel switching, is the ability to launch panels, instead of launching tabs, easy keyboard hotkey for doing so. Launching panels will be really useful for certain things. Then keyboard controls for controlling the size of the panels easily. While this would be great for powershell and CMD, it's not really useful for Mintty. Instead Mintty will need to use tmux. So we have 2 levels of terminal window management lol.
-
-Since on Windows, we have free access to the `WIN` key. We should make use of that to control ConEmu. In Linux, the `WIN` key will be the key for XMonad.
-
----
-
-A simple bin program that launches something an automatically detaches it from the terminal. By default, launching an X program should mean that the program should forward their errors to the standard error handling mechanism of X, that of `~/.xsession-errors`. But how does one detect if it's an X program? And even so, how do we know `~/.xsession-errors` exists? What about logs for command line programs? This will make such a program equivalent to an application launcher like demenu and launchy. See: http://unix.stackexchange.com/questions/86698/where-does-the-output-from-an-application-started-from-the-window-manager-go and http://unix.stackexchange.com/questions/86698/where-does-the-output-from-an-application-started-from-the-window-manager-go#comment129472_86808 IS IT REALLY THE SDDM/GDM/KDM that redirects stuff, or is it X server settings that sets the logging? https://marc.waeckerlin.org/computer/blog/get_rid_of_xsession-error_that_s_filling_up_the_home_directory Also this may be relevant: http://dtach.sourceforge.net/
-
----
 
 Design hotkeys around 2/3 systems: XMonad -> Konsole -> Tmux -> ZSH on Linux, and on Windows: Windows Shell -> ConEmu -> Mintty -> Tmux -> ZSH. We'll need to have hotkey escalation, using the Mod key (Win key), Alt, Ctrl, Shift (left and right are equivalent).
 
 ---
 
-KDE Konsole:
+Keyboard Controls:
 
-Notation:
+KDE Notation:
 
 * `\C` - <kbd>Ctrl</kbd>
 * `\S` - <kbd>Shift</kbd>
@@ -281,10 +238,32 @@ Notation:
 * ` ` - Means lift previous, and hit the next, operator is left associative. `e c t` means `((e c) t)`.
 * `<enter>` - The Enter Key
 * `<home>` - The Home key.
-
 * `\C-\S-f` - Search Scrollback
 
----
+Mintty keycodes are: https://github.com/mintty/mintty/wiki/Keycodes
+
+Konsole keycodes, you have to discover yourself using showkey.
+
+Quick way of testing on bash:
+
+```
+bind '"\e[Z":"\C-v\C-i"'
+```
+
+Remember:
+
+Shift + Tab is now Literal Tab.
+Ctrl + Tab is switching between tabs in ConEmu
+
+In Konsole, tab control is:
+
+* C-S-Left - move tab position
+* C-S-Right - move tab position
+* S-Left - move to previous tab
+* S-Right - move to next tab
+* S-Tab - move to next view container, no idea what this is, so we disable it!
+
+ConEmu's tab control is more important right now, because we have XMonad in Linux.
 
 Shell Commands:
 
@@ -322,8 +301,6 @@ That gives you the shell. Or something, not the PID of the terminal emulator. Th
 
 Actually we don't even need to run `tty`, we can just `echo $TTY`.
 
-Who sets $TTY? Don't know. But bash didn't have TTY, so let's just force TTY setting.
-
 Now we just need something to add TTY to the window name of Mintty. Not sure.
 
 Also Windows con hosts get /dev/cons0 but this is not usable because of a limitation of Windows. So they get tty too, but its useless.
@@ -337,6 +314,8 @@ Also Windows con hosts get /dev/cons0 but this is not usable because of a limita
 
 ---
 
+Linux Desktop Files
+
 NixOS:
 
 * User Application Desktop Files: `~/.nix-profile/share/applications`
@@ -347,131 +326,7 @@ Non-NixOS:
 * User Application Desktop Files: `~/.local/share/applications`
 * System Application Desktop Files: `/usr/share/applications` or `/usr/local/share/applications`
 
-Basically on NixOS, all local software can be found in `~/.nix-profile`, while all system softwareis in `/run/current-system/sw`.
-
-We can create our own non-nix `*.desktop` files by putting them in `~/.local/share/applications`.
-
-We could create a simple application launcher (similar to dmenu) that looks in just these directories for `*.desktop` files, and launching them. Such a launcher should only look for `*.desktop` files and not executables in general, because many executables are terminal executables, and we expect visual feedback from launching the executables. Imagine launching `ls`, it do nothing. Unless of course, we wrapped `ls` in a `*.desktop` file that made sure to launch it in the default terminal first.
-
-I do have some further launcher ideas, namely combining persistent terminal with quake terminal with launcher prompts. But currently I don't know how to execute a `*.desktop` file as if it was launched by X directly, and make sure all X application logs go to `.xsession-errors`.
-
-If we can do it cross platform:
-
-* Mac: open
-* Cygwin: cygstart
-* Windows (non-cygwin, msys, mingw, powershell): explorer
-* Linux: should be xdg-open, but it doesn't wor
-
-Remember the requirement is to open the X application as if it was launched from display manager/window manager directly.
-
-See: https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/x11/display-managers/default.nix#L42-L44 It's not guaranteed that the display manager will redirect output to `.xsession-errors`. It's handled by the `.xsession` script that is executed once the display manager logs you in.
-
-It could work if the logfile of `.xsession-errors` was lifted (abstracted) up to be a nixos option. Then a launcher can take the same parameter, well actually one would pass the same file/place to the same parameter. Preferably we want to push such logs to journalctl.
-
 ---
-
-Timezones
-
-On installation and bootstrapping, these files need to be setup for Cygwin environments. Not NixOS.
-Based on installation of tzcode package in Cygwin. Note that Linux the package is often called tzdata.
-
-Run:
-tzselect
-Or automatically acquire from Windows tzutil, but then you need to map it.
-
-```
-echo "$timezone" > /etc/timezone
-ln --symbolic --force /usr/share/zoneinfo/"$timezone" /etc/localtime
-ln --symbolic --force /usr/share/zoneinfo /etc/zoneinfo
-```
-
-Then automatically set `TZDIR=/usr/share/zoneinfo` and `TZ="$timezone"`.
-
-OH so this explains it: http://man7.org/linux/man-pages/man3/tzset.3.html
-
-Windows:
-
-```
-tzutil /g -> shows current timezone id
-tzutil /l -> list of timezones
-tzutil /s -> sets the timezone
-```
-
-The timeone ids for Windows is not the same as the POSIX timezone ids. 
-
-Why did nobody just use goddamn UTC+X or UTC-X, and be done with it.. instead, everybody has different codes.
-
-```
-TZ="$(tzutil /l \
-| grep --before-context=1 "$(tzutil /g)" \
-| head --lines=1 \
-| sed --regexp-extended 's/\((.*)\).*/\1/' \
-| tr --delete '-' \
-| tr '+' '-')"
-```
-
-INSTEAD use this:
-
-```
-TZ="$(tz-windows-to-iana "$(tzutil /l | grep --before-context=1 "$(tzutil /g)" | head --lines=1)")"
-```
-
-This needs to run as a macro and set at the very beginning.
-
-Then the correct value should be placed into the `PH_TZ` macro variable. And put into `TZ=...`.
-
----
-
-Mintty keycodes are: https://github.com/mintty/mintty/wiki/Keycodes
-
-Konsole keycodes, you have to discover yourself using showkey.
-
-Quick way of testing on bash:
-
-```
-bind '"\e[Z":"\C-v\C-i"'
-```
-
----
-
-Try: http://input.fontbureau.com/
-
----
-
-Look into gnu stow for installation of the configuration files.
-
----
-
-ConEmu configuration
-
-We want to show tty on the window name, to allow easy display redirection.
-
-We want to use Ctrl + Tab to switch between tabs, or at least switch between tabs in ConEmu.
-
-Remember:
-
-Shift + Tab is now Literal Tab.
-Ctrl + Tab is unknown...
-
-In Konsole, tab control is:
-
-* C-S-Left - move tab position
-* C-S-Right - move tab position
-* S-Left - move to previous tab
-* S-Right - move to next tab
-* S-Tab - move to next view container, no idea what this is, so we disable it!
-
-In ConEmu, moving tabs is:
-
-ConEmu's tab control is more important right now, because we have XMonad in Linux
-
-I don't know where it is, but theres:
-
-.config/konsolerc
-.local/share/konsole
-.local/share/kxmlgui5/konsole
-.local/share/kxmlgui5/konsole/konsoleui.rc
-.kde/share
 
 Ok, so let's see if we can change tab shifting to use `S-Left` or `S-Right` as well..
 
