@@ -36,9 +36,10 @@ ifelse(PH_SYSTEM, CYGWIN,
     # Cygwin will use pip to install python executables
     export PATH="${HOME}/.local/bin:${PATH}"
 
-    # Windows sets TMP, and we shall persist it as WINTMP
-    # Then we set all other temporary environment variables to /tmp
-    export WINTMP="$TMP"
+    # Windows has a user local temporary and a system temporary
+    # We unified Windows user local temporary with Cygwin /tmp using fstab
+    export WINTMP="$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')"
+    export WINSYSTMP="$(cmd /c 'ECHO %SYSTEMROOT%' | tr --delete '[:space:]')\Temp"
     export TMPDIR='/tmp'
     export TMP='/tmp'
     export TEMP='/tmp'
