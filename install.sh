@@ -36,6 +36,11 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     else 
         echo "Unable to acquire IANA timezone information, update the timezone matching script, or do it manually."
     fi
+    
+    # Change default shell to zsh
+    # On Linux we could use chsh --shell
+    # But Cygwin doesn't support it, so we just need to edit it using sed
+    sed --in-place "/^${USER}/ s/:[^:][^:]*$/:"${$(which zsh)//\//\\\/}"/" /etc/passwd
 
 fi
 
