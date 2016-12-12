@@ -40,3 +40,6 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 fi
 
 # We need to pass "PH_TZ" and "PH_TZDIR" as variables to m4 preprocessor
+
+# Make ~/.ssh directory and below only readable by me
+chmod 600 --recursive ~/.ssh
