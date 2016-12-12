@@ -41,5 +41,11 @@ fi
 
 # We need to pass "PH_TZ" and "PH_TZDIR" as variables to m4 preprocessor
 
+# run the m4 macro and build into ./.build folder
+
+# copy files from ./.build into ~
+# where --archive means: --recursive --links --perms --times --group --owner
+rsync --update --checksum --archive "./.build/" "${HOME}/"
+
 # Make ~/.ssh directory and below only readable by me
 chmod 600 --recursive ~/.ssh
