@@ -27,10 +27,15 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     
     # Acquire timezone information from Windows
     tz="$(./bin/tz-windows-to-iana "$(tzutil /l | grep --before-context=1 "$(tzutil /g)" | head --lines=1)")"
-    echo "$tz" > /etc/timezone
-    ln --symbolic --force /usr/share/zoneinfo/"$tz" /etc/localtime
-    ln --symbolic --force /usr/share/zoneinfo /etc/zoneinfo
-    tzdir="/usr/share/zoneinfo"
+    
+    if [ -f /usr/share/zoneinfo/"$tz" ]; then
+        echo "$tz" > /etc/timezone
+        ln --symbolic --force /usr/share/zoneinfo/"$tz" /etc/localtime
+        ln --symbolic --force /usr/share/zoneinfo /etc/zoneinfo
+        tzdir="/usr/share/zoneinfo"
+    else 
+        echo "Unable to acquire IANA timezone information, update the timezone matching script, or do it manually."
+    fi
 
 fi
 
