@@ -76,6 +76,7 @@ sourcecodepro,*,chocolatey
 AnonymousPro,*,chocolatey
 hackfont,*,chocolatey
 nexusfont,*,chocolatey
+inconsolata,*,chocolatey
 
 # windows packages not yet available
 # wordweb
