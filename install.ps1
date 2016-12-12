@@ -44,8 +44,7 @@ function ScheduleRebootTask {
         [int]$Stage
     )
 
-
-# this needs to be changed to schedule the task to powershell.exe
+    # this needs to be changed to schedule the task to powershell.exe
     # to run the -File (Get-ScriptPath)
 
     $Action = New-ScheduledTaskAction -Execute (Get-ScriptPath) -Argument (
@@ -54,9 +53,7 @@ function ScheduleRebootTask {
             "-PortKey ${PortKey} " + 
             "-InstallationDirectory ${InstallationDirectory}" + 
             "-Stage ${Stage}"
-
-
-)
+    )
 
     $Trigger = New-ScheduledTaskTrigger -AtLogOn
     
