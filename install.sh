@@ -53,4 +53,6 @@ fi
 rsync --update --checksum --archive "./.build/" "${HOME}/"
 
 # Make ~/.ssh directory and subdirectories 700, but the files 600
+# This requires wiping out any execute permissions first
+chmod --recursive a-x ~/.ssh
 chmod --recursive u=rwX,g=,o= ~/.ssh
