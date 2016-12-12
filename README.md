@@ -11,38 +11,37 @@ git submodule add -b master git@github.com:sorin-ionescu/prezto.git
 git submodule update --remote prezto
 ```
 
-I'm going to assume there's macro constants that is: `CYGWIN` or `NIXOS`. These should be independent of each other, as in one cannot set `CYGWIN` and `NIXOS` at the same time. Or else bad things can happen! If neither `CYGWIN` nor `NIXOS` is set, then bad things can happen. This will run the build and build into a `.build` folder. Then inside that `.build` folder, file will be symlinked out using unix symlinks or ntfs symlinks (mklink).
+When running `install.ps1` or `install.sh`, eventually macro variables like `PH_SYSTEM` and `PH_TZ` and `PH_TZDIR` must be set. The `PH_SYSTEM` can be either `CYGWIN` or `NIXOS`. The `install.sh` will run the m4 preprocessor and move all preprocessed files into `./.build` folder. Then the resulting files inside `./.build` can be symlinked or copied to `~`. Remember that some Windows files (such as the `.ps1`, `.exe`, `.bat`, or `.cmd`) and executables will need NTFS symlinks, not Cygwin symlinks. The `mklink` can do this.
 
-Installation is:
+Installation on Windows is:
+
+1. Download `.dotfiles` repository into `$USERPROFILE`. 
+2. Open `Run` application, and execute: `powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Noninteractive -NoExit -File %USERPROFILE%\.dotfiles\install.ps1`
+
+Installation on Linux (NixOS) is:
 
 ```
 cd ~
 git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git
+~/.dotfiles/install.sh
 ```
 
-SSH Keys are not stored in `~/.ssh` and the `~/.ssh/hosts` file is not stored there either. Make sure to securely transfer all keys and hosts file into `~/.ssh` before using.
+Secret management is still being figured out... we need to store a secrets database somewhere, which we can then extract things like SSH keys or and hosts configuration. The database must support independent files, but also just random passwords too..
 
-```
-scp ~/.ssh/identity cmcdragonkai@X.X.X.X:~/.ssh/identity
-scp ~/.ssh/identity.ppk cmcdragonkai@X.X.X.X:~/.ssh/identity.ppk
-scp ~/.ssh/hosts cmcdragonkai@X.X.X.X:~/.ssh/hosts
-scp -r ~/.ssh/keys/ cmcdragonkai@X.X.X.X:~/.ssh/keys
-```
+Since we are installing Cygwin 64 bit, we may need 32 bit cross compilation, so `cygwin32-*` packages maybe of use. Also one can use the Cygwin 64 bit toolchain to compile MINGW executables targetting Windows natively. This can be done with `mingw64-*` or `mingw32-*` packages. Basically bring in things like GCC with these prefixes.
 
-Get this https://github.com/rprichard/winpty, it needs to be built currently. Wrap any REPLs compiled for Windows (using MingW for example) with winpty when running inside mintty.
+Interesting Paths
+-----------------
 
-When deploying on Windows, somethings we cannot symlink. Instead either a shortcut or an NTFS symbolic link must be used. For example the Documents/WindowsPowerShell/Profile.ps1. Use the `mklink` alias to do this.
+`%ALLUSERSPROFILE%` - Points to a common user profile directory (that is viewable by all users on the OS). We should create a `%ALLUSERSPROFILE%/bin` directory to add PATH symlinks to all Windows executables that we install into here (this makes sense as installed Windows executables are usually installed on the entire system, not for a particular user). This refers to any natively installed Windows executable, or any extracted Windows executable.
 
-Linux install script shouldn't symlink things that have `.ps1` or `.exe` or `.bat` or `.cmd` in them! And empty folders should also be ignored once files are ignored.
+Keyboard Control
+-----------------------
 
-Interesting resource: http://stackoverflow.com/a/21233990/582917
+Since we have many applications, and we are customising all of them, we will have a different set of keyboard shortcuts for every application.
 
-Mintty
-------
+For Mintty:
 
-Useful shortcuts (see the rest at the Mintty manual `man mintty`):
-
-* <kbd>Alt</kbd> + <kbd>Enter</kbd> - Enter and Exit Full Screen - doesn't work
 * <kbd>Ctrl</kbd> + <kbd>+</kbd>/<kbd>-</kbd> - Font Zooming
 * <kbd>Shift</kbd> + <kbd>Up</kbd>/<kbd>Down</kbd> - Scroll Line Up and Down
 * <kbd>Shift</kbd> + <kbd>PgUp</kbd>/<kbd>PgDn</kbd> - Scroll Page Up and Down
@@ -50,18 +49,50 @@ Useful shortcuts (see the rest at the Mintty manual `man mintty`):
 * <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> - Search Scrollback Buffer
 * <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> - Switch screens between orimary buffer and secondary buffer (like between shell and less or shell and vim)
 
-Some shortcuts are not available because they are replaced by ConEmu equivalents.
+For ConEmu:
+
+* <kbd>Win</kbd> + <kbd>Ctrl</kbd> + <kbd>Enter</kbd> - Full Screen (also try Alt + Enter)
 
 We prefer ASCII DEL `^?` to be used for backwards delete instead of ASCII BS `^H`. Instead `^H` can be mapped to other functions. Forwards delete still uses `\e[3~`. Preferably if the design of keyboards and terminals were standardised, we could have ASCII DEL for forwards delete, and ASCII BS for backwards delete, but alas it is not so.
 
-Consolas is the chosen font at 13 point size for Mintty. Consolas is a monospaced programming font, and is already installed with Windows. It also has a wide range of glyphs and supports interesting kinds of unicode glyphs.
+KDE Notation:
 
-Use http://terminal.sexy/ to produce new colour schemes, and to translate them between different terminals or shells or editors.
+* `\C` - <kbd>Ctrl</kbd>
+* `\S` - <kbd>Shift</kbd>
+* `\M` - Mod/Meta/Super which is <kbd>Win</kbd> on Windows, or <kbd>Cmd</kbd> on Mac. We want to avoid having to use <kbd>Alt</kbd>.
+* `\A` - <kbd>Alt</kbd> on Windows Keyboards, or <kbd>Option</kbd> on Mac.
+ `-` - Means hold previous, and hit the next, operator is left associative. `\C-\S-f` means `((\C-\S)-f)`
+* ` ` - Means lift previous, and hit the next, operator is left associative. `e c t` means `((e c) t)`.
+* `<enter>` - The Enter Key
+* `<home>` - The Home key.
+* `\C-\S-f` - Search Scrollback
 
-ConEmu
-------
+Mintty keycodes are: https://github.com/mintty/mintty/wiki/Keycodes
 
-Full screen doesn't work properly. We need to intercept and add full screen to ConEmu, not Mintty. Then we can disable `Alt + Enter/Space` buttons.
+For both Bash and ZSH, where Bash uses `.inputrc` and ZSH has its own codes, we have set it up these key codes:
+
+Shift + Tab is now Literal Tab.
+Ctrl + Tab is switching between tabs in ConEmu
+
+In Konsole, tab control is:
+
+* C-S-Left - move tab position
+* C-S-Right - move tab position
+* S-Left - move to previous tab
+* S-Right - move to next tab
+* S-Tab - move to next view container, no idea what this is, so we disable it!
+
+Shell Commands:
+
+`\C-c` - SIGINT
+`\C-\` - SIGQUIT
+`\C-z` - Toggle backgrounding and foregrounding.
+`\S-<enter>` - Non-executing enter, allows multiline commands.
+
+Hotkey Hierarchy:
+
+Linux Commands -> XMonad Commands -> Konsole Commands -> Tmux Commands -> Shell Commands -> Application Commands
+Windows Commands -> ConEmu Commands -> Mintty Commands -> Tmux Commands -> Shell Commands -> Application Commands
 
 Terminal Emulator
 -----------------
@@ -82,7 +113,7 @@ For Linux, the stack will be: Konsole. Because w3m images isn't that important, 
 Fonts
 -----
 
-I desire fonts usable for both the terminal and editor, the most ideal ones are those that are multilingual, monospaced, supports ligatures, supports box drawing, supports powerline, supports a good number of unicode symbols and support even APL, but this probably doesn't exist. So we have a number fonts available to choose from in different situations:
+The most ideal ones are those that are multilingual, monospaced, supports ligatures, supports box drawing, supports powerline, supports a good number of unicode symbols and support even APL, but this probably doesn't exist. So we have a number fonts available to choose from in different situations:
 
 * Anonymous Pro
 * Source Code Pro
@@ -100,37 +131,8 @@ Fallback Fonts:
 * Consolas - Windows
 * Inconsalata - Linux
 
-Installation WIP
+Development
 ----------------
-
-Download or install the repository. If using git:
-
-```
-git clone --recursive <.dotfiles-repo>
-# or on git 2.8
-git clone <.dotfiles-repo> <.dotfiles-path>
-cd <.dotfiles-path> && git submodule update --init --recursive --depth 1
-```
-
-Need to first run the build system. On Windows that means executing `install.ps1`. On Linux that means executing `install.sh`.
-
-Once the build is done, we can copy the files using:
-
-```
-# where --archive means: --recursive --links --perms --times --group --owner
-rsync --update --checksum --archive "./dotfiles/.build/" "${HOME}/"
-```
-
-Remember the correct permissions: `chmod 600 -R ~/.ssh`. And use the preprocessor on all relevant files including `~/.ssh/config`.
-
-On installing this repository for development:
-
-```
-git clone --recursive <.dotfiles-repo>
-# or on git 2.8
-git clone <.dotfiles-repo> <.dotfiles-path>
-cd <.dotfiles-path> && git submodule update --init --recursive
-```
 
 On adding new dependencies:
 
@@ -174,32 +176,6 @@ git submodule status --recursive
 
 ---
 
-On Windows, open `Run` application and copy paste this command:
-
-```
-powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Noninteractive -NoExit -File .\install.ps1
-```
-
-This script will not manage Windows GUI applications except for ConEmu.
-
-The rest should be installed directly or using Chocolatey. But Chocolatey is outside the realm of this particular repository. This does mean dealing with things like Haskell Platform is outside the realm of this `.dotfiles`, except as configuration files.
-
----
-
-Also note that there are 3 temporary directories for Cygwin use:
-
-* User Local Temporary - `TEMP=%USERPROFILE%\AppData\Local\Temp`
-* System Temporary - `TEMP=%SystemRoot%\TEMP`
-* Cygwin Temporary - `export TMPDIR=/tmp`
-
-Unified windows temporary with Cygwin temporary with this: `none /tmp usertemp binary,posix=0 0 0` into `/etc/fstab`.
-
----
-
-`%ALLUSERSPROFILE%` - Points to a common user profile directory (that is viewable by all users on the OS). We should create a `%ALLUSERSPROFILE%/bin` directory to add PATH symlinks to all Windows executables that we install into here (this makes sense as installed Windows executables are usually installed on the entire system, not for a particular user). This refers to any natively installed Windows executable, or any extracted Windows executable. This does not refer to Chocolatey's installed executables, which has its own bin path at `%ALLUSERSPROFILE%/chocolatey/bin`. Note that Chocolatey will not necessarily install bin links for every package. Look for packages with a suffix of `.portable`. Do not use `.install` unless you verify its behaviour. Note that `.install` refers to natively installed packages, and these packages cannot be auto-uninstalled, without first uninstalling it natively, then uninstalling it from Chocolatey. Packages without a suffix are usually meta-packages. But make sure to review them before installing.
-
-This means we need specifically, PATH needs to be set up in this way:
-
 * Default Windows Paths (on Windows): `C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\`
 * Prepend Chocolatey path (on Windows): `%ALLUSERSPROFILE%\chocolatey\bin` (use `$env:ChocolateyPath\bin` instead)
 * Prepend custom Windows path (on Windows): `%ALLUSERSPROFILE%\bin`
@@ -214,8 +190,6 @@ As for `CMD`, this is fixed via `~/.cmd_profile`. Which you need to hook into an
 
 Wait Package Manager or OneGet using chocolatey provider isn't installing Chocolatey packages into `%ALLUSERSPROFILE%/chocolatey/bin`. Instead it's putting into `C:\Chocolatey\bin`. And of course only for portable packages. Also `%ALLUSERSPROFILE%` is just `C:\ProgramData`. So I think while official chocolatey puts stuff into `%ALLUSERSPROFILE%/chocolatey`. I think a better idea is to utilise the Chocolatey install path `$env:ChocolateyPath`.
 
-We can however still use this: `%ALLUSERSPROFILE%\bin` as our own personal bin path for Windows executables that are installed globally. Note that we would be setting this up ourselves (setting it manually for like steam and stuff). Generally this will be done for installer packages.
-
 ---
 
 The Search Field in ConEmu only applies to ConHost applications. Things like Powershell and CMD that uses Windows ConHost. If you are running mintty, the search field in ConEmu does not work. Instead Mintty has its own search functionality. This is because mintty is a terminal emulator itself, and ConHost is  Windows terminal emulator! Also scrollbars on ConEmu only applies to ConHost applications as well. Mintty manages its own scrollbar.
@@ -223,59 +197,6 @@ The Search Field in ConEmu only applies to ConHost applications. Things like Pow
 Perhaps we should no be using ConEmu for terminal window management for Mintty. But instead tmux. Whereas ConEmu's terminal window management is relegated to Windows ConHost terminals. So right now I'm interesting in making the tab switching work, which should easily transition to panel switching. In fact switching between tabs is switching between different panels right now. It's just that CTRL+TAB doesn't work because Mintty/Putty captures it and prevents it from being used. Furthermore, more than just tab/panel switching, is the ability to launch panels, instead of launching tabs, easy keyboard hotkey for doing so. Launching panels will be really useful for certain things. Then keyboard controls for controlling the size of the panels easily. While this would be great for powershell and CMD, it's not really useful for Mintty. Instead Mintty will need to use tmux. So we have 2 levels of terminal window management lol.
 
 Design hotkeys around 2/3 systems: XMonad -> Konsole -> Tmux -> ZSH on Linux, and on Windows: Windows Shell -> ConEmu -> Mintty -> Tmux -> ZSH. We'll need to have hotkey escalation, using the Mod key (Win key), Alt, Ctrl, Shift (left and right are equivalent).
-
----
-
-Keyboard Controls:
-
-KDE Notation:
-
-* `\C` - <kbd>Ctrl</kbd>
-* `\S` - <kbd>Shift</kbd>
-* `\M` - Mod/Meta/Super which is <kbd>Win</kbd> on Windows, or <kbd>Cmd</kbd> on Mac. We want to avoid having to use <kbd>Alt</kbd>.
-* `\A` - <kbd>Alt</kbd> on Windows Keyboards, or <kbd>Option</kbd> on Mac.
- `-` - Means hold previous, and hit the next, operator is left associative. `\C-\S-f` means `((\C-\S)-f)`
-* ` ` - Means lift previous, and hit the next, operator is left associative. `e c t` means `((e c) t)`.
-* `<enter>` - The Enter Key
-* `<home>` - The Home key.
-* `\C-\S-f` - Search Scrollback
-
-Mintty keycodes are: https://github.com/mintty/mintty/wiki/Keycodes
-
-Konsole keycodes, you have to discover yourself using showkey.
-
-Quick way of testing on bash:
-
-```
-bind '"\e[Z":"\C-v\C-i"'
-```
-
-Remember:
-
-Shift + Tab is now Literal Tab.
-Ctrl + Tab is switching between tabs in ConEmu
-
-In Konsole, tab control is:
-
-* C-S-Left - move tab position
-* C-S-Right - move tab position
-* S-Left - move to previous tab
-* S-Right - move to next tab
-* S-Tab - move to next view container, no idea what this is, so we disable it!
-
-ConEmu's tab control is more important right now, because we have XMonad in Linux.
-
-Shell Commands:
-
-`\C-c` - SIGINT
-`\C-\` - SIGQUIT
-`\C-z` - Toggle backgrounding and foregrounding.
-`\S-<enter>` - Non-executing enter, allows multiline commands.
-
-Hotkey Hierarchy:
-
-Linux Commands -> XMonad Commands -> Konsole Commands -> Tmux Commands -> Shell Commands -> Application Commands
-Windows Commands -> ConEmu Commands -> Mintty Commands -> Tmux Commands -> Shell Commands -> Application Commands
 
 ---
 
@@ -518,54 +439,17 @@ Secondly, ZSH is always launched as a login shell. That doesn't make sense. On L
 
 Therefore, login shell scripts should not run when simply executing ZSH from mintty.
 
-Remember:
-
-```
-Setting up ZSH
+ZSH as Default Shell
 --------------
 
-Go into `/etc/passwd`, change the `:/bin/bash` to `:/bin/zsh` for the users that want ZSH as their default shell.
+The `/etc/passwd` has been changed to match ZSH. For the 2 ways of launching the terminal.
 
-You can also edit the Cygwin.bat in the Cygwin installation directory. And change the `bash --login -i` to `zsh -l -i`
+* `Cygwin.bat` - Official Cygwin launcher. Because it starts as a Windows Batch File, it only has access to Windows environment variables.
+* `mintty.exe` - Launches Mintty directly. It has a number of command line flags that changes its behaviour, and it will autolaunch the default shell for the user. It has the capability of launching the shell as a login shell or just a normal interactive shell. The autolaunching of the shell works by: checking SHELL executable, reading /etc/passwd before falling back onto /bin/sh.
 
-`-i` - force shell to be interactive
+Basically ConEmu doesn't bother with `Cygwin.bat`, but ConEmu instead directly launches `mintty.exe` and passes it parameters.
 
-`-l` - means run a login shell
-```
-
-Now, the startup task from ConEmu is: `C:\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -`
-
-So ConEmu is definitely launching mintty. But mintty must be launching Cygwin, which ends up launching ZSH. the cygwin.bat is currently:
-
-```
-@echo off
-
-C:
-chdir C:\cygwin64\bin
-
-zsh -l -i
-```
-
-This tests whether we are in a login shell:
-
-```
-if [[ -o login ]]; then; print yes; else; print no; fi
-```
-
-It prints yes.
-
-> When you start a shell in a terminal in an existing session (screen, X terminal, Emacs terminal buffer, a shell inside another, …), you get an interactive, non-login shell. That shell might read a shell configuration file (~/.bashrc for bash invoked as bash, /etc/zshrc and ~/.zshrc for zsh, /etc/csh.cshrc and ~/.cshrc for csh, the file indicated by the ENV variable for POSIX/XSI-compliant shells such as dash, ksh, and bash when invoked as sh, $ENV if set and ~/.mkshrc for mksh, etc.).
-> http://unix.stackexchange.com/a/46856/56970
-
-It supports the concept that once we're in tty7. We should be launching non-login interactive shells. Only on Linux, opening ttys and logging in via SSH, should we be getting interactive-login shells!
-
-I don't think that `Cygwin.bat` is being used from mintty. They just aren't actually using it. It's still giving me a login shell.
-
-If you run `C:\cygwin64\bin\mintty.exe` you end up with non-login shell. If you run `C:\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -` you end up with a login shell. ALSO a bunch of errors occur if you run a non-login shell.
-
-Apparently I got the idea for running Cygwin from the shortcut called "Cygwin64 Terminal". This can be accessed via launchy actually and it's a Windows shortcut residing in: `C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Cygwin`. It's where the shortcut specifies: `C:\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -`. Why does this change the behaviour of ZSH?
-
-THERE WE GO. It's in Mintty's manual:
+The Mintty manual says:
 
 ```
        If a program name is supplied on the command line, this is executed with any additional arguments given.  Otherwise, mintty
@@ -574,83 +458,13 @@ THERE WE GO. It's in Mintty's manual:
        shell is invoked as a login shell.
 ```
 
-I see now. So it's looking for $SHELL, then looking at /etc/passwd. Taking it off, does result in executing a non-login ZSH shell now. HOWEVER I have now a bunch of errors relating:
+Which means since `$SHELL` is not available as a Windows environment variable, it will read the result from `/etc/passwd`. Which is what we have set.
 
-```
-/cygdrive/c/Users/CMCDragonkai/.rvm/scripts/rvm:12: command not found: uname
-/cygdrive/c/Users/CMCDragonkai/.rvm/scripts/rvm:15: command not found: ps
-__phpbrew_set_path:5: command not found: tr
-__phpbrew_set_path:5: command not found: tr
-/cygdrive/c/Users/CMCDragonkai/.zshrc:102: command not found: cygpath
-/cygdrive/c/Users/CMCDragonkai/.zshrc:149: command not found: cygpath
-/cygdrive/c/Users/CMCDragonkai/.zshrc:150: command not found: cygpath
-/usr/bin/env: ‘zsh’: No such file or directory
-/cygdrive/c/Users/CMCDragonkai/.oh-my-zsh/lib/completion.zsh:28: command not found: whoami
-/cygdrive/c/Users/CMCDragonkai/.oh-my-zsh/lib/theme-and-appearance.zsh:10: command not found: uname
-/cygdrive/c/Users/CMCDragonkai/.oh-my-zsh/lib/theme-and-appearance.zsh:14: command not found: uname
-git_prompt_info:1: command not found: git
-```
+One important thing. There's no real point in making every shell a Login shell, so all shells launched from ConEmu to Mintty, they should all be non-login interactive shells. An explicit option should be offered to launch a login shell.
 
-It's as if, not being a login shell causes problems!
+The startup task for ConEmu for a non-login shell should be: `%USERPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico`.
 
-So this means.. what exactly? It must mean that the login shell is being executed.
-
-Ok SO basically we have 2 launching points:
-
-```
-C:\cygwin64\bin\mintty.exe
-C:\cygwin64\Cygwin.bat
-```
-
-Both have options. The Cygwin.bat is the official launching point of Cygwin. So whatever you put there, is going to be executed, when you launch "Cygwin".
-
-At this point here:
-
-```
-@ECHO off
-
-REM Go into the Cygwin's binary directory, and launch ZSH as the shell 
-CD /D C:\cygwin64\bin
-
-zsh -i
-```
-
-Is what's executed!
-
-What Cygwin.bat is for, is that it does not launch any kind of fancy terminal emulator. It uses Window's normal conhost terminal emulator. It needs to get to Cygwin's bin directory before it can launch zsh. This is because ZSH is not part of the Windows PATH. So this batch executable is hardcoded with the actual directory it is in. We can do better. We can make it execute based on where it's current directory is, and then go into bin. So it's a relative directory.
-
-A better batch script would be (REMEMBER to replace the batch script with this):
-
-```bat
-@ECHO off
-
-REM Navigate to cygwin's bin directory in order to access the ZSH shell
-REM CD /D %~dp0\bin
-
-CD /D %UserProfile%
-
-REM Launch mintty as our terminal emulator
-%~dp0\bin\mintty %*
-```
-
-This makes sure to look up just the current file's directory and get to the bin directory to get the ZSH executable. This is required because normally CD navigates according to the caller's CWD. So this just makes sure that the CWD is sent to the right place. This also means, that the batch script `Cygwin.bat` should always be located in the Cygwin directory.
-
-If running `mintty.exe` directly goes to /usr/bin, why does ConEmu's zsh launch command go to `~` even when both commands are the same?
-
-Ok I get it now.
-
-* `Cygwin.bat` - Official Cygwin launcher. Because it starts as a Windows Batch File, it only has access to Windows environment variables.
-* `mintty.exe` - Launches Mintty directly. It has a number of command line flags that changes its behaviour, and it will autolaunch the default shell for the user. It has the capability of launching the shell as a login shell or just a normal interactive shell. The autolaunching of the shell works by: checking SHELL executable, reading /etc/passwd before falling back onto /bin/sh.
-
-ConEmu and the shortcut both currently directly execute `mintty.exe`: using "C:\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -".
-
-What we want to do is align the behaviour. So I changed Cygwin.bat to be the above and use `mintty.exe`. Therefore. The `Cygwin.bat` should really be the official launching point. Should not call mintty directly.
-
-However there's a problem. Using ConEmu to call the `Cygwin.bat` script, results in ConEmu running cmd, which runs the batch script, which runs the mintty. And this means only the cmd is attached to the ConEmu, while the mintty is running by itself in a detached window! Unfortunately there's no such thing as an "exec" in Windows. So we're stuck here. We cannot use `Cygwin.bat` normally from ConEmu. Instead ConEmu, needs to directly call `mintty` for it accurately attach itself to ConEmu as a GUI window. Finally it can pass arguments into mintty. Note that `mintty` vs `mintty -D`. `mintty -D = cygstart mintty`. It has become an orphaned process. I don't like calling it "daemonising", instead it's really orphanising. Daemonising should be reserved for service wrapping.
-
-Ok so ConEmu should launch `mintty.exe` directly. Just that is enough!
-
-Who's changing the starting directory? It's easy. It's ConEmu that is always launching the terminal emulator at the right place. Mintty doesn't know where to go. And neither does Cygwin.bat. So it that's why it always ends up at /usr/bin. Because that's where cygwin64/bin. There's a way to solve this. In the batch script, we just navigate to home, but run mintty from bin.
+The startup task for ConEmu for a login shell should be: `%USERPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -`.
 
 ---
 
@@ -982,18 +796,6 @@ Skype on Linux is a bit weird, especially with Xmonad. Basically closing it with
 ---
 
 One of the problems with using pass or keybase, is that the database is one single file. Now to tranport any kind of secret, or even be able to share a secret, you have to share the entire dump. Unlocking to get a single secret means unlocking the entire thing. The thing is too bulky, and is not modular. That is the secrets are all lumped into one single thing, and it's not cohesive. We need to make secret management more cohesive, so an application or a usecase situation can demand just a specific secret, and not all. It's all about the principle of least privilege. This means fundamentally we need a secret server, not just a single secret file dump. A secret server that can provide API access (filtered and time constrained access) to secrets while also supporting privilege groups, and secret changing. And of course very detailed logging of where secrets are being requested from. Integrated password rotation. But that may be difficult. It needs to alert about password rotation, but the password manager may itself not have the privileges to do so. As in higher level privileges may be required for secret rotation.
-
----
-
-The most common font that I can install for terminal emulators has got to be `DejaVu Sans Mono`.
-
-Folds work by levels. As in, there's a invisible column called the fold column. And as you move this fold column around, it will fold things, or unfold them. 
-
-We basically set the fold column to 1 + the highest fold level, you can see the fold levels in your code using `set foldcolumn=1`.
-
----
-
-You actually need to do `chmod 700 -R ~/.ssh`. Not `600`. Without the `executable` permission, you can't view the directory.
 
 ---
 
