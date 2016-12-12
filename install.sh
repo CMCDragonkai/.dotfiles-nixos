@@ -52,5 +52,5 @@ fi
 # where --archive means: --recursive --links --perms --times --group --owner
 rsync --update --checksum --archive "./.build/" "${HOME}/"
 
-# Make ~/.ssh directory and below only readable by me
-chmod 600 --recursive ~/.ssh
+# Make ~/.ssh directory and subdirectories 700, but the files 600
+chmod --recursive u=rwX,g=,o= ~/.ssh
