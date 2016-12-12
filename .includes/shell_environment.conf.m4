@@ -7,9 +7,9 @@ export LANG='en_US.UTF-8'
 export LANGUAGE='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
-# these are to be replaced by the macros on deployment
-export TZ="$TZ"
-export TZDIR="$TZDIR"
+# timezone will be set during installation, and passed as M4 macro variables
+export TZ="PH_TZ"
+export TZDIR="PH_TZDIR"
 
 # configuration variables for general commands
 export BASH_ENV="${HOME}/.bash_env"
