@@ -33,6 +33,25 @@ function Prepend-Idempotent {
 
 }
 
+function Append-Idempotent {
+
+    param (
+        [string]$InputString, 
+        [string]$OriginalString, 
+        [string]$Delimiter = '', 
+        [bool]$CaseSensitive = $False
+    )
+    
+    if ($CaseSensitive -and ($OriginalString -cnotmatch $InputString)) {
+        $OriginalString + $Delimiter + $InputString
+    } elseif (! $CaseSensitive -and ($OriginalString -inotmatch $InputString)) {
+        $OriginalString + $Delimiter + $InputString
+    } else {
+        $OriginalString
+    }
+
+}
+
 function Get-ScriptPath {
     Split-Path $Script:MyInvocation.MyCommand.Path
 }
@@ -113,16 +132,30 @@ if ($Stage -eq 0) {
     # By default Windows will have set `.COM;.EXE;.BAT;.CMD` as path extensions
     [Environment]::SetEnvironmentVariable (
         "PATHEXT", 
-        (Prepend-Idempotent ".PS1" $Env:PATHEXT ";" $False), 
-        [System.EnvironmentVariableTarget]::System
+        (Append-Idempotent ".PS1" $Env:PATHEXT ";" $False), 
+        [System.EnvironmentVariableTarget]::User
     )
     [Environment]::SetEnvironmentVariable (
         "PATHEXT", 
-        (Prepend-Idempotent ".PS1" $Env:PATHEXT ";" $False), 
+        (Append-Idempotent ".PS1" $Env:PATHEXT ";" $False), 
         [System.EnvironmentVariableTarget]::Process
     )
     CMD /C 'assoc .ps1=Microsoft.PowerShellScript.1'
     CMD /C 'ftype Microsoft.PowerShellScript.1="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "%1"'
+    
+    # Directory to hold symlinks to Windows executables that is installed across users
+    # This directory is managed by ourselves
+    # Windows executables will be able to find these symlinks as this is encoded as part of the PATH on Windows
+    [Environment]::SetEnvironmentVariable (
+        "PATH",
+        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
+        [System.EnvironmentVariableTarget]::User
+    )
+    [Environment]::SetEnvironmentVariable (
+        "PATH",
+        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
+        [System.EnvironmentVariableTarget]::Process
+    )
 
     # Setup firewall to accept pings for Domain and Private networks but not from Public networks
     Set-NetFirewallRule `
