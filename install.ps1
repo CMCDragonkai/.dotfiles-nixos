@@ -44,7 +44,8 @@ function ScheduleRebootTask {
         [int]$Stage
     )
 
-    # this needs to be changed to schedule the task to powershell.exe
+
+# this needs to be changed to schedule the task to powershell.exe
     # to run the -File (Get-ScriptPath)
 
     $Action = New-ScheduledTaskAction -Execute (Get-ScriptPath) -Argument (
@@ -53,7 +54,9 @@ function ScheduleRebootTask {
             "-PortKey ${PortKey} " + 
             "-InstallationDirectory ${InstallationDirectory}" + 
             "-Stage ${Stage}"
-        )
+
+
+)
 
     $Trigger = New-ScheduledTaskTrigger -AtLogOn
     
@@ -104,7 +107,11 @@ if ($Stage -eq 0) {
     # Home environment variables
     [Environment]::SetEnvironmentVariable ("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::User)
     [Environment]::SetEnvironmentVariable ("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::Process)
-
+    
+    # Disable Cygwin warning about Unix file paths
+    [Environment]::SetEnvironmentVariable ("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::User)
+    [Environment]::SetEnvironmentVariable ("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::Process)
+    
     # Make the `*.ps1` scripts executable without the `.ps1` extension
     # By default Windows will have set `.COM;.EXE;.BAT;.CMD` as path extensions
     [Environment]::SetEnvironmentVariable (
