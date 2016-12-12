@@ -1,8 +1,6 @@
 # .dotfiles #
 
-This directory is meant to be located in `~/.dotfiles`. It's files are supposed to be symlinked into `~`.
-
-We can should have a bash script that basically symlinks only files and creates folders. Nothing else.
+This directory is meant to be located in `~/.dotfiles`.
 
 External dependencies are managed via git submodules. This facilitates component based development, where these dependencies have their own life cycle.
 
@@ -12,6 +10,8 @@ git submodule add -b master git@github.com:sorin-ionescu/prezto.git
 # update the submodule to the latest master
 git submodule update --remote prezto
 ```
+
+I'm going to assume there's macro constants that is: `CYGWIN` or `NIXOS`. These should be independent of each other, as in one cannot set `CYGWIN` and `NIXOS` at the same time. Or else bad things can happen! If neither `CYGWIN` nor `NIXOS` is set, then bad things can happen. This will run the build and build into a `.build` folder. Then inside that `.build` folder, file will be symlinked out using unix symlinks or ntfs symlinks (mklink).
 
 Installation is:
 
@@ -24,51 +24,18 @@ SSH Keys are not stored in `~/.ssh` and the `~/.ssh/hosts` file is not stored th
 
 ```
 scp ~/.ssh/identity cmcdragonkai@X.X.X.X:~/.ssh/identity
-scp ~/.ssh/identity.ppl cmcdragonkai@X.X.X.X:~/.ssh/identity.ppk
+scp ~/.ssh/identity.ppk cmcdragonkai@X.X.X.X:~/.ssh/identity.ppk
 scp ~/.ssh/hosts cmcdragonkai@X.X.X.X:~/.ssh/hosts
 scp -r ~/.ssh/keys/ cmcdragonkai@X.X.X.X:~/.ssh/keys
 ```
 
-We need a file that dictates the system dependencies required for this user configuration to work. Similar to import_exec.
-
-While we have a local bin folder. This should contain shell utilities that can be executed for convenience to figure out things. They are each executables. Some of them are only relevant to Windows.
-
-Definitely symlink files, and only create directories!
-
-Where do I get the /usr/share/nano files? It would have to be part the /nix/store. Perhaps a symlink there? Is it available via static? How does a user specific script acquire the store path of a executable on the system?
-
-May need to create a compilation system to make for windows or make for linux. We already have conditional aspects of the configuration suited to Windows or Linux. We can use compiler flags like preprocessors that embed or disembed. Or we can create 2 different versions of the same file. I think preprocessor flags would be the best. Investigate Shake.
-
-# I also want one for rsync? And one for ssh where we forget about host key, like force option
-# also something to automate nc with gpg, or gpg with talk
-# nc require a listener and a transmitter, but the listener is just activated ad-hoc
-# while talk requires a daemon, which can be port activated (talk uses port 518?)
-# While talkd is available in inetutils, there's no service file for it yet that is port activated
-# so... yea.
-# https://wiki.archlinux.org/index.php/Talkd_and_the_talk_command
-# ntalk is port 518 UDP and TCP #
-
-Did GPG, Make/M4, Shake, GPG with netcat, talk/talkd, inetutils, Nixpkgs and the /usr/share problem (files inside packages that aren't binaries), SSH related utilities and rsync, global gitignore ignoring common temporary files like Vim swap files
-
-When deploying on Windows. We need to first install Cygwin.
-
-When deploying on Windows, we need to also build https://github.com/rprichard/winpty project. Attach it as a submodule here too. The resulting binaries need to be put into `~/.bin`. Many windows specific executables are to be symlinked with `console`. If you don't know. Leave it as is. This package is needed for Windows GHCI, Windows Python... etc. In most cases you want Cygwin executables. But somethings cannot be built on Cygwin yet. So you use Windows executables.
+Get this https://github.com/rprichard/winpty, it needs to be built currently. Wrap any REPLs compiled for Windows (using MingW for example) with winpty when running inside mintty.
 
 When deploying on Windows, somethings we cannot symlink. Instead either a shortcut or an NTFS symbolic link must be used. For example the Documents/WindowsPowerShell/Profile.ps1. Use the `mklink` alias to do this.
-
-The below needs to run once on installation on Windows. The environment variable has to be on Windows machine, not shell specific environment variable.
-
-```
-setx CYGWIN "nodosfilewarning"
-```
-
-The first step on Windows, is to first get Cygwin. And then run any build tools. Such a build tool needs to be immediately accessible from Linux and Cygwin easily. That makes Shake a bad idea. Even Make a bad idea. Ultimately we just need a simple `install.sh` script.
 
 Linux install script shouldn't symlink things that have `.ps1` or `.exe` or `.bat` or `.cmd` in them! And empty folders should also be ignored once files are ignored.
 
 Interesting resource: http://stackoverflow.com/a/21233990/582917
-
-Scrollback buffer search in Mintty doesn't work because of ConEmu. Can ConEmu replace this functionality? Or somehow let this pass?
 
 Mintty
 ------
@@ -85,11 +52,9 @@ Useful shortcuts (see the rest at the Mintty manual `man mintty`):
 
 Some shortcuts are not available because they are replaced by ConEmu equivalents.
 
-We prefer ASCII DEL `^?` to be used for backwards delete instead of ASCII BS `^H`. Instead `^H` can be mapped to nother functions. Forwards delete still uses `\e[3~`. Preferably if the design of keyboards and terminals were standardised, we could have ASCII DEL for forwards delete, and ASCII BS for backwards delete, but alas it is not so.
+We prefer ASCII DEL `^?` to be used for backwards delete instead of ASCII BS `^H`. Instead `^H` can be mapped to other functions. Forwards delete still uses `\e[3~`. Preferably if the design of keyboards and terminals were standardised, we could have ASCII DEL for forwards delete, and ASCII BS for backwards delete, but alas it is not so.
 
 Consolas is the chosen font at 13 point size for Mintty. Consolas is a monospaced programming font, and is already installed with Windows. It also has a wide range of glyphs and supports interesting kinds of unicode glyphs.
-
-We're using a solarized dark scheme.
 
 Use http://terminal.sexy/ to produce new colour schemes, and to translate them between different terminals or shells or editors.
 
@@ -140,24 +105,10 @@ Fallback Fonts:
 * Consolas - Windows
 * Inconsalata - Linux
 
-Performance
------------
-
-To improve performance we need to use a macro language and produce a `.build` folder. This way we can generate the correct .zshrc and other rc files and eliminate sections from the language when we don't need it. It's simple conditional macro language. I wonder if there's a bash version around, so we don't need to use m4 or anything.
-
-Currently using the macro language bashpp. But I reckon I should probably use just the CPP or m4.
-
-I'm going to assume there's macro constants that is: `CYGWIN` or `NIXOS`. These should be independent of each other, as in one cannot set `CYGWIN` and `NIXOS` at the same time. Or else bad things can happen! If neither `CYGWIN` nor `NIXOS` is set, then bad things can happen.
-
-Windows
--------
-
-# TODO: We need to run console.exe along with this to allow this work flawlessly in Cygwin mintty See the aliases for Cygwin, they mostly need to use `console`. Or `winpty`. #
-
 Installation WIP
 ----------------
 
-On installing this repository for use:
+Download or install the repository. If using git:
 
 ```
 git clone --recursive <.dotfiles-repo>
@@ -166,14 +117,14 @@ git clone <.dotfiles-repo> <.dotfiles-path>
 cd <.dotfiles-path> && git submodule update --init --recursive --depth 1
 ```
 
-We need to use:
+Need to first run the build system. On Windows that means executing `install.ps1`. On Linux that means executing `install.sh`.
+
+Once the build is done, we can copy the files using:
 
 ```
 # where --archive means: --recursive --links --perms --times --group --owner
 rsync --update --checksum --archive "./dotfiles/.build/" "${HOME}/"
 ```
-
-But also Make to run the rest.
 
 Remember the correct permissions: `chmod 600 -R ~/.ssh`. And use the preprocessor on all relevant files including `~/.ssh/config`.
 
@@ -239,8 +190,6 @@ This script will not manage Windows GUI applications except for ConEmu.
 The rest should be installed directly or using Chocolatey. But Chocolatey is outside the realm of this particular repository. This does mean dealing with things like Haskell Platform is outside the realm of this `.dotfiles`, except as configuration files.
 
 ---
-
-Remember to properly configure Cygwin's home menu to be `%USERPROFILE%`.
 
 Also note that there are 3 temporary directories for Cygwin use:
 
