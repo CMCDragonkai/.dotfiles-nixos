@@ -36,11 +36,13 @@ cyberduck,*,chocolatey
 peazip.portable,6.03,chocolatey
 
 # development
-jdk8,8.0.92,chocolatey
-heidisql,9.3.0.4984,chocolatey
-virtualbox,5.0.16.105871,chocolatey
-vagrant,1.8.1,chocolatey
-sourcetree,1.9.1.1,chocolatey
+jdk8,*,chocolatey
+heidisql,*,chocolatey
+dbeaver,*,chocolatey
+virtualbox,*,chocolatey
+vagrant,*,chocolatey
+sourcetree,*,chocolatey
+linqpad,*,chocolatey
 microsoft-build-tools,*,chocolatey
 # try the first one, then this one: visualstudio2015community,*,chocolatey
 
