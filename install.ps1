@@ -111,6 +111,10 @@ if ($Stage -eq 0) {
 
     # Allow Powershell scripts to be executable
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+    
+    # Copy the transparent.ico icon
+    Copy-Item ".\data\transparent.ico" "${env:SYSTEMROOT}\system32"
+    Unblock-File -Path "${env:SYSTEMROOT}\system32\transparent.ico"
 
     # Install Powershell Help Files (we can use -?)
     Update-Help -Force
