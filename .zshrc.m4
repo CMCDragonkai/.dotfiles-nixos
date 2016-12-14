@@ -19,7 +19,8 @@ setopt \
     check_jobs \
     hup \
     monitor \
-    notify
+    notify \
+    prompt_subst
 
 unsetopt beep
 
@@ -54,10 +55,25 @@ alias help='run-help'
 
 # ZSH Prompt
 
+# Count the number of background jobs
+precmd_job_count () {
+
+    job_count=${(M)#${jobstates%%:*}:#running}r/${(M)#${jobstates%%:*}:#suspended}s
+    if [[ $job_count == r0/s0 ]]; then 
+        job_count=''
+    else
+        job_count=" [$job_count] "
+    fi
+
+}
+
+# Hooking into pre-prompt commands
+precmd_functions=($precmd_functions precmd_job_count)
+
 PROMPT='%{$fg[green]%}%n%{$reset_color%} ➜ %{$fg[yellow]%}%m%{$reset_color%} ➜ %{$fg_bold[green]%}${PWD/#$HOME/~}%{$reset_color%} 
  ೱ ' 
 
-RPROMPT='%{$fg[cyan]%}%D %*' 
+RPROMPT='%{$fg[yellow]%}${job_count}%{$reset_color%}%{$fg[cyan]%}%D %*' 
 
 # ZSH keys
 
