@@ -35,27 +35,22 @@ Interesting Paths
 
 `%ALLUSERSPROFILE%` - Points to a common user profile directory (that is viewable by all users on the OS). We should create a `%ALLUSERSPROFILE%/bin` directory to add PATH symlinks to all Windows executables that we install into here (this makes sense as installed Windows executables are usually installed on the entire system, not for a particular user). This refers to any natively installed Windows executable, or any extracted Windows executable.
 
+Path hierarchy on Windows:
+
+* Default Windows Paths (on Windows): `C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\`
+* Chocolatey path (on Windows): `%ALLUSERSPROFILE%\chocolatey\bin` (use `$env:ChocolateyPath\bin` instead)
+* Custom Windows Path (on Windows): `%ALLUSERSPROFILE%\bin`
+* Cygwin Paths (on Cygwin): `/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin`
+* Home paths (on Cygwin): `~/bin`
+
+To take advantage of Home paths in CMD, make sure to set startup task to: `cmd /K %USERPROFILE%/.cmd_profile`
+
 Keyboard Control
 -----------------------
 
 Since we have many applications, and we are customising all of them, we will have a different set of keyboard shortcuts for every application.
 
-For Mintty:
-
-* <kbd>Ctrl</kbd> + <kbd>+</kbd>/<kbd>-</kbd> - Font Zooming
-* <kbd>Shift</kbd> + <kbd>Up</kbd>/<kbd>Down</kbd> - Scroll Line Up and Down
-* <kbd>Shift</kbd> + <kbd>PgUp</kbd>/<kbd>PgDn</kbd> - Scroll Page Up and Down
-* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>/<kbd>V</kbd> - Copy & Paste
-* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> - Search Scrollback Buffer
-* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> - Switch screens between orimary buffer and secondary buffer (like between shell and less or shell and vim)
-
-For ConEmu:
-
-* <kbd>Win</kbd> + <kbd>Ctrl</kbd> + <kbd>Enter</kbd> - Full Screen (also try Alt + Enter)
-
-We prefer ASCII DEL `^?` to be used for backwards delete instead of ASCII BS `^H`. Instead `^H` can be mapped to other functions. Forwards delete still uses `\e[3~`. Preferably if the design of keyboards and terminals were standardised, we could have ASCII DEL for forwards delete, and ASCII BS for backwards delete, but alas it is not so.
-
-KDE Notation:
+This notation is used in some configuration files such as `.inputrc` and Emacs:
 
 * `\C` - <kbd>Ctrl</kbd>
 * `\S` - <kbd>Shift</kbd>
@@ -65,34 +60,43 @@ KDE Notation:
 * ` ` - Means lift previous, and hit the next, operator is left associative. `e c t` means `((e c) t)`.
 * `<enter>` - The Enter Key
 * `<home>` - The Home key.
-* `\C-\S-f` - Search Scrollback
 
-Mintty keycodes are: https://github.com/mintty/mintty/wiki/Keycodes
+For Mintty:
 
-For both Bash and ZSH, where Bash uses `.inputrc` and ZSH has its own codes, we have set it up these key codes:
+* <kbd>Ctrl</kbd> + <kbd>+</kbd>/<kbd>-</kbd> - Font Zooming
+* <kbd>Shift</kbd> + <kbd>Up</kbd>/<kbd>Down</kbd> - Scroll Line Up and Down
+* <kbd>Shift</kbd> + <kbd>PgUp</kbd>/<kbd>PgDn</kbd> - Scroll Page Up and Down
+* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>/<kbd>V</kbd> - Copy & Paste
+* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> - Search Scrollback Buffer
+* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> - Switch screens between orimary buffer and secondary buffer (like between shell and less or shell and vim)
+* <kbd>Win</kbd> + <kbd>Alt</kbd> + <kbd>P</kbd> - Show settings
 
-Shift + Tab is now Literal Tab.
-Ctrl + Tab is switching between tabs in ConEmu
+(For more see: https://github.com/mintty/mintty/wiki/Keycodes)
 
-In Konsole, tab control is:
+For ConEmu:
 
-* C-S-Left - move tab position
-* C-S-Right - move tab position
-* S-Left - move to previous tab
-* S-Right - move to next tab
-* S-Tab - move to next view container, no idea what this is, so we disable it!
+* <kbd>Win</kbd> + <kbd>Ctrl</kbd> + <kbd>Enter</kbd> - Full Screen (also try Alt + Enter)
+
+We prefer ASCII DEL `^?` to be used for backwards delete instead of ASCII BS `^H`. Instead `^H` can be mapped to other functions. Forwards delete still uses `\e[3~`. Preferably if the design of keyboards and terminals were standardised, we could have ASCII DEL for forwards delete, and ASCII BS for backwards delete, but alas it is not so.
+
+For Konsole:
+
+* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Left</kbd>/<kbd>Right</kbd> - Move Tab Position
+* <kbd>Shift</kbd> + <kbd>Left</kbd>/<kbd>Right</kbd> - Move to Left/Right Tab
 
 Shell Commands:
 
-`\C-c` - SIGINT
-`\C-\` - SIGQUIT
-`\C-z` - Toggle backgrounding and foregrounding.
-`\S-<enter>` - Non-executing enter, allows multiline commands.
+* <kbd>Shift</kbd> + <kbd>Tab</kbd> - Enter literal tab
+* <kbd>Ctrl</kbd> + <kbd>Z</kbd> - Toggle backgrounding and foregrounding
+* <kbd>Shift</kbd> + <kbd>Enter</kbd> - Non-executing enter to allow multiline commands
+* <kbd>Ctrl</kbd> + <kbd>C</kbd> - Send SIGINT
+* <kbd>Ctrl</kbd> + <kbd>\</kbd> - Send SIGQUIT
+* <kbd>Ctrl</kbd> + <kbd>U</kbd> - Send SIGTERM
 
 Hotkey Hierarchy:
 
-Linux Commands -> XMonad Commands -> Konsole Commands -> Tmux Commands -> Shell Commands -> Application Commands
-Windows Commands -> ConEmu Commands -> Mintty Commands -> Tmux Commands -> Shell Commands -> Application Commands
+* Linux Commands -> XMonad Commands -> Konsole Commands -> Tmux Commands -> Shell Commands -> Application Commands
+* Windows Commands -> ConEmu Commands -> Mintty Commands -> Tmux Commands -> Shell Commands -> Application Commands
 
 Terminal Emulator
 -----------------
@@ -109,6 +113,10 @@ Our terminal emulator would preferably support sixel graphics, W3M images, and l
 So for Windows, the stack is: ConEmu + Mintty/Conhost.
 
 For Linux, the stack will be: Konsole. Because w3m images isn't that important, and sixel graphics is an oddity. We can use graphical Emacs instead for graphics and executable documents, no need for the terminal. But in the future if Konsole could support sixel graphics or w3m images, then it would be great! That being said, over SSH, support for sixel depends on client terminal emulator. And w3mimages doesn't work on Linux console anyway. The only way to get image support into terminals in modern day systems is to create a new standard such as iTerm2, or Black screen, or use support sixel graphics eventually. Until that day comes, we stick with KDE Konsole.
+
+The Search Field in ConEmu only applies to ConHost applications. Things like Powershell and CMD that uses Windows ConHost. If you are running mintty, the search field in ConEmu does not work. Instead Mintty has its own search functionality. This is because mintty is a terminal emulator itself, and ConHost is  Windows terminal emulator!
+
+Note that "window management" in Cygwin occurs via ConEmu and Tmux. Need to design hotkeys around this, and prefer most of the time for ConEmu to intercept hotkeys.
 
 Fonts
 -----
@@ -130,6 +138,86 @@ Fallback Fonts:
 
 * Consolas - Windows
 * Inconsalata - Linux
+
+ZSH as Default Shell
+--------------
+
+The `/etc/passwd` has been changed to match ZSH. For the 2 ways of launching the terminal.
+
+* `Cygwin.bat` - Official Cygwin launcher. Because it starts as a Windows Batch File, it only has access to Windows environment variables.
+* `mintty.exe` - Launches Mintty directly. It has a number of command line flags that changes its behaviour, and it will autolaunch the default shell for the user. It has the capability of launching the shell as a login shell or just a normal interactive shell. The autolaunching of the shell works by: checking SHELL executable, reading /etc/passwd before falling back onto /bin/sh.
+
+Basically ConEmu doesn't bother with `Cygwin.bat`, but ConEmu instead directly launches `mintty.exe` and passes it parameters.
+
+The Mintty manual says:
+
+```
+       If a program name is supplied on the command line, this is executed with any additional arguments given.  Otherwise, mintty
+       looks for a shell to execute in the SHELL environment variable.  If that is not set, it reads the user's default shell setting
+       from /etc/passwd.  As a last resort, it falls back to /bin/sh.  If a single dash is specified instead of a program name, the
+       shell is invoked as a login shell.
+```
+
+Which means since `$SHELL` is not available as a Windows environment variable, it will read the result from `/etc/passwd`. Which is what we have set.
+
+One important thing. There's no real point in making every shell a Login shell, so all shells launched from ConEmu to Mintty, they should all be non-login interactive shells. An explicit option should be offered to launch a login shell.
+
+The startup task for ConEmu for a non-login shell should be: `%USERPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico`.
+
+The startup task for ConEmu for a login shell should be: `%USERPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -`.
+
+Process Hierarchy on Cygwin
+---------------------------
+
+Make sure to use Process Explorer to view this. Ideally the process tree of using ConEmu, Cygwin, Mintty.. etc is like this (this is not a real tree!):
+
+```
+# here's a tree with Process Name and Actual Executable:
+Console Emulator (x64) [ConEmu64.exe]
+    -> ConEmu console extender (x86) (32 bit) [ConEmuC.exe]
+        -> Console Window Host [conhost.exe] & Windows Command Processor (32 bit) [cmd.exe]
+    -> ConEmu console extender (x64) [ConEmuC64.exe]
+        -> Console Window Host [conhost.exe] & Windows Command Processor [cmd.exe]
+        -> Console Window Host [conhost.exe] & Windows PowerShell [powershell.exe]
+        -> Console Window Host [conhost.exe] & Terminal [mintty.exe]
+            -> zsh.exe [zsh.exe]
+```
+
+The `ConEmu64.exe` is the ConEmu terminal emulator process. This manages the launching of ConEmu Containers `ConEmuC.exe` and `ConEmuC64.exe`. The containers are like "windows" that contains a ConHost and Terminal Emulator pair. Note the 32 bit and 64 bit versions of the containers, a 32 bit container contains a 32 bit pair. An example pair is `conhost.exe` and `mintty.exe`. In Windows parlance, the `conhost.exe` is a "Windows Process", while ConEmu processes, `mintty.exe`, `cmd.exe`, `powershell.exe` and ZSH processes including child processes are considered "Background Processes". The only process to be considered a "User Process" is the top-level `ConEmu64.exe`.
+
+This shows that each time you launch a new Cygwin window (as in `conhost.exe` & `mintty.exe`), you end up with a new process tree, with each `mintty.exe` acting as its own Cygwin PID 1 init.
+
+This may or may not be problematic. If it is, then it's better to use tmux to further launch sub-shells, rather than using ConEmu to launch new Cygwin windows. This may explain why it might be difficult to share SSH-Agent across Cygwin windows.
+
+On the status bar, the left number is the Windows PID of the contained terminal emulator, while the right number is the Windows PID of the ConEmu container.
+
+While we can visualise the process hierarchy as a tree, it doesn't actually behave like a process supervisor tree. It is very easy to create orphaned processes by killing process nodes in an incorrect manner.
+
+For example, killing `ConEmu64.exe` doesn't kill the child processes, they are left running. But they are no longer visible.
+
+There are various pecularities in the behaviour of `conhost.exe` and its paired up terminal emulators. But the one I'm concerned about most, is when `mintty.exe` is terminated, whether it propagates kill signals to its child processes such as ZSH, and whether ZSH then propagates kill signals to its child processes, thus allowing us to clean up all Cygwin processes upon killing the Cygwin window.
+
+The best way to test this is to have processes running the background of the shell, and then to kill the mintty process directly, we specifically 3 things to happen:
+
+1. The associated `conhost.exe` is to be terminated.
+2. All Cygwin processes must be terminated (including any backgrounded processes, suspended processes like `less`)
+3. The ConEmu container should also be terminated.
+
+This behaviour needs both Mintty and the Shell to propagate kill signals. Note that with an idle Shell, Mintty will automatically propagate the kill signal to the Shell (it could be SIGHUP), Mintty will only ask for confirmation if it detects that there are child processes under the Shell. Note that the Shell isn't the only child process of Mintty, there can be other processes such as SSH-Agent. It is apparent that Bash receives a SIGHUP, and then propagates SIGHUP to all child processes.
+
+Let's try to make ZSH propagate kill signals:
+
+* `exit` - leaves orphaned process after 1 warning.
+* `kill -HUP $$` - no warning, but still leaves orphaned process.
+* Mintty Close from GUI - warning from mintty, but still leaves orphaned process.
+* <kbd>Ctrl</kbd> + <kbd>D</kbd> - warning from ZSH, but still leaves orphaned process.
+* Task Termination - no warning, leaves lots of orphaned processes.
+
+According to http://superuser.com/q/662431/248499, for Bash, all child processes will receive SIGHUP if the SSH connection is closed and that `huponexit` is set to true. However if the SSH connection is killed or is dropped, then child processed will still receive SIGHUP regardless of `huponexit`.
+
+According to ZSH docs, simply `setopt HUP` should just result in ZSH closing all child processes. 
+
+Don't use orphan processes to create services/daemons. Create services using a service wrapper! Use your init's service wrapper capabilities. Systemd has services. So does Windows. Using orphan processes for services/daemons is totally deficient!! But you ask, what about user local processes!? Well systemd has user services too! Then you ask, what if I just want to run a long running process, and not look at it, and log out of SSH? I don't have the ability to create service! Well then that's when you us a terminal multiplexer called tmux or screen to create detached sessions! In no situation is orphaned processes the right answer. EXCEPT under one/two circumstance. When launching X applications or DE applications from the command line. That's the only time it makes sense to orphan a process, when it's like a GUI application that you want to launch independently. In that case, you're creating a "launcher", which is really a specific situation! It makes sense in this case, because firstly you don't want to control the process from the terminal (not even send signals), and it's not a long running daemon either, so it's not a service. Alternatively, if you do have tmux or screen, orphaning may not be required either. As you can just launch into detached sessions. HOWEVER this is kind of inefficient, as there's lots of baggage being carried around. Or you can just orphan it and make it be handled as an independent process. The only time where this makes sense is GUI applications like launching firefox.. etc. Make sure to attach its error handling into the X or DE based error handling. Which should be journald or syslog or .xsession-errors.
 
 Development
 ----------------
@@ -173,30 +261,6 @@ On checking submodule status:
 cd "$(git rev-parse --show-toplevel)"
 git submodule status --recursive
 ```
-
----
-
-* Default Windows Paths (on Windows): `C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\`
-* Prepend Chocolatey path (on Windows): `%ALLUSERSPROFILE%\chocolatey\bin` (use `$env:ChocolateyPath\bin` instead)
-* Prepend custom Windows path (on Windows): `%ALLUSERSPROFILE%\bin`
-* Prepend Cygwin paths (on Cygwin): `/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin`
-* Prepend Home paths (on Cygwin): `~/bin`
-
-What this means is that Windows executables will always be available to Windows executables, but both Windows and Cygwin executables will be available to Cygwin executables and Windows executables executed through Cygwin.
-
-Only one problem, Powershell scripts in `~/bin` won't be available to Powershell by default. The way to solve this is to put in `~/Documents/WindowsPowerShell/profile.ps1` an extra piece of code to set `%USERPROFILE%/bin` as prepended as well. This way, all user executed powershells will gain access to `~/bin`. Also to make sure that `PATHEXT` also contains `.PS1`. All of this is done currently.
-
-As for `CMD`, this is fixed via `~/.cmd_profile`. Which you need to hook into any call via `cmd /K %USERPROFILE%/.cmd_profile`.
-
-Wait Package Manager or OneGet using chocolatey provider isn't installing Chocolatey packages into `%ALLUSERSPROFILE%/chocolatey/bin`. Instead it's putting into `C:\Chocolatey\bin`. And of course only for portable packages. Also `%ALLUSERSPROFILE%` is just `C:\ProgramData`. So I think while official chocolatey puts stuff into `%ALLUSERSPROFILE%/chocolatey`. I think a better idea is to utilise the Chocolatey install path `$env:ChocolateyPath`.
-
----
-
-The Search Field in ConEmu only applies to ConHost applications. Things like Powershell and CMD that uses Windows ConHost. If you are running mintty, the search field in ConEmu does not work. Instead Mintty has its own search functionality. This is because mintty is a terminal emulator itself, and ConHost is  Windows terminal emulator! Also scrollbars on ConEmu only applies to ConHost applications as well. Mintty manages its own scrollbar.
-
-Perhaps we should no be using ConEmu for terminal window management for Mintty. But instead tmux. Whereas ConEmu's terminal window management is relegated to Windows ConHost terminals. So right now I'm interesting in making the tab switching work, which should easily transition to panel switching. In fact switching between tabs is switching between different panels right now. It's just that CTRL+TAB doesn't work because Mintty/Putty captures it and prevents it from being used. Furthermore, more than just tab/panel switching, is the ability to launch panels, instead of launching tabs, easy keyboard hotkey for doing so. Launching panels will be really useful for certain things. Then keyboard controls for controlling the size of the panels easily. While this would be great for powershell and CMD, it's not really useful for Mintty. Instead Mintty will need to use tmux. So we have 2 levels of terminal window management lol.
-
-Design hotkeys around 2/3 systems: XMonad -> Konsole -> Tmux -> ZSH on Linux, and on Windows: Windows Shell -> ConEmu -> Mintty -> Tmux -> ZSH. We'll need to have hotkey escalation, using the Mod key (Win key), Alt, Ctrl, Shift (left and right are equivalent).
 
 ---
 
@@ -249,503 +313,6 @@ Non-NixOS:
 
 ---
 
-Ok, so let's see if we can change tab shifting to use `S-Left` or `S-Right` as well..
-
-Win + Alt + P - show settings (works in mintty)
-Win + Alt + W - close terminal (does work in mintty)
-
-Cursor Information is useless because it only works in ConHost, not mintty.
-
-BufferHeight mode is for ConHost, as inits on for Powershell and CMD, but not for Mintty. This is a good thing, it allows scrolling.
-
-TSA is the icon panel on the bottom in Windows. Taskbar Status Area.
-
-Always use Segoe UI for Tab Font and Status Bar Font, and Segoe UI Mono if available.
-By default, make Consolas the font for Console main and alternative, or Segoe UI Mono if available.
-Size 18.
-
-Status bar now shows the active process on the left. Which is the parent process. The console itself.
-`mintty.exe*[64]:3352`. The 3352 is the Windows PID. It's not MINTTY that contains the TTY. But the it's the SHELL that is associated with the tty. Using `ps -a`, it shows MINTTY with WINPID and CYGWIN PID as 3352, while it has unknonw tty. That's because the ttys are actually for the shell itself.
-
-So that means the WINPID for mintty is always the same as the CYGWIN PID for mintty.
-
-On the far right, we have the Console Server PID. This is not related to Mintty or ZSH. It is related to ConEmu's server PID for each terminal launched inside ConEmu. 
-
-```
-# let's say ConEmu is a super terminal emulator
-# we have 6 ConEmuC processes, serving 6 terminal emulators
-ConEmuC.exe - 1492 - serving 32bit CMD
-ConEmuC64.exe - 204 - serving 64bit CMD
-ConEmuC64.exe - 4396 - serving 64bit powershell
-ConEmuC64.exe - 5324 - serving 64bit mintty
-ConEmuC64.exe - 2156 - serving 64bit mintty
-```
-
-It appears that ConEmuC* is the actual container that holds the terminal application? The terminal application for Cygwin is just mintty. Whereas for Windows, we have a conhost and its related shell. So a conhost + cmd, or a conhost + powershell.
-
-Actually we also have 6 conhosts equaling 6 terminal emulators. So I'm guessing, even mintty requires its own conhost.
-Yep. So closing a mintty terminal, results in closing a ConEmuC* process AND a conhost process. Along with the entire mintty process treey as well.
-
-We have 1 extra processes that I'm not sure what they are:
-
-```
-ConEmu64.exe
-```
-
-I think, this is the main ConEmu process. that launches the ConEmuC containers, which then launch conhosts with terminal emulators like mintty, cmd, powershell.
-
-The ConHosts are considered "Window Processes". Perhaps part of the kernel.
-The Mintty and CMD and Powershell are considered "Background Processes".
-
-```
-# all background processes
-Terminal - Mintty
-Windows Command Processor - CMD
-Windows Powershell - Powershell
-```
-
-The ConEmuC processes are also considered "Background Processes".
-
-```
-ConEmu console extender (x64) - ConEmuC64.exe
-ConEmu console extender (x86) 32 bit - ConEmuC.exe
-```
-
-The ZSH is also considered "Background Processes".
-
-The only thing considered to be "User Process" is ConEmu64.exe. And it also represents a group that you can switch to.
-And that is the actual super parent process that starts the entire process tree.
-
-```
-# here's a tree with Process Name and Actual Executable:
-Console Emulator (x64) [ConEmu64.exe]
-    -> ConEmu console extender (x86) (32 bit) [ConEmuC.exe]
-        -> Console Window Host [conhost.exe] & Windows Command Processor (32 bit) [cmd.exe]
-    -> ConEmu console extender (x64) [ConEmuC64.exe]
-        -> Console Window Host [conhost.exe] & Windows Command Processor [cmd.exe]
-        -> Console Window Host [conhost.exe] & Windows PowerShell [powershell.exe]
-        -> Console Window Host [conhost.exe] & Terminal [mintty.exe]
-            -> zsh.exe [zsh.exe]
-```
-
-At the `mintty.exe`, the PPID of `mintty` is 1. So each mintty process is currently the first process past PID 1. However it seems that there is no PID 1. So therefore each mintty is its own process tree, and there is no further parent to consider.
-
-If you use `ps -W`, to get Windows processes as well. It will show that the PPID of Windows processes from the perspective of Cygwin is 0. Meaning they don't have a PID 1. This is because they are out of the control of Cygwin.
-There fore any process in Cygwin with a PPID of 1, is itself basically PID 1, it is the init. And you can have many inits running at the same time. Currently everytime I run a new Cygwin, this creates a whole new init.
-
-The left number on the status shows the cmd.exe/powershell.exe/mintty.exe PID. Which is the same as the Cygwin PID.
-
-The right number on the status shows the ConEmu console extender process ID.
-
-Not sure why you need to know these PIDs though.
-
-Supposedly if you close Console Emulator, you should close everything. However somethings get detached. And the thing I think is being detached is conhost.exe. We can try this now.
-
-Actually they don't live a process tree. They are completely independent. Killing Console Emulator simply results in leaving detached and independent ConEmu console extender processes. They are all by themselves now... Everything keeps running.
-
-However, although they keep running, they are no longer usable. We require the ConEmu64.exe to actually render contents onto the terminal. Without it, even though the extenders are running. They don't show anything anymore. Thye just show the cmd stuff for the extenders.
-
-The only thing that acts like a process tree is the ConEmu extenders. Killing one of the extenders, results in killing the conhost and cmd.
-
-I'm not sure if conhost under the cmd, or above the cmd? I'd think it's above the cmd right...
-
-5144
-
-6028
-6036
-888
-
-If you kill cmd, you lose the conhost. It's automatic.
-If you kill conhost, you lose the cmd. It's automatic.
-
-This implies they are not in a parent child relationship, but a symbiotic relationship. Between Windows processes and background processes
-
-If you kill one of the ConEmuC processes, it does not kill the Console Window host or the Terminal emulator being ran. However the window for rendering still does not appear. 
-
-The cmd however is repainted, and we can now view it.
-
-Wait but if it's a windows CMD, you do get it repainted.
-
-Killing one of the conhosts, doesn't kill the bound CMD nor Mintty. I still have 2 MINTTY, and 1 CMD. Even though I killed the conhost. However I no longersee an appplication inside the taskbar.
-Killing a mintty, doesn't kill zsh.
-
-CMD is bound to Conhost. but not mintty. killing conhost for a mintty doesn't kill mintty. kiling conhost for cmd, does kill the cmd.
-Killing zsh doesn't kill ssh-agent.
-
-THAT IS SO WEIRD. It's like Windows doesn't have the concept of process trees.
-
-The task manager is not very useful here. We need to use Windows Process Explorer.
-
-There are so many "orphan processes" on Windows, if you don't use the GUI close buttons.
-
-There's a difference between an child process, an orphan process and a zombie process. We can almost set this as a finite state machine. 
-
-Child processes can be fundamentally started in either "fork" or "spawn" modes. Spawn is how you do it in Erlang and Windows. Fork is how you do it in Unix. However POSIX added "posix_spawn" that also allows one to do spawn in POSIX OS now!
-
-Don't use orphan processes to create services/daemons. Create services using a service wrapper! Use your init's service wrapper capabilities. Systemd has services. So does Windows. Using orphan processes for services/daemons is totally deficient!! But you ask, what about user local processes!? Well systemd has user services too! Then you ask, what if I just want to run a long running process, and not look at it, and log out of SSH? I don't have the ability to create service! Well then that's when you us a terminal multiplexer called tmux or screen to create detached sessions! In no situation is orphaned processes the right answer. EXCEPT under one/two circumstance. When launching X applications or DE applications from the command line. That's the only time it makes sense to orphan a process, when it's like a GUI application that you want to launch independently. In that case, you're creating a "launcher", which is really a specific situation! It makes sense in this case, because firstly you don't want to control the process from the terminal (not even send signals), and it's not a long running daemon either, so it's not a service. Alternatively, if you do have tmux or screen, orphaning may not be required either. As you can just launch into detached sessions. HOWEVER this is kind of inefficient, as there's lots of baggage being carried around. Or you can just orphan it and make it be handled as an independent process. The only time where this makes sense is GUI applications like launching firefox.. etc. Make sure to attach its error handling into the X or DE based error handling. Which should be journald or syslog or .xsession-errors.
-
-Process explorer shows how it really works. The process tree actually starts from Launchy, showing ConEmu64.exe, then the ConEmu64C, then a combined conhost with mintty or cmd. Processes launched by Mintty are not part of the process tree at all according to Windows, but are completely independent processes. ZSH, less and ssh-agent are all as if they are independent. Closing ConEmuC64 through official means, will close both the mintty, all of its processes and conhost. HOWEVER, if we close a terminal emulator, while it has processes running in its job control. Mintty warns that there are still processes running. These processes are not terminated. Which why I see a `conhost.exe` and `less.exe` left behind.
-
-```
-PROCESS STATE CODES
-       Here are the different values that the s, stat and state output specifiers (header "STAT" or "S") will display to describe the
-       state of a process:
-
-               D    uninterruptible sleep (usually IO)
-               R    running or runnable (on run queue)
-               S    interruptible sleep (waiting for an event to complete)
-               T    stopped by job control signal
-               t    stopped by debugger during the tracing
-               W    paging (not valid since the 2.6.xx kernel)
-               X    dead (should never be seen)
-               Z    defunct ("zombie") process, terminated but not reaped by its parent
-```
-
-However Cygwin's ps is a custom ps: https://cygwin.com/cygwin-ug-net/ps.html It only has 3 status codes: `S I O`, meaning stopped or suspended, waiting on input (interactive applications are like this), and waiting on output.
-
-The WINPID from Cygwin, can be used to kill processes using https://cygwin.com/cygwin-ug-net/kill.html `kill --force`. Without the `--force` option, the PIDs are considered CYGWIN PIDs, not Windows PIDs.
-
-Top also shows 3 sleeping processes, 1 stopped process, and 1 running process.
-
-What I'm concerned about, is that closing the ConEmu terminal, doesn't close the conhost or the suspended/running processes that are inside mintty. That being said, the zsh and ssh-agent process does get closed. It's just the less and a conhost doesn't get closed, and becomes orphaned processes. Because less is an interactive process, it is left to run. And becomes orphaned. Because it is an interactive process, it requires a conhost. If you kill less, the conhost disappears along with it. It's almost as if the conhost represents a "pty". Does each orphaned process require its own conhost? Yep, we are left with only 1 conhost. Only 1 conhost is required to satisfy the pty processes. It does feel like a conhost is used to supply a pty. But hold on. Do we really need it? What if I launch a mintty by itself alone. Definitely conhost is created for every mintty.
-
-Now why does ZSH and ssh-agent get closed regardless? It must be because those are not considered jobs... Not jobs of ZSH. Mintty closes, and closes its immediate child processes. That is the ZSH and SSH-Agent. But if Mintty cannot force close the grandchildren. It is up to ZSH to terminate the processes when it closes as well. This should be happening right? Each process can only terminate its immediate children, they cannot touch its grand children. That's how the fork fork exec style of orphaned processes work. That's my theory currently.
-
-So this must mean.. that when closing a conemu terminal emulator, it only warns if the processes have child processes. Because by itself, only ZSH and ssh-agent is available, and these are closed all the time. So the warning is coming from MINTTY, and it cannot close grandchildren, so there are grandorphans being left behind.
-
-See the Mintty option:
-
-> Prompt about running processes on close (ConfirmExit=yes)
-> 
-> If enabled, ask for confirmation when the close button or Alt+F4 is pressed and the command invoked by mintty still has child processes. This is intended to help avoid closing programs accidentally. If possible, mintty also displays a list of running child processes, using the procps command if installed, or the ps command.
-
-Ok, so what is goal here. The goal should be that, that if the terminal emulator closes, all transitive children processes should close with it. No orphans allowed!
-
-> When you close a GNOME Terminal window, the shell process (or the process of whatever command you instructed Terminal to run) is sent the SIGHUP signal
-
-> A process can catch SIGHUP, which means a specified function gets called, and most shells do catch it. 
-
-> Bash will react to a SIGHUP by sending SIGHUP to each of its background processes (except those that have been disowned).
-
-Right.. so it seems that ZSH is not sending SIGHUP to its child processes that are in the background (except those that have been disowned). Now I have not disowned any of my background processes in ZSH. So what is happening here!?
-
-This shows something like: http://unix.stackexchange.com/a/176866/56970 Where gnome-terminal with bash can execute gnome-terminal with bash. But normally upon closing, child gnome-terminal will not be killed because it was never a child gnome-terminal. Launching a subsequent gnome-terminal looks for an original gnome-terminal window, and attaches to that. Killing the original gnome-terminal window, simply kills that gnome-terminal session. Not the new session. But this feature can be disabled, so it behaves like a child process in a process tree.
-
-We need to differentiate "running" "executing" and "launching". "Launching" is always a matter of turning it into a orphaned process. Similar to using cygstart. It's an app launcher. But "running" or "executing" means preserving a process tree. And becoming a supervisor for that smaller process. 
-
-So what's currently happening is that ZSH is one leaving orphaned processes all the time. Which it should not be doing. Orphaning should be explicit using disown or nohup.
-
-Secondly, ZSH is always launched as a login shell. That doesn't make sense. On Linux, a login shell makes sense at the very beginning, launching tty0 and the tt7. But once you have your DE running, a login shell should always be created upon creating a terminal session. Instead, it should only be interactive. Our `cygwin.bat` is currently always running with `zsh -l -i`. I don't think `-l` makes sense here. But I'm not sure whether this is true. But on Windows, what does it mean to have a login shell!? I think there is no login shell when launching from Windows. The only login shell that can occur, is when running sshd on cygwin, and when a user logs in through SSH, only then would there be a login shell.
-
-Therefore, login shell scripts should not run when simply executing ZSH from mintty.
-
-ZSH as Default Shell
---------------
-
-The `/etc/passwd` has been changed to match ZSH. For the 2 ways of launching the terminal.
-
-* `Cygwin.bat` - Official Cygwin launcher. Because it starts as a Windows Batch File, it only has access to Windows environment variables.
-* `mintty.exe` - Launches Mintty directly. It has a number of command line flags that changes its behaviour, and it will autolaunch the default shell for the user. It has the capability of launching the shell as a login shell or just a normal interactive shell. The autolaunching of the shell works by: checking SHELL executable, reading /etc/passwd before falling back onto /bin/sh.
-
-Basically ConEmu doesn't bother with `Cygwin.bat`, but ConEmu instead directly launches `mintty.exe` and passes it parameters.
-
-The Mintty manual says:
-
-```
-       If a program name is supplied on the command line, this is executed with any additional arguments given.  Otherwise, mintty
-       looks for a shell to execute in the SHELL environment variable.  If that is not set, it reads the user's default shell setting
-       from /etc/passwd.  As a last resort, it falls back to /bin/sh.  If a single dash is specified instead of a program name, the
-       shell is invoked as a login shell.
-```
-
-Which means since `$SHELL` is not available as a Windows environment variable, it will read the result from `/etc/passwd`. Which is what we have set.
-
-One important thing. There's no real point in making every shell a Login shell, so all shells launched from ConEmu to Mintty, they should all be non-login interactive shells. An explicit option should be offered to launch a login shell.
-
-The startup task for ConEmu for a non-login shell should be: `%USERPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico`.
-
-The startup task for ConEmu for a login shell should be: `%USERPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -`.
-
----
-
-Even exit from ZSH, the ZSH warns that we have suspended jobs in background. And if we run exit again. We get the same deal. The same thing from kill the entire terminal emulator from outside. As in killing mintty. The less process is still running.
-
-Nope. Running `kill -HUP $$` still results in less being orphaned.
-
-* `exit` - leaves orphaned process after 1 warning
-* `kill -HUP $$` - no warning, but still leaves orphaned process
-* Mintty Close from GUI - warning from mintty, but still leaves orphaned process
-* <kbd>Ctrl</kbd> + <kbd>D</kbd> - warning from ZSH, but still leaves orphaned process
-* Task Termination - no warning, leaves lots of orphaned processes
-
-Shit!
-
-Bash, correctly kills child processes upon leaving. It kills from Mintty Close from GUI and `exit`. The less gets removed even as suspended. And also there's still a warning too.
-
-Running from Cygwin.bat. Bash performs properly. But ZSH actually ends up leaving ssh-agent but killing less, when GUI window is closed... but running exit, leaves less and ssh-agent running. What the hell!?
-
-However `cygstart mintty /bin/bash` performs properly. While `cygstart mintty /bin/zsh` does not kill child processes.
-
-But this makes no sense. `shopt huponexit` shows that it's false by default. So what is closing less if bash isn't...? Is bash actually receiving a sighup from MINTTY or something? There's no way. Even exit is killing things!
-
-Wait, `cygstart mintty /bin/bash` does not start a login shell. It's an interactive shell. Maybe that's something different?
-
-Bash doesn't seem to need `shopt huponexit` to actually kill child processes. They just are killed! I HAVE NO IDEA!!!
-
-http://superuser.com/q/662431/248499
-
-Even though. We still need to make sure shopt huponexit is enabled for Bash. It's the only safe thing!
-
-> Bash seems to send the SIGHUP only if it self received a SIGHUP, which for example occurs when a virtual terminal is closed or when the SSH connection is interrupted. From the documentation:
-
-By default, this only happens when VT is closed or SSH connection is interrupted. But it doesn't happen for normal exit or EOF character. So huponexit is required. What's confusing, is that my Bash is already killing child processes no matter what anyway. But ZSH isn't! It's super annoying! Not to mention the fact that `huponexit` is only effective for interactive login shells. So it's still possible to have non-login interactive shells that exit and leave child processes running as orphans. But doesn't seem to occur on my Cygwin system.
-
-Note that running `disown -ah` and `disown %1` ends up working on Bash too, the processes are not terminated upon Bash being closed. So why does Bash have the right behaviour here?
-
-Killing a process tree is more difficult than I first imagined. Solutions include:
-
-1. Traverse the tree
-2. Use process groups (this is the most official way to do it)
-3. Use a container (cgroups, control groups)
-
-Because SIGKILL is unhandleable, SIGKILL is the most dangerous. As no parent process can possibly close their child processes and propagate any kind of signals (usually SIGHUP) to descendant processes. By definition SIGKILL will kill parents and leave orphans behind. It's an evil signal. Usually a well behaved process that behaves like a supervisor, should upon receiving SIGTERM/SIGHUP/SIGQUIT, should propagate them to their children. And the children should also propagate them further if they are to behave like supervisors too.
-
-This explains the concept of using PROCESS GROUPS. http://stackoverflow.com/a/15139734/582917 Which I guess is the Unix/Linux way of setting up supervisors.
-
-Yep this makes more sense now: https://en.wikipedia.org/wiki/Process_group
-
-```
-# this actually kills a process in the foreground of another terminal
-kill -STOP $PID # "suspended (signal)"
-kill -CONT $PID # do not touch anything here, otherwise "suspended (tty input)", and no automatically HUP
-kill -HUP $PID # "continued -> hangup"
-```
-
-While this doesn't work:
-
-```
-kill -TSTP $PID # "suspended"
-kill -CONT $PID # "suspended (tty output)"
-kill -HUP $PID
-```
-
-We cannot `HUP` something until it is continued first. This makes sense as Bash does this, as it says that when it exits, it will first send SIGCONT before SIGHUP. However for some reason SIGCONT does not work on SIGTSTP programs?
-
-WHAT the hell is:
-
-suspended - SIGSTSP (suspended by Ctrl + Z)
-suspended (signal) - SIGSTOP (suspended by kill -STOP $PID)
-suspended (tty input) - SIGTTIN (like read backgrounded, or kill -TTIN $PID)
-suspended (tty output) - SIGTTOU (suspended when stty tostop is activated, and is a background process, and or kill -TTOU $PID, or when the shell responds a process like less when backgrounded or suspended)
-
-Ok here's what happens (note that ZSH job status is more detailed that Bash, Bash just calls everything "Stopped" when suspended):
-
-```
-less file : running
-Ctrl + Z : suspended
-bg %1 : continued -> suspended (tty output)
-kill %1 : terminated
-```
-
-```
-less file & : running -> suspended (tty output)
-kill %1 : terminated
-```
-
-```
-stty -tostop
-cat random & : running -> done
-```
-
-```
-stty tostop
-cat random & : running -> suspended (tty output)
-fg %1 : done
-(sleep 10; echo "haha"; ) | cat : running@subshell && running@cat -> done@subshell && suspended (tty output)@cat
-fg %1 : done@subshell && continued@cat -> done@subshell && done@cat
-```
-
-```
-# how to make this read input as backgrounded job?
-# there's no corresponding command for input like stty tistop
-# this is because, it's very very unlikely you would want a backgrounded job that asks for input to take control over the terminal without explicitly foregrounding the job in the shell
-# therefore processes that read in the backgrounded are always suspended with SIGTTIN
-read & : running -> suspended (tty input)
-```
-
-```
-echo -e "#/usr/bin/env bash\nx=$(read)" > /tmp/test.sh
-chmod 100 /tmp/test.sh
-/tmp/test.sh : running
-Ctrl + Z : suspended
-bg %1 : continued -> suspended (tty input)
-kill %1 : terminated
-```
-
-```
-Ctrl + Z -> SIGTSTP
-bg %1 -> SIGCONT (but stay in background)
-fg %1 -> SIGCONT (but bring to foreground)
-by default, reading means SIGTTIN
-by default, for less outputting means SIGTTOU
-using stty tostop, for cat outputting means SIGTTOU
-```
-
-Note that `continued` always mean transitioning to `running`, before being potentially `suspended`.
-
-FSM.
-
-What is the difference between less and cat?
-
-And what relationship does this have with ZSH not being killing child processes, and SIGTTIN and SIGTTOUT.
-
-The thing is that, SIGSTOP is not what Ctrl + Z sends. And you cannot easily fg the process back. You can try, but it results in weird rendering issues. Obviously SIGSTSP is meant for actual suspension from a terminal emulator and in ZSH. But it doesn't seem to respond to SIGCONT properly. There must be other signals or something that is managing the input/output properly? What exactly is fg or bg?
-
-Also if already STSP, and you use bg %1, you get -> continued -> suspended (tty output).
-
-bg is actually SIGCONT
-but what is fg?
-
-This guy seems to know it: http://stackoverflow.com/questions/1844232/sending-a-signal-to-a-background-process#comment1738206_1844440
-
-It appears that `suspended (tty output)` means the process tried to write to the shell, but the shell blocked it, and signaled to the process `SIGTTOU`. Which makes sense. As the shell tries to stop backgrounded processes from writing to it. Think of it like this. Consider that less needs to output the file contents. So in a shell if you write `less file &`, first it gets backgrounded, but since its backgrounded, as it tries to write output, it immediately receives `SIGTTOU`. Ok.. then what about `cat file &`? This doesn't get suspended at all, instead it immediately goes to `done` status, and it also outputs the content directly onto the shell. This could mean either `cat` doesn't care about `SIGTTOU`, or it has something to do with the fact that cat doesn't take control of the entire terminal, only gives back content via a pipe.
-
-> If you really, really want to have something running in the background and still able to write to the TTY, turn off the tostop flag.
-> `stty -tostop`
-
-It appears that `stty --all` shows that `-tostop` is actually set. So the terminal does get backgrounded output.
-
-Running:
-
-```
-# enable terminal output suspension for backgrounded jobs (all backgrounded jobs)
-# stty means "set tty"
-stty tostop
-echo 'random' >/tmp/random
-cat /tmp/random &
-```
-
-Does actually now produce a job that is suspended: `suspended (tty output)`. Which you need to `fg %1` to get the actual output.
-
-But why does less automatically get `suspended (tty output)` when giving it to the background?
-
-You can disable this feature again, which is by default `stty -tostop`. It appears to be a shell independent thing. `stty` is something else.
-
-> The same behaviour is found when the shell is executing code as the right hand side of a pipeline or any complex shell construct such as if, for, etc., in order that the entire block of code can be managed as a single job. Background jobs are normally allowed to produce output, but this can be disabled by giving the command ‘stty tostop’. If you set this tty option, then background jobs will suspend when they try to produce output like they do when they try to read input. 
-
----
-
-Implement this: http://unix.stackexchange.com/a/68635/56970
-Showing job count on the prompt if there are jobs.
-
-We should make sure `stty tostop` is enabled in our shells. Because it makes sense not to split background jobs. However this can be problematic, if we want to run a backgrounded job that will output its status, and mix it up with 2 different jobs at the same time. Sometimes we see ourselves using multiple jobs at the same time, and we want their status reported at the same time. That will require running `stty -tostop && { e; e; }; stty tostop` command to set -tostop for one set of tasks, then reset it back.
-
-Wow you can do this:
-
-```
-read -r line < /dev/pts/0
-```
-
-And you can write and just get it done. Cat doesn't work well though.
-
-Also launch 3 terminals. Output stdout to one, stderr to another. Write commands in the first terminal. Use `exec 2>/...` and `exec 1>/...` in the first terminal. One could create a little command for doing this.
-
-Core dumps are only enabled upon using `ulimit -c unlimited && kill -QUIT command && ulimit -c 0`. That is we need to first set unlimited, then send SIGQUIT, then reset the core limit. This is to prevent apps from producing huge files all the time. In most cases, gcore is probably more useful than SIGQUIT. However one can run an application in debugging mode using it, so that when there's SIGSEGV or SIGABRT or SIGQUIT, then a core dump is generated. But you also have to remember the original setting of ulimit.
-
----
-
-On Linux:
-
-```sh
-# ZSH orphaning
-
-sleep 1000 &| # orphans the process (not part of the job table)
-
-nohup sleep 1000 >/dev/null 2>&1 & # orphans the process (by default nohup sends to nohup.out) (still on job table)
-
-{ sleep 1000 &; } && disown # orphans the current process (disown disowns the most "current" process) (not part of job table)
-
-( sleep 1000 & ) # orphans the process immediately (not part of job table)
-```
-
-Orphaning doesn't occur immediately. The process is still considered as a child process of the parent shell. This is because orphaning is implicit. If the parent process doesn't wait on the child (assuming the child finishes), or kill the child (where the child is non-terminating). Then the child process gets inherited by init PID 1. Therefore those commands are simply commanding the shell, not to kill the child processes (that are in the background), when you close.
-
-Except for `( sleep 1000 & )` which ends up orphaning the process IMMEDIATELY. And of course not part of the job table.
-
----
-
-You can split view in Konsole for 2 windows. Basically it's like clone view. Like Sublime's "New View into File". It will create a split screen. That by default shows you the same shell already have. Thus cloning the view, into the same shell session. This allows nifty things like cloning your actions from one window to another (well Konsole panel to another), which might be useful for multiple monitors. But also I use Sublime's "New View into File" when I want to view a file in 2 places at the same time. It's useful for dealing with long files. But Sublime designed it so that you actually get 2 different cursors in the 2 views. Whereas Konsole only gives 1 cursor. So when one is editing, the others are view only. So it doesn't really work with Vim, because Vim only knows 1 cursor as well. It really only works well with programs that create a scrollbar. So with Konsole, you can scroll up in one view, while not affecting the other. The problem is that vim doesn't create a scrollbar. Well Konsole doesn't create a scrollbar for Vim. But Konsole does create a scrollbar for the scrollback for ZSH. So it really only works for programs that don't use the alternate screen. That being said you can launch tabs, then assign the view to that tab. So now you can have split screen tabs. Making Konsole into a terminal multiplexer, not just a emulator. Protip: you can make less not use the alternate screen by using `less -X file`. The `less -X` prevents initialising using termcap. So the output appears just as inline output for the main screen. It's probably not what you want. But you can use it now with Konsoles cloned view feature.
-
----
-
-2 useful utilities:
-
-* `edituser`
-* `winln`
-
-The `winln` becomes useful in the case of the below privilege is enabled. However it's still not as good as CMD's `mklink`. Due to some missing metadata. It just means you need to create a new Administrator CMD window each time to create a native Windows symlink.
-
-```
-# this can only be run in administrator mode
-edituser -u CMCDragonkai -l
-edituser -u CMCDragonkai -a SeCreateSymbolicLinkPrivilege
-```
-
-We need to make our install.ps1 powershell script grant `SeCreateSymbolicLinkPrivilege` to the current user. Something like:
-
-```
-# Grant Windows symlink creation permission to current user
-# This is a call from carbon module, not part of default Powershell
-
-Grant-Privilege -Identity "$Env:UserName" -Privilege SeCreateSymbolicLinkPrivilege
-```
-
-However this command only is available from the Carbon module: http://get-carbon.org/Grant-Privilege.html
-
-Get that as a submodule dependency from Bitbucket.
-
-Or instead of loading an entire module, consider: http://www.leeholmes.com/blog/2010/09/24/adjusting-token-privileges-in-powershell/
-
----
-
-Try out:
-
-`ktrash`, `gvfs-trash`, or `trash-cli`.
-
-http://www.bramschoenmakers.nl/node/610.html
-http://superuser.com/questions/324128/two-commands-to-move-files-to-trash-whats-the-difference
-
-Would be good to create an alias depending on what's installed, and an adapter to Powershell.
-
-Actually Dolphin has already created its own trash folder. I'm not sure if this is a Dolphin creation or something different. It's located inside `~/.local/share/Trash`. It's not just a directory containing trash, but it's also 2 directories of `files` and `info`. The `info` keeps track of the trash metadata, such as being able to restore from trash.
-
-I'm not sure how to integrate that into the command line.
-
-By default on KDE, a command line helper is `ktrash`, while on Gnome it's `gvfs-trash`.
-
-However I guess both can be trumped by `trash-cli` which is independent but does use the same trash location.
-
-This also means ever user has its own trash.
-
-Also plugged in USB drives will have a hidden folder for trash too.
-
----
-
-Try out Cyberduck on Windows, specifically https://duck.sh/ or Dolphin network filesystem or Ranger/Total Commander. I need some sort of file browser (preferably command line and GUI) that can transparently access local and remote filesystems over multiple protocols. So not only SFTP, SCP, FTP, FTPS, but also things like S3, Backblaze, Azure would be great. Support mounting on the filesystem, so other programs can also utilise it.
-
----
-
-SQL IDE:
-
-* DBeaver - Cross Platform, Cross Database
-* SQL Power Architect Community Edition - Cross Platform, Cross Database
-* MySQL WorkBench - Only MySQL
-* Valentina Studio - Cross Platform, Cross Database
-* HeidiSQL - Windows, Cross Database
-* Kexi - Linux version of Microsoft Access
-
----
-
 Control the buffering:
 
 * `unbuffer` or `zpty` - uses PTY (which forces line buffering or byte buffering, no idea)
@@ -753,11 +320,14 @@ Control the buffering:
 
 ---
 
-Local source goes into `~/src`. Local binaries goes into `~/bin`. Anything here is unmanaged by Nix and unmanaged by Cygwin. And I'm not following `/opt` or `/usr/local` because that goes against Nix. And is system wide. Anything system wide should be managed by Nix. And on Cygwin, the main user is the only one that matters.
+Source Installations (only for Cygwin, because alot of this can be installed via Nix):
 
----
+* Picocom
+* Winpty
+* Rmlint
+* Git subtree
 
-Install picocom (because Cygwin doesn't have the package):
+These could be automated in some way. For picocom:
 
 ```
 mkdir --parents ~/man/man1
@@ -769,30 +339,15 @@ cd ~/src \
 && ln --symbolic --force $(pwd)/picocom.1 ~/man/man1/picocom.1
 ```
 
-Why use `ln` instead of `install`? The `install` copies into the directories. That may not be a good thing. That being said, linking to the finished executable might involve less headaches? The advantage is that installing means you can delete the source if necessary. While linking means less duplication if you're keeping the source around. Also some packages already have `make install` as well, which may not be a good thing to run, if you want to use symlinks.... Yea for `~/src` packages, they should also use only `make` and direct `symlinking` to acquire. That way we know where all installed stuff from src is located in a central place. Easy enough to cleanup. Perhaps even a hardlink might be useful here.
+For git subtree (on Cygwin):
 
-It also means we know everything will be installed into `~/man`, `~/bin` or `~/info`.
-
----
-
-Use http://rmlint.readthedocs.io/en/latest/index.html to clean up local directories. Especially for broken symlinks.
-
----
-
-We should only have `~/man/man1`. Nothing else should be there. As for `~/info`. It's all just `~/info/program.info`. Always.
-
----
-
-Asynchronous ZSH/Bash startup: http://stackoverflow.com/questions/20017805/bash-capture-output-of-command-run-in-background Some of our complicated startup can be used like `stty < ./.cygwin_stty &`. At the end run `wait`. But the point is, in some cases we need to capture the output of the asynchronous command. So the command needs to buffer up the output.
-
----
-
-https://en.wikipedia.org/wiki/K-Lite_Codec_Pack
-
----
-
-Skype on Linux is a bit weird, especially with Xmonad. Basically closing it with keyboard doesn't really close it. It's still running in the background. The GUI just disappears. It probably minimises to the tray. You need to use `kill <pid-of-skype-processes>` or just the quit button in the menu. Also the layout can be modifier with XMonad as well.
-
+```
+pushd /tmp
+wget "https://rawgit.com/git/git/v$(git --version | cut --delimiter=' ' --fields=3)/contrib/subtree/git-subtree.sh"
+install git-subtree.sh /usr/local/bin/git-subtree
+popd
+git subtree
+```
 ---
 
 One of the problems with using pass or keybase, is that the database is one single file. Now to tranport any kind of secret, or even be able to share a secret, you have to share the entire dump. Unlocking to get a single secret means unlocking the entire thing. The thing is too bulky, and is not modular. That is the secrets are all lumped into one single thing, and it's not cohesive. We need to make secret management more cohesive, so an application or a usecase situation can demand just a specific secret, and not all. It's all about the principle of least privilege. This means fundamentally we need a secret server, not just a single secret file dump. A secret server that can provide API access (filtered and time constrained access) to secrets while also supporting privilege groups, and secret changing. And of course very detailed logging of where secrets are being requested from. Integrated password rotation. But that may be difficult. It needs to alert about password rotation, but the password manager may itself not have the privileges to do so. As in higher level privileges may be required for secret rotation.
@@ -830,6 +385,8 @@ Vim currently keeps the focus on the original buffer. And instead I would sugges
 > A window is a viewport on a buffer.
 > A tab page is a collection of windows.
 
+Use `:tabe` to open a new tab. Then use `:qa` to close everything, thus saving the entire session.
+
 ---
 
 Moving processes between terminal emulators, screens, shells... etc. And also changing their redirection parameters (such as after suspending and backgrounding), this is useful for actual process management.
@@ -851,27 +408,6 @@ It's however still kind of complicated, as it seems Microsoft no longer cares ab
 
 It's just much easier to use free Windows 10 upgrade directly. Burn it onto a CD or deploy it onto a USB drive, and install that instead. Make sure you first installed your old version of Windows, and activated it.
 
----
-
-On Windows, we shall be using 2 independent package manaegrs.
-
-1. Cygwin
-2. Chocolatey
-
-The reason why I don't want to get Chocolatey to install Cygwin, is because I need to modify Cygwin's installation directory. And Chocolatey is sometimes slow on the installation.
-
-Prefer `.portable` applications on Chocolatey. But for everything else, download through Chocolatey, and when you need to uninstall, first uninstall from the Control Panel, and then uninstall from Chocolatey.
-
-Apps that installed as `*.install` should be updated through their own routines. Don't bother trying to update using Chocolatey.
-
-Only `*.portable` applications can be updated properly.
-
-```
-get-packageprovider -name chocolatey
-```
-
----
-
 Installing Windows 7 -> 10. 
 
 * Install Windows 7
@@ -882,24 +418,6 @@ Installing Windows 7 -> 10.
 * Install NVIDIA drivers and DVD Writer Drivers
 
 Windows 7 updates no longer work, so we need to change to Windows 10.
-
----
-
-The Cygwin setup and Chocolatey-install.ps1 are both content addressed and version controlled. This means Chocolatey-install.ps1 is currently fixed to 0.9.9.12. While the Cygwin setup is fixed to 2.8.73. When I want to update the versions, I'll put in new content addressed dependencies into the 2 areas.
-
----
-
-Using OneGet/PackageManagement instead of Chocolatey directly:
-
-* https://github.com/OneGet/oneget/wiki/Provider-Requests
-* https://blogs.technet.microsoft.com/packagemanagement/2015/05/05/10-things-about-oneget-that-are-completely-different-than-you-think/
-* https://github.com/OneGet/oneget/issues/182
-* http://superuser.com/questions/976697/understand-difference-between-oneget-and-chocolatey-and-get-started-using-onege
-* https://technet.microsoft.com/en-us/library/dn890711.aspx
-
-Also use `Update-Help -Force` on Administrator to download all the help files in Powershell commands using `-?`.
-
-Ok so basically, One-Get (or PackageManagement) replaces Chocolatey. This is because it's a meta-package manager. It's meant to on-top of existing package management protocols. This should mean that one-get can also replace cygwin for installing packages. But for now, Cygwin is installed independently (you have the setup.exe encoded into this repository), and then you use PackageManagement to install the rest of the applications. We already have this done inside `windows_packages.txt`.
 
 ---
 
@@ -1019,15 +537,6 @@ Active Directory is included in most Windows Server editions.
 
 This also means active directory is often ran as a daemon, not just as single batch transformational program. Also it's very complicated, as is used to share services and tightly integrate into Windows technology stacks. I guess this is used by enterprises that are deeply into Windows technologies.
 
-
-
-
-
-
-
-
-
-
 ---
 
 Recommend autocreating shortcuts for chrome apps that you use.
@@ -1057,18 +566,6 @@ Yea, so Chrome only downloads the icon when we tell it to setup an application.
 What we can do is save the ICO files in this directory. These ICO files are generated from the Website FAVICON.
 
 While we could curl the website and parse out the HTML for the favicon.ico. It turns out that this is quite complex. Overall I can just save the favicon.ico files that I need for my Chrome applications. Oh well..
-
----
-
-Instead of editing the stuff directly inside Powershell, use the `windows_registry.reg`.
-
-Then from powershell, just call the windows_registry.reg like `/s .\windows_registry.reg` or something like that to set the settings.
-
----
-
-Use `:tabe` to open a new tab. Then use `:qa` to close everything, thus saving the entire session.
-
-http://wincdemu.sysprogs.org/
 
 ---
 
@@ -1174,64 +671,3 @@ FIREFOX IS NOT INSTALLED
 ```
 
 The nesting of my expressions will be more difficult I guess.
-
----
-
-Windows Application Installers can automatically add firewall rules that allow their application to communicate. See: https://msdn.microsoft.com/en-us/library/windows/desktop/ee417690(v=vs.85).aspx
-
-This means things like Steam will automatically trigger invisible firewall changes when you install a game.
-
-In Windows 10: by default, all inbound connections are blocked, unless they are already solicited by an outbound connection, or that they are allowed with a specific firewall rule. At the same time, all outbound connections are allowed, unless they are specifically matched by an outbound firewall rule which blocks them.
-
-It is important to be declarative about the connections we want to allow.
-
-In this case, we want to allow ping, 55555 TCP & UDP (as our custom port), and 22 for SSH. And retain some ability to enable port 80 or whatever for random services we may want to provide.
-
-And HOLY SHIT Windows 10 has an embedded SSH server. It is automatically and silently activated when switching on developer mode. It is automatically bound to port 22. A firewall is automatically added which exposes port 22 to all networks (private, public and domain networks). This allows anybody to SSH into your computer (which goes into cmd), as long as they know your password. To see whether its running on your Windows 10, use `telnet localhost 22`. OMG.
-
-This needs to be shutdown immediately if you're using developer mode: https://noise.paulos.cz/post/windows10-14352-ssh-server/
-
-Firstly because its not configurable like OpenSSH. And secondly you'll probably want to use Cygwin's OpenSSH anyway. And binding to port 22 would fail because SSH Server Proxy is binding to it.
-
-We want to get powershell commands to make shut to close this rule. Shutdown the 2 services (Microsoft SSH Server for Windows), and also set Developer Mode on.
-
-See this for more information: https://noise.paulos.cz/post/windows10-14352-ssh-server/
-
-Note that this is not the SSH port found on Github: https://msdn.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development
-
-Wow so stupid.
-
-Find out how to disable it!
-
-For some reason 9089 is exposed on my surface. Why? It's caused by "VMware vCenter Converter Standalone - Agent". And it's allowing 9089 completely on everything. That's stupid. Anyway I disabled because why does vcenter need to accept 9089 on all interfaces, that's a huge security vulnerability.
-
-This is a good command to show vulnerable ports: `netsh firewall show state`. Basically anything that is fully open will be listed there.
-
----
-
-The pip requirements.txt is only for Python, and only for Cygwin, Nixos systems are not meant to use those. Because execcutables would be installed via user profile nixpkgs, and development libraries would be using or nix-shell.
-
-```
-pip2 --user --requirements pip2_requirements.txt
-pip3 --user --requirements pip3_requirements.txt
-```
-
-The above will install the executables into `~/.local/bin`. The path has to be added to the environment when running in Cygwin.
-
-Executables should be part of pip3_requirements, and only libraries should be part of both. There's no need to have both a python3 and python 2 version of the requirements.
-
-This should only run at the very end.
-
-The finally installation scripts shouldn't be generated at the deplolyment site, instead they should be pregenerated and turned into a distribution. We could use something like automake on this. But nah, simple m4 should be all that's necessary.
-
----
-
-Install Git Subtree. (For Cygwin).
-These are like post-installation hooks.
-Like raw installation without package managers.
-
-```
-wget "https://rawgit.com/git/git/v$(git --version | cut --delimiter=' ' --fields=3)/contrib/subtree/git-subtree.sh"
-install git-subtree.sh /usr/local/bin/git-subtree
-git subtree
-```
