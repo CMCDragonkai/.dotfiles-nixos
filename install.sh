@@ -1,19 +1,5 @@
 #!/usr/bin/env bash
 
-# to be executed in after install.ps1
-# or directly.. if in Linux
-
-# install the python packages via pip2 and pip3 
-# this only occurs in Cygwin, not in Linux
-# 
-# compile the m4 scripts and everything..
-# then install all the config files in the right places
-
-# This occurs after packages are alreeady installed via cygwin packages
-# this needs to run the build...
-# but before we run the build we must interrogate a few things
-# and even run a few scripts
-
 if [[ "$(uname -s)" == Linux* ]]; then
 
     # on Linux, we assume timezone was already setup on OS installation
@@ -41,6 +27,11 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     # On Linux we could use chsh --shell
     # But Cygwin doesn't support it, so we just need to edit it using sed
     sed --in-place "/^${USER}/ s/:[^:][^:]*$/:"${$(which zsh)//\//\\\/}"/" /etc/passwd
+    
+    # Install Python packages on Cygwin
+    # Executables should be preferably Python 3, and will be installed in ~/.local/bin
+    pip2 --user --requirements "./pip2_requirements.txt"
+    pip3 --user --requirements "./pip3_requirements.txt"
 
 fi
 
