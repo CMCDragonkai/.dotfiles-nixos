@@ -9,6 +9,7 @@ ccleaner,*,chocolatey
 RapidEE,*,chocolatey
 sysinternals,*,chocolatey
 regshot,1.9.3,chocolateyget
+wincdemu,*,chocolatey
 
 # network
 Firefox,*,chocolatey
