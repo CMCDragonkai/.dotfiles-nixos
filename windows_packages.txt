@@ -2,7 +2,9 @@
 carbon,2.2.0,chocolatey
 PSReadline,1.2,PSGallery
 ConEmu,16.5.22.0,chocolatey
-keepass,2.33,chocolatey
+keepass,*,chocolatey
+keepass-plugin-keeagent,*,chocolatey
+keeweb,*,chocolatey
 procexp,*,chocolatey
 procmon,*,chocolatey
 ccleaner,*,chocolatey
