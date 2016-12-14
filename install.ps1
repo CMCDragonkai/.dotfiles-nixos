@@ -332,6 +332,16 @@ if ($Stage -eq 0) {
 
     Unregister-ScheduledTask -TaskName "Dotfiles - 2" -TaskPath "\" -Confirm:$false
 
+    # Use Carbon's Grant-Privilege feature to give us the ability to create Windows symbolic links
+    # Because I am an administrator user, this doesn't give me unelevated access to creating native symlinks.
+    # I still need to elevate to be able to create a symlink. This is caused by UAC filtering, which filters out the privilege.
+    # See the difference in `whoami /priv` running elevated vs non-elevated in Powershell.
+    # However if UAC is disabled, then the administrator user can create symlinks without elevating.
+    # If I was a non-administrator user, then I would have the ability to create symlinks without any more work.
+    # See: http://superuser.com/q/839580
+    Import-Module 'Carbon'
+    Grant-Privilege -Identity "$Env:UserName" -Privilege SeCreateSymbolicLinkPrivilege
+
     # Run the Cygwin process
     # Open ConEmu to Mintty and ZSH
     # Execute `./install.sh` from ZSH
