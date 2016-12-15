@@ -32,6 +32,12 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     # Executables should be preferably Python 3, and will be installed in ~/.local/bin
     pip2 --user --requirements "./pip2_requirements.txt"
     pip3 --user --requirements "./pip3_requirements.txt"
+    
+    # Install via the source installation scripts
+    # All of these are Makefiles with install and uninstall targets
+    for dir in ./source_installation_scripts/*/; do
+        make --directory="$dir" install
+    done
 
 fi
 
