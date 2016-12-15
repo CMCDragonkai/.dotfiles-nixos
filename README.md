@@ -316,41 +316,6 @@ Non-NixOS:
 Control the buffering:
 
 * `unbuffer` or `zpty` - uses PTY (which forces line buffering or byte buffering, no idea)
-* `stdbuf` - uses LD_PRELOAD (you can choose to do block buffering, line buffering, or no buffering)!
-
----
-
-Source Installations (only for Cygwin, because alot of this can be installed via Nix):
-
-* Picocom
-* Winpty
-* Rmlint
-* Git subtree
-
-These could be automated in some way. For picocom:
-
-```
-mkdir --parents ~/man/man1
-cd ~/src \
-&& git clone https://github.com/npat-efault/picocom \
-&& cd picocom \
-&& make \
-&& ln --symbolic --force $(pwd)/picocom.exe ~/bin/picocom \
-&& ln --symbolic --force $(pwd)/picocom.1 ~/man/man1/picocom.1
-```
-
-For git subtree (on Cygwin):
-
-```
-pushd /tmp
-wget "https://rawgit.com/git/git/v$(git --version | cut --delimiter=' ' --fields=3)/contrib/subtree/git-subtree.sh"
-install git-subtree.sh /usr/local/bin/git-subtree
-popd
-git subtree
-```
----
-
-One of the problems with using pass or keybase, is that the database is one single file. Now to tranport any kind of secret, or even be able to share a secret, you have to share the entire dump. Unlocking to get a single secret means unlocking the entire thing. The thing is too bulky, and is not modular. That is the secrets are all lumped into one single thing, and it's not cohesive. We need to make secret management more cohesive, so an application or a usecase situation can demand just a specific secret, and not all. It's all about the principle of least privilege. This means fundamentally we need a secret server, not just a single secret file dump. A secret server that can provide API access (filtered and time constrained access) to secrets while also supporting privilege groups, and secret changing. And of course very detailed logging of where secrets are being requested from. Integrated password rotation. But that may be difficult. It needs to alert about password rotation, but the password manager may itself not have the privileges to do so. As in higher level privileges may be required for secret rotation.
 
 ---
 
@@ -428,17 +393,6 @@ http://upower.freedesktop.org/
 https://github.com/Spirals-Team/powerapi
 
 Which one should we use?
-
----
-
-Figure out these:
-
-* https://www.freedesktop.org/wiki/Software/xdg-utils/
-* https://freedesktop.org/wiki/Software/xdg-user-dirs/
-
----
-
-Windows Sharing Settings are pretty messed up. There are permissions to share which is of course separate from permissions in Cygwin.
 
 ---
 
