@@ -1,6 +1,11 @@
+.PHONY: install uninstall
+
+TEMPDIR := $(shell mktemp -d)
+
 install:
-	wget --directory-prefix="/tmp" "https://rawgit.com/git/git/v$(git --version | cut --delimiter=' ' --fields=3)/contrib/subtree/git-subtree.sh"
-	install --mode=755 /tmp/git-subtree.sh /usr/local/bin/git-subtree
+	wget --directory-prefix="$(TEMPDIR)" "https://rawgit.com/git/git/v$(git --version | cut --delimiter=' ' --fields=3)/contrib/subtree/git-subtree.sh"
+	install --mode=755 "$(TEMPDIR)/git-subtree.sh" /usr/local/bin/git-subtree
+	rm -rf "$(TEMPDIR)"
 
 uninstall:
 	rm --force /usr/local/bin/git-subtree
