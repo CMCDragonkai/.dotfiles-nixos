@@ -11,11 +11,11 @@ export LC_ALL='en_US.UTF-8'
 export TZ="PH_TZ"
 export TZDIR="PH_TZDIR"
 
-# configuration variables for general commands
+# configuration variables for general commands (should not require X or GUI)
 export BASH_ENV="${HOME}/.bash_env"
 export TERM="${TERM:-xterm-256color}"
 export PAGER='less --RAW-CONTROL-CHARS --LONG-PROMPT --HILITE-UNREAD --status-column --chop-long-lines --shift .3'
-export EDITOR='vim'
+export EDITOR="vim"
 export BROWSER='w3m'
 
 # coloured man pages
@@ -50,10 +50,11 @@ ifelse(PH_SYSTEM, CYGWIN,
     # setting windows code page to UTF8
     chcp 65001 >/dev/null
 
-    # if we're not in an SSH session, then the Windows GUI is available
+    # if we're not in an SSH session, then the Windows GUI is available (and so we change to preferred GUI programs)
     if [ -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a -z "$SSH_CONNECTION" ] -a ; then
 
-        export BROWSER="$(import_exec firefox && echo "firefox" || { import_exec chrome && echo "chrome" || echo "$BROWSER"; })"
+        export VISUAL='emacs'
+        export BROWSER='chromium'
 
     fi
 
@@ -73,9 +74,9 @@ ifelse(PH_SYSTEM, CYGWIN,
 
     # linux X
     if [ -n "$DISPLAY" ]; then
-
-        import_exec emacs && export EDITOR="emacs" VISUAL="emacs"
-        export BROWSER="$(import_exec firefox && echo "firefox" || { import_exec chromium && echo "chromium" || echo "$BROWSER"; })"
+    
+        export VISUAL='emacs'
+        export BROWSER='chromium'
         export SUDO_ASKPASS="${HOME}/bin/dpass"
 
     fi
