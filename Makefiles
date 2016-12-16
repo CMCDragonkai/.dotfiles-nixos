@@ -1,2 +1,0 @@
-# This will build things into `./.build`.
-# Then actual installation will be installed using `rsync`
