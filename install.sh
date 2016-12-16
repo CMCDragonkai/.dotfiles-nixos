@@ -104,7 +104,7 @@ find ./.build -name '*.m4' -not -path './build/modules/*' \
     --define=PH_TZ="$tz" \
     --define=PH_TZDIR="$tzdir" \
     '{}' > '{}.processed' \; \
-    -exec rename '.m4.processed' '' '{}.processed'
+    -exec rename '.m4.processed' '' '{}.processed' \; \
     -delete
 
 # Copy files from ./.build into ~
