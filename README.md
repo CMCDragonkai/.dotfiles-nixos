@@ -560,10 +560,6 @@ While we could curl the website and parse out the HTML for the favicon.ico. It t
 
 ---
 
-The cygserver is the Cygwin daemon. It starts up every process as part of its own process tree!
-
----
-
 Remote Desktop
 
 http://ishanaba.com/blog/2012/11/graphical-remote-desktop-protocols-rfbvncrdp-and-x11-2/
