@@ -264,6 +264,43 @@ git submodule status --recursive
 
 ---
 
+M4 compile time macros can query the system:
+
+We can use `sysval`:
+
+```
+syscmd(`false')
+=>
+ifelse(sysval, 0, zero, non-zero)
+=>non-zero
+syscmd(`true')
+=>
+sysval
+=>0
+```
+
+Or perhaps:
+
+```
+define(`vice', `esyscmd(grep Vice ../COPYING)')
+=>
+vice
+=>  Ty Coon, President of Vice
+=>
+```
+
+The `esyscmd` could be applied like:
+
+```
+ifelse(esyscmd(`hash "firefox" 2>/dev/null && { printf "1"; } || { printf "0"; }'), 1, 
+FIREFOX IS INSTALLED
+, 
+FIREFOX IS NOT INSTALLED
+)
+```
+
+---
+
 ls /dev/ | grep tty # only on Linux, the actual Linux console
 ls /dev/ | grep pty # cygwin has this, and I think X as well
 ls /dev/ | grep pts # not sure
@@ -527,18 +564,6 @@ The cygserver is the Cygwin daemon. It starts up every process as part of its ow
 
 ---
 
-I added a new folder called `data` this folder will hold data necessary for installation. Right now there's a transparent.ico. It needs to be put into as `%SYSTEMROOT%/system32/transparent.ico`. Make sure to unblock it. In the future replace with dynamic generation using imagemagick or graphicsmagick?
-
-Note that we may require unblocking the file just in case. Use the powershell command:
-
-```
-Unblock-File -Path "$env:SYSTEMROOT/system32/transparent.ico"
-```
-
-Then the regedit will remove the NTFS compression arrow icons from the filesystem.
-
----
-
 Remote Desktop
 
 http://ishanaba.com/blog/2012/11/graphical-remote-desktop-protocols-rfbvncrdp-and-x11-2/
@@ -582,46 +607,3 @@ The choice of the protocol depends on what the remote server supports, and your 
 VNC works best for high bandwidth.
 RDP works best for low latency.
 XDMCP
-
----
-
-Explanation of Windows User Profile Folders and Files: https://en.wikipedia.org/wiki/User_profiles_in_Microsoft_Windows
-
----
-
-We need to convert all `import_exec` into compile time macros. Otherwise it will be slow checking for the presence of executables every time. Especially since the environment variables is now sourced on every invocation including automated scripts.
-
-We can use `sysval`:
-
-```
-syscmd(`false')
-=>
-ifelse(sysval, 0, zero, non-zero)
-=>non-zero
-syscmd(`true')
-=>
-sysval
-=>0
-```
-
-Or perhaps:
-
-```
-define(`vice', `esyscmd(grep Vice ../COPYING)')
-=>
-vice
-=>  Ty Coon, President of Vice
-=>
-```
-
-The `esyscmd` could be applied like:
-
-```
-ifelse(esyscmd(`hash "firefox" 2>/dev/null && { printf "1"; } || { printf "0"; }'), 1, 
-FIREFOX IS INSTALLED
-, 
-FIREFOX IS NOT INSTALLED
-)
-```
-
-The nesting of my expressions will be more difficult I guess.
