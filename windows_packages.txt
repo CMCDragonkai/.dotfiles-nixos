@@ -39,6 +39,7 @@ cyberduck,*,chocolatey
 peazip.portable,6.03,chocolatey
 
 # development
+emacs64,*,chocolatey
 jdk8,*,chocolatey
 heidisql,*,chocolatey
 dbeaver,*,chocolatey
@@ -50,6 +51,7 @@ microsoft-build-tools,*,chocolatey
 # try the first one, then this one: visualstudio2015community,*,chocolatey
 
 # documents
+pandoc,*,chocolatey
 libreoffice,*,chocolatey
 adobereader,*,chocolatey
 adobereader-update,*,chocolateyget
