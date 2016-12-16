@@ -1,15 +1,63 @@
 #!/usr/bin/env bash
 
+# Common configuration files to be processed by m4 and put into ~
+cp --target-directory='./.build' --recursive \
+    ./.aws \
+    ./.gnupg \
+    ./.jupyter \
+    ./.ssh \
+    ./.vim \
+    ./bin \
+    ./modules \
+    ./.bash_env.m4 \
+    ./.bash_profile.m4 \
+    ./.bashrc.m4 \
+    ./curlrc \
+    ./.ghci \
+    ./.gitconfig \
+    ./.gitignore_global \
+    ./.inputrc \
+    ./.my.cnf \
+    ./.nanorc \
+    ./.netrc \
+    ./.sqliterc \
+    ./.vimrc \
+    ./.zlogin.m4 \
+    ./.zshenv.m4 \
+    ./.zshrc.m4
+
 if [[ "$(uname -s)" == Linux* ]]; then
 
-    # on Linux, we assume timezone was already setup on OS installation
+    # Linux configuration files to be processed by m4 and put into ~
+    cp --target-directory='./.build' --recursive \
+        ./.local \
+        ./.nixpkgs \
+        ./.xmonad \
+        ./.Xmodmap \
+        ./.Xresources \
+        ./.pam_environment.m4 \
+        ./.xprofile.m4
+    
+    # Assuming we are on NIXOS
+    system='NIXOS'
+
+    # On Linux, we assume timezone was already setup on OS installation
     tz="$(cat /etc/zoneinfo)"
-    tzdir="/etc/zoneinfo"
+    tzdir='/etc/zoneinfo'
 
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
+    # Cygwin configuration files to be processed by m4 and put into ~
+    cp --target-directory='./.build' --recursive \
+        ./AppData \
+        ./Documents \
+        ./cmd_profile \
+        ./minttyrc
+    
+    system='CYGWIN'
+
     # Merge Windows User Temporary with Cygwin /tmp
-    echo "none /tmp usertemp binary,posix=0 0 0" >> /etc/fstab
+    echo 'none /tmp usertemp binary,posix=0 0 0' >> /etc/fstab
     
     # Acquire timezone information from Windows
     tz="$(./bin/tz-windows-to-iana "$(tzutil /l | grep --before-context=1 "$(tzutil /g)" | head --lines=1)")"
@@ -28,6 +76,13 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     # But Cygwin doesn't support it, so we just need to edit it using sed
     sed --in-place "/^${USER}/ s/:[^:][^:]*$/:"${$(which zsh)//\//\\\/}"/" /etc/passwd
     
+    # Setting up Cygserver requires first deleting the cygserver.conf
+    # The service will be setup 
+    rm --force /etc/cygserver.conf
+    cygrunsrv --remove='cygserver' || true
+    echo "yes" | cygserver-config
+    cygrunsrv --start='cygserver'
+    
     # Install Python packages on Cygwin
     # Executables should be preferably Python 3, and will be installed in ~/.local/bin
     pip2 --user --requirements "./pip2_requirements.txt"
@@ -39,21 +94,21 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
         make --directory="$dir" install
     done
     
-    # Setting up Cygserver requires first deleting the cygserver.conf
-    # The service will be setup 
-    rm --force /etc/cygserver.conf
-    cygrunsrv --remove='cygserver' || true
-    echo "yes" | cygserver-config
-    cygrunsrv --start='cygserver'
-
 fi
 
-# We need to pass "PH_TZ" and "PH_TZDIR" as variables to m4 preprocessor
+# Note that `PH_` is our namespace meaning "PolyHack"
+find ./.build -name '*.m4' -not -path './build/modules/*' \
+    -exec m4 \
+    --include='./.includes' \
+    --define=PH_SYSTEM="$system" \
+    --define=PH_TZ="$tz" \
+    --define=PH_TZDIR="$tzdir" \
+    '{}' > '{}.processed' \; \
+    -exec rename '.m4.processed' '' '{}.processed'
+    -delete
 
-# run the m4 macro and build into ./.build folder
-
-# copy files from ./.build into ~
-# where --archive means: --recursive --links --perms --times --group --owner
+# Copy files from ./.build into ~
+# Where --archive means: --recursive --links --perms --times --group --owner
 rsync --update --checksum --archive "./.build/" "${HOME}/"
 
 # Make ~/.ssh directory and subdirectories 700, but the files 600
