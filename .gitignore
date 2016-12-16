@@ -1,12 +1,5 @@
 .build/*
 !.build/.gitkeep
-.ssh/*
-!.ssh/config
-!.ssh/identity.pub
-!.ssh/is-linux.sh
-!.ssh/authorized_keys
-.xmonad/*
-!.xmonad/xmonad.hs
 
 # OS generated files #
 ######################
