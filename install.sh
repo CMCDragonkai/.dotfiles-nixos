@@ -38,6 +38,13 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     for dir in ./source_installation_scripts/*/; do
         make --directory="$dir" install
     done
+    
+    # Setting up Cygserver requires first deleting the cygserver.conf
+    # The service will be setup 
+    rm --force /etc/cygserver.conf
+    cygrunsrv --remove='cygserver' || true
+    echo "yes" | cygserver-config
+    cygrunsrv --start='cygserver'
 
 fi
 
