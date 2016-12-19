@@ -47,8 +47,8 @@ virtualbox,*,chocolatey
 vagrant,*,chocolatey
 sourcetree,*,chocolatey
 linqpad,*,chocolatey
+# msbuild.exe (MS Build), csc.exe (C# compiler), csi.exe (C# interpreter), vbc.exe (Visual Basic compiler)
 microsoft-build-tools,*,chocolatey
-# try the first one, then this one: visualstudio2015community,*,chocolatey
 
 # documents
 pandoc,*,chocolatey
