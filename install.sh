@@ -40,6 +40,9 @@ if [[ "$(uname -s)" == Linux* ]]; then
     
     # Assuming we are on NIXOS
     system='NIXOS'
+    
+    wintmp=''
+    winsystmp=''
 
     # On Linux, we assume timezone was already setup on OS installation
     tz="$(cat /etc/zoneinfo)"
@@ -55,6 +58,9 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
         ./minttyrc
     
     system='CYGWIN'
+    
+    wintmp="$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')"
+    winsystmp="$(cmd /c 'ECHO %SYSTEMROOT%' | tr --delete '[:space:]')\Temp"
 
     # Merge Windows User Temporary with Cygwin /tmp
     echo 'none /tmp usertemp binary,posix=0 0 0' >> /etc/fstab
@@ -103,6 +109,8 @@ find ./.build -name '*.m4' -not -path './build/modules/*' \
     --define=PH_SYSTEM="$system" \
     --define=PH_TZ="$tz" \
     --define=PH_TZDIR="$tzdir" \
+    --define=PH_WINTMP="$wintmp" \
+    --define=PH_WINSYSTMP="$winsystmp" \
     '{}' > '{}.processed' \; \
     -exec rename '.m4.processed' '' '{}.processed' \; \
     -delete
