@@ -159,19 +159,38 @@ if ($Stage -eq 0) {
     CMD /C 'ftype Microsoft.PowerShellScript.1="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "%1"'
     
     # Directory to hold symlinks to Windows executables that is installed across users
-    # This directory is managed by ourselves
-    # Windows executables will be able to find these symlinks as this is encoded as part of the PATH on Windows
+    # This can be used for applications we install ourselves and for native installers in Chocolatey
+    # It is however possible that native installers may pollute the PATH themselves
+    # This is something to watch out for, always check out the environment variables in your control panel
+    # Note that natively installed applications will need to be uninstalled via native uninstallers
+    # Metadata can be cleaned by uninstalling them from Chocolatey if they were installed via Chocolatey
+    # And of course any symlinks to the binaries that are placed within here
+    # Note that you must use NTFS symlinks here or use CMD shims, not cygwin symlinks
     [Environment]::SetEnvironmentVariable (
         "PATH",
-        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
+        (Prepend-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
         [System.EnvironmentVariableTarget]::User
     )
     [Environment]::SetEnvironmentVariable (
         "PATH",
-        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
+        (Prepend-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
         [System.EnvironmentVariableTarget]::Process
     )
-
+    
+    # This is the Chocolatey Bin Path, which is populated by Chocolatey but only for special packages
+    # Like portable packages or packages with special install files
+    # Native installers will not put anything here by themselves
+    [Environment]::SetEnvironmentVariable (
+        "PATH",
+        (Prepend-Idempotent "${Env:ChocolateyPath}\bin" $Env:Path, ";". $False),
+        [System.EnvironmentVariableTarget]::User
+    )
+    [Environment]::SetEnvironmentVariable (
+        "PATH",
+        (Prepend-Idempotent "${Env:ChocolateyPath}\bin" $Env:Path, ";". $False),
+        [System.EnvironmentVariableTarget]::Process
+    )
+    
     # Setup firewall to accept pings for Domain and Private networks but not from Public networks
     Set-NetFirewallRule `
         -DisplayName "File and Printer Sharing (Echo Request - ICMPv4-In)" `
