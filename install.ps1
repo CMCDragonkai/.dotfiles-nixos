@@ -243,16 +243,29 @@ if ($Stage -eq 0) {
     # Disable both SSH service and the SSH proxy
     Set-Service -Name "SshProxy" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
     Set-Service -Name "SshBroker" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
-
-    # Import Windows Package Management (a.k.a. OneGet)
+    
+    # Setup Windows Package Management
+    
+    # Update Package Management
     Import-Module PackageManagement
+    Import-Module PowerShellGet
+    # Nuget is needed for PowerShellGet
+    Install-PackageProvider -Name Nuget -Force
+    # Updating PowerShellGet updates PackageManagement
+    Install-Module -Name PowerShellGet -Force
+    # Update PackageManagement Explicitly to be Sure
+    Install-Module -Name PackageManagement -Force
+    # Reimport PackageManagement and PowerShellGet to take advantage of the new commands
+    Import-Module PackageManagement -Force
+    Import-Module PowerShellGet -Force
 
     # Install Package Providers
-    Install-PackageProvider -Name 'NuGet' -Force
+    # There are 2 Chocolatey Providers for now (one works or the other does)
+    # PowerShellGet is also a package provider
     Install-PackageProvider –Name 'Chocolatey' -Force
     Install-PackageProvider -Name 'ChocolateyGet' -Force
     Install-PackageProvider -Name 'PowerShellGet' -Force
-
+    
     # Nuget doesn't register a package source by default
     Register-PackageSource -Name 'nuget' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' 
 
