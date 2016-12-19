@@ -121,6 +121,17 @@ if ($Stage -eq 0) {
 
     # Import the registry file
     Start-Process $Env:windir\regedit.exe import "./windows_registry.reg"
+    
+    # Enabling Optional Windows Features, these will need a restart
+    
+    # Enable Telnet
+    Enable-WindowsOptionalFeature -Online -FeatureName TelnetClient -All -NoRestart
+    # Enable Windows Containers
+    Enable-WindowsOptionalFeature -Online -FeatureName Containers -All -NoRestart
+    # Enable Hyper-V hypervisor, this will prevent Virtualbox from running concurrently
+    # However Hyper-V can be disabled at boot for when you need to use virtualbox
+    # This is needed for Docker on Windows to run
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart
 
     # Setup some Windows Environment Variables and Configuration
 
