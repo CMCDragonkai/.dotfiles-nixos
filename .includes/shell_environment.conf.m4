@@ -40,9 +40,9 @@ ifelse(PH_SYSTEM, CYGWIN,
     export PATH="${HOME}/.local/bin:${PATH}"    
 
     # Windows has a user local temporary and a system temporary
-    # We unified Windows user local temporary with Cygwin /tmp using fstab
-    export WINTMP="$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')"
-    export WINSYSTMP="$(cmd /c 'ECHO %SYSTEMROOT%' | tr --delete '[:space:]')\Temp"
+    # We unified Windows user local temporary with Cygwin /tmp using fstab    
+    export WINTMP=PH_WINTMP
+    export WINSYSTMP=PH_WINSYSTMP
     export TMPDIR='/tmp'
     export TMP='/tmp'
     export TEMP='/tmp'
