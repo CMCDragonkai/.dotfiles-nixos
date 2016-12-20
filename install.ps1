@@ -135,21 +135,15 @@ if ($Stage -eq 0) {
     Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V | Enable-WindowsOptionalFeature -Online -All -NoRestart
 
     # Setup some Windows Environment Variables and Configuration
-
-    # Home environment variables
-    [Environment]::SetEnvironmentVariable ("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::User)
-    [Environment]::SetEnvironmentVariable ("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::Process)
     
-    # Disable Cygwin warning about Unix file paths
-    [Environment]::SetEnvironmentVariable ("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::User)
-    [Environment]::SetEnvironmentVariable ("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::Process)
-    
+    # System variables
+   
     # Make the `*.ps1` scripts executable without the `.ps1` extension
     # By default Windows will have set `.COM;.EXE;.BAT;.CMD` as path extensions
     [Environment]::SetEnvironmentVariable (
         "PATHEXT", 
         (Append-Idempotent ".PS1" $Env:PATHEXT ";" $False), 
-        [System.EnvironmentVariableTarget]::User
+        [System.EnvironmentVariableTarget]::Machine
     )
     [Environment]::SetEnvironmentVariable (
         "PATHEXT", 
@@ -167,16 +161,27 @@ if ($Stage -eq 0) {
     # Metadata can be cleaned by uninstalling them from Chocolatey if they were installed via Chocolatey
     # And of course any symlinks to the binaries that are placed within here
     # Note that you must use NTFS symlinks here or use CMD shims, not cygwin symlinks
+    New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin"
     [Environment]::SetEnvironmentVariable (
         "PATH",
-        (Prepend-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
-        [System.EnvironmentVariableTarget]::User
+        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
+        [System.EnvironmentVariableTarget]::Machine
     )
     [Environment]::SetEnvironmentVariable (
         "PATH",
-        (Prepend-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
+        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
         [System.EnvironmentVariableTarget]::Process
     )
+    
+    # User variables
+
+    # Home environment variables
+    [Environment]::SetEnvironmentVariable ("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::User)
+    [Environment]::SetEnvironmentVariable ("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::Process)
+    
+    # Disable Cygwin warning about Unix file paths
+    [Environment]::SetEnvironmentVariable ("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::User)
+    [Environment]::SetEnvironmentVariable ("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::Process)
     
     # Setup firewall to accept pings for Domain and Private networks but not from Public networks
     Set-NetFirewallRule `
