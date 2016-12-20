@@ -178,20 +178,6 @@ if ($Stage -eq 0) {
         [System.EnvironmentVariableTarget]::Process
     )
     
-    # This is the Chocolatey Bin Path, which is populated by Chocolatey but only for special packages
-    # Like portable packages or packages with special install files
-    # Native installers will not put anything here by themselves
-    [Environment]::SetEnvironmentVariable (
-        "PATH",
-        (Prepend-Idempotent "${Env:ChocolateyPath}\bin" $Env:Path, ";". $False),
-        [System.EnvironmentVariableTarget]::User
-    )
-    [Environment]::SetEnvironmentVariable (
-        "PATH",
-        (Prepend-Idempotent "${Env:ChocolateyPath}\bin" $Env:Path, ";". $False),
-        [System.EnvironmentVariableTarget]::Process
-    )
-    
     # Setup firewall to accept pings for Domain and Private networks but not from Public networks
     Set-NetFirewallRule `
         -DisplayName "File and Printer Sharing (Echo Request - ICMPv4-In)" `
@@ -282,9 +268,15 @@ if ($Stage -eq 0) {
     # Install Package Providers
     # There are 2 Chocolatey Providers for now (one works or the other does)
     # PowerShellGet is also a package provider
-    Install-PackageProvider –Name 'Chocolatey' -Force
+    # We are not using the Chocolatey provider because it is very buggy
+    # Install-PackageProvider –Name 'Chocolatey' -Force
     Install-PackageProvider -Name 'ChocolateyGet' -Force
     Install-PackageProvider -Name 'PowerShellGet' -Force
+    
+    # The ChocolateyGet bin path is "${Env:ChocolateyInstall}\bin"
+    # It is automatically appended to the system PATH environment variable upon installation of the first package
+    # The directory is populated for special packages, but won't necessarily be populated by native installers
+    # The ChocolateyGet will also automatically install chocolatey package, making the choco commands available as well
     
     # Nuget doesn't register a package source by default
     Register-PackageSource -Name 'nuget' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' 
@@ -320,7 +312,7 @@ if ($Stage -eq 0) {
     
     if ((Get-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V -Online).State -eq 'Enabled') {
     
-        Install-Package -Name 'docker-for-windows' -ProviderName 'chocolatey' -RequiredVersion '1.12.3.8488' -Force
+        Install-Package -Name 'docker-for-windows' -ProviderName 'chocolateyget' -RequiredVersion '1.12.3.8488' -Force
     
     } else {
         
