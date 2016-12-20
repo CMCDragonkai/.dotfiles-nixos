@@ -47,7 +47,7 @@ virtualbox,*,chocolateyget
 vagrant,*,chocolateyget
 sourcetree,*,chocolateyget
 linqpad,*,chocolateyget
-microsoft-build-tools,*,chocolateyget
+microsoft-visual-cpp-build-tools,*,chocolateyget
 atom,*,chocolateyget
 
 # documents
