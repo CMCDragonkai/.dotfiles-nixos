@@ -122,16 +122,17 @@ if ($Stage -eq 0) {
     # Import the registry file
     Start-Process $Env:windir\regedit.exe import "./windows_registry.reg"
     
-    # Enabling Optional Windows Features, these will need a restart
+    # Enabling Optional Windows Features, these may need a restart
+    # Also we're piping the Get-* first, as these features may not be available on certain editions of Windows
     
     # Enable Telnet
-    Enable-WindowsOptionalFeature -Online -FeatureName TelnetClient -All -NoRestart
+    Get-WindowsOptionalFeature -Online -FeatureName TelnetClient | Enable-WindowsOptionalFeature -Online -All -NoRestart
     # Enable Windows Containers
-    Enable-WindowsOptionalFeature -Online -FeatureName Containers -All -NoRestart
+    Get-WindowsOptionalFeature -Online -FeatureName Containers | Enable-WindowsOptionalFeature -Online -All -NoRestart
     # Enable Hyper-V hypervisor, this will prevent Virtualbox from running concurrently
     # However Hyper-V can be disabled at boot for when you need to use virtualbox
     # This is needed for Docker on Windows to run
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart
+    Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V | Enable-WindowsOptionalFeature -Online -All -NoRestart
 
     # Setup some Windows Environment Variables and Configuration
 
@@ -314,6 +315,17 @@ if ($Stage -eq 0) {
         $InstallCommand += "-Force"
 
         Invoke-Expression "$InstallCommand"
+        
+    }
+    
+    if ((Get-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V -Online).State -eq 'Enabled') {
+    
+        Install-Package -Name 'docker-for-windows' -ProviderName 'chocolatey' -RequiredVersion '1.12.3.8488' -Force
+    
+    } else {
+        
+        Write-Host 'Microsoft Hyper V is not available on this computer. Instead of Docker for Windows, try: https://www.docker.com/products/docker-toolbox'
+        Write-Host 'It requires manual installation.'
         
     }
 
