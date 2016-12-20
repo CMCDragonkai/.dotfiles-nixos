@@ -1,89 +1,89 @@
 # shell/system utilities
-carbon,2.2.0,chocolatey
+carbon,2.2.0,chocolateyget
 PSReadline,1.2,PSGallery
-ConEmu,16.5.22.0,chocolatey
-keepass,*,chocolatey
-keepass-plugin-keeagent,*,chocolatey
-keeweb,*,chocolatey
-procexp,*,chocolatey
-procmon,*,chocolatey
-ccleaner,*,chocolatey
-RapidEE,*,chocolatey
-sysinternals,*,chocolatey
+ConEmu,16.5.22.0,chocolateyget
+keepass,*,chocolateyget
+keepass-plugin-keeagent,*,chocolateyget
+keeweb,*,chocolateyget
+procexp,*,chocolateyget
+procmon,*,chocolateyget
+ccleaner,*,chocolateyget
+RapidEE,*,chocolateyget
+sysinternals,*,chocolateyget
 regshot,1.9.3,chocolateyget
-wincdemu,*,chocolatey
+wincdemu,*,chocolateyget
 
 # network
-Firefox,*,chocolatey
-GoogleChrome,*,chocolatey
-qbittorrent,3.3.4,chocolatey
-winscp,5.7.7,chocolatey
-npcap,*,chocolatey
-wireshark,*,chocolatey
-nmap,*,chocolatey
-fiddler4,*,chocolatey
-ngrok.portable,2.0,chocolatey
-namebench,1.3.1,chocolatey
-opera,*,chocolatey
-putty.portable,*,chocolatey
+Firefox,*,chocolateyget
+GoogleChrome,*,chocolateyget
+qbittorrent,3.3.4,chocolateyget
+winscp,5.7.7,chocolateyget
+npcap,*,chocolateyget
+wireshark,*,chocolateyget
+nmap,*,chocolateyget
+fiddler4,*,chocolateyget
+ngrok.portable,2.0,chocolateyget
+namebench,1.3.1,chocolateyget
+opera,*,chocolateyget
+putty.portable,*,chocolateyget
 
 # gaming
-steam,*,chocolatey
-origin,*,chocolatey
-battle.net,*,chocolatey
-retroarch,*,chocolatey
+steam,*,chocolateyget
+origin,*,chocolateyget
+battle.net,*,chocolateyget
+retroarch,*,chocolateyget
 
 # filesystem
-dropbox,*,chocolatey
-cyberduck,*,chocolatey
-peazip.portable,6.03,chocolatey
+dropbox,*,chocolateyget
+cyberduck,*,chocolateyget
+peazip.portable,6.03,chocolateyget
 
 # development
-emacs64,*,chocolatey
-jdk8,*,chocolatey
-heidisql,*,chocolatey
-dbeaver,*,chocolatey
-virtualbox,*,chocolatey
-vagrant,*,chocolatey
-sourcetree,*,chocolatey
-linqpad,*,chocolatey
-# msbuild.exe (MS Build), csc.exe (C# compiler), csi.exe (C# interpreter), vbc.exe (Visual Basic compiler)
-microsoft-build-tools,*,chocolatey
+emacs64,*,chocolateyget
+jdk8,*,chocolateyget
+heidisql,*,chocolateyget
+dbeaver,*,chocolateyget
+virtualbox,*,chocolateyget
+vagrant,*,chocolateyget
+sourcetree,*,chocolateyget
+linqpad,*,chocolateyget
+microsoft-build-tools,*,chocolateyget
+atom,*,chocolateyget
 
 # documents
-pandoc,*,chocolatey
-libreoffice,*,chocolatey
-adobereader,*,chocolatey
+pandoc,*,chocolateyget
+libreoffice,*,chocolateyget
+adobereader,*,chocolateyget
 adobereader-update,*,chocolateyget
-calibre,*,chocolatey
-evernote,*,chocolatey
-rufus.portable,*,chocolatey
+calibre,*,chocolateyget
+evernote,*,chocolateyget
+rufus.portable,*,chocolateyget
 
 # communication
-skype,7.24.0.104,chocolatey
-thunderbird,*,chocolatey
-teamviewer,*,chocolatey
+skype,*,chocolateyget
+thunderbird,*,chocolateyget
+teamviewer,*,chocolateyget
 
 # media
-ghostscript.app,*,chocolatey
-googleearthpro,7.1.5.1557,chocolatey
-vlc,2.2.3,chocolatey
-k-litecodecpackmega,12.1.0,chocolatey
-sharex,10.9.1,chocolatey
-obs-mp,0.14.1,chocolatey
-musicbee,*,chocolatey
+ghostscript.app,*,chocolateyget
+googleearthpro,*,chocolateyget
+vlc,*,chocolateyget
+k-litecodecpackmega,*,chocolateyget
+sharex,*,chocolateyget
+obs-mp,*,chocolateyget
+musicbee,*,chocolateyget
 
 # etc
-f.lux,*,chocolatey
-synergy,*,chocolatey
+f.lux,*,chocolateyget
+synergy,*,chocolateyget
 
 # fonts
-dejavufonts,*,chocolatey
-sourcecodepro,*,chocolatey
-AnonymousPro,*,chocolatey
-hackfont,*,chocolatey
-nexusfont,*,chocolatey
-inconsolata,*,chocolatey
+dejavufonts,*,chocolateyget
+sourcecodepro,*,chocolateyget
+AnonymousPro,*,chocolateyget
+hackfont,*,chocolateyget
+nexusfont,*,chocolateyget
+inconsolata,*,chocolateyget
 
 # windows packages not yet available
 # wordweb
