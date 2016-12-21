@@ -40,6 +40,7 @@ peazip.portable,6.03,chocolateyget
 
 # development
 emacs64,*,chocolateyget
+atom,*,chocolateyget
 jdk8,*,chocolateyget
 heidisql,*,chocolateyget
 dbeaver,*,chocolateyget
@@ -47,8 +48,7 @@ virtualbox,*,chocolateyget
 vagrant,*,chocolateyget
 sourcetree,*,chocolateyget
 linqpad,*,chocolateyget
-microsoft-visual-cpp-build-tools,*,chocolateyget
-atom,*,chocolateyget
+microsoft-visual-cpp-build-tools,*,chocolateyget,/Full
 
 # documents
 pandoc,*,chocolateyget
