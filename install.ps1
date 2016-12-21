@@ -14,6 +14,8 @@ param (
 
 # Utility Functions
 
+$PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
+
 function Prepend-Idempotent {
 
     param (
@@ -113,14 +115,14 @@ if ($Stage -eq 0) {
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
     
     # Copy the transparent.ico icon
-    Copy-Item ".\data\transparent.ico" "${env:SYSTEMROOT}\system32"
+    Copy-Item "${PSScriptRoot}\data\transparent.ico" "${env:SYSTEMROOT}\system32"
     Unblock-File -Path "${env:SYSTEMROOT}\system32\transparent.ico"
 
     # Install Powershell Help Files (we can use -?)
     Update-Help -Force
 
     # Import the registry file
-    Start-Process $Env:windir\regedit.exe import "./windows_registry.reg"
+    Start-Process $Env:windir\regedit.exe import "${PSScriptRoot}\windows_registry.reg"
     
     # Enabling Optional Windows Features, these may need a restart
     # Also we're piping the Get-* first, as these features may not be available on certain editions of Windows
@@ -164,12 +166,12 @@ if ($Stage -eq 0) {
     New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin"
     [Environment]::SetEnvironmentVariable (
         "PATH",
-        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
+        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Machine
     )
     [Environment]::SetEnvironmentVariable (
         "PATH",
-        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" $Env:Path, ";". $False),
+        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
     )
     
@@ -287,7 +289,7 @@ if ($Stage -eq 0) {
     Register-PackageSource -Name 'nuget' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' 
 
     # Acquire the Package Lists
-    $WindowsPackages = (Get-Content "./windows_packages.txt" | Where-Object { 
+    $WindowsPackages = (Get-Content "${PSScriptRoot}\windows_packages.txt" | Where-Object { 
         $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
     })
 
@@ -350,50 +352,46 @@ if ($Stage -eq 0) {
 
     # Acquire Package Lists
 
-    $MainPackages = (Get-Content "./cygwin_main_packages.txt" | Where-Object { 
+    $MainPackages = (Get-Content "${PSScriptRoot}\cygwin_main_packages.txt" | Where-Object { 
         $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
     }) -Join ','
-    $PortPackages = (Get-Content "./cygwin_port_packages.txt" | Where-Object { 
+    $PortPackages = (Get-Content "${PSScriptRoot}\cygwin_port_packages.txt" | Where-Object { 
         $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
     }) -Join ','
 
     # Main Packages
 
     if ($MainPackages) {
-        Start-Process -FilePath "./.bin/cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
-            "
-                --quiet-mode 
-                --no-shortcuts 
-                --no-startmenu 
-                --no-desktop 
-                --arch x86_64 
-                --upgrade-also 
-                --delete-orphans 
-                --root `"$InstallationDirectory/cygwin64`" 
-                --local-package-dir `"$InstallationDirectory/cygwin64/packages`" 
-                --site `"$MainMirror`" 
-                --packages `"$MainPackages`"
-            "
+        Start-Process -FilePath "${PSScriptRoot}\.bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+            "--quiet-mode",
+            "--no-shortcuts",
+            "--no-startmenu",
+            "--no-desktop",
+            "--arch x86_64",
+            "--upgrade-also",
+            "--delete-orphans",
+            "--root '${InstallationDirectory}/cygwin64'",
+            "--local-package-dir '${InstallationDirectory}/cygwin64/packages'",
+            "--site '$MainMirror'",
+            "--packages '$MainPackages'"
     }
 
     # Cygwin Port Packages
 
     if ($PortPackages) {
-        Start-Process -FilePath "./.bin/cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
-            "
-                --quiet-mode 
-                --no-shortcuts 
-                --no-startmenu 
-                --no-desktop 
-                --arch x86_64 
-                --upgrade-also 
-                --delete-orphans 
-                --root `"$InstallationDirectory/cygwin64`" 
-                --local-package-dir `"$InstallationDirectory/cygwin64/packages`" 
-                --site `"$PortMirror`" 
-                --pubkey `"$PortKey`" 
-                --packages `"$PortPackages`"
-            "
+        Start-Process -FilePath "${PSScriptRoot}\.bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+            "--quiet-mode",
+            "--no-shortcuts",
+            "--no-startmenu",
+            "--no-desktop",
+            "--arch x86_64",
+            "--upgrade-also",
+            "--delete-orphans",
+            "--root '${InstallationDirectory}/cygwin64'",
+            "--local-package-dir '${InstallationDirectory}/cygwin64/packages'",
+            "--site '$PortMirror'",
+            "--pubkey '$PortKey'",
+            "--packages '$PortPackages'"
     }
 
     # Schedule a final reboot to start the Cygwin setup process
@@ -412,11 +410,14 @@ if ($Stage -eq 0) {
     # See: http://superuser.com/q/839580
     Import-Module 'Carbon'
     Grant-Privilege -Identity "$Env:UserName" -Privilege SeCreateSymbolicLinkPrivilege
-
-    # Run the Cygwin process
-    # Open ConEmu to Mintty and ZSH
-    # Execute `./install.sh` from ZSH
-    # Use Start-Process without -Wait
-    # or don't exit immediately so you can watch stuff..
+    
+    # Setup PATH temporarily because the initial install.sh doesn't have it...
+    [Environment]::SetEnvironmentVariable (
+        "PATH",
+        (Prepend-Idempotent "${InstallationDirectory}\bin" "$Env:Path" ";" $False),
+        [System.EnvironmentVariableTarget]::Process
+    )
+    # Still need sbin and stuff
+    Start-Process -FilePath "$InstallationDirectory\bin\bash.exe" -ArgumentList "${PSScriptRoot}\install.sh" -Wait -Verb RunAs
 
 }
