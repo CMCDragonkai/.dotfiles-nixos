@@ -298,6 +298,13 @@ if ($Stage -eq 0) {
         $Name = $Package[0].trim()
         $Version = $Package[1].trim()
         $Provider = $Package[2].trim()
+        
+        # the fourth parameter is optional completely, there's no need to even have a comma
+        if ($Package.Length -eq 4) {
+            $AdditionalArguments = $Package[3].trim()
+        } else {
+            $AdditionalArguments = ''
+        }
 
         $InstallCommand = "Install-Package -Name '$Name' "
 
@@ -309,11 +316,19 @@ if ($Stage -eq 0) {
             $InstallCommand += "-ProviderName '$Provider' "
         }
 
-        $InstallCommand += "-Force"
+        if ($AdditionalArguments) {
+            $InstallCommand += "-AdditionalArguments @'
+            --installargs `"$AdditionalArguments`"
+            '@ "
+        }
 
+        $InstallCommand += "-Force"
+        
         Invoke-Expression "$InstallCommand"
         
     }
+    
+    # Special conditional packages are listed here
     
     if ((Get-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V -Online).State -eq 'Enabled') {
     
