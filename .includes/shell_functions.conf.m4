@@ -1,13 +1,35 @@
 # Functions (for interactive only)
 
-: '
-killjobs - Run kill on all jobs in a Bash or ZSH shell, allowing one to optionally pass in kill parameters.
+ifelse(PH_SYSTEM, CYGWIN,
 
-Usage: killjobs [zsh-kill-options | bash-kill-options]
+    # Cygwin-only functions
+
+    : '
+    '
+    is-admin() {
+
+        net session > /dev/null 2>&1
+        if [ $? -eq 0 ]; then return 0
+        else return 1; fi
+
+    }
+
+,
+
+    # Linux-only functions
+
+)
+
+# Common functions
+
+: '
+kill-jobs - Run kill on all jobs in a Bash or ZSH shell, allowing one to optionally pass in kill parameters.
+
+Usage: kill-jobs [zsh-kill-options | bash-kill-options]
 
 With no options, it sends `SIGTERM` to all jobs.
 '
-killjobs () {
+kill-jobs () {
 
     local kill_list="$(jobs)"
     if [ -n "$kill_list" ]; then
@@ -138,9 +160,9 @@ process-starttime - Get start time of a process using its PID.
                     Time is returned as Unix time.
                     You can also just use `ps -o lstart= --pid ...`.
 
-Usage: process_starttime <pid>
+Usage: process-starttime <pid>
 '
-process_starttime () {
+process-starttime () {
 
     uptime=($(cat "/proc/uptime"))
     process_statistics=($(cat "/proc/$1/stat")) || return 1
