@@ -61,13 +61,13 @@ function Get-ScriptPath {
 function ScheduleRebootTask {
 
     param (
-        [string]$Name
+        [string]$Name,
         [int]$Stage
     )
 
     $Action = New-ScheduledTaskAction -Execute 'powershell.exe' -WorkingDirectory "$($PWD.Path)" -Argument (
+        '-NoExit ' + 
         "-File '$(Get-ScriptPath)' " + 
-        '-Verb RunAs ' + 
         "-MainMirror '${MainMirror}' " + 
         "-PortMirror '${PortMirror}' " + 
         "-PortKey '${PortKey}' " + 
