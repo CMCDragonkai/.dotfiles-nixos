@@ -1,7 +1,8 @@
 #!/usr/bin/env powershell
 
-# Run this in Administrator Mode PowerShell
-# `powershell -ExecutionPolicy Unrestricted ./install.ps1`
+#Requires -RunAsAdministrator
+
+# Run this like: `powershell -ExecutionPolicy Unrestricted ./install.ps1`
 # Works in Windows 10 and Up
 
 param (
