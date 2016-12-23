@@ -240,7 +240,7 @@ if ($Stage -eq 0) {
     Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (TCP-In)" -ErrorAction SilentlyContinue
     Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (UDP-In)" -ErrorAction SilentlyContinue
     New-NetFirewallRule `
-        -DisplayName "Private Development Port (TCP-In)" `
+        -DisplayName "Polyhack - Private Development Port (TCP-In)" `
         -Direction Inbound `
         -EdgeTraversalPolicy Allow `
         -Protocol TCP `
@@ -250,7 +250,7 @@ if ($Stage -eq 0) {
         -Enabled True `
         > $null
     New-NetFirewallRule `
-        -DisplayName "Private Development Port (UDP-In)" `
+        -DisplayName "Polyhack - Private Development Port (UDP-In)" `
         -Direction Inbound `
         -EdgeTraversalPolicy Allow `
         -Protocol UDP `
