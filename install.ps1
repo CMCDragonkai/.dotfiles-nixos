@@ -65,15 +65,14 @@ function ScheduleRebootTask {
         [int]$Stage
     )
 
-    # this needs to be changed to schedule the task to powershell.exe
-    # to run the -File (Get-ScriptPath)
-
-    $Action = New-ScheduledTaskAction -Execute (Get-ScriptPath) -Argument (
-            "-MainMirror ${MainMirror} " + 
-            "-PortMirror ${PortMirror} " + 
-            "-PortKey ${PortKey} " + 
-            "-InstallationDirectory ${InstallationDirectory}" + 
-            "-Stage ${Stage}"
+    $Action = New-ScheduledTaskAction -Execute 'powershell.exe' -WorkingDirectory "$($PWD.Path)" -Argument (
+        "-File '$(Get-ScriptPath)' " + 
+        '-Verb runas ' + 
+        "-MainMirror '${MainMirror}' " + 
+        "-PortMirror '${PortMirror}' " + 
+        "-PortKey '${PortKey}' " + 
+        "-InstallationDirectory '${InstallationDirectory}'" + 
+        "-Stage ${Stage}"
     )
 
     $Trigger = New-ScheduledTaskTrigger -AtLogOn
@@ -122,7 +121,7 @@ if ($Stage -eq 0) {
     Update-Help -Force
 
     # Import the registry file
-    Start-Process $Env:windir\regedit.exe import "${PSScriptRoot}\windows_registry.reg"
+    Start-Process -FilePath "$Env:windir\regedit.exe" -Wait -Verb RunAs -ArgumentList "import '${PSScriptRoot}\windows_registry.reg'"
     
     # Enabling Optional Windows Features, these may need a restart
     # Also we're piping the Get-* first, as these features may not be available on certain editions of Windows
@@ -411,13 +410,29 @@ if ($Stage -eq 0) {
     Import-Module 'Carbon'
     Grant-Privilege -Identity "$Env:UserName" -Privilege SeCreateSymbolicLinkPrivilege
     
-    # Setup PATH temporarily because the initial install.sh doesn't have it...
+    # Add the primary Cygwin bin paths to PATH before launching install.sh directly from Powershell
+    # This is because the PATH is not been completely configured for Cygwin before install.sh runs
+    [Environment]::SetEnvironmentVariable (
+        "PATH",
+        (Prepend-Idempotent "${InstallationDirectory}\usr\bin" "$Env:Path" ";" $False),
+        [System.EnvironmentVariableTarget]::Process
+    )
+    [Environment]::SetEnvironmentVariable (
+        "PATH",
+        (Prepend-Idempotent "${InstallationDirectory}\usr\sbin" "$Env:Path" ";" $False),
+        [System.EnvironmentVariableTarget]::Process
+    )
     [Environment]::SetEnvironmentVariable (
         "PATH",
         (Prepend-Idempotent "${InstallationDirectory}\bin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
     )
-    # Still need sbin and stuff
-    Start-Process -FilePath "$InstallationDirectory\bin\bash.exe" -ArgumentList "${PSScriptRoot}\install.sh" -Wait -Verb RunAs
+    [Environment]::SetEnvironmentVariable (
+        "PATH",
+        (Prepend-Idempotent "${InstallationDirectory}\sbin" "$Env:Path" ";" $False),
+        [System.EnvironmentVariableTarget]::Process
+    )
+
+    Start-Process -FilePath "$InstallationDirectory\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "${PSScriptRoot}\install.sh"
 
 }
