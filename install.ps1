@@ -102,8 +102,9 @@ function ScheduleRebootTask {
 # Switch to using Powershell Terminal Directly
 if ($Stage -eq 0) {
 
-    Write-Host "Before you continue the installation, you should switch on NTFS compression on your drive"
-    Read-Host "Press any Key to Continue"
+    Write-Host "Before you continue the installation, you should switch on NTFS compression on your drive."
+    Write-Host "If you have multiple drives, try using Storage Spaces to combine them."
+    Read-Host "Enter any Key to Continue"
 
     # Allow Powershell scripts to be executable
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
@@ -116,7 +117,7 @@ if ($Stage -eq 0) {
     Update-Help -Force
 
     # Import the registry file
-    Start-Process -FilePath "$Env:windir\regedit.exe" -Wait -Verb RunAs -ArgumentList "import '${PSScriptRoot}\windows_registry.reg'"
+    Start-Process -FilePath "$Env:windir\regedit.exe" -Wait -Verb RunAs -ArgumentList '/s', "import '${PSScriptRoot}\windows_registry.reg'"
     
     # Enabling Optional Windows Features, these may need a restart
     # Also we're piping the Get-* first, as these features may not be available on certain editions of Windows
