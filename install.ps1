@@ -16,38 +16,105 @@ param (
 
 function Prepend-Idempotent {
 
+    # the delimiter is expected to be just 1 character
     param (
         [string]$InputString, 
         [string]$OriginalString, 
         [string]$Delimiter = '', 
-        [bool]$CaseSensitive = $False
+        [bool]$CaseSensitive = $false
     )
+    
+    # since we're using pattern matching, we need to escape any special characters
+    $InputString = [regex]::Escape($InputString)
+    $OriginalString = [regex]::Escape($OriginalString)
 
     if ($CaseSensitive -and ("$OriginalString" -cnotmatch "$InputString")) {
+
+        $InputString = [regex]::Unescape($InputString)
+        $OriginalString = [regex]::Unescape($OriginalString)
         "$InputString" + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
+
     } elseif (! $CaseSensitive -and ("$OriginalString" -inotmatch "$InputString")) {
+
+        $InputString = [regex]::Unescape($InputString)
+        $OriginalString = [regex]::Unescape($OriginalString)
         "$InputString" + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
+
     } else {
-        "$OriginalString"
+
+        [regex]::Unescape("$OriginalString")
+    
     }
 
 }
 
 function Append-Idempotent {
 
+    # the delimiter is expected to be just 1 character
     param (
         [string]$InputString, 
         [string]$OriginalString, 
         [string]$Delimiter = '', 
-        [bool]$CaseSensitive = $False
+        [bool]$CaseSensitive = $false
     )
 
+    # since we're using pattern matching, we need to escape any special characters
+    $InputString = [regex]::Escape($InputString)
+    $OriginalString = [regex]::Escape($OriginalString)
+
     if ($CaseSensitive -and ("$OriginalString" -cnotmatch "$InputString")) {
+
+        $InputString = [regex]::Unescape($InputString)
+        $OriginalString = [regex]::Unescape($OriginalString)
         "$OriginalString".TrimEnd("$Delimiter") + "$Delimiter" + "$InputString"
+
     } elseif (! $CaseSensitive -and ("$OriginalString" -inotmatch "$InputString")) {
+        
+        $InputString = [regex]::Unescape($InputString)
+        $OriginalString = [regex]::Unescape($OriginalString)
         "$OriginalString".TrimEnd("$Delimiter") + "$Delimiter" + "$InputString"
+
     } else {
-        "$OriginalString"
+
+        [regex]::Unescape("$OriginalString")
+    
+    }
+
+}
+
+function Add-Path {
+
+    param (
+        [string]$NewPath, 
+        [ValidateSet('Prepend','Append')]$Style = 'Prepend', 
+        [ValidateSet('User', 'System')]$Target = 'User'
+    )
+
+    try {
+        
+        # we need to do this to make sure not to expand the environment variables already inside the PATH
+        if ($Target -eq 'User') {
+            $Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment', $true)
+        } elseif ($Target -eq 'System') {
+            $Key = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey('SYSTEM\CurrentControlSet\Control\Session Manager\Environment', $true)
+        }
+
+        $Path = $Key.GetValue('Path', $null, 'DoNotExpandEnvironmentNames')
+
+        # note that system path can only expand system environment variables and vice versa for user environment variables
+        if ($Style -eq 'Prepend') {
+            $key.SetValue('Path', (Prepend-Idempotent "$NewPath" "$Path" ";" $false), 'ExpandString')
+        } elseif ($Style -eq 'Append') {
+            $key.SetValue('Path', (Append-Idempotent "$NewPath" "$Path" ";" $false), 'ExpandString')
+        }
+
+        # update the path for the current process as well
+        $Env:Path = $key.GetValue('Path', $null)
+
+    } finally {
+        
+        $key.Dispose()
+    
     }
 
 }
@@ -158,16 +225,7 @@ if ($Stage -eq 0) {
     # And of course any symlinks to the binaries that are placed within here
     # Note that you must use NTFS symlinks here or use CMD shims, not cygwin symlinks
     New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin" > $null
-    [Environment]::SetEnvironmentVariable(
-        "PATH",
-        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" "$Env:Path" ";" $False),
-        [System.EnvironmentVariableTarget]::Machine
-    )
-    [Environment]::SetEnvironmentVariable(
-        "PATH",
-        (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" "$Env:Path" ";" $False),
-        [System.EnvironmentVariableTarget]::Process
-    )
+    Add-Path -NewPath '%ALLUSERSPROFILE%\bin' -Style Append -Target System
     
     # User variables
 
@@ -414,6 +472,7 @@ if ($Stage -eq 0) {
     
     # Add the primary Cygwin bin paths to PATH before launching install.sh directly from Powershell
     # This is because the PATH is not been completely configured for Cygwin before install.sh runs
+    # This is only needed temporarily
     [Environment]::SetEnvironmentVariable(
         "PATH",
         (Prepend-Idempotent "${InstallationDirectory}\usr\bin" "$Env:Path" ";" $False),
