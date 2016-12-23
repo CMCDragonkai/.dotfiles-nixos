@@ -5,6 +5,11 @@ ifelse(PH_SYSTEM, CYGWIN,
     # Cygwin-only functions
 
     : '
+    is-admin - Is the current session running with administrator privileges or not?
+    
+    Usage: is-admin
+    
+    Returns 0 or 1.
     '
     is-admin() {
 
@@ -12,6 +17,24 @@ ifelse(PH_SYSTEM, CYGWIN,
         if [ $? -eq 0 ]; then return 0
         else return 1; fi
 
+    }
+    
+    :'
+    win-users - List all users, groups and built-in accounts. Does not include service accounts.
+    
+    Usage: win-users
+    '
+    win-users() {
+        powershell -Command 'Get-WmiObject -Class "win32_account" -Namespace "root\cimv2" | Sort-Object caption | Format-Table caption, __CLASS, FullName'
+    }
+    
+    :'
+    win-service-users - List all service account users
+    
+    Usage: win-service-users
+    '
+    win-service-users() {
+        powershell -Command 'Get-Service | Foreach-Object {Write-Host NT Service\$($_.Name)}'
     }
 
 ,
