@@ -2,8 +2,7 @@
 
 #Requires -RunAsAdministrator
 
-# Run this like: `powershell -ExecutionPolicy Unrestricted ./install.ps1`
-# Works in Windows 10 and Up
+# Run this like: `powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& 'C:\Users\CMCDragonkai\Downloads\.dotfiles-master\install.ps1'"`
 
 param (
     [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
@@ -24,12 +23,12 @@ function Prepend-Idempotent {
         [bool]$CaseSensitive = $False
     )
 
-    if ($CaseSensitive -and ($OriginalString -cnotmatch $InputString)) {
-        $InputString + $Delimiter + $OriginalString
-    } elseif (! $CaseSensitive -and ($OriginalString -inotmatch $InputString)) {
-        $InputString + $Delimiter + $OriginalString
+    if ($CaseSensitive -and ("$OriginalString" -cnotmatch "$InputString")) {
+        "$InputString" + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
+    } elseif (! $CaseSensitive -and ("$OriginalString" -inotmatch "$InputString")) {
+        "$InputString" + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
     } else {
-        $OriginalString
+        "$OriginalString"
     }
 
 }
@@ -42,13 +41,13 @@ function Append-Idempotent {
         [string]$Delimiter = '', 
         [bool]$CaseSensitive = $False
     )
-    
-    if ($CaseSensitive -and ($OriginalString -cnotmatch $InputString)) {
-        $OriginalString + $Delimiter + $InputString
-    } elseif (! $CaseSensitive -and ($OriginalString -inotmatch $InputString)) {
-        $OriginalString + $Delimiter + $InputString
+
+    if ($CaseSensitive -and ("$OriginalString" -cnotmatch "$InputString")) {
+        "$OriginalString".TrimEnd("$Delimiter") + "$Delimiter" + "$InputString"
+    } elseif (! $CaseSensitive -and ("$OriginalString" -inotmatch "$InputString")) {
+        "$OriginalString".TrimEnd("$Delimiter") + "$Delimiter" + "$InputString"
     } else {
-        $OriginalString
+        "$OriginalString"
     }
 
 }
@@ -123,13 +122,13 @@ if ($Stage -eq 0) {
     # Also we're piping the Get-* first, as these features may not be available on certain editions of Windows
     
     # Enable Telnet
-    Get-WindowsOptionalFeature -Online -FeatureName TelnetClient | Enable-WindowsOptionalFeature -Online -All -NoRestart
+    Get-WindowsOptionalFeature -Online -FeatureName TelnetClient | Enable-WindowsOptionalFeature -Online -All -NoRestart > $null
     # Enable Windows Containers
-    Get-WindowsOptionalFeature -Online -FeatureName Containers | Enable-WindowsOptionalFeature -Online -All -NoRestart
+    Get-WindowsOptionalFeature -Online -FeatureName Containers | Enable-WindowsOptionalFeature -Online -All -NoRestart > $null
     # Enable Hyper-V hypervisor, this will prevent Virtualbox from running concurrently
     # However Hyper-V can be disabled at boot for when you need to use virtualbox
     # This is needed for Docker on Windows to run
-    Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V | Enable-WindowsOptionalFeature -Online -All -NoRestart
+    Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V | Enable-WindowsOptionalFeature -Online -All -NoRestart > $null
 
     # Setup some Windows Environment Variables and Configuration
     
@@ -139,16 +138,16 @@ if ($Stage -eq 0) {
     # By default Windows will have set `.COM;.EXE;.BAT;.CMD` as path extensions
     [Environment]::SetEnvironmentVariable(
         "PATHEXT", 
-        (Append-Idempotent ".PS1" $Env:PATHEXT ";" $False), 
+        (Append-Idempotent ".PS1" "$Env:PATHEXT" ";" $False), 
         [System.EnvironmentVariableTarget]::Machine
     )
     [Environment]::SetEnvironmentVariable(
         "PATHEXT", 
-        (Append-Idempotent ".PS1" $Env:PATHEXT ";" $False), 
+        (Append-Idempotent ".PS1" "$Env:PATHEXT" ";" $False), 
         [System.EnvironmentVariableTarget]::Process
     )
-    CMD /C 'assoc .ps1=Microsoft.PowerShellScript.1'
-    CMD /C 'ftype Microsoft.PowerShellScript.1="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "%1"'
+    CMD /C 'assoc .ps1=Microsoft.PowerShellScript.1' > $null
+    CMD /C 'ftype Microsoft.PowerShellScript.1="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "%1"' > $null
     
     # Directory to hold symlinks to Windows executables that is installed across users
     # This can be used for applications we install ourselves and for native installers in Chocolatey
@@ -158,7 +157,7 @@ if ($Stage -eq 0) {
     # Metadata can be cleaned by uninstalling them from Chocolatey if they were installed via Chocolatey
     # And of course any symlinks to the binaries that are placed within here
     # Note that you must use NTFS symlinks here or use CMD shims, not cygwin symlinks
-    New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin"
+    New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin" > $null
     [Environment]::SetEnvironmentVariable(
         "PATH",
         (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" "$Env:Path" ";" $False),
@@ -185,13 +184,14 @@ if ($Stage -eq 0) {
         -DisplayName "File and Printer Sharing (Echo Request - ICMPv4-In)" `
         -Enabled True `
         -Action "Allow" `
-        -Profile "Domain,Private"
-
+        -Profile "Domain,Private"`
+        > $null
     Set-NetFirewallRule `
         -DisplayName "File and Printer Sharing (Echo Request - ICMPv6-In)" `
         -Enabled True `
         -Action "Allow" `
-        -Profile "Domain,Private"
+        -Profile "Domain,Private"`
+        > $null
 
     # Setup firewall to accept connections from 55555 in Domain and Private networks
     Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (TCP-In)" -ErrorAction SilentlyContinue
@@ -204,7 +204,8 @@ if ($Stage -eq 0) {
         -LocalPort 55555 `
         -Action Allow `
         -Profile "Domain,Private" `
-        -Enabled True
+        -Enabled True `
+        > $null
     New-NetFirewallRule `
         -DisplayName "Private Development Port (UDP-In)" `
         -Direction Inbound `
@@ -213,7 +214,8 @@ if ($Stage -eq 0) {
         -LocalPort 55555 `
         -Action Allow `
         -Profile "Domain,Private" `
-        -Enabled True
+        -Enabled True `
+        > $null
 
     # Port 22 for Cygwin SSH
     Remove-NetFirewallRule -DisplayName "Polyhack - SSH (TCP-In)" -ErrorAction SilentlyContinue
@@ -226,7 +228,8 @@ if ($Stage -eq 0) {
         -Action Allow `
         -Profile "Domain,Private" `
         -Program "${InstallationDirectory}\cygwin64\usr\sbin\sshd.exe" `
-        -Enabled True
+        -Enabled True `
+        > $null
 
     # Port 80 for HTTP, but blocked by default (switch it on when you need to)
     Remove-NetFirewallRule -DisplayName "Polyhack - HTTP (TCP-In)" -ErrorAction SilentlyContinue
@@ -237,7 +240,8 @@ if ($Stage -eq 0) {
         -Protocol TCP `
         -LocalPort 80 `
         -Action Block `
-        -Enabled True
+        -Enabled True `
+        > $null
 
     # Schedule the next stage of this script and reboot
     Unregister-ScheduledTask -TaskName "Dotfiles - 1" -Confirm:$false -ErrorAction SilentlyContinue
@@ -343,8 +347,8 @@ if ($Stage -eq 0) {
 
     # Create the necessary directories
 
-    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64"
-    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64/packages"
+    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64" > $null
+    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64/packages" > $null
 
     # Acquire Package Lists
 
