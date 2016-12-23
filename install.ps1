@@ -23,26 +23,18 @@ function Prepend-Idempotent {
         [string]$Delimiter = '', 
         [bool]$CaseSensitive = $false
     )
-    
-    # since we're using pattern matching, we need to escape any special characters
-    $InputString = [regex]::Escape($InputString)
-    $OriginalString = [regex]::Escape($OriginalString)
 
-    if ($CaseSensitive -and ("$OriginalString" -cnotmatch "$InputString")) {
+    if ($CaseSensitive -and ("$OriginalString" -cnotlike "*${InputString}*")) {
 
-        $InputString = [regex]::Unescape($InputString)
-        $OriginalString = [regex]::Unescape($OriginalString)
-        "$InputString" + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
+        "$InputString".TrimEnd("$Delimiter") + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
 
-    } elseif (! $CaseSensitive -and ("$OriginalString" -inotmatch "$InputString")) {
+    } elseif (! $CaseSensitive -and ("$OriginalString" -inotlike "*${InputString}*")) {
 
-        $InputString = [regex]::Unescape($InputString)
-        $OriginalString = [regex]::Unescape($OriginalString)
-        "$InputString" + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
+        "$InputString".TrimEnd("$Delimiter") + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
 
     } else {
 
-        [regex]::Unescape("$OriginalString")
+        "$OriginalString"
     
     }
 
@@ -58,25 +50,17 @@ function Append-Idempotent {
         [bool]$CaseSensitive = $false
     )
 
-    # since we're using pattern matching, we need to escape any special characters
-    $InputString = [regex]::Escape($InputString)
-    $OriginalString = [regex]::Escape($OriginalString)
+    if ($CaseSensitive -and ("$OriginalString" -cnotlike "*${InputString}*")) {
 
-    if ($CaseSensitive -and ("$OriginalString" -cnotmatch "$InputString")) {
+        "$OriginalString".TrimEnd("$Delimiter") + "$Delimiter" + "$InputString".TrimStart("$Delimiter")
 
-        $InputString = [regex]::Unescape($InputString)
-        $OriginalString = [regex]::Unescape($OriginalString)
-        "$OriginalString".TrimEnd("$Delimiter") + "$Delimiter" + "$InputString"
-
-    } elseif (! $CaseSensitive -and ("$OriginalString" -inotmatch "$InputString")) {
+    } elseif (! $CaseSensitive -and ("$OriginalString" -inotlike "*${InputString}*")) {
         
-        $InputString = [regex]::Unescape($InputString)
-        $OriginalString = [regex]::Unescape($OriginalString)
-        "$OriginalString".TrimEnd("$Delimiter") + "$Delimiter" + "$InputString"
+        "$OriginalString".TrimEnd("$Delimiter") + "$Delimiter" + "$InputString".TrimStart("$Delimiter")
 
     } else {
 
-        [regex]::Unescape("$OriginalString")
+        "$OriginalString"
     
     }
 
@@ -102,10 +86,11 @@ function Add-Path {
         $Path = $Key.GetValue('Path', $null, 'DoNotExpandEnvironmentNames')
 
         # note that system path can only expand system environment variables and vice versa for user environment variables
+        # in order to make sure this method is idempotent, we need to check if the new path already exists, this requires having a semicolon at the very end
         if ($Style -eq 'Prepend') {
-            $key.SetValue('Path', (Prepend-Idempotent "$NewPath" "$Path" ";" $false), 'ExpandString')
+            $key.SetValue('Path', (Prepend-Idempotent ("$NewPath".TrimEnd(';') + ';') ("$Path".TrimEnd(';') + ';') ';' $false), 'ExpandString')
         } elseif ($Style -eq 'Append') {
-            $key.SetValue('Path', (Append-Idempotent "$NewPath" "$Path" ";" $false), 'ExpandString')
+            $key.SetValue('Path', (Append-Idempotent ("$NewPath".TrimEnd(';') + ';') ("$Path".TrimEnd(';') + ';') ';' $false), 'ExpandString')
         }
 
         # update the path for the current process as well
