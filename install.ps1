@@ -168,7 +168,7 @@ if ($Stage -eq 0) {
     Update-Help -Force
 
     # Import the registry file
-    Start-Process -FilePath "$Env:windir\regedit.exe" -Wait -Verb RunAs -ArgumentList '/s', "import '${PSScriptRoot}\windows_registry.reg'"
+    Start-Process -FilePath "$Env:SystemRoot\system32\reg.exe" -Wait -Verb RunAs -ArgumentList "IMPORT `"${PSScriptRoot}\windows_registry.reg`""
     
     # Enabling Optional Windows Features, these may need a restart
     # Also we're piping the Get-* first, as these features may not be available on certain editions of Windows
@@ -413,10 +413,10 @@ if ($Stage -eq 0) {
             "--arch x86_64",
             "--upgrade-also",
             "--delete-orphans",
-            "--root '${InstallationDirectory}/cygwin64'",
-            "--local-package-dir '${InstallationDirectory}/cygwin64/packages'",
-            "--site '$MainMirror'",
-            "--packages '$MainPackages'"
+            "--root `"${InstallationDirectory}/cygwin64`"",
+            "--local-package-dir `"${InstallationDirectory}/cygwin64/packages`"",
+            "--site `"$MainMirror`"",
+            "--packages `"$MainPackages`""
     }
 
     # Cygwin Port Packages
@@ -430,11 +430,11 @@ if ($Stage -eq 0) {
             "--arch x86_64",
             "--upgrade-also",
             "--delete-orphans",
-            "--root '${InstallationDirectory}/cygwin64'",
-            "--local-package-dir '${InstallationDirectory}/cygwin64/packages'",
-            "--site '$PortMirror'",
-            "--pubkey '$PortKey'",
-            "--packages '$PortPackages'"
+            "--root `"${InstallationDirectory}/cygwin64`"",
+            "--local-package-dir `"${InstallationDirectory}/cygwin64/packages`"",
+            "--site `"$PortMirror`"",
+            "--pubkey `"$PortKey`"",
+            "--packages `"$PortPackages`""
     }
 
     # Schedule a final reboot to start the Cygwin setup process
@@ -479,6 +479,6 @@ if ($Stage -eq 0) {
         [System.EnvironmentVariableTarget]::Process
     )
 
-    Start-Process -FilePath "$InstallationDirectory\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "${PSScriptRoot}\install.sh"
+    Start-Process -FilePath "$InstallationDirectory\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "`"${PSScriptRoot}\install.sh`""
 
 }
