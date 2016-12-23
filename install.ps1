@@ -357,7 +357,7 @@ if ($Stage -eq 0) {
     # Main Packages
 
     if ($MainPackages) {
-        Start-Process -FilePath "${PSScriptRoot}\.bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+        Start-Process -FilePath "${PSScriptRoot}\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
             "--no-shortcuts",
             "--no-startmenu",
@@ -374,7 +374,7 @@ if ($Stage -eq 0) {
     # Cygwin Port Packages
 
     if ($PortPackages) {
-        Start-Process -FilePath "${PSScriptRoot}\.bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+        Start-Process -FilePath "${PSScriptRoot}\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
             "--no-shortcuts",
             "--no-startmenu",
