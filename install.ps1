@@ -104,7 +104,7 @@ if ($Stage -eq 0) {
 
     Write-Host "Before you continue the installation, you should switch on NTFS compression on your drive."
     Write-Host "If you have multiple drives, try using Storage Spaces to combine them."
-    Read-Host "Enter any Key to Continue"
+    Read-Host "Enter to continue"
 
     # Allow Powershell scripts to be executable
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
