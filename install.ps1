@@ -54,20 +54,16 @@ function Append-Idempotent {
 
 }
 
-function Get-ScriptPath {
-    Split-Path $Script:MyInvocation.MyCommand.Path
-}
-
 function ScheduleRebootTask {
 
     param (
         [string]$Name,
         [int]$Stage
     )
-
+    
     $Action = New-ScheduledTaskAction -Execute 'powershell.exe' -WorkingDirectory "$($PWD.Path)" -Argument (
-        '-NoExit ' + 
-        "-File '$(Get-ScriptPath)' " + 
+        '-NoLogo -NoProfile -ExecutionPolicy Unrestricted -NoExit ' + 
+        "-File '${PSCommandPath}' " + 
         "-MainMirror '${MainMirror}' " + 
         "-PortMirror '${PortMirror}' " + 
         "-PortKey '${PortKey}' " + 
@@ -75,10 +71,10 @@ function ScheduleRebootTask {
         "-Stage ${Stage}"
     )
 
-    $Trigger = New-ScheduledTaskTrigger -AtLogOn
+    $Trigger = New-ScheduledTaskTrigger -AtLogOn -User "$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name)"
     
     $Principal = New-ScheduledTaskPrincipal `
-        -UserId ([System.Security.Principal.WindowsIdentity]::GetCurrent().Name) `
+        -UserId "$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name)" `
         -LogonType Interactive `
         -RunLevel Highest
     
