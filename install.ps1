@@ -14,8 +14,6 @@ param (
 
 # Utility Functions
 
-$PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
-
 function Prepend-Idempotent {
 
     param (
@@ -61,18 +59,18 @@ function ScheduleRebootTask {
         [int]$Stage
     )
     
+    # ScheduledTasks action syntax is similar to the syntax used for run.exe commands
+    # For some reason the normal -File option of powershell.exe doesn't work in run.exe and hence also doesn't work in the task scheduler
+    # So we use an alternative syntax to execute the script
     $Action = New-ScheduledTaskAction -Execute 'powershell.exe' -WorkingDirectory "$($PWD.Path)" -Argument (
         '-NoLogo -NoProfile -ExecutionPolicy Unrestricted -NoExit ' + 
-        "-File '${PSCommandPath}' " + 
-        "-MainMirror '${MainMirror}' " + 
-        "-PortMirror '${PortMirror}' " + 
-        "-PortKey '${PortKey}' " + 
-        "-InstallationDirectory '${InstallationDirectory}'" + 
-        "-Stage ${Stage}"
+        "`"& '${PSCommandPath}' -MainMirror '${MainMirror}' -PortMirror '${PortMirror}' -PortKey '${PortKey}' -InstallationDirectory '${InstallationDirectory}' -Stage ${Stage}`""
     )
 
+    # Trigger the script only when the current user has logged on
     $Trigger = New-ScheduledTaskTrigger -AtLogOn -User "$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name)"
     
+    # -RunLevel Highest will run the job with administrator privileges
     $Principal = New-ScheduledTaskPrincipal `
         -UserId "$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name)" `
         -LogonType Interactive `
@@ -86,7 +84,7 @@ function ScheduleRebootTask {
         -StartWhenAvailable
 
     Register-ScheduledTask `
-        -TaskName "$Name $Stage" `
+        -TaskName "$Name$Stage" `
         -TaskPath "\" `
         -Action $Action `
         -Trigger $Trigger `
@@ -239,12 +237,13 @@ if ($Stage -eq 0) {
         -Action Block `
         -Enabled True
 
-    # Reboot
+    # Schedule the next stage of this script and reboot
+    Unregister-ScheduledTask -TaskName "Dotfiles - 1" -Confirm:$false -ErrorAction SilentlyContinue
     ScheduleRebootTask -Name "Dotfiles - " -Stage 1
 
 } elseif ($Stage -eq 1) {
 
-    Unregister-ScheduledTask -TaskName "Dotfiles - 1" -TaskPath "\" -Confirm:$false
+    Unregister-ScheduledTask -TaskName "Dotfiles - 1" -Confirm:$false
 
     # Stop the Windows Native SSH Service due to Developer Tools
     Stop-Service -Name "SshBroker" -Force -Confirm:$false -ErrorAction SilentlyContinue
@@ -390,11 +389,12 @@ if ($Stage -eq 0) {
     }
 
     # Schedule a final reboot to start the Cygwin setup process
+    Unregister-ScheduledTask -TaskName "Dotfiles - 2" -Confirm:$false -ErrorAction SilentlyContinue
     ScheduleRebootTask -Name "Dotfiles - " -Stage 2
 
 } elseif ($Stage -eq 2) {
 
-    Unregister-ScheduledTask -TaskName "Dotfiles - 2" -TaskPath "\" -Confirm:$false
+    Unregister-ScheduledTask -TaskName "Dotfiles - 2" -Confirm:$false
 
     # Use Carbon's Grant-Privilege feature to give us the ability to create Windows symbolic links
     # Because I am an administrator user, this doesn't give me unelevated access to creating native symlinks.
