@@ -67,7 +67,7 @@ function ScheduleRebootTask {
 
     $Action = New-ScheduledTaskAction -Execute 'powershell.exe' -WorkingDirectory "$($PWD.Path)" -Argument (
         "-File '$(Get-ScriptPath)' " + 
-        '-Verb runas ' + 
+        '-Verb RunAs ' + 
         "-MainMirror '${MainMirror}' " + 
         "-PortMirror '${PortMirror}' " + 
         "-PortKey '${PortKey}' " + 
