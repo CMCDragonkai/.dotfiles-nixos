@@ -136,12 +136,12 @@ if ($Stage -eq 0) {
    
     # Make the `*.ps1` scripts executable without the `.ps1` extension
     # By default Windows will have set `.COM;.EXE;.BAT;.CMD` as path extensions
-    [Environment]::SetEnvironmentVariable (
+    [Environment]::SetEnvironmentVariable(
         "PATHEXT", 
         (Append-Idempotent ".PS1" $Env:PATHEXT ";" $False), 
         [System.EnvironmentVariableTarget]::Machine
     )
-    [Environment]::SetEnvironmentVariable (
+    [Environment]::SetEnvironmentVariable(
         "PATHEXT", 
         (Append-Idempotent ".PS1" $Env:PATHEXT ";" $False), 
         [System.EnvironmentVariableTarget]::Process
@@ -158,12 +158,12 @@ if ($Stage -eq 0) {
     # And of course any symlinks to the binaries that are placed within here
     # Note that you must use NTFS symlinks here or use CMD shims, not cygwin symlinks
     New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin"
-    [Environment]::SetEnvironmentVariable (
+    [Environment]::SetEnvironmentVariable(
         "PATH",
         (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Machine
     )
-    [Environment]::SetEnvironmentVariable (
+    [Environment]::SetEnvironmentVariable(
         "PATH",
         (Append-Idempotent "${Env:ALLUSERSPROFILE}\bin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
@@ -172,12 +172,12 @@ if ($Stage -eq 0) {
     # User variables
 
     # Home environment variables
-    [Environment]::SetEnvironmentVariable ("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::User)
-    [Environment]::SetEnvironmentVariable ("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::Process)
+    [Environment]::SetEnvironmentVariable("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::User)
+    [Environment]::SetEnvironmentVariable("HOME", $Env:UserProfile, [System.EnvironmentVariableTarget]::Process)
     
     # Disable Cygwin warning about Unix file paths
-    [Environment]::SetEnvironmentVariable ("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::User)
-    [Environment]::SetEnvironmentVariable ("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::Process)
+    [Environment]::SetEnvironmentVariable("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::User)
+    [Environment]::SetEnvironmentVariable("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::Process)
     
     # Setup firewall to accept pings for Domain and Private networks but not from Public networks
     Set-NetFirewallRule `
@@ -409,22 +409,22 @@ if ($Stage -eq 0) {
     
     # Add the primary Cygwin bin paths to PATH before launching install.sh directly from Powershell
     # This is because the PATH is not been completely configured for Cygwin before install.sh runs
-    [Environment]::SetEnvironmentVariable (
+    [Environment]::SetEnvironmentVariable(
         "PATH",
         (Prepend-Idempotent "${InstallationDirectory}\usr\bin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
     )
-    [Environment]::SetEnvironmentVariable (
+    [Environment]::SetEnvironmentVariable(
         "PATH",
         (Prepend-Idempotent "${InstallationDirectory}\usr\sbin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
     )
-    [Environment]::SetEnvironmentVariable (
+    [Environment]::SetEnvironmentVariable(
         "PATH",
         (Prepend-Idempotent "${InstallationDirectory}\bin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
     )
-    [Environment]::SetEnvironmentVariable (
+    [Environment]::SetEnvironmentVariable(
         "PATH",
         (Prepend-Idempotent "${InstallationDirectory}\sbin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
