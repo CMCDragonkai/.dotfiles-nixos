@@ -322,6 +322,7 @@ if ($Stage -eq 0) {
     Get-AppXPackage -AllUsers '*Appconnector*' | Remove-AppxPackage -Confirm:$false
     Get-AppXPackage -AllUsers '*getstarted*' | Remove-AppxPackage -Confirm:$false
     Get-AppxPackage -AllUsers '*windowsmaps*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage -AllUsers '*zunemusic*' | Remove-AppXPackage -Confirm:$false
     
     # Setup Windows Package Management
     
