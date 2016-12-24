@@ -54,6 +54,7 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     cp --target-directory='./.build' --recursive \
         ./AppData \
         ./Documents \
+        ./.src \
         ./cmd_profile \
         ./minttyrc
     
