@@ -83,3 +83,7 @@ Windows Registry Editor Version 5.00
 ; Disable tips
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
 "SoftLandingEnabled"=dword:00000000
+
+; Disable suggested apps in start menu tiles
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Cloud Content]
+"DisableWindowsConsumerFeatures"=dword:00000001
