@@ -5,7 +5,7 @@
 # Run this like: `powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& 'C:\Users\CMCDragonkai\Downloads\.dotfiles-master\install.ps1'"`
 
 param (
-    [string]$ComputerName = "POLYHACK-" + "$(-join ((65..90) | Get-Random -Count 5 | % {[char]$_}))", 
+    [ValidateLength(2, 15)][string]$ComputerName = "POLYHACK-" + "$(-join ((65..90) | Get-Random -Count 5 | % {[char]$_}))", 
     [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
     [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports", 
     [string]$PortKey = "http://cygwinports.org/ports.gpg", 
