@@ -302,30 +302,33 @@ if ($Stage -eq 0) {
     Set-Service -Name "SshProxy" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
     Set-Service -Name "SshBroker" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
     
-    # Uninstall for all Users Useless Applications
-    Get-AppXPackage -AllUsers '*3dbuilder*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*WindowsFeedbackHub*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*officehub*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*flipboard*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*solitairecollection*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*bingfinance*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*bingnews*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*SkypeApp*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*bingsports*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*Office.Sway*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*xboxapp*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*MicrosoftStickyNotes*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*ConnectivityStore*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*CommsPhone*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*windowsphone*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*OneConnect*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*people*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*Messaging*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*Appconnector*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*getstarted*' | Remove-AppxPackage -Confirm:$false
-    Get-AppxPackage -AllUsers '*windowsmaps*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage -AllUsers '*zunemusic*' | Remove-AppXPackage -Confirm:$false
-    Get-AppxPackage -AllUsers '*Freshpaint*' | Remove-AppxPackage -Confirm:$false
+    # Uninstall Useless Applications
+    Get-AppXPackage '*3dbuilder*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*WindowsFeedbackHub*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*officehub*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*flipboard*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*solitairecollection*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*bingfinance*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*bingnews*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*SkypeApp*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*bingsports*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*Office.Sway*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*xboxapp*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*MicrosoftStickyNotes*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*ConnectivityStore*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*CommsPhone*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*windowsphone*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*OneConnect*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*people*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*Messaging*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*Appconnector*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*getstarted*' | Remove-AppxPackage -Confirm:$false
+    Get-AppxPackage '*windowsmaps*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*zunemusic*' | Remove-AppXPackage -Confirm:$false
+    Get-AppxPackage '*Freshpaint*' | Remove-AppxPackage -Confirm:$false
+    
+    # For disabling OneDrive go to gpedit.msc and disable it here: 
+    # Local Computer Policy\Computer Configuration\Administrative Templates\Windows Components\OneDrive
     
     # Setup Windows Package Management
     
@@ -413,7 +416,7 @@ if ($Stage -eq 0) {
     
     # Install packages that are not part of chocolatey (yet)
     
-    # Install modules
+    # Install extra Powershell modules
 
     Install-Module PSReadline -Force -SkipPublisherCheck
 
