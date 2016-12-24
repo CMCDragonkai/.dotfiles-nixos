@@ -354,7 +354,7 @@ if ($Stage -eq 0) {
     # The ChocolateyGet will also automatically install chocolatey package, making the choco commands available as well
     
     # Nuget doesn't register a package source by default
-    Register-PackageSource -Name 'nuget' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' 
+    Register-PackageSource -Name 'nuget' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Force
 
     # Acquire the Package Lists
     $WindowsPackages = (Get-Content "${PSScriptRoot}\windows_packages.txt" | Where-Object { 
@@ -410,6 +410,12 @@ if ($Stage -eq 0) {
         Write-Host 'It requires manual installation.'
         
     }
+    
+    # Install packages that are not part of chocolatey (yet)
+    
+    # Install modules
+
+    Install-Module PSReadline -Force -SkipPublisherCheck
 
     # Installing Cygwin Packages
 
