@@ -41,6 +41,7 @@ retroarch,*,chocolateyget
 cyberduck,*,chocolateyget
 nextcloud-client,*,chocolateyget
 peazip.portable,6.03,chocolateyget
+ext2fsd,*,chocolateyget
 
 # development
 emacs64,*,chocolateyget
