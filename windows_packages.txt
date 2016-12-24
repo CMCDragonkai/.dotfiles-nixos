@@ -1,6 +1,5 @@
 # shell/system utilities
 carbon,2.2.0,chocolateyget
-PSReadline,1.2,PSGallery
 ConEmu,16.5.22.0,chocolateyget
 keepass,*,chocolateyget
 keepass-plugin-keeagent,*,chocolateyget
