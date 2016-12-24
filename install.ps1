@@ -300,6 +300,28 @@ if ($Stage -eq 0) {
     Set-Service -Name "SshProxy" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
     Set-Service -Name "SshBroker" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
     
+    # Uninstall for all Users Useless Applications
+    Get-AppXPackage -AllUsers '*3dbuilder*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*WindowsFeedbackHub*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*officehub*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*flipboard*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*solitairecollection*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*bingfinance*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*bingnews*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*SkypeApp*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*bingsports*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*Office.Sway*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*xboxapp*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*MicrosoftStickyNotes*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*ConnectivityStore*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*CommsPhone*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*windowsphone*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*OneConnect*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*people*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*Messaging*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*Appconnector*' | Remove-AppxPackage
+    Get-AppXPackage -AllUsers '*getstarted*' | Remove-AppxPackage
+    
     # Setup Windows Package Management
     
     # Update Package Management
