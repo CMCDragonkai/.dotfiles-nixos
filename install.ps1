@@ -5,6 +5,7 @@
 # Run this like: `powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& 'C:\Users\CMCDragonkai\Downloads\.dotfiles-master\install.ps1'"`
 
 param (
+    [string]$ComputerName = "POLYHACK-" + "$(-join ((65..90) | Get-Random -Count 5 | % {[char]$_}))", 
     [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
     [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports", 
     [string]$PortKey = "http://cygwinports.org/ports.gpg", 
@@ -153,12 +154,8 @@ function ScheduleRebootTask {
 # Switch to using Powershell Terminal Directly
 if ($Stage -eq 0) {
 
-    Write-Host "Before you continue the installation, you should switch on NTFS compression on your drive."
-    Write-Host "If you have multiple drives, try using Storage Spaces to combine them."
+    Write-Host "Before you continue the installation, you should RAID with Storage Spaces, switch on NTFS compression, and encrypt with Bitlocker on your drive(s)."
     Read-Host "Enter to continue"
-
-    # Allow Powershell scripts to be executable
-    Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
     
     # Copy the transparent.ico icon
     Copy-Item "${PSScriptRoot}\data\transparent.ico" "${env:SYSTEMROOT}\system32"
@@ -183,6 +180,9 @@ if ($Stage -eq 0) {
     Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V | Enable-WindowsOptionalFeature -Online -All -NoRestart > $null
 
     # Setup some Windows Environment Variables and Configuration
+    
+    # Allow Powershell scripts to be executable
+    Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
     
     # System variables
    
@@ -285,6 +285,9 @@ if ($Stage -eq 0) {
         -Action Block `
         -Enabled True `
         > $null
+
+    # Rename the computer to the new name just before a restart
+    Rename-Computer -NewName "$ComputerName" -Force
 
     # Schedule the next stage of this script and reboot
     Unregister-ScheduledTask -TaskName "Dotfiles - 1" -Confirm:$false -ErrorAction SilentlyContinue
