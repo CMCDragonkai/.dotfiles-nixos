@@ -1,6 +1,6 @@
 .PHONY: install uninstall
 
-SRCDIR := $(shell mkdir -p '~/.src/rmlint')
+SRCDIR := $(shell mkdir -p '~/.src/picocom')
 
 install:
 	git clone https://github.com/npat-efault/picocom "$(SRCDIR)"
