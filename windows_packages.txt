@@ -76,6 +76,7 @@ musicbee,*,chocolateyget
 # etc
 f.lux,*,chocolateyget
 synergy,*,chocolateyget
+electrum.portable,*,chocolateyget
 
 # fonts
 dejavufonts,*,chocolateyget
