@@ -1,13 +1,12 @@
 .PHONY: install uninstall
 
-TEMPDIR := $(shell mktemp -d)
+SRCDIR := $(shell mkdir -p '~/.src/rmlint')
 
 install:
-	git clone https://github.com/npat-efault/picocom "$(TEMPDIR)"
-	$(MAKE) --directory="$(TEMPDIR)"
-	install --mode=755 -D "$(TEMPDIR)/picocom/picocom.exe" /usr/local/bin
-	install --mode=755 -D "$(TEMPDIR)/picocom/picocom.1" /usr/local/man/man1
-	rm -rf "$(TEMPDIR)"
+	git clone https://github.com/npat-efault/picocom "$(SRCDIR)"
+	$(MAKE) --directory="$(SRCDIR)"
+	install --mode=755 -D "$(SRCDIR)/picocom/picocom.exe" /usr/local/bin
+	install --mode=755 -D "$(SRCDIR)/picocom/picocom.1" /usr/local/man/man1
 	
 uninstall:
 	rm --force /usr/local/bin/picocom.exe
