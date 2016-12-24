@@ -115,3 +115,4 @@ inconsolata,*,chocolateyget
 # webtorrent
 # softether
 # adobe experience design
+# keybase
