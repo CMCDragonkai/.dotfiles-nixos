@@ -1,8 +1,6 @@
 Windows Registry Editor Version 5.00
 
-; Verified for Windows 10 version 1607 (OS Build 14393.447)!
-
-; When running this, does it replace, or just append...? I'm not sure here. I need to check that this should append, instead of replacing the entire key.
+; Verified for Windows 10 version 1607 (OS Build 14393.447)
 
 ; Disable UAC
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
@@ -10,11 +8,11 @@ Windows Registry Editor Version 5.00
 
 ; Removing NTFS compression arrow icons (requires transparent.ico to be loaded into %SYSTEMROOT%/system32/transparent.ico)
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
-"179"="transparent.ico"
+"179"="%windir%\\System32\\transparent.ico"
 
 ; Removing NTFS compression arrow icons from 32 bit applications
 [HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
-"179"="transparent.ico"
+"179"="%windir%\\System32\\transparent.ico"
 
 ; Removing Videos folder from Frequent Places ("This PC")
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag]
