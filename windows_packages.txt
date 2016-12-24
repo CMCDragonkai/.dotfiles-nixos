@@ -36,6 +36,7 @@ steam,*,chocolateyget
 origin,*,chocolateyget
 battle.net,*,chocolateyget
 retroarch,*,chocolateyget
+dolphin,*,chocolateyget
 
 # filesystem
 cyberduck,*,chocolateyget
@@ -54,6 +55,8 @@ vagrant,*,chocolateyget
 sourcetree,*,chocolateyget
 linqpad,*,chocolateyget
 microsoft-visual-cpp-build-tools,*,chocolateyget,/Full
+zeal.install,*,chocolateyget
+kicad,*,chocolateyget
 
 # documents
 pandoc,*,chocolateyget
@@ -78,6 +81,11 @@ musicbee,*,chocolateyget
 spotify,*,chocolateyget
 gifcam,*,chocolateyget
 time4popcorn,*,chocolateyget
+avidemux,*,chocolateyget
+
+# design
+inkscape,*,chocolateyget
+gimp,*,chocolateyget
 
 # productivity
 f.lux,*,chocolateyget
@@ -107,3 +115,4 @@ inconsolata,*,chocolateyget
 # nylas
 # webtorrent
 # softether
+# adobe experience design
