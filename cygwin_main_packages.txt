@@ -11,11 +11,11 @@ cygutils
 pkg-config
 tzcode
 gpg
-pass
 
 # network
 openssh
 openssl
+mosh
 wget
 curl
 whois
@@ -30,6 +30,7 @@ rsync
 mkisofs
 
 # development
+m4
 vim
 nano
 make
@@ -38,22 +39,46 @@ mercurial
 dos2unix
 binutils
 bison
-gcc
 autoconf
 automake
 diffutils
 patch
 cmake
+scons
+nasm
+llvm
+mingw64-x86_64-llvm
+gcc-core
+gcc-g++
+gcc-fortran
+mingw64-x86_64-gcc-core
 mingw64-x86_64-gcc-g++
+mingw64-x86_64-gcc-fortran
+
+# database
+sqlite3
 
 # php
 php
+php-curl
+php-json
+
+# ruby
+ruby
+rubygems
 
 # python
 python
 python-setuptools
 python3
 python3-setuptools
+
+# perl
+perl
+perl_manpages
+
+# lua
+lua
 
 # geodetics
 proj
@@ -70,3 +95,8 @@ libboost-devel
 liblapack0
 liblapack-devel
 libopenblas
+libjson-glib1.0-devel
+libblkid-devel
+libelf-devel
+libtool
+libglib2.0-devel
