@@ -13,6 +13,8 @@ sysinternals,*,chocolateyget
 regshot,1.9.3,chocolateyget
 wincdemu,*,chocolateyget
 rufus.portable,*,chocolateyget
+osquery,*,chocolateyget
+logparser,*,chocolateyget
 
 # network
 Firefox,*,chocolateyget
