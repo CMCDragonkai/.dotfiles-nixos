@@ -1,6 +1,9 @@
 .build/*
 !.build/.gitkeep
 
+.src/*
+!.src/.gitkeep
+
 # OS generated files #
 ######################
 .DS_Store
