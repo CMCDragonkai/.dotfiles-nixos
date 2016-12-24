@@ -69,3 +69,19 @@ Windows Registry Editor Version 5.00
 ; Always show full path on the title bar
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CabinetState]
 "FullPath"=dword:00000001
+
+; Use small taskbar icons
+; Combine taskbar items only when full
+; Autohide taskbar when in tablet mode
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"TaskbarSmallIcons"=dword:00000001
+"TaskbarGlomLevel"=dword:00000001
+"TaskbarAutoHideInTabletMode"=dword:00000001
+
+; Don't show notifications in the taskbar
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings]
+"NOC_GLOBAL_SETTING_ALLOW_TOASTS_ABOVE_LOCK"=dword:00000000
+
+; Disable tips
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"SoftLandingEnabled"=dword:00000000
