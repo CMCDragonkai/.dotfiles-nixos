@@ -168,16 +168,15 @@ if ($Stage -eq 0) {
     Start-Process -FilePath "$Env:SystemRoot\system32\reg.exe" -Wait -Verb RunAs -ArgumentList "IMPORT `"${PSScriptRoot}\windows_registry.reg`""
     
     # Enabling Optional Windows Features, these may need a restart
-    # Also we're piping the Get-* first, as these features may not be available on certain editions of Windows
-    
+
     # Enable Telnet
-    Get-WindowsOptionalFeature -Online -FeatureName TelnetClient | Enable-WindowsOptionalFeature -Online -All -NoRestart > $null
+    Get-WindowsOptionalFeature -Online -FeatureName TelnetClient | Enable-WindowsOptionalFeature -Online -All -NoRestart >$null
     # Enable Windows Containers
-    Get-WindowsOptionalFeature -Online -FeatureName Containers | Enable-WindowsOptionalFeature -Online -All -NoRestart > $null
+    Get-WindowsOptionalFeature -Online -FeatureName Containers | Enable-WindowsOptionalFeature -Online -All -NoRestart >$null
     # Enable Hyper-V hypervisor, this will prevent Virtualbox from running concurrently
     # However Hyper-V can be disabled at boot for when you need to use virtualbox
     # This is needed for Docker on Windows to run
-    Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V | Enable-WindowsOptionalFeature -Online -All -NoRestart > $null
+    Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V | Enable-WindowsOptionalFeature -Online -All -NoRestart >$null
 
     # Setup some Windows Environment Variables and Configuration
     
@@ -198,8 +197,8 @@ if ($Stage -eq 0) {
         (Append-Idempotent ".PS1" "$Env:PATHEXT" ";" $False), 
         [System.EnvironmentVariableTarget]::Process
     )
-    CMD /C 'assoc .ps1=Microsoft.PowerShellScript.1' > $null
-    CMD /C 'ftype Microsoft.PowerShellScript.1="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "%1"' > $null
+    CMD /C 'assoc .ps1=Microsoft.PowerShellScript.1' >$null
+    CMD /C 'ftype Microsoft.PowerShellScript.1="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "%1"' >$null
     
     # Directory to hold symlinks to Windows executables that is installed across users
     # This can be used for applications we install ourselves and for native installers in Chocolatey
@@ -209,7 +208,7 @@ if ($Stage -eq 0) {
     # Metadata can be cleaned by uninstalling them from Chocolatey if they were installed via Chocolatey
     # And of course any symlinks to the binaries that are placed within here
     # Note that you must use NTFS symlinks here or use CMD shims, not cygwin symlinks
-    New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin" > $null
+    New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin" >$null
     Add-Path -NewPath '%ALLUSERSPROFILE%\bin' -Style Append -Target System
     
     # User variables
@@ -228,13 +227,13 @@ if ($Stage -eq 0) {
         -Enabled True `
         -Action "Allow" `
         -Profile "Domain,Private"`
-        > $null
+        >$null
     Set-NetFirewallRule `
         -DisplayName "File and Printer Sharing (Echo Request - ICMPv6-In)" `
         -Enabled True `
         -Action "Allow" `
         -Profile "Domain,Private"`
-        > $null
+        >$null
 
     # Setup firewall to accept connections from 55555 in Domain and Private networks
     Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (TCP-In)" -ErrorAction SilentlyContinue
@@ -248,7 +247,7 @@ if ($Stage -eq 0) {
         -Action Allow `
         -Profile "Domain,Private" `
         -Enabled True `
-        > $null
+        >$null
     New-NetFirewallRule `
         -DisplayName "Polyhack - Private Development Port (UDP-In)" `
         -Direction Inbound `
@@ -258,7 +257,7 @@ if ($Stage -eq 0) {
         -Action Allow `
         -Profile "Domain,Private" `
         -Enabled True `
-        > $null
+        >$null
 
     # Port 22 for Cygwin SSH
     Remove-NetFirewallRule -DisplayName "Polyhack - SSH (TCP-In)" -ErrorAction SilentlyContinue
@@ -272,7 +271,7 @@ if ($Stage -eq 0) {
         -Profile "Domain,Private" `
         -Program "${InstallationDirectory}\cygwin64\usr\sbin\sshd.exe" `
         -Enabled True `
-        > $null
+        >$null
 
     # Port 80 for HTTP, but blocked by default (switch it on when you need to)
     Remove-NetFirewallRule -DisplayName "Polyhack - HTTP (TCP-In)" -ErrorAction SilentlyContinue
@@ -284,10 +283,10 @@ if ($Stage -eq 0) {
         -LocalPort 80 `
         -Action Block `
         -Enabled True `
-        > $null
+        >$null
 
     # Rename the computer to the new name just before a restart
-    Rename-Computer -NewName "$ComputerName" -Force
+    Rename-Computer -NewName "$ComputerName" -Force >$null 2>&1
 
     # Schedule the next stage of this script and reboot
     Unregister-ScheduledTask -TaskName "Dotfiles - 1" -Confirm:$false -ErrorAction SilentlyContinue
@@ -326,6 +325,7 @@ if ($Stage -eq 0) {
     Get-AppXPackage -AllUsers '*getstarted*' | Remove-AppxPackage -Confirm:$false
     Get-AppxPackage -AllUsers '*windowsmaps*' | Remove-AppxPackage -Confirm:$false
     Get-AppXPackage -AllUsers '*zunemusic*' | Remove-AppXPackage -Confirm:$false
+    Get-AppxPackage -AllUsers '*Freshpaint*' | Remove-AppxPackage -Confirm:$false
     
     # Setup Windows Package Management
     
@@ -343,10 +343,8 @@ if ($Stage -eq 0) {
     Import-Module PowerShellGet -Force
 
     # Install Package Providers
-    # There are 2 Chocolatey Providers for now (one works or the other does)
+    # There are 2 Chocolatey Providers, the ChocolateGet provider is more stable
     # PowerShellGet is also a package provider
-    # We are not using the Chocolatey provider because it is very buggy
-    # Install-PackageProvider –Name 'Chocolatey' -Force
     Install-PackageProvider -Name 'ChocolateyGet' -Force
     Install-PackageProvider -Name 'PowerShellGet' -Force
     
@@ -417,8 +415,8 @@ if ($Stage -eq 0) {
 
     # Create the necessary directories
 
-    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64" > $null
-    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64/packages" > $null
+    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64" >$null
+    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64/packages" >$null
 
     # Acquire Package Lists
 
