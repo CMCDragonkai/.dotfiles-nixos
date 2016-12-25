@@ -303,29 +303,31 @@ if ($Stage -eq 0) {
     Set-Service -Name "SshBroker" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
     
     # Uninstall Useless Applications
-    Get-AppXPackage '*3dbuilder*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*WindowsFeedbackHub*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*officehub*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*flipboard*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*solitairecollection*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*bingfinance*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*bingnews*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*SkypeApp*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*bingsports*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*Office.Sway*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*xboxapp*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*MicrosoftStickyNotes*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*ConnectivityStore*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*CommsPhone*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*windowsphone*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*OneConnect*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*people*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*Messaging*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*Appconnector*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*getstarted*' | Remove-AppxPackage -Confirm:$false
-    Get-AppxPackage '*windowsmaps*' | Remove-AppxPackage -Confirm:$false
-    Get-AppXPackage '*zunemusic*' | Remove-AppXPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.3DBuilder' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.WindowsFeedbackHub' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.MicrosoftOfficeHub' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.MicrosoftSolitaireCollection*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.BingFinance' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.BingNews' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.SkypeApp' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.BingSports' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.Office.Sway' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.XboxApp' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.MicrosoftStickyNotes' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.ConnectivityStore' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.CommsPhone' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.WindowsPhone' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.OneConnect' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.People' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.Messaging' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.Appconnector' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.Getstarted' | Remove-AppxPackage -Confirm:$false
+    Get-AppxPackage 'Microsoft.WindowsMaps' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage 'Microsoft.ZuneMusic' | Remove-AppXPackage -Confirm:$false
     Get-AppxPackage '*Freshpaint*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '*flipboard*' | Remove-AppxPackage -Confirm:$false
+    Get-AppXPackage '9E2F88E3.Twitter' | Remove-AppxPackage -Confirm:$false
+    Get-AppxPackage 'king.com.CandyCrushSodaSaga' | Remove-AppxPackage -Confirm:$false
     
     # For disabling OneDrive go to gpedit.msc and disable it here: 
     # Local Computer Policy\Computer Configuration\Administrative Templates\Windows Components\OneDrive
