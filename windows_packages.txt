@@ -65,6 +65,7 @@ vcbuildtools,*,chocolateyget,/Full
 nodejs,*,chocolateyget
 haskell-stack,*,chocolateyget
 idris,*,chocolateyget
+golang,*,chocolateyget
 
 # documents
 pandoc,*,chocolateyget
@@ -129,3 +130,5 @@ inconsolata,*,chocolateyget
 # processing 
 # wireedit
 # tabula
+# geforce driver
+# cuda

@@ -10,7 +10,8 @@ cygutils-extra
 cygutils
 pkg-config
 tzcode
-gpg
+tmux
+ncurses
 
 # network
 openssh
@@ -106,3 +107,13 @@ libblkid-devel
 libelf-devel
 libtool
 libglib2.0-devel
+libev4
+libev-devel
+libevent2.0_5
+libevent-devel
+libgit2_23
+libgit2-devel
+libusb1.0
+libusb1.0-devel
+libcurl4
+libcurl-devel
