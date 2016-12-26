@@ -419,7 +419,7 @@ if ($Stage -eq 0) {
             '@ "
         }
 
-        $InstallCommand += "-Force"
+        $InstallCommand += '-Confirm:$false'
         
         Invoke-Expression "$InstallCommand"
         
