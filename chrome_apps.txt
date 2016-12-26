@@ -1,0 +1,2 @@
+GistBox,https://app.gistboxapp.com/,app.gistboxapp.com\https_80\GistBox.ico
+ASCIIFlow Infinity,http://asciiflow.com/,asciiflow.com\http_80\ASCIIFlow Infinity.ico

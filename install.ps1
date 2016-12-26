@@ -200,6 +200,18 @@ if ($Stage -eq 0) {
     CMD /C 'assoc .ps1=Microsoft.PowerShellScript.1' >$null
     CMD /C 'ftype Microsoft.PowerShellScript.1="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "%1"' >$null
     
+    # Make Windows Shortcuts `*.lnk` executable without the `.lnk` extension
+    [Environment]::SetEnvironmentVariable(
+        "PATHEXT", 
+        (Append-Idempotent ".LNK" "$Env:PATHEXT" ";" $False), 
+        [System.EnvironmentVariableTarget]::Machine
+    )
+    [Environment]::SetEnvironmentVariable(
+        "PATHEXT", 
+        (Append-Idempotent ".LNK" "$Env:PATHEXT" ";" $False), 
+        [System.EnvironmentVariableTarget]::Process
+    )
+
     # Directory to hold symlinks to Windows executables that is installed across users
     # This can be used for applications we install ourselves and for native installers in Chocolatey
     # It is however possible that native installers may pollute the PATH themselves
@@ -422,7 +434,41 @@ if ($Stage -eq 0) {
         Write-Host 'It requires manual installation.'
         
     }
-    
+
+    # Setup Chrome App shortcuts
+    # Chrome App shortcuts will be places in $ALLUSERSPROFILE/bin
+    $ChromePath = (Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" -ErrorAction SilentlyContinue).'(Default)'
+
+    if ($ChromePath) {
+
+        $WshShell = New-Object -comObject WScript.Shell
+
+        $ChromeApps = (Get-Content "${PSScriptRoot}\chrome_apps.txt" | Where-Object { 
+            $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
+        })
+
+        foreach ($App in $ChromeApps) {
+
+            $App = $App -split ','
+            $Name = $App[0].trim()
+            $Url = $App[1].trim()
+            $Icon = $App[2].trim()
+
+            $Shortcut = $WshShell.CreateShortcut("${Env:ALLUSERSPROFILE}\bin\${Name}.lnk")
+            $Shortcut.TargetPath = "$ChromePath"
+            $Shortcut.Arguments = "--app=${Url}"
+            $Shortcut.WorkingDirectory = "$(Split-Path "$ChromePath" -Parent)"
+            $ShortCut.IconLocation = "%USERPROFILE%\AppData\Local\Google\Chrome\User Data\Default\Web Applications\${Icon}"
+            $Shortcut.Save()
+
+        }
+
+    } else {
+
+        echo "Could not find path to chrome.exe, therefore could not setup Chrome app shortcuts"
+
+    }
+
     # Install packages that are not part of chocolatey (yet)
     
     # Install extra Powershell modules
@@ -433,8 +479,8 @@ if ($Stage -eq 0) {
 
     # Create the necessary directories
 
-    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64" >$null
-    New-Item -ItemType Directory -Force -Path "$InstallationDirectory/cygwin64/packages" >$null
+    New-Item -ItemType Directory -Force -Path "$InstallationDirectory\cygwin64" >$null
+    New-Item -ItemType Directory -Force -Path "$InstallationDirectory\cygwin64\packages" >$null
 
     # Acquire Package Lists
 
@@ -456,8 +502,8 @@ if ($Stage -eq 0) {
             "--arch x86_64",
             "--upgrade-also",
             "--delete-orphans",
-            "--root `"${InstallationDirectory}/cygwin64`"",
-            "--local-package-dir `"${InstallationDirectory}/cygwin64/packages`"",
+            "--root `"${InstallationDirectory}\cygwin64`"",
+            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
             "--site `"$MainMirror`"",
             "--packages `"$MainPackages`""
     }
@@ -473,8 +519,8 @@ if ($Stage -eq 0) {
             "--arch x86_64",
             "--upgrade-also",
             "--delete-orphans",
-            "--root `"${InstallationDirectory}/cygwin64`"",
-            "--local-package-dir `"${InstallationDirectory}/cygwin64/packages`"",
+            "--root `"${InstallationDirectory}\cygwin64`"",
+            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
             "--site `"$PortMirror`"",
             "--pubkey `"$PortKey`"",
             "--packages `"$PortPackages`""

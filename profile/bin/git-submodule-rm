@@ -39,4 +39,4 @@ cd "$project_root" || {
 
 git submodule deinit --force "$module_path_at_project_root"
 git rm --force "$module_path_at_project_root"
-rm --recursive --force --dir ".git/modules/$module_path_at_project_root"
+rm --verbose --recursive --force --dir ".git/modules/$module_path_at_project_root"

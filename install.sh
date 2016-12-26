@@ -1,44 +1,59 @@
 #!/usr/bin/env bash
 
 # Common configuration files to be processed by m4 and put into ~
-cp --target-directory='./.build' --recursive \
-    ./.aws \
-    ./.gnupg \
-    ./.jupyter \
-    ./.ssh \
-    ./.vim \
-    ./bin \
-    ./modules \
-    ./.bash_env.m4 \
-    ./.bash_profile.m4 \
-    ./.bashrc.m4 \
-    ./curlrc \
-    ./.ghci \
-    ./.gitconfig \
-    ./.gitignore_global \
-    ./.inputrc \
-    ./.my.cnf \
-    ./.nanorc \
-    ./.netrc \
-    ./.sqliterc \
-    ./.vimrc \
-    ./.zlogin.m4 \
-    ./.zshenv.m4 \
-    ./.zshrc.m4
+common_profile=(
+    './modules' 
+    './profile/.aws' 
+    './profile/.gnupg' 
+    './profile/.jupyter' 
+    './profile/.ssh' 
+    './profile/.vim' 
+    './profile/bin' 
+    './profile/.bash_env.m4' 
+    './profile/.bash_profile.m4' 
+    './profile/.bashrc.m4' 
+    './profile/curlrc' 
+    './profile/.ghci' 
+    './profile/.gitconfig' 
+    './profile/.gitignore_global' 
+    './profile/.inputrc' 
+    './profile/.my.cnf' 
+    './profile/.nanorc' 
+    './profile/.netrc' 
+    './profile/.sqliterc' 
+    './profile/.vimrc' 
+    './profile/.zlogin.m4' 
+    './profile/.zshenv.m4' 
+    './profile/.zshrc.m4' 
+)
+
+# Linux specific configuration files to be processed by m4 and put into ~
+linux_profile=(
+    './profile/.local' 
+    './profile/.nixpkgs' 
+    './profile/.xmonad' 
+    './profile/.Xmodmap' 
+    './profile/.Xresources' 
+    './profile/.pam_environment.m4' 
+    './profile/.xprofile.m4'
+)
+
+# Cygwin specific configuration files to be processed by m4 and put into ~
+cygwin_profile=(
+    './profile/AppData' 
+    './profile/Documents' 
+    './profile/.src' 
+    './profile/cmd_profile' 
+    './profile/minttyrc' 
+)
+
+cp --target-directory='./build' --recursive --update "${common_profile[@]}"
 
 if [[ "$(uname -s)" == Linux* ]]; then
 
-    # Linux configuration files to be processed by m4 and put into ~
-    cp --target-directory='./.build' --recursive \
-        ./.local \
-        ./.nixpkgs \
-        ./.xmonad \
-        ./.Xmodmap \
-        ./.Xresources \
-        ./.pam_environment.m4 \
-        ./.xprofile.m4
+    cp --target-directory='./build' --recursive --update "${linux_profile[@]}"
     
-    # Assuming we are on NIXOS
+    # The only Linux I use is NIXOS
     system='NIXOS'
     
     wintmp=''
@@ -51,12 +66,7 @@ if [[ "$(uname -s)" == Linux* ]]; then
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
     # Cygwin configuration files to be processed by m4 and put into ~
-    cp --target-directory='./.build' --recursive \
-        ./AppData \
-        ./Documents \
-        ./.src \
-        ./cmd_profile \
-        ./minttyrc
+    cp --target-directory='./build' --recursive --update "${cygwin_profile[@]}"
     
     system='CYGWIN'
     
@@ -104,9 +114,9 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 fi
 
 # Note that `PH_` is our namespace meaning "PolyHack"
-find ./.build -name '*.m4' -not -path './build/modules/*' \
+find ./build -name '*.m4' -not -path './build/modules/*' \
     -exec m4 \
-    --include='./.includes' \
+    --include='./profile/includes' \
     --define=PH_SYSTEM="$system" \
     --define=PH_TZ="$tz" \
     --define=PH_TZDIR="$tzdir" \
@@ -116,9 +126,9 @@ find ./.build -name '*.m4' -not -path './build/modules/*' \
     -exec rename '.m4.processed' '' '{}.processed' \; \
     -delete
 
-# Copy files from ./.build into ~
+# Copy files from ./build into ~
 # Where --archive means: --recursive --links --perms --times --group --owner
-rsync --update --checksum --archive "./.build/" "${HOME}/"
+rsync --update --checksum --archive "./build/" "${HOME}/"
 
 # Make ~/.ssh directory and subdirectories 700, but the files 600
 # This requires wiping out any execute permissions first

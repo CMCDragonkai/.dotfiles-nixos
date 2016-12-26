@@ -53,9 +53,14 @@ virtualbox,*,chocolateyget
 vagrant,*,chocolateyget
 sourcetree,*,chocolateyget
 linqpad,*,chocolateyget
-microsoft-visual-cpp-build-tools,*,chocolateyget,/Full
+visualfsharptools,*,chocolateyget
+vcbuildtools,*,chocolateyget,/Full
 zeal.install,*,chocolateyget
 kicad,*,chocolateyget
+arduino,*,chocolateyget
+nodejs,*,chocolateyget
+haskell-stack,*,chocolateyget
+idris,*,chocolateyget
 
 # documents
 pandoc,*,chocolateyget
@@ -116,3 +121,4 @@ inconsolata,*,chocolateyget
 # softether
 # adobe experience design
 # keybase
+# processing

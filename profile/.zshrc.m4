@@ -97,3 +97,6 @@ bindkey '^Z' _ctrl-z
 # Works on Cygwin and Konsole
 # Also it does prevent reverse tabbing when autocomplete starts, but you can use arrow keys instead
 bindkey -s '\e[Z' '^V^I'
+
+# Add Syntax Highlighting to ZSH
+source "${HOME}/modules/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

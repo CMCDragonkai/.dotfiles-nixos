@@ -237,7 +237,7 @@ cd "$(git rev-parse --show-toplevel)"
 package="modules/package"
 git submodule deinit --force "$package"
 git rm --force "$package"
-rm --recursive --force --dir ".git/modules/$package"
+rm --verbose --recursive --force --dir ".git/modules/$package"
 ```
 
 On updating dependencies to the latest in their branch:
@@ -603,3 +603,19 @@ The choice of the protocol depends on what the remote server supports, and your 
 VNC works best for high bandwidth.
 RDP works best for low latency.
 XDMCP
+
+Vim Packages
+------------
+
+Packages should be first cloned to modules directory as submodule and then symlinked from `./profile/.vim/bundles`. 
+
+Pathogen is also installed as a submodule and symlinked from `./profile/.vim/autoload/pathogen.vim`.
+
+Language Runtimes
+-----------------
+
+It's preferable to install language runtimes on Cygwin, and if installing or compiling on Cygwin is prohibitively expensive, then install the Windows version (for example NodeJS, Haskell, and Idris). In both cases these language runtimes shouldn't be used for full development, for full development, use a docker container or a virtual machine. These language runtimes are installed for convenience and testing out language constructs.
+
+An exception are language runtimes designed for Windows like Visual C/C++, Visual Basic, C# and F#. These can be used for development.
+
+Note that Windows language runtimes won't have access to Cygwin executables in their PATH. Also remember to use Windows paths when developing in Windows language runtimes.

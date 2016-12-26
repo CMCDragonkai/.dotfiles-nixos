@@ -44,9 +44,12 @@ automake
 diffutils
 patch
 cmake
+
+# c and c++ and assembly
 scons
 nasm
 llvm
+clang
 mingw64-x86_64-llvm
 gcc-core
 gcc-g++
@@ -57,6 +60,9 @@ mingw64-x86_64-gcc-fortran
 
 # database
 sqlite3
+
+# R
+R
 
 # php
 php
