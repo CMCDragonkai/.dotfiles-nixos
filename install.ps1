@@ -380,6 +380,9 @@ if ($Stage -eq 0) {
     # Nuget doesn't register a package source by default
     Register-PackageSource -Name 'nuget' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Force
 
+    # Install extra Powershell modules    
+    Install-Module PSReadline -Force -SkipPublisherCheck
+
     # Acquire the Package Lists
     $WindowsPackages = (Get-Content "${PSScriptRoot}\windows_packages.txt" | Where-Object { 
         $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
@@ -422,18 +425,8 @@ if ($Stage -eq 0) {
         
     }
     
-    # Special conditional packages are listed here
-    
-    if ((Get-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V -Online).State -eq 'Enabled') {
-    
-        Install-Package -Name 'docker-for-windows' -ProviderName 'chocolateyget' -RequiredVersion '1.12.3.8488' -Force
-    
-    } else {
-        
-        Write-Host 'Microsoft Hyper V is not available on this computer. Instead of Docker for Windows, try: https://www.docker.com/products/docker-toolbox'
-        Write-Host 'It requires manual installation.'
-        
-    }
+    # Windows packages requiring special instructions
+    & "${PSScriptRoot}\windows_packages_special.ps1"
 
     # Setup Chrome App shortcuts
     # Chrome App shortcuts will be places in $ALLUSERSPROFILE/bin
@@ -441,7 +434,7 @@ if ($Stage -eq 0) {
 
     if ($ChromePath) {
 
-        $WshShell = New-Object -comObject WScript.Shell
+        $WshShell = New-Object -ComObject WScript.Shell
 
         $ChromeApps = (Get-Content "${PSScriptRoot}\chrome_apps.txt" | Where-Object { 
             $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
@@ -451,15 +444,25 @@ if ($Stage -eq 0) {
 
             $App = $App -split ','
             $Name = $App[0].trim()
-            $Url = $App[1].trim()
-            $Icon = $App[2].trim()
+            $Url = [System.Uri]"$($App[1].trim())"
 
-            $Shortcut = $WshShell.CreateShortcut("${Env:ALLUSERSPROFILE}\bin\${Name}.lnk")
-            $Shortcut.TargetPath = "$ChromePath"
-            $Shortcut.Arguments = "--app=${Url}"
-            $Shortcut.WorkingDirectory = "$(Split-Path "$ChromePath" -Parent)"
-            $ShortCut.IconLocation = "%USERPROFILE%\AppData\Local\Google\Chrome\User Data\Default\Web Applications\${Icon}"
-            $Shortcut.Save()
+            try {
+
+                $Title = (Invoke-WebRequest -Uri "${Url.OriginalString}").ParsedHtml.getElementsByTagName('title')[0].text
+                $Shortcut = $WshShell.CreateShortcut("${Env:ALLUSERSPROFILE}\bin\${Name}.lnk")
+                $Shortcut.TargetPath = "$ChromePath"
+                $Shortcut.Arguments = "--app=${Url.OriginalString}"
+                $Shortcut.WorkingDirectory = "$(Split-Path "$ChromePath" -Parent)"
+                # Chrome appears to always use 80 for its icon locations
+                # The web application must be fully loaded at least once before the favicon will be available at this location
+                $ShortCut.IconLocation = "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Web Applications\${Url.Host}\${Url.Scheme}_80\${Title}.ico"
+                $Shortcut.Save()
+
+            } catch { 
+
+                echo "Could not create Chrome App shortcut for ${Url.OriginalString} because ${_}"
+
+            }
 
         }
 
@@ -468,12 +471,6 @@ if ($Stage -eq 0) {
         echo "Could not find path to chrome.exe, therefore could not setup Chrome app shortcuts"
 
     }
-
-    # Install packages that are not part of chocolatey (yet)
-    
-    # Install extra Powershell modules
-
-    Install-Module PSReadline -Force -SkipPublisherCheck
 
     # Installing Cygwin Packages
 

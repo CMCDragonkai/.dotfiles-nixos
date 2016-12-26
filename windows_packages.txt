@@ -29,6 +29,7 @@ namebench,1.3.1,chocolateyget
 opera,*,chocolateyget
 putty.portable,*,chocolateyget
 deluge,*,chocolateyget
+namebench,*,chocolateyget
 
 # gaming
 steam,*,chocolateyget
@@ -46,18 +47,21 @@ ext2fsd,*,chocolateyget
 # development
 emacs64,*,chocolateyget
 atom,*,chocolateyget
-jdk8,*,chocolateyget
 heidisql,*,chocolateyget
 dbeaver,*,chocolateyget
 virtualbox,*,chocolateyget
 vagrant,*,chocolateyget
 sourcetree,*,chocolateyget
 linqpad,*,chocolateyget
-visualfsharptools,*,chocolateyget
-vcbuildtools,*,chocolateyget,/Full
 zeal.install,*,chocolateyget
 kicad,*,chocolateyget
 arduino,*,chocolateyget
+packer,*,chocolateyget
+
+# language runtimes
+jdk8,*,chocolateyget
+visualfsharptools,*,chocolateyget
+vcbuildtools,*,chocolateyget,/Full
 nodejs,*,chocolateyget
 haskell-stack,*,chocolateyget
 idris,*,chocolateyget
@@ -70,6 +74,7 @@ adobereader-update,*,chocolateyget
 calibre,*,chocolateyget
 evernote,*,chocolateyget
 ghostscript.app,*,chocolateyget
+xmind,*,chocolateyget
 
 # communication
 skype,*,chocolateyget
@@ -121,4 +126,6 @@ inconsolata,*,chocolateyget
 # softether
 # adobe experience design
 # keybase
-# processing
+# processing 
+# wireedit
+# tabula
