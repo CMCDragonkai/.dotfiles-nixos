@@ -5,8 +5,12 @@ This directory is meant to be located in `~/.dotfiles`.
 Installation on Windows is:
 
 ```posh
-Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip' -OutFile '~/Downloads/.dotfiles-master.zip'; Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~/Downloads'; powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/install.ps1'"
+Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip' -OutFile '~/Downloads/.dotfiles-master.zip'
+Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~/Downloads'
+powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/install.ps1' -ComputerName 'POLYHACK-?'"
 ```
+
+Make sure to add your custom name to the command.
 
 Installation on Linux (NixOS) is:
 
