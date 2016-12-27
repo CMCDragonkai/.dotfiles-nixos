@@ -6,7 +6,7 @@ Installation on Windows is:
 
 ```posh
 Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip' -OutFile '~/Downloads/.dotfiles-master.zip'
-Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~/Downloads'
+Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~/Downloads' -Force
 powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/install.ps1' -ComputerName 'POLYHACK-?'"
 ```
 
