@@ -11,8 +11,8 @@ Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip'
 Installation on Linux (NixOS) is:
 
 ```sh
-git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git ~
-~/.dotfiles/install.sh
+git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git /tmp
+/tmp/.dotfiles/install.sh
 ```
 
 Interesting Paths
