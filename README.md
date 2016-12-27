@@ -2,33 +2,18 @@
 
 This directory is meant to be located in `~/.dotfiles`.
 
-External dependencies are managed via git submodules. This facilitates component based development, where these dependencies have their own life cycle.
-
-```
-# add the master branch of prezto as a submodule
-git submodule add -b master git@github.com:sorin-ionescu/prezto.git
-# update the submodule to the latest master
-git submodule update --remote prezto
-```
-
-When running `install.ps1` or `install.sh`, eventually macro variables like `PH_SYSTEM` and `PH_TZ` and `PH_TZDIR` must be set. The `PH_SYSTEM` can be either `CYGWIN` or `NIXOS`. The `install.sh` will run the m4 preprocessor and move all preprocessed files into `./.build` folder. Then the resulting files inside `./.build` can be symlinked or copied to `~`. Remember that some Windows files (such as the `.ps1`, `.exe`, `.bat`, or `.cmd`) and executables will need NTFS symlinks, not Cygwin symlinks. The `mklink` can do this.
-
 Installation on Windows is:
 
-1. Download `.dotfiles` repository into `$USERPROFILE`. 
-2. Open `Run` application, and execute: `powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Noninteractive -NoExit -File %USERPROFILE%\.dotfiles\install.ps1`
+```posh
+Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip' -OutFile '~/Downloads/.dotfiles-master.zip'; Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~/Downloads'; powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/install.ps1'"
+```
 
 Installation on Linux (NixOS) is:
 
-```
-cd ~
-git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git
+```sh
+git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git ~
 ~/.dotfiles/install.sh
 ```
-
-Secret management is still being figured out... we need to store a secrets database somewhere, which we can then extract things like SSH keys or and hosts configuration. The database must support independent files, but also just random passwords too..
-
-Since we are installing Cygwin 64 bit, we may need 32 bit cross compilation, so `cygwin32-*` packages maybe of use. Also one can use the Cygwin 64 bit toolchain to compile MINGW executables targetting Windows natively. This can be done with `mingw64-*` or `mingw32-*` packages. Basically bring in things like GCC with these prefixes.
 
 Interesting Paths
 -----------------
@@ -433,61 +418,6 @@ Which one should we use?
 
 ---
 
-Package Management has finally arrived on Windows 10!
-
-```
-> Get-Command -Module PackageManagement
-
-CommandType     Name                                               Version    Source
------------     ----                                               -------    ------
-Cmdlet          Find-Package                                       1.0.0.1    PackageManagement
-Cmdlet          Find-PackageProvider                               1.0.0.1    PackageManagement
-Cmdlet          Get-Package                                        1.0.0.1    PackageManagement
-Cmdlet          Get-PackageProvider                                1.0.0.1    PackageManagement
-Cmdlet          Get-PackageSource                                  1.0.0.1    PackageManagement
-Cmdlet          Import-PackageProvider                             1.0.0.1    PackageManagement
-Cmdlet          Install-Package                                    1.0.0.1    PackageManagement
-Cmdlet          Install-PackageProvider                            1.0.0.1    PackageManagement
-Cmdlet          Register-PackageSource                             1.0.0.1    PackageManagement
-Cmdlet          Save-Package                                       1.0.0.1    PackageManagement
-Cmdlet          Set-PackageSource                                  1.0.0.1    PackageManagement
-Cmdlet          Uninstall-Package                                  1.0.0.1    PackageManagement
-Cmdlet          Unregister-PackageSource                           1.0.0.1    PackageManagement
-
-```
-
-It used be called OneGet, but its official name is the PackageManagement
-
-We can install a module called Carbon.
-
-Using
-
-```
-Update-Help -Force
-Import-Module PackageManagement
-Install-PackageProvider -Name 'chocolatey' -Force
-Install-Package -Name 'carbon' -RequiredVersion '2.2.0' -ProviderName 'chocolatey' -Force
-```
-
-The Carbon module will not always be loaded into our system.
-
-The current `Chocolatey` provider has some serious bugs. It is just a prototype that isn't being developed anyhmore. There is a new Chocolatey provider developed here: https://github.com/chocolatey/chocolatey-oneget But it isn't finished, and it's not available for installation. A third chocolatey provider is here: https://github.com/jianyunt/ChocolateyGet and it is ready for installation, but isn't much used. It seems to be an alternative to the `Chocolatey` provider in case you meet some problems installing things.
-
-We can use it like this:
-
-```
-Install-PackageProvider -Name 'ChocolateyGet' -Force
-Import-PackageProvider -Name 'ChocolateyGet'
-```
-
-The last command may not be necessary:
-
-> As a side question, will there ever be Upgrade-Package or equivalent? Also if I install something like Firefox from Chocolatey, I can't exactly uninstall it from Chocolatey, I need to first uninstall it normally, then finally remove it from Chocolatey. Oneget has this same problem right?
-
-It appears that `ChocolateyGet` is superior to the current `Chocolatey` provider, and perhaps it is a stop-gap between getting to the final chocolatey provider at https://github.com/chocolatey/chocolatey-oneget.
-
----
-
 Windows Homegroups AKA CIFS/SMB, you can view currently shared folders using:
 
 ```
@@ -527,36 +457,6 @@ But unlike many configuration management systems, it expects Windows are used li
 Active Directory is included in most Windows Server editions.
 
 This also means active directory is often ran as a daemon, not just as single batch transformational program. Also it's very complicated, as is used to share services and tightly integrate into Windows technology stacks. I guess this is used by enterprises that are deeply into Windows technologies.
-
----
-
-Recommend autocreating shortcuts for chrome apps that you use.
-
-All you need is the relevant target as set below.
-You need the path to Chrome executable.
-Chrome needs to be on the PATH.
-In PowerShell you can do `Get-Command chrome | Select-Object -ExpandProperty Source` or `(Get-Command chrome).Source`. There's a problem... though. Because now I'm installing through the Chocolatey Provider, I'm not getting the BinRoot setup automatically. And many packages are installed through some custom installer which again doesn't put it into the BinRoot anyway. This means we cannot expect to know where things are being installed through the provider. The Get-Package only tells us where the package was installed from OneGet's perspective, not where exactly the package is. This is STUPID!
-
-So we need to find out a way to get the file path to the executable. I guess we can assume where it is going to be, and hard code it for now.
-
-```
-Target: "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --app=https://app.fullcontact.com/
-Start In: "C:\Program Files (x86)\Google\Chrome\Application"
-```
-
-Also another problem is that the icon isn't setup properly.
-
-Icon for Full Contact:
-
-```
-%USERPROFILE%\AppData\Local\Google\Chrome\User Data\Default\Web Applications\app.fullcontact.com\https_80\FullContact.ico
-```
-
-Yea, so Chrome only downloads the icon when we tell it to setup an application.
-
-What we can do is save the ICO files in this directory. These ICO files are generated from the Website FAVICON.
-
-While we could curl the website and parse out the HTML for the favicon.ico. It turns out that this is quite complex. Overall I can just save the favicon.ico files that I need for my Chrome applications. Oh well..
 
 ---
 
