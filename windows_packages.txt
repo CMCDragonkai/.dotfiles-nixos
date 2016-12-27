@@ -92,6 +92,7 @@ spotify,*,chocolateyget
 gifcam,*,chocolateyget
 time4popcorn,*,chocolateyget
 avidemux,*,chocolateyget
+flashplayerplugin,*,chocolateyget
 
 # design
 inkscape,*,chocolateyget
