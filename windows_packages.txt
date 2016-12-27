@@ -33,7 +33,6 @@ namebench,*,chocolateyget
 
 # gaming
 steam,*,chocolateyget
-origin,*,chocolateyget
 battle.net,*,chocolateyget
 retroarch,*,chocolateyget
 dolphin,*,chocolateyget
@@ -41,7 +40,7 @@ dolphin,*,chocolateyget
 # filesystem
 cyberduck,*,chocolateyget
 nextcloud-client,*,chocolateyget
-peazip.portable,6.03,chocolateyget
+peazip.portable,*,chocolateyget
 ext2fsd,*,chocolateyget
 
 # development
