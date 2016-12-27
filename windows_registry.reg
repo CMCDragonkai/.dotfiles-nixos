@@ -2,9 +2,13 @@ Windows Registry Editor Version 5.00
 
 ; Verified for Windows 10 version 1607 (OS Build 14393.447)
 
-; Disable UAC
+; UAC cannot be disabled anymore because some applications require it
+; Instead we set Administrators to never be prompted
+; Users will get prompted and be asked to reauthenticate
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
-"EnableLUA"=dword:00000000
+"ConsentPromptBehaviourAdmin"=dword:00000000
+"ConsentPromptBehaviourUser"=dword:00000003
+"FilterAdministratorToken"=dword:00000001
 
 ; Removing NTFS compression arrow icons (requires transparent.ico to be loaded into %SYSTEMROOT%/system32/transparent.ico)
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
