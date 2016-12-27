@@ -377,10 +377,13 @@ if ($Stage -eq 0) {
     # The directory is populated for special packages, but won't necessarily be populated by native installers
     # The ChocolateyGet will also automatically install chocolatey package, making the choco commands available as well
     
+    # Make PowerShellGet's source trusted
+    Set-PackageSource -Name 'PSGallery' -ProviderName 'PowerShellGet' -Trusted -Force
+    
     # Nuget doesn't register a package source by default
-    Register-PackageSource -Name 'nuget' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Force
+    Register-PackageSource -Name 'nuget' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Trusted -Force
 
-    # Install extra Powershell modules    
+    # Install extra Powershell modules
     Install-Module PSReadline -Force -SkipPublisherCheck
 
     # Acquire the Package Lists
@@ -419,7 +422,7 @@ if ($Stage -eq 0) {
             '@ "
         }
 
-        $InstallCommand += '-Confirm:$false'
+        $InstallCommand += '-Force'
         
         Invoke-Expression "$InstallCommand"
         
