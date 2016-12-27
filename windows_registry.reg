@@ -8,6 +8,7 @@ Windows Registry Editor Version 5.00
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
 "ConsentPromptBehaviourAdmin"=dword:00000000
 "ConsentPromptBehaviourUser"=dword:00000003
+"EnableLUA"=dword:00000001
 "FilterAdministratorToken"=dword:00000001
 
 ; Removing NTFS compression arrow icons (requires transparent.ico to be loaded into %SYSTEMROOT%/system32/transparent.ico)
