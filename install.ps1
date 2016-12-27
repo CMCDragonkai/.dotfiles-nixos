@@ -381,7 +381,7 @@ if ($Stage -eq 0) {
     Set-PackageSource -Name 'PSGallery' -ProviderName 'PowerShellGet' -Trusted -Force
     
     # Nuget doesn't register a package source by default
-    Register-PackageSource -Name 'nuget' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Trusted -Force
+    Register-PackageSource -Name 'NuGet' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Trusted -Force
 
     # Install extra Powershell modules
     Install-Module PSReadline -Force -SkipPublisherCheck
