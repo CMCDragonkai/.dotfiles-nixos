@@ -343,7 +343,7 @@ if ($Stage -eq 0) {
         'Drawboard.DrawboardPDF' 
     )
     
-    for ($App in $AppsToBeUninstalled) {
+    foreach ($App in $AppsToBeUninstalled) {
         Get-AppxPackage -AllUsers -Name "$App" | Remove-AppxPackage -Confirm:$false
         Get-AppxProvisionedPackage -Online | where DisplayName -EQ "$App" | Remove-AppxProvisionedPackage -Online
     }
