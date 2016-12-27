@@ -132,3 +132,4 @@ inconsolata,*,chocolateyget
 # tabula
 # geforce driver
 # cuda
+# origin
