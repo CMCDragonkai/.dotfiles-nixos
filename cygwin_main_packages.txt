@@ -30,6 +30,9 @@ rsync
 # filesystem
 mkisofs
 
+# documents
+graphviz
+
 # development
 m4
 vim

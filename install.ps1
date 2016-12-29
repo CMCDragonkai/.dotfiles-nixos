@@ -158,8 +158,8 @@ if ($Stage -eq 0) {
     Read-Host "Enter to continue"
     
     # Copy the transparent.ico icon
-    Copy-Item "${PSScriptRoot}\data\transparent.ico" "${env:SYSTEMROOT}\system32"
-    Unblock-File -Path "${env:SYSTEMROOT}\system32\transparent.ico"
+    Copy-Item "${PSScriptRoot}\data\transparent.ico" "${Env:SYSTEMROOT}\system32"
+    Unblock-File -Path "${Env:SYSTEMROOT}\system32\transparent.ico"
 
     # Install Powershell Help Files (we can use -?)
     Update-Help -Force
@@ -212,14 +212,16 @@ if ($Stage -eq 0) {
         [System.EnvironmentVariableTarget]::Process
     )
 
-    # Directory to hold symlinks to Windows executables that is installed across users
+    # Directory to hold NTFS symlinks and Windows shortcuts to Windows executables installed in the local profile
+    # This means ~/Users/AppData/Local/bin
+    # The roaming profile should be used for application installation because applications are architecture specific
+    New-Item -ItemType Directory -Force -Path "${Env:LOCALAPPDATA}\bin" >$null
+    Add-Path -NewPath '%LOCALAPPDATA%\bin' -Style Append -Target User
+
+    # Directory to hold NTFS symlinks and Windows shortcuts to Windows executables installed globally
+    # This means C:/ProgramData/bin
     # This can be used for applications we install ourselves and for native installers in Chocolatey
-    # It is however possible that native installers may pollute the PATH themselves
-    # This is something to watch out for, always check out the environment variables in your control panel
-    # Note that natively installed applications will need to be uninstalled via native uninstallers
-    # Metadata can be cleaned by uninstalling them from Chocolatey if they were installed via Chocolatey
-    # And of course any symlinks to the binaries that are placed within here
-    # Note that you must use NTFS symlinks here or use CMD shims, not cygwin symlinks
+    # Native installers are those that are not "*.portable" installations
     New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin" >$null
     Add-Path -NewPath '%ALLUSERSPROFILE%\bin' -Style Append -Target System
     
@@ -296,6 +298,11 @@ if ($Stage -eq 0) {
         -Action Block `
         -Enabled True `
         >$null
+
+    # Remove useless profile folders
+    Remove-Item "${Env:UserProfile}\Contacts" -Recurse -Force
+    Remove-Item "${Env:UserProfile}\Favorites" -Recurse -Force
+    Remove-Item "${Env:UserProfile}\Links" -Recurse -Force
 
     # Rename the computer to the new name just before a restart
     Rename-Computer -NewName "$ComputerName" -Force >$null 2>&1
@@ -417,9 +424,12 @@ if ($Stage -eq 0) {
         }
 
         if ($AdditionalArguments) {
+
+            # heredoc in powershell (must have no spaces before ending `'@`)
             $InstallCommand += "-AdditionalArguments @'
-            --installargs `"$AdditionalArguments`"
-            '@ "
+                --installargs `"$AdditionalArguments`"
+'@ "
+
         }
 
         $InstallCommand += '-Force'
@@ -434,6 +444,9 @@ if ($Stage -eq 0) {
     # Setup Chrome App shortcuts
     # Chrome App shortcuts will be places in $ALLUSERSPROFILE/bin
     $ChromePath = (Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" -ErrorAction SilentlyContinue).'(Default)'
+
+    # CONVERT all of this into data based ico files rather than acquiring from the internet
+    # It's more reliable and more safe!
 
     if ($ChromePath) {
 
@@ -451,14 +464,14 @@ if ($Stage -eq 0) {
 
             try {
 
-                $Title = (Invoke-WebRequest -Uri "${Url.OriginalString}").ParsedHtml.getElementsByTagName('title')[0].text
+                $Title = (Invoke-WebRequest -Uri "$($Url.OriginalString)").ParsedHtml.getElementsByTagName('title')[0].text
                 $Shortcut = $WshShell.CreateShortcut("${Env:ALLUSERSPROFILE}\bin\${Name}.lnk")
                 $Shortcut.TargetPath = "$ChromePath"
-                $Shortcut.Arguments = "--app=${Url.OriginalString}"
+                $Shortcut.Arguments = "--app=$($Url.OriginalString)"
                 $Shortcut.WorkingDirectory = "$(Split-Path "$ChromePath" -Parent)"
                 # Chrome appears to always use 80 for its icon locations
                 # The web application must be fully loaded at least once before the favicon will be available at this location
-                $ShortCut.IconLocation = "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Web Applications\${Url.Host}\${Url.Scheme}_80\${Title}.ico"
+                $ShortCut.IconLocation = "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80\${Title}.ico"
                 $Shortcut.Save()
 
             } catch { 
@@ -474,6 +487,19 @@ if ($Stage -eq 0) {
         echo "Could not find path to chrome.exe, therefore could not setup Chrome app shortcuts"
 
     }
+
+    # Setup any NTFS symlinks required for natively installed applications
+
+    # chrome
+    # firefox
+    # opera
+    # any language runtimes we have...
+
+    # Since native installers can pollute the PATH, we need to reset the PATH declaratively
+    # The PATH can be polluted globally and locally
+
+    # setting the PATH....
+
 
     # Installing Cygwin Packages
 
@@ -494,7 +520,7 @@ if ($Stage -eq 0) {
     # Main Packages
 
     if ($MainPackages) {
-        Start-Process -FilePath "${PSScriptRoot}\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+        Start-Process -FilePath "${PSScriptRoot}\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
             "--no-shortcuts",
             "--no-startmenu",
@@ -511,7 +537,7 @@ if ($Stage -eq 0) {
     # Cygwin Port Packages
 
     if ($PortPackages) {
-        Start-Process -FilePath "${PSScriptRoot}\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+        Start-Process -FilePath "${PSScriptRoot}\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
             "--no-shortcuts",
             "--no-startmenu",
@@ -549,25 +575,25 @@ if ($Stage -eq 0) {
     # This is only needed temporarily
     [Environment]::SetEnvironmentVariable(
         "PATH",
-        (Prepend-Idempotent "${InstallationDirectory}\usr\bin" "$Env:Path" ";" $False),
+        (Prepend-Idempotent "${InstallationDirectory}\cygwin64\usr\bin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
     )
     [Environment]::SetEnvironmentVariable(
         "PATH",
-        (Prepend-Idempotent "${InstallationDirectory}\usr\sbin" "$Env:Path" ";" $False),
+        (Prepend-Idempotent "${InstallationDirectory}\cygwin64\usr\sbin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
     )
     [Environment]::SetEnvironmentVariable(
         "PATH",
-        (Prepend-Idempotent "${InstallationDirectory}\bin" "$Env:Path" ";" $False),
+        (Prepend-Idempotent "${InstallationDirectory}\cygwin64\bin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
     )
     [Environment]::SetEnvironmentVariable(
         "PATH",
-        (Prepend-Idempotent "${InstallationDirectory}\sbin" "$Env:Path" ";" $False),
+        (Prepend-Idempotent "${InstallationDirectory}\cygwin64\sbin" "$Env:Path" ";" $False),
         [System.EnvironmentVariableTarget]::Process
     )
 
-    Start-Process -FilePath "$InstallationDirectory\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "`"${PSScriptRoot}\install.sh`""
+    Start-Process -FilePath "$InstallationDirectory\cygwin64\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "`"${PSScriptRoot}\install.sh`""
 
 }

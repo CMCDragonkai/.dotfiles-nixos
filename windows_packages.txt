@@ -1,3 +1,7 @@
+# not fully automated and require additional prompts
+dejavufonts,*,chocolateyget
+arduino,*,chocolateyget
+
 # shell/system utilities
 carbon,2.2.0,chocolateyget
 ConEmu,16.5.22.0,chocolateyget
@@ -10,7 +14,7 @@ ccleaner,*,chocolateyget
 RapidEE,*,chocolateyget
 sysinternals,*,chocolateyget
 regshot,1.9.3,chocolateyget
-wincdemu,*,chocolateyget
+virtualclonedrive,*,chocolateyget
 rufus.portable,*,chocolateyget
 osquery,*,chocolateyget
 logparser,*,chocolateyget
@@ -30,10 +34,13 @@ opera,*,chocolateyget
 putty.portable,*,chocolateyget
 deluge,*,chocolateyget
 namebench,*,chocolateyget
+thunderbird,*,chocolateyget
+bind-toolsonly,*,chocolateyget
+hostsman,*,chocolateyget
+dnsagent,*,chocolateyget
 
 # gaming
 steam,*,chocolateyget
-battle.net,*,chocolateyget
 retroarch,*,chocolateyget
 dolphin,*,chocolateyget
 
@@ -46,18 +53,16 @@ ext2fsd,*,chocolateyget
 # development
 emacs64,*,chocolateyget
 atom,*,chocolateyget
-heidisql,*,chocolateyget
 dbeaver,*,chocolateyget
 virtualbox,*,chocolateyget
 vagrant,*,chocolateyget
 sourcetree,*,chocolateyget
 linqpad,*,chocolateyget
 zeal.install,*,chocolateyget
-kicad,*,chocolateyget
-arduino,*,chocolateyget
 packer,*,chocolateyget
 
 # language runtimes
+javaruntime,*,chocolateyget
 jdk8,*,chocolateyget
 visualfsharptools,*,chocolateyget
 vcbuildtools,*,chocolateyget,/Full
@@ -87,9 +92,6 @@ k-litecodecpackmega,*,chocolateyget
 sharex,*,chocolateyget
 obs-mp,*,chocolateyget
 musicbee,*,chocolateyget
-spotify,*,chocolateyget
-gifcam,*,chocolateyget
-time4popcorn,*,chocolateyget
 avidemux,*,chocolateyget
 flashplayerplugin,*,chocolateyget
 
@@ -98,7 +100,6 @@ inkscape,*,chocolateyget
 gimp,*,chocolateyget
 
 # productivity
-f.lux,*,chocolateyget
 synergy,*,chocolateyget
 
 # finance and accounting
@@ -110,21 +111,29 @@ qgis,*,chocolateyget
 googleearthpro,*,chocolateyget
 
 # fonts
-dejavufonts,*,chocolateyget
+nexusfont.portable,*,chocolateyget
 sourcecodepro,*,chocolateyget
 AnonymousPro,*,chocolateyget
 hackfont,*,chocolateyget
-nexusfont,*,chocolateyget
 inconsolata,*,chocolateyget
 
-# windows packages not yet available
+# these must be installed directly with choco install 
+# with options such as --allow-empty-checksums and --ignore-checksums
+# these may be fixed in the future
+# for now they will be processed automatically and will fail, but the installation will continue
+battle.net,*,chocolateyget
+gifcam,*,chocolateyget
+f.lux,*,chocolateyget
+kicad,*,chocolateyget
+
+# windows packages not yet available or do not work on chocolatey
 # wordweb
 # netsetman
 # protege
 # manager
-# nylas
 # webtorrent
-# softether
+# softether vpn client
+# softether vpn server
 # adobe experience design
 # keybase
 # processing 
@@ -133,3 +142,6 @@ inconsolata,*,chocolateyget
 # geforce driver
 # cuda
 # origin
+# spotify
+# adobe creative suite 
+# portfolio performance (https://github.com/buchen/portfolio)

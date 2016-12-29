@@ -19,10 +19,47 @@ git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git /tmp
 /tmp/.dotfiles/install.sh
 ```
 
+DNS
+---
+
+Local DNS server running on Windows: DNSAgent.
+
+It's more of a DNS proxy rather than a full DNS server.
+
+Its configuration currently involves editing the options.cfg and rules.cfg within the same directory it is installed. Currently asking the developer if we can change that. The service would need to be changed to accomodate. Alternatively one can delete the 2 files, and provide NTFS symlinks pointing to files in the user profile, but that's not really a good thing to do here, because it's a global position pointing to a local position. Instead just add configuration to the ChocolateyInstall/lib/dnsagent/tools/options.cfg and rules.cfg accordingly later when you have figured it out.
+
+You will need powershell to point DNS server to localhost 127.0.0.1.
+
+```
+Set-DnsClientServerAddress -InterfaceAlias 'WiFi' -ServerAddresses '127.0.0.1' -Validate
+Set-DnsClientServerAddress -InterfaceAlias 'WiFi' -ServerAddresses '::1' -Validate
+```
+
+Note that DNSAgent supports both ipv4 and ipv6 and is listening on both. Verify with Windows:
+
+```
+netstat -a -b -p udp | select-string -SimpleMatch '[::1]:53' -Context 0,1
+netstat -a -b -p udpv6 | select-string -SimpleMatch '[::1]:53' -Context 0,1
+```
+
+You can also set it for Local Area Connection. But you'll need to find what your Interface Alias is, WiFi is common for laptops and Local Area Connection is common for desktops. Use `Get-IPInterface` to see all available interfaces. Note that unconnected interfaces may be hidden.
+
+Java
+----
+
+Java applets are a dieing breed. Google Chrome does not support JRE at all. While only Firefox 32 bit supports JRE, and it requires 32 bit JRE. On Windows 10, if you need to run Java applets, after installing JRE, you can use Internet Explorer.
+
 Interesting Paths
 -----------------
 
 `%ALLUSERSPROFILE%` - Points to a common user profile directory (that is viewable by all users on the OS). We should create a `%ALLUSERSPROFILE%/bin` directory to add PATH symlinks to all Windows executables that we install into here (this makes sense as installed Windows executables are usually installed on the entire system, not for a particular user). This refers to any natively installed Windows executable, or any extracted Windows executable.
+
+`%APPDATA%\bin` - Should be used for User Profile installed Windows Apps bin.
+`%LOCALAPPDATA%\bin` - Should be used for User Profile locally installed Windows Apps bin.
+
+Data files should generally be in `%LOCALAPPDATA%`, see Manager.io. But applications should be in Roaming Profile. At least there's no reason why not?
+
+In linux, data is often considered shared, because they are architecture indepedent. So data should be on a roaming profile, but applications which is architecture specific should be on a local profile. Thus manager should be installing on a local profile. This means there should not be an `%APPDATA%\bin`. The Windows PATH includes `%LOCALAPPDATA%\bin`.
 
 Path hierarchy on Windows:
 
