@@ -1,0 +1,4 @@
+atom.cmd,${Env:LOCALAPPDATA}\atom\bin\atom.cmd
+apm.cmd,${Env:LOCALAPPDATA}\atom\bin\apm.cmd
+pandoc.exe,${Env:LOCALAPPDATA}\Pandoc\pandoc.exe
+pandoc-citeproc.exe,${Env:LOCALAPPDATA}\Pandoc\pandoc-citeproc.exe

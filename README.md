@@ -560,3 +560,24 @@ It's preferable to install language runtimes on Cygwin, and if installing or com
 An exception are language runtimes designed for Windows like Visual C/C++, Visual Basic, C# and F#. These can be used for development.
 
 Note that Windows language runtimes won't have access to Cygwin executables in their PATH. Also remember to use Windows paths when developing in Windows language runtimes.
+
+Graphics Programming
+--------------------
+
+Since you probably have an NVIDIA computer, then you should first install the NVIDIA Graphics driver and then the CUDA SDK. The CUDA SDK includes the OpenCL SDK.
+
+Unfortunately I don't have this automated in Chocolatey, so this is a manual process.
+
+Once these are installed, you can test if everything is working by first launching "Visual C++ 2015 x64 Native Build Tools Command Prompt", and then running:
+
+```
+cd "C:\ProgramData\NVIDIA Corporation\CUDA Samples\v8.0\5_Simulations\nbody"
+msbuild ./nbody_vs2015.sln
+rem Now go run the actual executable, the output of the command should show where it is
+msbuild ./nbody_vs2015.sln /target:Clean
+rem The above will clean all the build artifacts including the nbody.exe
+```
+
+This shows you don't really need all of Visual Studio to work with CUDA. You just need the Visual C++ Build Tools package.
+
+Running the above requires the .NET Framework 3.5 feature to be enabled. This is already automated in `./install.ps1`.

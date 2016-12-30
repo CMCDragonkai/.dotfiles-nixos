@@ -1,3 +1,3 @@
 #!/usr/bin/env powershell
 
-get-netadapter | get-netipaddress | select InterfaceAlias, IPAddress
+Get-NetAdapter | Get-NetIPAddress | Select InterfaceAlias, IPAddress | Sort InterfaceAlias

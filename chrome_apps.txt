@@ -6,5 +6,6 @@ Mailtrap,https://mailtrap.io/inboxes
 Inkbrush,https://www.inkbrush.com/app
 ZeroSSL,https://zerossl.com/free-ssl/#crt
 FullContact,https://app.fullcontact.com/
+Dillinger,http://dillinger.io/
 
 # at some point, add in quantopian or quantconnect or tradewave

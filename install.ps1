@@ -171,6 +171,9 @@ if ($Stage -eq 0) {
 
     # Enable Telnet
     Get-WindowsOptionalFeature -Online -FeatureName TelnetClient | Enable-WindowsOptionalFeature -Online -All -NoRestart >$null
+    # Enable .NET Framework 3.5, 3.0 and 2.0
+    # This is required for some legacy applications and CUDA applications
+    Get-WindowsOptionalFeature -Online -FeatureName NetFx3 | Enable-WindowsOptionalFeature -Online -All -NoRestart >$null
     # Enable Windows Containers
     Get-WindowsOptionalFeature -Online -FeatureName Containers | Enable-WindowsOptionalFeature -Online -All -NoRestart >$null
     # Enable Hyper-V hypervisor, this will prevent Virtualbox from running concurrently
@@ -442,11 +445,8 @@ if ($Stage -eq 0) {
     & "${PSScriptRoot}\windows_packages_special.ps1"
 
     # Setup Chrome App shortcuts
-    # Chrome App shortcuts will be places in $ALLUSERSPROFILE/bin
+    # Chrome App shortcuts will be places in $LOCALAPPDATA/bin because the icons are supplied in the LOCALAPPDATA
     $ChromePath = (Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" -ErrorAction SilentlyContinue).'(Default)'
-
-    # CONVERT all of this into data based ico files rather than acquiring from the internet
-    # It's more reliable and more safe!
 
     if ($ChromePath) {
 
@@ -464,14 +464,14 @@ if ($Stage -eq 0) {
 
             try {
 
-                $Title = (Invoke-WebRequest -Uri "$($Url.OriginalString)").ParsedHtml.getElementsByTagName('title')[0].text
-                $Shortcut = $WshShell.CreateShortcut("${Env:ALLUSERSPROFILE}\bin\${Name}.lnk")
+                New-Item -ItemType Directory -Force -Path "${Env:LOCALAPPDATA}\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80" >$null
+                Copy-Item -Force "${PSScriptRoot}\data\${Name}.ico" "${Env:LOCALAPPDATA}\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80\${Name}.ico"
+                Unblock-File -Path "${Env:LOCALAPPDATA}\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80\${Name}.ico"
+                $Shortcut = $WshShell.CreateShortcut("${Env:LOCALAPPDATA}\bin\${Name}.lnk")
                 $Shortcut.TargetPath = "$ChromePath"
                 $Shortcut.Arguments = "--app=$($Url.OriginalString)"
                 $Shortcut.WorkingDirectory = "$(Split-Path "$ChromePath" -Parent)"
-                # Chrome appears to always use 80 for its icon locations
-                # The web application must be fully loaded at least once before the favicon will be available at this location
-                $ShortCut.IconLocation = "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80\${Title}.ico"
+                $ShortCut.IconLocation = "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80\${Name}.ico"
                 $Shortcut.Save()
 
             } catch { 
@@ -488,18 +488,38 @@ if ($Stage -eq 0) {
 
     }
 
-    # Setup any NTFS symlinks required for natively installed applications
+    # Setup any NTFS symlinks required for natively and globally installed applications
+    # These will be installed into $ALLUSERSPROFILE\bin
+    # This is only required if the installation process did not add a launcher into $ChocolateyInstall\bin
+    $GlobalSymlinkMapping = (Get-Content "${PSScriptRoot}\windows_global_symlink_mapping.txt" | Where-Object { 
+        $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
+    })
 
-    # chrome
-    # firefox
-    # opera
-    # any language runtimes we have...
+    foreach ($Map in $GlobalSymlinkMapping) {
 
-    # Since native installers can pollute the PATH, we need to reset the PATH declaratively
-    # The PATH can be polluted globally and locally
+        $Map = $Map -split ','
+        $Link = $Map[0].trim()
+        $Target = $Map[1].trim()
+        $LinkCommand = "New-Item -ItemType SymbolicLink -Force -Path '${Env:ALLUSERSPROFILE}\bin\${Link}' -Value `"$Target`""
+        Invoke-Expression "$LinkCommand"
 
-    # setting the PATH....
+    }
 
+    # Setup any NTFS symlinks required for locally installed applications
+    # These will be installed into $LOCALAPPDATA\bin
+    $LocalSymlinkMapping = (Get-Content "${PSScriptRoot}\windows_local_symlink_mapping.txt" | Where-Object { 
+        $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
+    })
+
+    foreach ($Map in $LocalSymlinkMapping) {
+
+        $Map = $Map -split ','
+        $Link = $Map[0].trim()
+        $Target = $Map[1].trim()
+        $LinkCommand = "New-Item -ItemType SymbolicLink -Force -Path '${Env:LOCALAPPDATA}\bin\${Link}' -Value `"$Target`""
+        Invoke-Expression "$LinkCommand"
+
+    }
 
     # Installing Cygwin Packages
 
@@ -522,6 +542,8 @@ if ($Stage -eq 0) {
     if ($MainPackages) {
         Start-Process -FilePath "${PSScriptRoot}\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
+            "--download",
+            "--local-install",
             "--no-shortcuts",
             "--no-startmenu",
             "--no-desktop",
@@ -534,11 +556,16 @@ if ($Stage -eq 0) {
             "--packages `"$MainPackages`""
     }
 
+    # these are downloading packages but are not installing them...
+    # perhaps --download is needed
+
     # Cygwin Port Packages
 
     if ($PortPackages) {
         Start-Process -FilePath "${PSScriptRoot}\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
+            "--download",
+            "--local-install",
             "--no-shortcuts",
             "--no-startmenu",
             "--no-desktop",
