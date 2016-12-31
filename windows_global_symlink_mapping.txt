@@ -29,11 +29,6 @@ osqueryd.exe,%ProgramData%\osquery\osqueryd\osqueryd.exe
 logparser.exe,%ProgramFiles(x86)%\Log Parser 2.2\LogParser.exe
 arduino.exe,%ProgramFiles(x86)%\Arduino\arduino.exe
 arduino-builder.exe,%ProgramFiles(x86)%\Arduino\arduino-builder.exe
-node.exe,%ProgramFiles%\nodejs\node.exe
-npm.cmd,%ProgramFiles%\nodejs\npm.cmd
-go.exe,%SystemDrive%\tools\go\bin\go.exe
-godoc.exe,%SystemDrive%\tools\go\bin\godoc.exe
-gofmt.exe,%SystemDrive%\tools\go\bin\gofmt.exe
 nmap.exe,%ProgramFiles(x86)%\Nmap\nmap.exe
 ncat.exe,%ProgramFiles(x86)%\Nmap\ncat.exe
 ndiff.exe,%ProgramFiles(x86)%\Nmap\ndiff.exe
@@ -41,6 +36,20 @@ nping.exe,%ProgramFiles(x86)%\Nmap\nping.exe
 nmap-update.exe,%ProgramFiles(x86)%\Nmap\nmap-update.exe
 zenmap.exe,%ProgramFiles(x86)%\Nmap\zenmap.exe
 skype.exe,%ProgramFiles(x86)%\Skype\Phone\Skype.exe
+
+# node
+node.exe,%ProgramFiles%\nodejs\node.exe
+npm.cmd,%ProgramFiles%\nodejs\npm.cmd
+
+# go
+go.exe,%SystemDrive%\tools\go\bin\go.exe
+godoc.exe,%SystemDrive%\tools\go\bin\godoc.exe
+gofmt.exe,%SystemDrive%\tools\go\bin\gofmt.exe
+
+# rust
+rustc.exe,%ProgramFiles%\Rust stable GNU 1.13\bin\rustc.exe
+rustdoc.exe,%ProgramFiles%\Rust stable GNU 1.13\bin\rustdoc.exe
+cargo.exe,%ProgramFiles%\Rust stable GNU 1.13\bin\cargo.exe
 
 # calibre
 calibre-complete.exe,%ProgramFiles%\Calibre2\calibre-complete.exe

@@ -1,6 +1,6 @@
 #!/usr/bin/env powershell
-
-#Requires -RunAsAdministrator
+#requires -RunAsAdministrator
+#requires -Version 5.0
 
 param (
     [ValidateLength(2, 15)][string]$ComputerName = "POLYHACK-" + "$(-join ((65..90) | Get-Random -Count 5 | % {[char]$_}))", 
@@ -317,9 +317,6 @@ if ($Stage -eq 0) {
         Get-AppxProvisionedPackage -Online | where DisplayName -EQ "$App" | Remove-AppxProvisionedPackage -Online
     }
     
-    # For disabling OneDrive go to gpedit.msc and disable it here: 
-    # Local Computer Policy\Computer Configuration\Administrative Templates\Windows Components\OneDrive
-    
     # Setup Windows Package Management
     
     # Update Package Management
@@ -560,8 +557,6 @@ if ($Stage -eq 0) {
     # See: http://superuser.com/q/839580
     Import-Module 'Carbon'
     Grant-Privilege -Identity "$Env:UserName" -Privilege SeCreateSymbolicLinkPrivilege
-    
-    echo "Finished deploying on Windows. Remember to run ${UserProfile}/bin/clean-path.ps1 after you have installed all manual Windows packages."
 
     # Add the primary Cygwin bin paths to PATH before launching install.sh directly from Powershell
     # This is because the PATH is not been completely configured for Cygwin before install.sh runs
@@ -575,5 +570,14 @@ if ($Stage -eq 0) {
         "${Env:Path}"
     )
     Start-Process -FilePath "$InstallationDirectory\cygwin64\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "`"${PSScriptRoot}\install.sh`""
+
+    echo "Finished deploying on Windows." 
+    echo "There are some final tasks to remember!"
+    echo "1. Install any not-yet-automated packages."
+    echo "2. Use gpedit.msc to disable OneDrive by going to Local Computer Policy\Computer Configuration\Administrative Templates\Windows Components\OneDrive, and also remove the OneDrive environment variable."
+    echo "3. Use msconfig to disable startup services and tasks that are unnecessary. This will speed up bootup and restarts."
+    echo "4. Remember to run ${PSScriptRoot}\tools\clean-windows-path.ps1."
+    echo "5. Configure to use your local DNS server and Hosts file, point your DNS address on relevant network interfaces to 127.0.0.1 and ::1."
+    echo "6. Finally restart your computer!"
 
 }

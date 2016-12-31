@@ -2,12 +2,14 @@
 
 This directory is meant to be located in `~/.dotfiles`.
 
-Installation on Windows is:
+Installation on Windows is (enter your computer name!):
 
 ```posh
+$ComputerName = 'POLYHACK-?'
 Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip' -OutFile '~/Downloads/.dotfiles-master.zip'
-Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~/Downloads' -Force
-powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/install.ps1' -ComputerName 'POLYHACK-?'"
+Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~' -Force
+Rename-Item '~/.dotfiles-master' '.dotfiles'
+powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/.dotfiles/install.ps1' -ComputerName '$ComputerName'"
 ```
 
 Make sure to add your custom name to the command.
@@ -15,8 +17,8 @@ Make sure to add your custom name to the command.
 Installation on Linux (NixOS) is:
 
 ```sh
-git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git /tmp
-/tmp/.dotfiles/install.sh
+git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git ~
+~/.dotfiles/install.sh
 ```
 
 DNS
