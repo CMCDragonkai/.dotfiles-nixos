@@ -2,8 +2,6 @@
 
 #Requires -RunAsAdministrator
 
-# Run this like: `powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& 'C:\Users\CMCDragonkai\Downloads\.dotfiles-master\install.ps1'"`
-
 param (
     [ValidateLength(2, 15)][string]$ComputerName = "POLYHACK-" + "$(-join ((65..90) | Get-Random -Count 5 | % {[char]$_}))", 
     [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
@@ -14,32 +12,6 @@ param (
 )
 
 # Utility Functions
-
-function Prepend-Idempotent {
-
-    # the delimiter is expected to be just 1 character
-    param (
-        [string]$InputString, 
-        [string]$OriginalString, 
-        [string]$Delimiter = '', 
-        [bool]$CaseSensitive = $false
-    )
-
-    if ($CaseSensitive -and ("$OriginalString" -cnotlike "*${InputString}*")) {
-
-        "$InputString".TrimEnd("$Delimiter") + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
-
-    } elseif (! $CaseSensitive -and ("$OriginalString" -inotlike "*${InputString}*")) {
-
-        "$InputString".TrimEnd("$Delimiter") + "$Delimiter" + "$OriginalString".TrimStart("$Delimiter")
-
-    } else {
-
-        "$OriginalString"
-    
-    }
-
-}
 
 function Append-Idempotent {
 
@@ -62,44 +34,6 @@ function Append-Idempotent {
     } else {
 
         "$OriginalString"
-    
-    }
-
-}
-
-function Add-Path {
-
-    param (
-        [string]$NewPath, 
-        [ValidateSet('Prepend','Append')]$Style = 'Prepend', 
-        [ValidateSet('User', 'System')]$Target = 'User'
-    )
-
-    try {
-        
-        # we need to do this to make sure not to expand the environment variables already inside the PATH
-        if ($Target -eq 'User') {
-            $Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment', $true)
-        } elseif ($Target -eq 'System') {
-            $Key = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey('SYSTEM\CurrentControlSet\Control\Session Manager\Environment', $true)
-        }
-
-        $Path = $Key.GetValue('Path', $null, 'DoNotExpandEnvironmentNames')
-
-        # note that system path can only expand system environment variables and vice versa for user environment variables
-        # in order to make sure this method is idempotent, we need to check if the new path already exists, this requires having a semicolon at the very end
-        if ($Style -eq 'Prepend') {
-            $key.SetValue('Path', (Prepend-Idempotent ("$NewPath".TrimEnd(';') + ';') ("$Path".TrimEnd(';') + ';') ';' $false), 'ExpandString')
-        } elseif ($Style -eq 'Append') {
-            $key.SetValue('Path', (Append-Idempotent ("$NewPath".TrimEnd(';') + ';') ("$Path".TrimEnd(';') + ';') ';' $false), 'ExpandString')
-        }
-
-        # update the path for the current process as well
-        $Env:Path = $key.GetValue('Path', $null)
-
-    } finally {
-        
-        $key.Dispose()
     
     }
 
@@ -149,9 +83,8 @@ function ScheduleRebootTask {
 
 }
 
-# We need to first setup Windows before setting up Cygwin (requiring a reboot)
-# We need to make sure the reboot results in a powershell terminal still running (upon logon)
-# Switch to using Powershell Terminal Directly
+# Bootstrap the computer!
+
 if ($Stage -eq 0) {
 
     Write-Host "Before you continue the installation, you should RAID with Storage Spaces, switch on NTFS compression, and encrypt with Bitlocker on your drive(s)."
@@ -217,16 +150,14 @@ if ($Stage -eq 0) {
 
     # Directory to hold NTFS symlinks and Windows shortcuts to Windows executables installed in the local profile
     # This means ~/Users/AppData/Local/bin
-    # The roaming profile should be used for application installation because applications are architecture specific
+    # The roaming profile should not be used for application installation because applications are architecture specific
     New-Item -ItemType Directory -Force -Path "${Env:LOCALAPPDATA}\bin" >$null
-    Add-Path -NewPath '%LOCALAPPDATA%\bin' -Style Append -Target User
 
     # Directory to hold NTFS symlinks and Windows shortcuts to Windows executables installed globally
     # This means C:/ProgramData/bin
     # This can be used for applications we install ourselves and for native installers in Chocolatey
     # Native installers are those that are not "*.portable" installations
     New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin" >$null
-    Add-Path -NewPath '%ALLUSERSPROFILE%\bin' -Style Append -Target System
     
     # User variables
 
@@ -500,8 +431,12 @@ if ($Stage -eq 0) {
         $Map = $Map -split ','
         $Link = $Map[0].trim()
         $Target = $Map[1].trim()
-        $LinkCommand = "New-Item -ItemType SymbolicLink -Force -Path '${Env:ALLUSERSPROFILE}\bin\${Link}' -Value `"$Target`""
-        Invoke-Expression "$LinkCommand"
+
+        # expand MSDOS environment variables
+        $Target = [System.Environment]::ExpandEnvironmentVariables("$Target")
+        if (Test-Path "$Target" -PathType Leaf) {
+            New-Item -ItemType SymbolicLink -Force -Path "${Env:ALLUSERSPROFILE}\bin\${Link}" -Value "$Target"
+        }
 
     }
 
@@ -516,8 +451,12 @@ if ($Stage -eq 0) {
         $Map = $Map -split ','
         $Link = $Map[0].trim()
         $Target = $Map[1].trim()
-        $LinkCommand = "New-Item -ItemType SymbolicLink -Force -Path '${Env:LOCALAPPDATA}\bin\${Link}' -Value `"$Target`""
-        Invoke-Expression "$LinkCommand"
+
+        # expand MSDOS environment variables
+        $Target = [System.Environment]::ExpandEnvironmentVariables("$Target")
+        if (Test-Path "$Target" -PathType Leaf) {
+            New-Item -ItemType SymbolicLink -Force -Path "${Env:LOCALAPPDATA}\bin\${Link}" -Value "$Target"
+        }
 
     }
 
@@ -555,9 +494,6 @@ if ($Stage -eq 0) {
             "--site `"$MainMirror`"",
             "--packages `"$MainPackages`""
     }
-
-    # these are downloading packages but are not installing them...
-    # perhaps --download is needed
 
     # Cygwin Port Packages
 
@@ -597,30 +533,19 @@ if ($Stage -eq 0) {
     Import-Module 'Carbon'
     Grant-Privilege -Identity "$Env:UserName" -Privilege SeCreateSymbolicLinkPrivilege
     
+    echo "Finished deploying on Windows. Remember to run ${UserProfile}/bin/clean-path.ps1 after you have installed all manual Windows packages."
+
     # Add the primary Cygwin bin paths to PATH before launching install.sh directly from Powershell
     # This is because the PATH is not been completely configured for Cygwin before install.sh runs
     # This is only needed temporarily
-    [Environment]::SetEnvironmentVariable(
-        "PATH",
-        (Prepend-Idempotent "${InstallationDirectory}\cygwin64\usr\bin" "$Env:Path" ";" $False),
-        [System.EnvironmentVariableTarget]::Process
-    )
-    [Environment]::SetEnvironmentVariable(
-        "PATH",
-        (Prepend-Idempotent "${InstallationDirectory}\cygwin64\usr\sbin" "$Env:Path" ";" $False),
-        [System.EnvironmentVariableTarget]::Process
-    )
-    [Environment]::SetEnvironmentVariable(
-        "PATH",
-        (Prepend-Idempotent "${InstallationDirectory}\cygwin64\bin" "$Env:Path" ";" $False),
-        [System.EnvironmentVariableTarget]::Process
-    )
-    [Environment]::SetEnvironmentVariable(
-        "PATH",
-        (Prepend-Idempotent "${InstallationDirectory}\cygwin64\sbin" "$Env:Path" ";" $False),
-        [System.EnvironmentVariableTarget]::Process
-    )
 
+    $Env:Path = (
+        "${InstallationDirectory}\cygwin64\usr\bin;" + 
+        "${InstallationDirectory}\cygwin64\usr\sbin;" + 
+        "${InstallationDirectory}\cygwin64\bin;" + 
+        "${InstallationDirectory}\cygwin64\sbin;" + 
+        "${Env:Path}"
+    )
     Start-Process -FilePath "$InstallationDirectory\cygwin64\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "`"${PSScriptRoot}\install.sh`""
 
 }

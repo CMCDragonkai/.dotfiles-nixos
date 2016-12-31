@@ -1,91 +1,85 @@
-chrome.exe,${Env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe
-opera.exe,${Env:ProgramFiles(x86)}\Opera\Launcher.exe
-fiddler.exe,${Env:ProgramFiles(x86)}\Fiddler2\Fiddler.exe
-firefox.exe,${Env:ProgramFiles}\Mozilla Firefox\firefox.exe
-thunderbird.exe,${Env:ProgramFiles(x86)}\Mozilla Thunderbird\thunderbird.exe
-conemu.exe,${Env:ProgramFiles}\ConEmu\ConEmu64.exe
-calibre.exe,${Env:ProgramFiles}\Calibre2\calibre.exe
-virtualbox.exe,${Env:ProgramFiles}\Oracle\VirtualBox\VirtualBox.exe
-vboxheadless.exe,${Env:ProgramFiles}\Oracle\VirtualBox\VBoxHeadless.exe
-vboxmanage.exe,${Env:ProgramFiles}\Oracle\VirtualBox\VBoxManage.exe
-vagrant.exe,${Env:SystemDrive}\HashiCorp\Vagrant\bin\vagrant.exe
-sourcetree.exe,${Env:ProgramFiles(x86)}\Atlassian\SourceTree\SourceTree.exe
-linqpad.exe,${Env:ProgramFiles(x86)}\LINQPad5\LINQPad.exe
-steam.exe,${Env:ProgramFiles(x86)}\Steam\Steam.exe
-cyberduck.exe,${Env:ProgramFiles(x86)}\Cyberduck\Cyberduck.exe
-dbeaver.exe,${Env:ProgramFiles}\DBeaver\dbeaver.exe
-zeal.exe,${Env:ProgramFiles(x86)}\Zeal\zeal.exe
-wireshark.exe,${Env:ProgramFiles}\Wireshark\Wireshark.exe
-tshark.exe,${Env:ProgramFiles}\Wireshark\tshark.exe
-text2pcap.exe,${Env:ProgramFiles}\Wireshark\text2pcap.exe
-mergecap.exe,${Env:ProgramFiles}\Wireshark\mergecap.exe
-rawshark.exe,${Env:ProgramFiles}\Wireshark\rawshark.exe
-reordercap.exe,${Env:ProgramFiles}\Wireshark\reordercap.exe
-dumpcap.exe,${Env:ProgramFiles}\Wireshark\dumpcap.exe
-editcap.exe,${Env:ProgramFiles}\Wireshark\editcap.exe
-editcap.exe,${Env:ProgramFiles}\Wireshark\editcap.exe
-capinfos.exe,${Env:ProgramFiles}\Wireshark\capinfos.exe
-osqueryi.exe,${Env:ProgramData}\osquery\osqueryi.exe
-osqueryd.exe,${Env:ProgramData}\osquery\osqueryd\osqueryd.exe
-logparser.exe,${Env:ProgramFiles(x86)}\Log Parser 2.2\LogParser.exe
-arduino.exe,${Env:ProgramFiles(x86)}\Arduino\arduino.exe
-arduino-builder.exe,${Env:ProgramFiles(x86)}\Arduino\arduino-builder.exe
-node.exe,${Env:ProgramFiles}\nodejs\node.exe
-npm.cmd,${Env:ProgramFiles}\nodejs\npm.cmd
-go.exe,${Env:SystemDrive}\tools\go\bin\go.exe
-godoc.exe,${Env:SystemDrive}\tools\go\bin\godoc.exe
-gofmt.exe,${Env:SystemDrive}\tools\go\bin\gofmt.exe
+chrome.exe,%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe
+opera.exe,%ProgramFiles(x86)%\Opera\Launcher.exe
+fiddler.exe,%ProgramFiles(x86)%\Fiddler2\Fiddler.exe
+firefox.exe,%ProgramFiles%\Mozilla Firefox\firefox.exe
+thunderbird.exe,%ProgramFiles(x86)%\Mozilla Thunderbird\thunderbird.exe
+conemu.exe,%ProgramFiles%\ConEmu\ConEmu64.exe
+virtualbox.exe,%ProgramFiles%\Oracle\VirtualBox\VirtualBox.exe
+vboxheadless.exe,%ProgramFiles%\Oracle\VirtualBox\VBoxHeadless.exe
+vboxmanage.exe,%ProgramFiles%\Oracle\VirtualBox\VBoxManage.exe
+vagrant.exe,%SystemDrive%\HashiCorp\Vagrant\bin\vagrant.exe
+sourcetree.exe,%ProgramFiles(x86)%\Atlassian\SourceTree\SourceTree.exe
+linqpad.exe,%ProgramFiles(x86)%\LINQPad5\LINQPad.exe
+steam.exe,%ProgramFiles(x86)%\Steam\Steam.exe
+cyberduck.exe,%ProgramFiles(x86)%\Cyberduck\Cyberduck.exe
+dbeaver.exe,%ProgramFiles%\DBeaver\dbeaver.exe
+zeal.exe,%ProgramFiles(x86)%\Zeal\zeal.exe
+wireshark.exe,%ProgramFiles%\Wireshark\Wireshark.exe
+tshark.exe,%ProgramFiles%\Wireshark\tshark.exe
+text2pcap.exe,%ProgramFiles%\Wireshark\text2pcap.exe
+mergecap.exe,%ProgramFiles%\Wireshark\mergecap.exe
+rawshark.exe,%ProgramFiles%\Wireshark\rawshark.exe
+reordercap.exe,%ProgramFiles%\Wireshark\reordercap.exe
+dumpcap.exe,%ProgramFiles%\Wireshark\dumpcap.exe
+editcap.exe,%ProgramFiles%\Wireshark\editcap.exe
+editcap.exe,%ProgramFiles%\Wireshark\editcap.exe
+capinfos.exe,%ProgramFiles%\Wireshark\capinfos.exe
+osqueryi.exe,%ProgramData%\osquery\osqueryi.exe
+osqueryd.exe,%ProgramData%\osquery\osqueryd\osqueryd.exe
+logparser.exe,%ProgramFiles(x86)%\Log Parser 2.2\LogParser.exe
+arduino.exe,%ProgramFiles(x86)%\Arduino\arduino.exe
+arduino-builder.exe,%ProgramFiles(x86)%\Arduino\arduino-builder.exe
+node.exe,%ProgramFiles%\nodejs\node.exe
+npm.cmd,%ProgramFiles%\nodejs\npm.cmd
+go.exe,%SystemDrive%\tools\go\bin\go.exe
+godoc.exe,%SystemDrive%\tools\go\bin\godoc.exe
+gofmt.exe,%SystemDrive%\tools\go\bin\gofmt.exe
+nmap.exe,%ProgramFiles(x86)%\Nmap\nmap.exe
+ncat.exe,%ProgramFiles(x86)%\Nmap\ncat.exe
+ndiff.exe,%ProgramFiles(x86)%\Nmap\ndiff.exe
+nping.exe,%ProgramFiles(x86)%\Nmap\nping.exe
+nmap-update.exe,%ProgramFiles(x86)%\Nmap\nmap-update.exe
+zenmap.exe,%ProgramFiles(x86)%\Nmap\zenmap.exe
+skype.exe,%ProgramFiles(x86)%\Skype\Phone\Skype.exe
 
-# java
-# although the JRE has its own java interpreters, we prefer the JDK versions
-java.exe,${Env:JAVA_HOME}\bin\java.exe
-javaw.exe,${Env:JAVA_HOME}\bin\javaw.exe
-javaws.exe,${Env:JAVA_HOME}\bin\javaws.exe
-javac.exe,${Env:JAVA_HOME}\bin\javac.exe
-javafxpackager.exe,${Env:JAVA_HOME}\bin\javafxpackager.exe
-javadoc.exe,${Env:JAVA_HOME}\bin\javadoc.exe
-jar.exe,${Env:JAVA_HOME}\bin\jar.exe
-javap.exe,${Env:JAVA_HOME}\bin\javap.exe
-javapackager.exe,${Env:JAVA_HOME}\bin\javapackager.exe
-java-rmi.exe,${Env:JAVA_HOME}\bin\java-rmi.exe
-jarsigner.exe,${Env:JAVA_HOME}\bin\jarsigner.exe
-idlj.exe,${Env:JAVA_HOME}\bin\idlj.exe
-jconsole.exe,${Env:JAVA_HOME}\bin\jconsole.exe
-appletviewer.exe,${Env:JAVA_HOME}\bin\appletviewer.exe
-extcheck.exe,${Env:JAVA_HOME}\bin\extcheck.exe
-jabswitch.exe,${Env:JAVA_HOME}\bin\jabswitch.exe
-javah.exe,${Env:JAVA_HOME}\bin\javah.exe
-jcmd.exe,${Env:JAVA_HOME}\bin\jcmd.exe
-jdb.exe,${Env:JAVA_HOME}\bin\jdb.exe
-jdeps.exe,${Env:JAVA_HOME}\bin\jdeps.exe
-jhat.exe,${Env:JAVA_HOME}\bin\jhat.exe
-jinfo.exe,${Env:JAVA_HOME}\bin\jinfo.exe
-jjs.exe,${Env:JAVA_HOME}\bin\jjs.exe
-jmc.exe,${Env:JAVA_HOME}\bin\jmc.exe
-jps.exe,${Env:JAVA_HOME}\bin\jps.exe
-jrunscript.exe,${Env:JAVA_HOME}\bin\jrunscript.exe
-jsadebugd.exe,${Env:JAVA_HOME}\bin\jsadebugd.exe
-jstack.exe,${Env:JAVA_HOME}\bin\jstack.exe
-jstat.exe,${Env:JAVA_HOME}\bin\jstat.exe
-jstatd.exe,${Env:JAVA_HOME}\bin\jstatd.exe
-jvisualvm.exe,${Env:JAVA_HOME}\bin\jvisualvm.exe
-keytool.exe,${Env:JAVA_HOME}\bin\keytool.exe
-pack200.exe,${Env:JAVA_HOME}\bin\pack200.exe
-unpack200.exe,${Env:JAVA_HOME}\bin\unpack200.exe
-wsgen.exe,${Env:JAVA_HOME}\bin\wsgen.exe
-xjc.exe,${Env:JAVA_HOME}\bin\xjc.exe
-rmic.exe,${Env:JAVA_HOME}\bin\rmic.exe
-rmid.exe,${Env:JAVA_HOME}\bin\rmid.exe
-rmiregistry.exe,${Env:JAVA_HOME}\bin\rmiregistry.exe
-serialver.exe,${Env:JAVA_HOME}\bin\serialver.exe
-tnameserv.exe,${Env:JAVA_HOME}\bin\tnameserv.exe
-wsgen.exe,${Env:JAVA_HOME}\bin\wsgen.exe
-wsimport.exe,${Env:JAVA_HOME}\bin\wsimport.exe
-ktab.exe,${Env:JAVA_HOME}\bin\ktab.exe
-kinit.exe,${Env:JAVA_HOME}\bin\kinit.exe
-klist.exe,${Env:JAVA_HOME}\bin\klist.exe
-orbd.exe,${Env:JAVA_HOME}\bin\orbd.exe
-policytool.exe,${Env:JAVA_HOME}\bin\policytool.exe
-native2ascii.exe,${Env:JAVA_HOME}\bin\native2ascii.exe
-servertool.exe,${Env:JAVA_HOME}\bin\servertool.exe
-schemagen.exe,${Env:JAVA_HOME}\bin\schemagen.exe
+# calibre
+calibre-complete.exe,%ProgramFiles%\Calibre2\calibre-complete.exe
+calibre-customize.exe,%ProgramFiles%\Calibre2\calibre-customize.exe
+calibre-debug.exe,%ProgramFiles%\Calibre2\calibre-debug.exe
+calibre-eject.exe,%ProgramFiles%\Calibre2\calibre-eject.exe
+calibre-parallel.exe,%ProgramFiles%\Calibre2\calibre-parallel.exe
+calibre-server.exe,%ProgramFiles%\Calibre2\calibre-server.exe
+calibre-smtp.exe,%ProgramFiles%\Calibre2\calibre-smtp.exe
+calibre.exe,%ProgramFiles%\Calibre2\calibre.exe
+calibredb.exe,%ProgramFiles%\Calibre2\calibredb.exe
+cjpeg-calibre.exe,%ProgramFiles%\Calibre2\cjpeg-calibre.exe
+ebook-convert.exe,%ProgramFiles%\Calibre2\ebook-convert.exe
+ebook-device.exe,%ProgramFiles%\Calibre2\ebook-device.exe
+ebook-edit.exe,%ProgramFiles%\Calibre2\ebook-edit.exe
+ebook-meta.exe,%ProgramFiles%\Calibre2\ebook-meta.exe
+ebook-polish.exe,%ProgramFiles%\Calibre2\ebook-polish.exe
+ebook-viewer.exe,%ProgramFiles%\Calibre2\ebook-viewer.exe
+fetch-ebook-metadata.exe,%ProgramFiles%\Calibre2\fetch-ebook-metadata.exe
+lrf2lrs.exe,%ProgramFiles%\Calibre2\lrf2lrs.exe
+lrfviewer.exe,%ProgramFiles%\Calibre2\lrfviewer.exe
+lrs2lrf.exe,%ProgramFiles%\Calibre2\lrs2lrf.exe
+markdown-calibre.exe,%ProgramFiles%\Calibre2\markdown-calibre.exe
+optipng-calibre.exe,%ProgramFiles%\Calibre2\optipng-calibre.exe
+pdfinfo.exe,%ProgramFiles%\Calibre2\pdfinfo.exe
+pdftohtml.exe,%ProgramFiles%\Calibre2\pdftohtml.exe
+pdftoppm.exe,%ProgramFiles%\Calibre2\pdftoppm.exe
+web2disk.exe,%ProgramFiles%\Calibre2\web2disk.exe
+
+# docker
+# docker is provided by either docker for windows or docker toolbox 
+# here we add both sets of symlinks, installation will check if they exist prior to creating the symlink
+docker.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker.exe
+docker-compose.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker-compose.exe
+docker-credential-wincred.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker-credential-wincred.exe
+docker-machine.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker-machine.exe
+notary.exe,%ProgramFiles%\Docker\Docker\resources\bin\notary.exe
+docker.exe,%ProgramFiles%\Docker Toolbox\docker.exe
+docker-compose.exe,%ProgramFiles%\Docker Toolbox\docker-compose.exe
+docker-credential-wincred.exe,%ProgramFiles%\Docker Toolbox\docker-credential-wincred.exe
+docker-machine.exe,%ProgramFiles%\Docker Toolbox\docker-machine.exe
+notary.exe,%ProgramFiles%\Docker Toolbox\notary.exe

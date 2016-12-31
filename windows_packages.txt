@@ -37,6 +37,7 @@ thunderbird,*,chocolateyget
 bind-toolsonly,*,chocolateyget
 hostsman,*,chocolateyget
 dnsagent,*,chocolateyget
+iperf3,*,chocolateyget
 
 # gaming
 steam,*,chocolateyget
@@ -69,6 +70,7 @@ nodejs,7.3.0,chocolateyget
 haskell-stack,1.2.0,chocolateyget
 idris,0.12.3,chocolateyget
 golang,1.7.3,chocolateyget
+rust,1.13.0,chocolateyget
 
 # documents
 pandoc,*,chocolateyget

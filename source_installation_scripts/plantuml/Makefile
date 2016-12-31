@@ -1,15 +1,13 @@
-# this should be plantuml installation instructions
-
 .PHONY: install uninstall
 
-SRCDIR := $(shell mkdir -p '~/.src/picocom')
+TEMPDIR := $(shell mktemp -d)
 
 install:
-	git clone https://github.com/npat-efault/picocom "$(SRCDIR)"
-	$(MAKE) --directory="$(SRCDIR)"
-	install --mode=755 -D "$(SRCDIR)/picocom/picocom.exe" /usr/local/bin
-	install --mode=755 -D "$(SRCDIR)/picocom/picocom.1" /usr/local/man/man1
+	cd "$(TEMPDIR)"
+	curl -L -o ./plantuml.jar http://sourceforge.net/projects/plantuml/files/plantuml.jar/download
+	install --mode=755 -D "./plantuml.jar" /usr/local/bin
+	cd -
+	rm -rf "$(TEMPFILE)"
 	
 uninstall:
-	rm --force /usr/local/bin/picocom.exe
-	rm --force /usr/local/man/man1/picocom.1
+	rm --force /usr/local/bin/plantuml.jar

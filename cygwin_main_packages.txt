@@ -64,6 +64,8 @@ mingw64-x86_64-gcc-fortran
 
 # database
 sqlite3
+mysqld
+mysql
 
 # R
 R
