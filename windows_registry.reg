@@ -93,6 +93,14 @@ Windows Registry Editor Version 5.00
 [HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Internet Explorer\Main]
 "DisableFirstRunCustomize"=dword:00000001
 
+; Show hibernate option in power menu
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings]
+"ShowHibernateOption"=dword:00000001
+
+; Enable fast boot (disable this if you're doing dual booting)
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power]
+"HiberbootEnabled"=dword:00000001
+
 ; Removing all folders from Frequent Places ("This PC")
 ; Placing folders is just redundant, it's just a lot of UI noise
 
