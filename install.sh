@@ -50,7 +50,7 @@ cygwin_profile=(
 )
 
 # clear the build directory first
-find "$script_path/build" -not -path "$script_path/build/.gitkeep" -mindepth 1 -maxdepth 1 -exec rm --recursive --force '{}' \;
+find "$script_path/build" -mindepth 1 -maxdepth 1 -not -path "$script_path/build/.gitkeep" -exec rm --recursive --force '{}' \;
 
 cp --target-directory="$script_path/build" --recursive --update "${common_profile[@]}"
 
@@ -157,8 +157,8 @@ if [[ $(uname -s) == CYGWIN* ]]; then
 
     # Install Python packages on Cygwin
     # Executables should be preferably Python 3, and will be installed in ~/.local/bin
-    pip2 --user --requirements "$script_path/pip2_requirements.txt"
-    pip3 --user --requirements "$script_path/pip3_requirements.txt"
+    pip2 install --requirement "$script_path/pip2_requirements.txt"
+    pip3 install --requirement "$script_path/pip3_requirements.txt"
     
     # Install via the source installation scripts
     # All of these are Makefiles with install and uninstall targets
