@@ -49,7 +49,8 @@ cygwin_profile=(
     "$script_path/profile/.minttyrc" 
 )
 
-# we need script path
+# clear the build directory first
+find "$script_path/build" -not -path "$script_path/build/.gitkeep" -mindepth 1 -maxdepth 1 -exec rm --recursive --force '{}' \;
 
 cp --target-directory="$script_path/build" --recursive --update "${common_profile[@]}"
 
@@ -81,7 +82,7 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     echo 'none /tmp usertemp binary,posix=0 0 0' >> /etc/fstab
     
     # Acquire timezone information from Windows
-    tz="$($script_path/profile/bin/tz-windows-to-iana "$(tzutil /l | grep --before-context=1 "$(tzutil /g)" | head --lines=1)")"
+    tz="$("$script_path/profile/bin/tz-windows-to-iana" "$(tzutil /l | grep --before-context=1 "$(tzutil /g)" | head --lines=1)")"
     
     if [ -f /usr/share/zoneinfo/"$tz" ]; then
         echo "$tz" > /etc/timezone
@@ -115,7 +116,7 @@ EOF
 fi
 
 # Note that `PH_` is our namespace meaning "PolyHack"
-find "$script_path/build" -name '*.m4' -not -path "$script_path/build/modules/*" -print0 | while IFS= read -r -d '' filepath; do 
+while IFS= read -r -d '' filepath; do 
     
     # Process to the filepath without the .m4 extension
     m4 \
@@ -130,7 +131,7 @@ find "$script_path/build" -name '*.m4' -not -path "$script_path/build/modules/*"
     # Remove the m4 template
     rm "$filepath"
 
-done
+done < <(find "$script_path/build" -name '*.m4' -not -path "$script_path/build/modules/*" -print0)
 
 # Copy files from build into ~
 # Where --archive means: --recursive --links --perms --times --group --owner
@@ -161,7 +162,7 @@ if [[ $(uname -s) == CYGWIN* ]]; then
     done
 
     # Finally since the zip package is not a git repository, we shall clone the repository to HOME directory
-    rm --recursive --force '~/.dotfiles'
+    rm --recursive --force "$HOME/.dotfiles"
     git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git ~
 
 fi
