@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+shopt -s extglob
+
 script_path=$(dirname "$(readlink -f "$0")")
 
 # Common configuration files to be processed by m4 and put into ~
@@ -49,8 +51,10 @@ cygwin_profile=(
     "$script_path/profile/.minttyrc" 
 )
 
-# clear the build directory first
-find "$script_path/build" -mindepth 1 -maxdepth 1 -not -path "$script_path/build/.gitkeep" -exec rm --recursive --force '{}' \;
+mkdir --parents "$script_path/build"
+
+# Clear the build directory
+find "$script_path/build" -mindepth 1 -maxdepth 1 -exec rm --recursive --force '{}' \;
 
 cp --target-directory="$script_path/build" --recursive --update "${common_profile[@]}"
 
