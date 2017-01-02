@@ -8,8 +8,13 @@ param (
     [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports", 
     [string]$PortKey = "http://cygwinports.org/ports.gpg", 
     [string]$InstallationDirectory = "$Env:UserProfile", 
+    [string]$LogPath = $null, 
     [int]$Stage = 0
 )
+
+if ($LogPath) {
+    Start-Transcript -Path "$LogPath" -Append
+}
 
 # Utility Functions
 
@@ -51,7 +56,7 @@ function ScheduleRebootTask {
     # So we use an alternative syntax to execute the script
     $Action = New-ScheduledTaskAction -Execute 'powershell.exe' -WorkingDirectory "$($PWD.Path)" -Argument (
         '-NoLogo -NoProfile -ExecutionPolicy Unrestricted -NoExit ' + 
-        "`"& '${PSCommandPath}' -MainMirror '${MainMirror}' -PortMirror '${PortMirror}' -PortKey '${PortKey}' -InstallationDirectory '${InstallationDirectory}' -Stage ${Stage}`""
+        "`"& '${PSCommandPath}' -MainMirror '${MainMirror}' -PortMirror '${PortMirror}' -PortKey '${PortKey}' -InstallationDirectory '${InstallationDirectory}' -LogPath '${LogPath}' -Stage ${Stage}`""
     )
 
     # Trigger the script only when the current user has logged on
@@ -79,6 +84,10 @@ function ScheduleRebootTask {
         -Settings $Settings `
         -Force
 
+    if ($LogPath) {
+        Stop-Transcript
+    }
+
     Restart-Computer
 
 }
@@ -94,14 +103,12 @@ if ($Stage -eq 0) {
     Copy-Item "${PSScriptRoot}\data\transparent.ico" "${Env:SYSTEMROOT}\system32"
     Unblock-File -Path "${Env:SYSTEMROOT}\system32\transparent.ico"
 
-    # Install Powershell Help Files (we can use -?)
+    # Install Powershell Help Files (so we can use -?)
     Update-Help -Force
 
     # Import the registry file
     Start-Process -FilePath "$Env:SystemRoot\system32\reg.exe" -Wait -Verb RunAs -ArgumentList "IMPORT `"${PSScriptRoot}\windows_registry.reg`""
     
-    # Enabling Optional Windows Features, these may need a restart
-
     # Enable Telnet
     Get-WindowsOptionalFeature -Online -FeatureName TelnetClient | Enable-WindowsOptionalFeature -Online -All -NoRestart >$null
     # Enable .NET Framework 3.5, 3.0 and 2.0
@@ -113,8 +120,6 @@ if ($Stage -eq 0) {
     # However Hyper-V can be disabled at boot for when you need to use virtualbox
     # This is needed for Docker on Windows to run
     Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V | Enable-WindowsOptionalFeature -Online -All -NoRestart >$null
-
-    # Setup some Windows Environment Variables and Configuration
     
     # Allow Powershell scripts to be executable
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
@@ -147,17 +152,6 @@ if ($Stage -eq 0) {
         (Append-Idempotent ".LNK" "$Env:PATHEXT" ";" $False), 
         [System.EnvironmentVariableTarget]::Process
     )
-
-    # Directory to hold NTFS symlinks and Windows shortcuts to Windows executables installed in the local profile
-    # This means ~/Users/AppData/Local/bin
-    # The roaming profile should not be used for application installation because applications are architecture specific
-    New-Item -ItemType Directory -Force -Path "${Env:LOCALAPPDATA}\bin" >$null
-
-    # Directory to hold NTFS symlinks and Windows shortcuts to Windows executables installed globally
-    # This means C:/ProgramData/bin
-    # This can be used for applications we install ourselves and for native installers in Chocolatey
-    # Native installers are those that are not "*.portable" installations
-    New-Item -ItemType Directory -Force -Path "${Env:ALLUSERSPROFILE}\bin" >$null
     
     # User variables
 
@@ -169,105 +163,14 @@ if ($Stage -eq 0) {
     [Environment]::SetEnvironmentVariable("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::User)
     [Environment]::SetEnvironmentVariable("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::Process)
     
-    # Setup firewall to accept pings for Domain and Private networks but not from Public networks
-    Set-NetFirewallRule `
-        -DisplayName "File and Printer Sharing (Echo Request - ICMPv4-In)" `
-        -Enabled True `
-        -Action "Allow" `
-        -Profile "Domain,Private"`
-        >$null
-    Set-NetFirewallRule `
-        -DisplayName "File and Printer Sharing (Echo Request - ICMPv6-In)" `
-        -Enabled True `
-        -Action "Allow" `
-        -Profile "Domain,Private"`
-        >$null
+    # Setup windows firewall
+    & "${PSScriptRoot}\tools\set-firewall.ps1" -InstallationDirectory "$InstallationDirectory"
 
-    # Setup firewall to accept connections from 55555 in Domain and Private networks
-    Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (TCP-In)" -ErrorAction SilentlyContinue
-    Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (UDP-In)" -ErrorAction SilentlyContinue
-    New-NetFirewallRule `
-        -DisplayName "Polyhack - Private Development Port (TCP-In)" `
-        -Direction Inbound `
-        -EdgeTraversalPolicy Allow `
-        -Protocol TCP `
-        -LocalPort 55555 `
-        -Action Allow `
-        -Profile "Domain,Private" `
-        -Enabled True `
-        >$null
-    New-NetFirewallRule `
-        -DisplayName "Polyhack - Private Development Port (UDP-In)" `
-        -Direction Inbound `
-        -EdgeTraversalPolicy Allow `
-        -Protocol UDP `
-        -LocalPort 55555 `
-        -Action Allow `
-        -Profile "Domain,Private" `
-        -Enabled True `
-        >$null
-
-    # Port 22 for Cygwin SSH
-    Remove-NetFirewallRule -DisplayName "Polyhack - SSH (TCP-In)" -ErrorAction SilentlyContinue
-    New-NetFirewallRule `
-        -DisplayName "Polyhack - SSH (TCP-In)" `
-        -Direction Inbound `
-        -EdgeTraversalPolicy Allow `
-        -Protocol TCP `
-        -LocalPort 22 `
-        -Action Allow `
-        -Profile "Domain,Private" `
-        -Program "${InstallationDirectory}\cygwin64\usr\sbin\sshd.exe" `
-        -Enabled True `
-        >$null
-
-    # Port 80 for HTTP, but blocked by default (switch it on when you need to)
-    Remove-NetFirewallRule -DisplayName "Polyhack - HTTP (TCP-In)" -ErrorAction SilentlyContinue
-    New-NetFirewallRule `
-        -DisplayName "Polyhack - HTTP (TCP-In)" `
-        -Direction Inbound `
-        -EdgeTraversalPolicy Allow `
-        -Protocol TCP `
-        -LocalPort 80 `
-        -Action Block `
-        -Enabled True `
-        >$null
-
-    # Remove useless profile folders
-    Remove-Item "${Env:UserProfile}\Contacts" -Recurse -Force
-    Remove-Item "${Env:UserProfile}\Favorites" -Recurse -Force
-    Remove-Item "${Env:UserProfile}\Links" -Recurse -Force
+    # Change power settings for the current plan
+    & "${PSScriptRoot}\tools\set-power.ps1"
 
     # Rename the computer to the new name just before a restart
     Rename-Computer -NewName "$ComputerName" -Force >$null 2>&1
-
-    # Change power settings for the current plan
-    
-    # Power button hibernates the computer (Battery and Plugged In)
-    powercfg -setdcvalueindex SCHEME_CURRENT SUB_BUTTONS PBUTTONACTION 2
-    powercfg -setacvalueindex SCHEME_CURRENT SUB_BUTTONS PBUTTONACTION 2
-
-    # Lid close sleeps the computer (Battery and Plugged In)
-    powercfg -setdcvalueindex SCHEME_CURRENT SUB_BUTTONS LIDACTION 1
-    powercfg -setacvalueindex SCHEME_CURRENT SUB_BUTTONS LIDACTION 1
-
-    # Screen timing in seconds
-    # Turn off screen in 10 minutes on battery
-    # Turn off screen in 1 hr when plugged in
-    powercfg -setdcvalueindex SCHEME_CURRENT SUB_VIDEO VIDEOIDLE (10 * 60)
-    powercfg -setacvalueindex SCHEME_CURRENT SUB_VIDEO VIDEOIDLE (60 * 60)
-
-    # Sleep timing in seconds
-    # Sleep in 20 minutes on battery
-    # Never sleep when plugged in 
-    powercfg -setdcvalueindex SCHEME_CURRENT SUB_SLEEP STANDBYIDLE (20 * 60)
-    powercfg -setacvalueindex SCHEME_CURRENT SUB_SLEEP STANDBYIDLE 0
-
-    # Hibernate timing in seconds
-    # After sleeping for 2 hrs on battery, go to hibernation
-    # Never hibernate when plugged in
-    powercfg -setdcvalueindex SCHEME_CURRENT SUB_SLEEP HIBERNATEIDLE (120 * 60)
-    powercfg -setacvalueindex SCHEME_CURRENT SUB_SLEEP HIBERNATEIDLE 0
 
     # Schedule the next stage of this script and reboot
     Unregister-ScheduledTask -TaskName "Dotfiles - 1" -Confirm:$false -ErrorAction SilentlyContinue
@@ -283,6 +186,11 @@ if ($Stage -eq 0) {
     Set-Service -Name "SshProxy" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
     Set-Service -Name "SshBroker" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
     
+    # Remove useless profile folders
+    Remove-Item "${Env:UserProfile}\Contacts" -Recurse -Force
+    Remove-Item "${Env:UserProfile}\Favorites" -Recurse -Force
+    Remove-Item "${Env:UserProfile}\Links" -Recurse -Force
+
     # Uninstall Useless Applications
     $AppsToBeUninstalled = @(
         'Microsoft.3DBuilder' 
@@ -318,227 +226,13 @@ if ($Stage -eq 0) {
     }
     
     # Setup Windows Package Management
-    
-    # Update Package Management
-    Import-Module PackageManagement
-    Import-Module PowerShellGet
-    # Nuget is needed for PowerShellGet
-    Install-PackageProvider -Name Nuget -Force
-    # Updating PowerShellGet updates PackageManagement
-    Install-Module -Name PowerShellGet -Force
-    # Update PackageManagement Explicitly to be Sure
-    Install-Module -Name PackageManagement -Force
-    # Reimport PackageManagement and PowerShellGet to take advantage of the new commands
-    Import-Module PackageManagement -Force
-    Import-Module PowerShellGet -Force
+    & "${PSScriptRoot}\tools\upstall-windows-packages.ps1" -Force
 
-    # Install Package Providers
-    # There are 2 Chocolatey Providers, the ChocolateGet provider is more stable
-    # PowerShellGet is also a package provider
-    Install-PackageProvider -Name 'ChocolateyGet' -Force
-    Install-PackageProvider -Name 'PowerShellGet' -Force
-    
-    # The ChocolateyGet bin path is "${Env:ChocolateyInstall}\bin"
-    # It is automatically appended to the system PATH environment variable upon installation of the first package
-    # The directory is populated for special packages, but won't necessarily be populated by native installers
-    # The ChocolateyGet will also automatically install chocolatey package, making the choco commands available as well
-    
-    # Make PowerShellGet's source trusted
-    Set-PackageSource -Name 'PSGallery' -ProviderName 'PowerShellGet' -Trusted -Force
-    
-    # Nuget doesn't register a package source by default
-    Register-PackageSource -Name 'NuGet' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Trusted -Force
-
-    # Install extra Powershell modules
-    Install-Module PSReadline -Force -SkipPublisherCheck
-
-    # Acquire the Package Lists
-    $WindowsPackages = (Get-Content "${PSScriptRoot}\windows_packages.txt" | Where-Object { 
-        $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
-    })
-
-    # Install the Windows Packages
-    foreach ($Package in $WindowsPackages) {
-
-        $Package = $Package -split ','
-        $Name = $Package[0].trim()
-        $Version = $Package[1].trim()
-        $Provider = $Package[2].trim()
-        
-        # the fourth parameter is optional completely, there's no need to even have a comma
-        if ($Package.Length -eq 4) {
-            $AdditionalArguments = $Package[3].trim()
-        } else {
-            $AdditionalArguments = ''
-        }
-
-        $InstallCommand = "Install-Package -Name '$Name' "
-
-        if ($Version -and $Version -ne '*') {
-            $InstallCommand += "-RequiredVersion '$Version' "
-        }
-
-        if ($Provider) {
-            $InstallCommand += "-ProviderName '$Provider' "
-        }
-
-        if ($AdditionalArguments) {
-
-            # heredoc in powershell (must have no spaces before ending `'@`)
-            $InstallCommand += "-AdditionalArguments @'
-                --installargs `"$AdditionalArguments`"
-'@ "
-
-        }
-
-        $InstallCommand += '-Force'
-        
-        Invoke-Expression "$InstallCommand"
-        
-    }
-    
-    # Windows packages requiring special instructions
-    & "${PSScriptRoot}\windows_packages_special.ps1"
-
-    # Setup Chrome App shortcuts
-    # Chrome App shortcuts will be places in $LOCALAPPDATA/bin because the icons are supplied in the LOCALAPPDATA
-    $ChromePath = (Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" -ErrorAction SilentlyContinue).'(Default)'
-
-    if ($ChromePath) {
-
-        $WshShell = New-Object -ComObject WScript.Shell
-
-        $ChromeApps = (Get-Content "${PSScriptRoot}\chrome_apps.txt" | Where-Object { 
-            $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
-        })
-
-        foreach ($App in $ChromeApps) {
-
-            $App = $App -split ','
-            $Name = $App[0].trim()
-            $Url = [System.Uri]"$($App[1].trim())"
-
-            try {
-
-                New-Item -ItemType Directory -Force -Path "${Env:LOCALAPPDATA}\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80" >$null
-                Copy-Item -Force "${PSScriptRoot}\data\${Name}.ico" "${Env:LOCALAPPDATA}\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80\${Name}.ico"
-                Unblock-File -Path "${Env:LOCALAPPDATA}\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80\${Name}.ico"
-                $Shortcut = $WshShell.CreateShortcut("${Env:LOCALAPPDATA}\bin\${Name}.lnk")
-                $Shortcut.TargetPath = "$ChromePath"
-                $Shortcut.Arguments = "--app=$($Url.OriginalString)"
-                $Shortcut.WorkingDirectory = "$(Split-Path "$ChromePath" -Parent)"
-                $ShortCut.IconLocation = "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Web Applications\$($Url.Host)\$($Url.Scheme)_80\${Name}.ico"
-                $Shortcut.Save()
-
-            } catch { 
-
-                echo "Could not create Chrome App shortcut for ${Url.OriginalString} because ${_}"
-
-            }
-
-        }
-
-    } else {
-
-        echo "Could not find path to chrome.exe, therefore could not setup Chrome app shortcuts"
-
-    }
-
-    # Setup any NTFS symlinks required for natively and globally installed applications
-    # These will be installed into $ALLUSERSPROFILE\bin
-    # This is only required if the installation process did not add a launcher into $ChocolateyInstall\bin
-    $GlobalSymlinkMapping = (Get-Content "${PSScriptRoot}\windows_global_symlink_mapping.txt" | Where-Object { 
-        $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
-    })
-
-    foreach ($Map in $GlobalSymlinkMapping) {
-
-        $Map = $Map -split ','
-        $Link = $Map[0].trim()
-        $Target = $Map[1].trim()
-
-        # expand MSDOS environment variables
-        $Target = [System.Environment]::ExpandEnvironmentVariables("$Target")
-        if (Test-Path "$Target" -PathType Leaf) {
-            New-Item -ItemType SymbolicLink -Force -Path "${Env:ALLUSERSPROFILE}\bin\${Link}" -Value "$Target"
-        }
-
-    }
-
-    # Setup any NTFS symlinks required for locally installed applications
-    # These will be installed into $LOCALAPPDATA\bin
-    $LocalSymlinkMapping = (Get-Content "${PSScriptRoot}\windows_local_symlink_mapping.txt" | Where-Object { 
-        $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
-    })
-
-    foreach ($Map in $LocalSymlinkMapping) {
-
-        $Map = $Map -split ','
-        $Link = $Map[0].trim()
-        $Target = $Map[1].trim()
-
-        # expand MSDOS environment variables
-        $Target = [System.Environment]::ExpandEnvironmentVariables("$Target")
-        if (Test-Path "$Target" -PathType Leaf) {
-            New-Item -ItemType SymbolicLink -Force -Path "${Env:LOCALAPPDATA}\bin\${Link}" -Value "$Target"
-        }
-
-    }
+    # Setup Chrome App Shortcuts and Symlinks to Native Packages
+    & "${PSScriptRoot}\tools\upstall-windows-symlinks-shortcuts.ps1"
 
     # Installing Cygwin Packages
-
-    # Create the necessary directories
-
-    New-Item -ItemType Directory -Force -Path "$InstallationDirectory\cygwin64" >$null
-    New-Item -ItemType Directory -Force -Path "$InstallationDirectory\cygwin64\packages" >$null
-
-    # Acquire Package Lists
-
-    $MainPackages = (Get-Content "${PSScriptRoot}\cygwin_main_packages.txt" | Where-Object { 
-        $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
-    }) -Join ','
-    $PortPackages = (Get-Content "${PSScriptRoot}\cygwin_port_packages.txt" | Where-Object { 
-        $_.trim() -ne '' -and $_.trim() -notmatch '^#' 
-    }) -Join ','
-
-    # Main Packages
-
-    if ($MainPackages) {
-        Start-Process -FilePath "${PSScriptRoot}\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
-            "--quiet-mode",
-            "--download",
-            "--local-install",
-            "--no-shortcuts",
-            "--no-startmenu",
-            "--no-desktop",
-            "--arch x86_64",
-            "--upgrade-also",
-            "--delete-orphans",
-            "--root `"${InstallationDirectory}\cygwin64`"",
-            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
-            "--site `"$MainMirror`"",
-            "--packages `"$MainPackages`""
-    }
-
-    # Cygwin Port Packages
-
-    if ($PortPackages) {
-        Start-Process -FilePath "${PSScriptRoot}\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
-            "--quiet-mode",
-            "--download",
-            "--local-install",
-            "--no-shortcuts",
-            "--no-startmenu",
-            "--no-desktop",
-            "--arch x86_64",
-            "--upgrade-also",
-            "--delete-orphans",
-            "--root `"${InstallationDirectory}\cygwin64`"",
-            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
-            "--site `"$PortMirror`"",
-            "--pubkey `"$PortKey`"",
-            "--packages `"$PortPackages`""
-    }
+    & "${PSScriptRoot}\tools\upstall-cygwin-packages.ps1" -MainMirror "$MainMirror" -PortMirror "$PortMirror" -PortKey "$PortKey" -InstallationDirectory "$InstallationDirectory"
 
     # Schedule a final reboot to start the Cygwin setup process
     Unregister-ScheduledTask -TaskName "Dotfiles - 2" -Confirm:$false -ErrorAction SilentlyContinue
@@ -580,4 +274,10 @@ if ($Stage -eq 0) {
     echo "5. Configure to use your local DNS server and Hosts file, point your DNS address on relevant network interfaces to 127.0.0.1 and ::1."
     echo "6. Finally restart your computer!"
 
+}
+
+# ScheduleRebootTask will also stop the transcript before rebooting
+# But if you've reached here, then the script has ended!
+if ($LogPath) {
+    Stop-Transcript
 }

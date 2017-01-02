@@ -9,10 +9,10 @@ $ComputerName = 'POLYHACK-?'
 Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip' -OutFile '~/Downloads/.dotfiles-master.zip'
 Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~' -Force
 Rename-Item '~/.dotfiles-master' '.dotfiles'
-powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/.dotfiles/install.ps1' -ComputerName '$ComputerName'"
+powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/.dotfiles/install.ps1' -ComputerName '$ComputerName' -LogPath '${Env:TEMP}\.dotfiles.log'  "
 ```
 
-Make sure to add your custom name to the command.
+Windows installation requires multiple restarts so check the log later for details. It is also not fully unattended, there are some package installations that require prompts.
 
 Installation on Linux (NixOS) is:
 

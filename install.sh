@@ -91,7 +91,12 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     # Change default shell to zsh
     # On Linux we could use chsh --shell
     # But Cygwin doesn't support it, so we just need to edit it using sed
-    sed --in-place "/^${USER}/ s/:[^:][^:]*$/:"${$(which zsh)//\//\\\/}"/" /etc/passwd
+    path_to_zsh="$(which zsh)"
+    path_to_zsh="${path_to_zsh//\//\\\/}"
+    sed --in-place "/^${USER}/ s/:[^:][^:]*$/:$path_to_zsh/" /etc/passwd
+    
+    # this version only works in ZSH
+    # sed --in-place "/^${USER}/ s/:[^:][^:]*$/:"${$(which zsh)//\//\\\/}"/" /etc/passwd
     
     # Setting up Cygserver requires first deleting the cygserver.conf
     # The service will be setup 
