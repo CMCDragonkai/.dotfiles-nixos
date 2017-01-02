@@ -79,7 +79,12 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     winsystmp="$(cmd /c 'ECHO %SYSTEMROOT%' | tr --delete '[:space:]')\Temp"
 
     # Merge Windows User Temporary with Cygwin /tmp
-    echo 'none /tmp usertemp binary,posix=0 0 0' >> /etc/fstab
+    cat <<'EOF' >/etc/fstab
+# /etc/fstab
+
+none /cygdrive cygdrive binary,posix=0,user 0 0
+none /tmp usertemp binary,posix=0 0 0
+EOF
     
     # Acquire timezone information from Windows
     tz="$("$script_path/profile/bin/tz-windows-to-iana" "$(tzutil /l | grep --before-context=1 "$(tzutil /g)" | head --lines=1)")"
@@ -95,7 +100,7 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 
     # Change default shell to zsh
     # On Linux we could use chsh --shell
-    cat <<'EOF' >./test
+    cat <<'EOF' >/etc/nsswitch.conf
 # /etc/nsswitch.conf
 
 passwd: files db
