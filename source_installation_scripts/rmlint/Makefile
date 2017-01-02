@@ -4,12 +4,7 @@ SRCDIR := $(shell mkdir -p "$(HOME)/.src/rmlint")
 
 install:
 	git clone -b develop https://github.com/sahib/rmlint.git "$(SRCDIR)"
-	cd "$(SRCDIR)"
-	scons config
-	scons -j4 --prefix=/usr install
-	cd -
+	cd "$(SRCDIR)" && scons config && scons -j4 --prefix=/usr install
 
 uninstall:
-	cd "$(SRCDIR)"
-	scons uninstall
-	cd -
+	cd "$(SRCDIR)" && scons uninstall

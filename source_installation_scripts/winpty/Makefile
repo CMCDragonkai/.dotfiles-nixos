@@ -3,19 +3,19 @@
 TEMPDIR := $(shell mktemp -d)
 
 install:
-	cd "$(TEMPDIR)"
-	curl -L https://github.com/rprichard/winpty/releases/download/0.4.0/winpty-0.4.0-cygwin-2.5.2-x64.tar.gz | tar xz
-	install --mode=755 -D "./winpty-0.4.0-cygwin-2.5.2-x64/bin/winpty.exe" /usr/local/bin
-	install --mode=755 -D "./winpty-0.4.0-cygwin-2.5.2-x64/bin/winpty.dll" /usr/local/bin
-	install --mode=755 -D "./winpty-0.4.0-cygwin-2.5.2-x64/bin/winpty-agent.exe" /usr/local/bin
-	install --mode=755 -D "./winpty-0.4.0-cygwin-2.5.2-x64/bin/winpty-debugserver.exe" /usr/local/bin
-	install --mode 644 -D "./winpty-0.4.0-cygwin-2.5.2-x64/lib/winpty.lib" /usr/local/lib
-	install --mode 644 -D "./winpty-0.4.0-cygwin-2.5.2-x64/include/winpty/winpty.h" /usr/local/include/winpty
-	install --mode 644 -D "./winpty-0.4.0-cygwin-2.5.2-x64/include/winpty/winpty_constants.h" /usr/local/include/winpty
-	install --mode 644 -D "./winpty-0.4.0-cygwin-2.5.2-x64/share/doc/winpty/LICENSE" /usr/local/share/doc/winpty
-	install --mode 644 -D "./winpty-0.4.0-cygwin-2.5.2-x64/share/doc/winpty/README.md" /usr/local/share/doc/winpty
-	install --mode 644 -D "./winpty-0.4.0-cygwin-2.5.2-x64/share/doc/winpty/RELEASES.md" /usr/local/share/doc/winpty
-	cd -
+	curl --location --output "$(TEMPDIR)/winpty.tar.gz" https://github.com/rprichard/winpty/releases/download/0.4.0/winpty-0.4.0-cygwin-2.5.2-x64.tar.gz
+	mkdir "$(TEMPDIR)/winpty"
+	tar xfz "$(TEMPDIR)/winpty.tar.gz" --directory "$(TEMPDIR)/winpty" --strip-components 1
+	install --mode=755 -D "$(TEMPDIR)/winpty/bin/winpty.exe" /usr/local/bin
+	install --mode=755 -D "$(TEMPDIR)/winpty/bin/winpty.dll" /usr/local/bin
+	install --mode=755 -D "$(TEMPDIR)/winpty/bin/winpty-agent.exe" /usr/local/bin
+	install --mode=755 -D "$(TEMPDIR)/winpty/bin/winpty-debugserver.exe" /usr/local/bin
+	install --mode 644 -D "$(TEMPDIR)/winpty/lib/winpty.lib" /usr/local/lib
+	install --mode 644 -D "$(TEMPDIR)/winpty/include/winpty/winpty.h" /usr/local/include/winpty
+	install --mode 644 -D "$(TEMPDIR)/winpty/include/winpty/winpty_constants.h" /usr/local/include/winpty
+	install --mode 644 -D "$(TEMPDIR)/winpty/share/doc/winpty/LICENSE" /usr/local/share/doc/winpty
+	install --mode 644 -D "$(TEMPDIR)/winpty/share/doc/winpty/README.md" /usr/local/share/doc/winpty
+	install --mode 644 -D "$(TEMPDIR)/winpty/share/doc/winpty/RELEASES.md" /usr/local/share/doc/winpty
 	rm -rf "$(TEMPDIR)"
 
 uninstall:

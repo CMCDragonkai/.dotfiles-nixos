@@ -3,10 +3,8 @@
 TEMPDIR := $(shell mktemp -d)
 
 install:
-	cd "$(TEMPDIR)"
-	curl -L -o ./plantuml.jar http://sourceforge.net/projects/plantuml/files/plantuml.jar/download
-	install --mode=755 -D "./plantuml.jar" /usr/local/bin
-	cd -
+	curl --location --output "$(TEMPDIR)/plantuml.jar" http://sourceforge.net/projects/plantuml/files/plantuml.jar/download
+	install --mode=755 -D "$(TEMPDIR)/plantuml.jar" /usr/local/bin
 	rm -rf "$(TEMPDIR)"
 	
 uninstall:
