@@ -16,7 +16,7 @@ install:
 	install --mode 644 -D "./winpty-0.4.0-cygwin-2.5.2-x64/share/doc/winpty/README.md" /usr/local/share/doc/winpty
 	install --mode 644 -D "./winpty-0.4.0-cygwin-2.5.2-x64/share/doc/winpty/RELEASES.md" /usr/local/share/doc/winpty
 	cd -
-	rm -rf "$(TEMPFILE)"
+	rm -rf "$(TEMPDIR)"
 
 uninstall:
 	rm -f /usr/local/bin/winpty.exe
