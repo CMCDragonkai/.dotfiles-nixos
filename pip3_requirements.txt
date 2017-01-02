@@ -7,6 +7,5 @@ awscli==1.11.12
 mitmproxy==0.18.2
 virtualenv==15.0.3
 # libraries
-numpy==1.9.2
 scipy==0.15.1
 pyserial==3.1.1

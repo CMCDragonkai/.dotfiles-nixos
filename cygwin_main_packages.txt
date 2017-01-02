@@ -49,6 +49,7 @@ diffutils
 patch
 cmake
 subversion
+subversion-devel
 
 # c and c++ and assembly
 scons
@@ -84,9 +85,15 @@ rubygems
 python
 python-setuptools
 python-devel
+python-numpy
+python-gtk2.0
 python3
 python3-setuptools
 python3-devel
+python3-numpy
+
+# tcl
+tcl-tk
 
 # perl
 perl
@@ -126,3 +133,5 @@ libusb1.0-devel
 libcurl4
 libcurl-devel
 libcrypt-devel
+libpng12
+libpng16
