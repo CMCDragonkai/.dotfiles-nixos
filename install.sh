@@ -139,8 +139,7 @@ while IFS= read -r -d '' filepath; do
 done < <(find "$script_path/build" -name '*.m4' -not -path "$script_path/build/modules/*" -print0)
 
 # Copy files from build into ~
-# Where --archive means: --recursive --links --perms --times --group --owner
-rsync --update --checksum --archive "$script_path/build/" "${HOME}/"
+cp --archive --update "$script_path/build/." "${HOME}/"
 
 # Make ~/.ssh directory and subdirectories 700, but the files 600
 # This requires wiping out any execute permissions first
