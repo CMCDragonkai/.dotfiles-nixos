@@ -3,7 +3,7 @@
 TEMPDIR := $(shell mktemp -d)
 
 install:
-	wget --directory-prefix="$(TEMPDIR)" "https://rawgit.com/git/git/v$(git --version | cut --delimiter=' ' --fields=3)/contrib/subtree/git-subtree.sh"
+	wget --directory-prefix="$(TEMPDIR)" "https://rawgit.com/git/git/master/contrib/subtree/git-subtree.sh"
 	install --mode=755 "$(TEMPDIR)/git-subtree.sh" /usr/local/bin/git-subtree
 	rm -rf "$(TEMPDIR)"
 
