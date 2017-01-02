@@ -82,8 +82,10 @@ rubygems
 # python
 python
 python-setuptools
+python-devel
 python3
 python3-setuptools
+python3-devel
 
 # perl
 perl

@@ -1,6 +1,6 @@
 .PHONY: install uninstall
 
-SRCDIR := $(shell mkdir -p '~/.src/picocom')
+SRCDIR := $(shell mkdir -p "$(HOME)/.src/picocom")
 
 install:
 	git clone https://github.com/npat-efault/picocom "$(SRCDIR)"

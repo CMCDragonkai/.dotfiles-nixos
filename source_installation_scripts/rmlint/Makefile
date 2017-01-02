@@ -1,6 +1,6 @@
 .PHONY: install uninstall
 
-SRCDIR := $(shell mkdir -p '~/.src/rmlint')
+SRCDIR := $(shell mkdir -p "$(HOME)/.src/rmlint")
 
 install:
 	git clone -b develop https://github.com/sahib/rmlint.git "$(SRCDIR)"
