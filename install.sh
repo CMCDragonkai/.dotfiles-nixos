@@ -1,57 +1,61 @@
 #!/usr/bin/env bash
 
+script_path=$(dirname "$(readlink -f "$0")")
+
 # Common configuration files to be processed by m4 and put into ~
 common_profile=(
-    './modules' 
-    './profile/.aws' 
-    './profile/.gnupg' 
-    './profile/.jupyter' 
-    './profile/.ssh' 
-    './profile/.vim' 
-    './profile/bin' 
-    './profile/.bash_env.m4' 
-    './profile/.bash_profile.m4' 
-    './profile/.bashrc.m4' 
-    './profile/curlrc' 
-    './profile/.ghci' 
-    './profile/.gitconfig' 
-    './profile/.gitignore_global' 
-    './profile/.inputrc' 
-    './profile/.my.cnf' 
-    './profile/.nanorc' 
-    './profile/.netrc' 
-    './profile/.sqliterc' 
-    './profile/.vimrc' 
-    './profile/.zlogin.m4' 
-    './profile/.zshenv.m4' 
-    './profile/.zshrc.m4' 
+    "$script_path/modules" 
+    "$script_path/profile/.aws" 
+    "$script_path/profile/.gnupg" 
+    "$script_path/profile/.jupyter" 
+    "$script_path/profile/.ssh" 
+    "$script_path/profile/.vim" 
+    "$script_path/profile/bin" 
+    "$script_path/profile/.bash_env.m4" 
+    "$script_path/profile/.bash_profile.m4" 
+    "$script_path/profile/.bashrc.m4" 
+    "$script_path/profile/curlrc" 
+    "$script_path/profile/.ghci" 
+    "$script_path/profile/.gitconfig" 
+    "$script_path/profile/.gitignore_global" 
+    "$script_path/profile/.inputrc" 
+    "$script_path/profile/.my.cnf" 
+    "$script_path/profile/.nanorc" 
+    "$script_path/profile/.netrc" 
+    "$script_path/profile/.sqliterc" 
+    "$script_path/profile/.vimrc" 
+    "$script_path/profile/.zlogin.m4" 
+    "$script_path/profile/.zshenv.m4" 
+    "$script_path/profile/.zshrc.m4" 
 )
 
 # Linux specific configuration files to be processed by m4 and put into ~
 linux_profile=(
-    './profile/.local' 
-    './profile/.nixpkgs' 
-    './profile/.xmonad' 
-    './profile/.Xmodmap' 
-    './profile/.Xresources' 
-    './profile/.pam_environment.m4' 
-    './profile/.xprofile.m4'
+    "$script_path/profile/.local" 
+    "$script_path/profile/.nixpkgs" 
+    "$script_path/profile/.xmonad" 
+    "$script_path/profile/.Xmodmap" 
+    "$script_path/profile/.Xresources" 
+    "$script_path/profile/.pam_environment.m4" 
+    "$script_path/profile/.xprofile.m4"
 )
 
 # Cygwin specific configuration files to be processed by m4 and put into ~
 cygwin_profile=(
-    './profile/AppData' 
-    './profile/Documents' 
-    './profile/.src' 
-    './profile/cmd_profile' 
-    './profile/minttyrc' 
+    "$script_path/profile/AppData" 
+    "$script_path/profile/Documents" 
+    "$script_path/profile/.src" 
+    "$script_path/profile/cmd_profile" 
+    "$script_path/profile/minttyrc" 
 )
 
-cp --target-directory='./build' --recursive --update "${common_profile[@]}"
+# we need script path
+
+cp --target-directory="$script_path/build" --recursive --update "${common_profile[@]}"
 
 if [[ "$(uname -s)" == Linux* ]]; then
 
-    cp --target-directory='./build' --recursive --update "${linux_profile[@]}"
+    cp --target-directory="$script_path/build" --recursive --update "${linux_profile[@]}"
     
     # The only Linux I use is NIXOS
     system='NIXOS'
@@ -66,7 +70,7 @@ if [[ "$(uname -s)" == Linux* ]]; then
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
     # Cygwin configuration files to be processed by m4 and put into ~
-    cp --target-directory='./build' --recursive --update "${cygwin_profile[@]}"
+    cp --target-directory="$script_path/build" --recursive --update "${cygwin_profile[@]}"
     
     system='CYGWIN'
     
@@ -77,7 +81,7 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     echo 'none /tmp usertemp binary,posix=0 0 0' >> /etc/fstab
     
     # Acquire timezone information from Windows
-    tz="$(./bin/tz-windows-to-iana "$(tzutil /l | grep --before-context=1 "$(tzutil /g)" | head --lines=1)")"
+    tz="$($script_path/profile/bin/tz-windows-to-iana "$(tzutil /l | grep --before-context=1 "$(tzutil /g)" | head --lines=1)")"
     
     if [ -f /usr/share/zoneinfo/"$tz" ]; then
         echo "$tz" > /etc/timezone
@@ -105,23 +109,12 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     echo "yes" | cygserver-config
     cygrunsrv --start='cygserver'
     
-    # Install Python packages on Cygwin
-    # Executables should be preferably Python 3, and will be installed in ~/.local/bin
-    pip2 --user --requirements "./pip2_requirements.txt"
-    pip3 --user --requirements "./pip3_requirements.txt"
-    
-    # Install via the source installation scripts
-    # All of these are Makefiles with install and uninstall targets
-    for dir in ./source_installation_scripts/*/; do
-        make --directory="$dir" install
-    done
-    
 fi
 
 # Note that `PH_` is our namespace meaning "PolyHack"
-find ./build -name '*.m4' -not -path './build/modules/*' \
+find "$script_path/build" -name '*.m4' -not -path "$script_path/build/modules/*" \
     -exec m4 \
-    --include='./profile/includes' \
+    --include="$script_path/profile/includes" \
     --define=PH_SYSTEM="$system" \
     --define=PH_TZ="$tz" \
     --define=PH_TZDIR="$tzdir" \
@@ -131,11 +124,31 @@ find ./build -name '*.m4' -not -path './build/modules/*' \
     -exec rename '.m4.processed' '' '{}.processed' \; \
     -delete
 
-# Copy files from ./build into ~
+# Copy files from build into ~
 # Where --archive means: --recursive --links --perms --times --group --owner
-rsync --update --checksum --archive "./build/" "${HOME}/"
+rsync --update --checksum --archive "$script_path/build/" "${HOME}/"
 
 # Make ~/.ssh directory and subdirectories 700, but the files 600
 # This requires wiping out any execute permissions first
 chmod --recursive a-x ~/.ssh
 chmod --recursive u=rwX,g=,o= ~/.ssh
+
+# We can only perform installations after the profile is copied over
+if [[ $(uname -s) == CYGWIN* ]]; then
+
+    # Install Python packages on Cygwin
+    # Executables should be preferably Python 3, and will be installed in ~/.local/bin
+    pip2 --user --requirements "$script_path/pip2_requirements.txt"
+    pip3 --user --requirements "$script_path/pip3_requirements.txt"
+    
+    # Install via the source installation scripts
+    # All of these are Makefiles with install and uninstall targets
+    for dir in "$script_path"/source_installation_scripts/*/; do
+        make --directory="$dir" install
+    done
+
+    # Finally since the zip package is not a git repository, we shall clone the repository to HOME directory
+    rm --recursive --force '~/.dotfiles'
+    git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git ~
+
+fi

@@ -82,6 +82,7 @@ web2disk.exe,%ProgramFiles%\Calibre2\web2disk.exe
 # docker
 # docker is provided by either docker for windows or docker toolbox 
 # here we add both sets of symlinks, installation will check if they exist prior to creating the symlink
+docker for windows.exe,%ProgramFiles%\Docker\Docker\Docker for Windows.exe
 docker.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker.exe
 docker-compose.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker-compose.exe
 docker-credential-wincred.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker-credential-wincred.exe

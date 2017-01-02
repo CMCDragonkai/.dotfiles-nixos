@@ -104,7 +104,7 @@ if ($Stage -eq 0) {
     Unblock-File -Path "${Env:SYSTEMROOT}\system32\transparent.ico"
 
     # Install Powershell Help Files (so we can use -?)
-    Update-Help -Force
+    Update-Help
 
     # Import the registry file
     Start-Process -FilePath "$Env:SystemRoot\system32\reg.exe" -Wait -Verb RunAs -ArgumentList "IMPORT `"${PSScriptRoot}\windows_registry.reg`""
@@ -261,7 +261,7 @@ if ($Stage -eq 0) {
         "${InstallationDirectory}\cygwin64\usr\sbin;" + 
         "${InstallationDirectory}\cygwin64\bin;" + 
         "${InstallationDirectory}\cygwin64\sbin;" + 
-        "${Env:Path}"
+        "${Env:Path};"
     )
     Start-Process -FilePath "$InstallationDirectory\cygwin64\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "`"${PSScriptRoot}\install.sh`""
 

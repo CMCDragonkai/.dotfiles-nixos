@@ -4,15 +4,17 @@ This directory is meant to be located in `~/.dotfiles`.
 
 Installation on Windows is (enter your computer name!):
 
+Launch Powershell as Administrator and run...
+
 ```posh
 $ComputerName = 'POLYHACK-?'
 Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip' -OutFile '~/Downloads/.dotfiles-master.zip'
-Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~' -Force
-Rename-Item '~/.dotfiles-master' '.dotfiles'
-powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/.dotfiles/install.ps1' -ComputerName '$ComputerName' -LogPath '${Env:TEMP}\.dotfiles.log'  "
+Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~/Downloads' -Force
+powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/install.ps1' -ComputerName '$ComputerName' -LogPath '${Env:TEMP}\.dotfiles.log'"
+powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/tools/set-windows-path.ps1'"
 ```
 
-Windows installation requires multiple restarts so check the log later for details. It is also not fully unattended, there are some package installations that require prompts.
+Windows installation requires multiple restarts so check the log later for details. It is also not fully unattended, there are some package installations that require prompts. Also the `.dotfiles` repository will be cloned to `~` because the zip package offered by Github is not a full Git repository.
 
 Installation on Linux (NixOS) is:
 

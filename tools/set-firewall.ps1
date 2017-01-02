@@ -3,7 +3,7 @@
 #requires -Version 5.0
 
 param (
-    [string]$InstallationDirectory = "$Env:UserProfile", 
+    [string]$InstallationDirectory = "$Env:UserProfile"
 )
 
 # Setup firewall to accept pings for Domain and Private networks but not from Public networks

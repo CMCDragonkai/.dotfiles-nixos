@@ -6,7 +6,7 @@ param (
     [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
     [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports", 
     [string]$PortKey = "http://cygwinports.org/ports.gpg", 
-    [string]$InstallationDirectory = "$Env:UserProfile", 
+    [string]$InstallationDirectory = "$Env:UserProfile"
 )
 
 # Create the necessary directories
@@ -42,7 +42,7 @@ if ($MainPackages) {
         "--packages `"$MainPackages`""
 }
 
-# Cygwin Port Packages
+# Cygwin Port Packages (make sure not to --delete-orphans) or else it will wipeout the original packages
 
 if ($PortPackages) {
     Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
@@ -54,7 +54,6 @@ if ($PortPackages) {
         "--no-desktop",
         "--arch x86_64",
         "--upgrade-also",
-        "--delete-orphans",
         "--root `"${InstallationDirectory}\cygwin64`"",
         "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
         "--site `"$PortMirror`"",

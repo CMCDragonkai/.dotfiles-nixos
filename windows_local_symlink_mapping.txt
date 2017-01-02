@@ -4,3 +4,4 @@ pandoc.exe,%LOCALAPPDATA%\Pandoc\pandoc.exe
 pandoc-citeproc.exe,%LOCALAPPDATA%\Pandoc\pandoc-citeproc.exe
 slack.exe,%LOCALAPPDATA%\slack\slack.exe
 manager.exe,%LOCALAPPDATA%\Manager\ManagerDesktop.exe
+wireedit.exe,%LOCALAPPDATA%\Omnipacket\WireEdit\WireEdit.exe
