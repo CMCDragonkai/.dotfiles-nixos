@@ -14,7 +14,7 @@ common_profile=(
     "$script_path/profile/.bash_env.m4" 
     "$script_path/profile/.bash_profile.m4" 
     "$script_path/profile/.bashrc.m4" 
-    "$script_path/profile/curlrc" 
+    "$script_path/profile/.curlrc" 
     "$script_path/profile/.ghci" 
     "$script_path/profile/.gitconfig" 
     "$script_path/profile/.gitignore_global" 
@@ -45,8 +45,8 @@ cygwin_profile=(
     "$script_path/profile/AppData" 
     "$script_path/profile/Documents" 
     "$script_path/profile/.src" 
-    "$script_path/profile/cmd_profile" 
-    "$script_path/profile/minttyrc" 
+    "$script_path/profile/.cmd_profile" 
+    "$script_path/profile/.minttyrc" 
 )
 
 # we need script path
@@ -91,16 +91,19 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     else 
         echo "Unable to acquire IANA timezone information, update the timezone matching script, or do it manually."
     fi
-    
+
     # Change default shell to zsh
     # On Linux we could use chsh --shell
-    # But Cygwin doesn't support it, so we just need to edit it using sed
-    path_to_zsh="$(which zsh)"
-    path_to_zsh="${path_to_zsh//\//\\\/}"
-    sed --in-place "/^${USER}/ s/:[^:][^:]*$/:$path_to_zsh/" /etc/passwd
-    
-    # this version only works in ZSH
-    # sed --in-place "/^${USER}/ s/:[^:][^:]*$/:"${$(which zsh)//\//\\\/}"/" /etc/passwd
+    cat <<'EOF' >./test
+# /etc/nsswitch.conf
+
+passwd: files db
+group: files db
+db_enum: cache builtin
+db_home: windows
+db_shell: /bin/zsh
+db_gecos: windows
+EOF
     
     # Setting up Cygserver requires first deleting the cygserver.conf
     # The service will be setup 
@@ -112,17 +115,22 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 fi
 
 # Note that `PH_` is our namespace meaning "PolyHack"
-find "$script_path/build" -name '*.m4' -not -path "$script_path/build/modules/*" \
-    -exec m4 \
+find "$script_path/build" -name '*.m4' -not -path "$script_path/build/modules/*" -print0 | while IFS= read -r -d '' filepath; do 
+    
+    # Process to the filepath without the .m4 extension
+    m4 \
     --include="$script_path/profile/includes" \
     --define=PH_SYSTEM="$system" \
     --define=PH_TZ="$tz" \
     --define=PH_TZDIR="$tzdir" \
     --define=PH_WINTMP="$wintmp" \
     --define=PH_WINSYSTMP="$winsystmp" \
-    '{}' > '{}.processed' \; \
-    -exec rename '.m4.processed' '' '{}.processed' \; \
-    -delete
+    "$filepath" > "${filepath%.*}"
+
+    # Remove the m4 template
+    rm "$filepath"
+
+done
 
 # Copy files from build into ~
 # Where --archive means: --recursive --links --perms --times --group --owner
@@ -135,6 +143,11 @@ chmod --recursive u=rwX,g=,o= ~/.ssh
 
 # We can only perform installations after the profile is copied over
 if [[ $(uname -s) == CYGWIN* ]]; then
+
+    # Using python setuptools install both pip2 and pip3
+    for e in /usr/bin/easy_install-*; do
+        eval "$e pip"
+    done
 
     # Install Python packages on Cygwin
     # Executables should be preferably Python 3, and will be installed in ~/.local/bin
