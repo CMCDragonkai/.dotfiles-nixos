@@ -18,6 +18,7 @@ virtualclonedrive,*,chocolateyget
 rufus.portable,*,chocolateyget
 osquery,*,chocolateyget
 logparser,*,chocolateyget
+devcon.portable,*,chocolateyget
 
 # network
 Firefox,*,chocolateyget
