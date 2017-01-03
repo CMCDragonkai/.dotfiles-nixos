@@ -40,6 +40,7 @@ mkisofs
 # documents
 graphviz
 gnuplot
+texlive
 
 # development
 m4
@@ -58,6 +59,7 @@ automake
 diffutils
 patch
 cmake
+cygport
 
 # c and c++ and assembly
 scons
@@ -148,6 +150,10 @@ libcurl-devel
 libcrypt-devel
 libpng12
 libpng16
+libpng-tools
+libpng-devel
+libpng12-devel
+libpng16-devel
 libpq-devel
 libffi6
 libffi-devel
@@ -171,3 +177,7 @@ libpcre2_16_0
 libpcre2_32_0
 libpcre2-posix1
 libpcre2-devel
+libfreetype6
+libfreetype-devel
+libgtk3_0
+libgtk3-devel
