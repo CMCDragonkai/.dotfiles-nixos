@@ -16,6 +16,8 @@ ncurses
 rebase
 findutils
 coreutils
+gmp
+man-pages-posix
 
 # network
 openssh
@@ -30,6 +32,7 @@ inetutils-server
 nc
 socat
 rsync
+ca-certificates
 
 # filesystem
 mkisofs
@@ -120,6 +123,8 @@ gdal
 GraphicsMagick
 
 # libraries
+libgdal20
+libgdal-devel
 libclang3.8
 libclang-devel
 libxml2
@@ -150,10 +155,12 @@ libpng16
 libpq-devel
 libffi6
 libffi-devel
-gmp
+libgmp10
 libgmp-devel
 libjpeg8
 libjpeg-devel
 libX11-devel
 libdbus1_3
 libdbus1-devel
+libglib2.0_0
+libglib2.0-devel
