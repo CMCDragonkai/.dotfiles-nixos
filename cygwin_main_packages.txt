@@ -18,6 +18,7 @@ findutils
 coreutils
 gmp
 man-pages-posix
+libcaca-bin
 
 # network
 openssh
@@ -109,6 +110,7 @@ tcl-tk
 # perl
 perl
 perl_manpages
+perl-Data-Dump
 
 # lua
 lua
@@ -181,3 +183,56 @@ libfreetype6
 libfreetype-devel
 libgtk3_0
 libgtk3-devel
+libSDL1.2_0
+libSDL-devel
+libSDL2_2.0_0
+libSDL2-devel
+libgsm1
+libgsm-devel
+libopus0
+libopus-devel
+libschroedinger1.0_0
+libschroedinger1.0-devel
+libspeex1
+speex-devel
+libtheoradec1
+libtheora-devel
+libtheoraenc1
+libtheora-devel
+libvorbis0
+libvorbis-devel
+libvorbisenc2
+libvpx1
+libvpx-devel
+libwavpack1
+libwavpack-devel
+libcaca0
+libcaca-devel
+libcdio_cdda2
+libcdio_cdda
+libcdio_paranoia2
+libcdio_paranoia-devel
+libpulse0
+libpulse-devel
+libopenal1
+libopenal-devel
+libxcb-shape0
+libxcb-shape-devel
+libxcb-xfixes0
+libxcb-xfixes-devel
+libass-devel
+libass5
+libbs2b0
+libbs2b-devel
+libflite1
+libflite-devel
+libfribidi0
+libfribidi-devel
+libopencv2.4
+libopencv-devel
+libgme0
+libgme-devel
+libmodplug1
+libmodplug-devel
+libssh4
+libssh-devel
