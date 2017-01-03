@@ -13,13 +13,12 @@ ifelse(PH_SYSTEM, CYGWIN,
     '
     is-admin() {
 
-        net session > /dev/null 2>&1
-        if [ $? -eq 0 ]; then return 0
+        if net session > /dev/null 2>&1; then return 0
         else return 1; fi
 
     }
     
-    :'
+    : '
     win-users - List all users, groups and built-in accounts. Does not include service accounts.
     
     Usage: win-users
@@ -28,7 +27,7 @@ ifelse(PH_SYSTEM, CYGWIN,
         powershell -Command 'Get-WmiObject -Class "win32_account" -Namespace "root\cimv2" | Sort-Object caption | Format-Table caption, __CLASS, FullName'
     }
     
-    :'
+    : '
     win-service-users - List all service account users
     
     Usage: win-service-users
@@ -54,7 +53,8 @@ With no options, it sends `SIGTERM` to all jobs.
 '
 kill-jobs () {
 
-    local kill_list="$(jobs)"
+    local kill_list
+    kill_list="$(jobs)"
     if [ -n "$kill_list" ]; then
         # this runs the shell builtin kill, not unix kill, otherwise jobspecs cannot be killed
         # the `$@` list must not be quoted to allow one to pass any number parameters into the kill
@@ -73,6 +73,9 @@ Usage: umask-calc "$(umask)" 777
 '
 umask-calc () {
 
+    local mask
+    local source
+    
     mask="$1"
     source="$2"
 
@@ -143,7 +146,7 @@ date-ord () {
 
 : '
 self-signed-cert - Create a self-signed SSL/TLS certificate for 100 years using RSA 2048.
-                   If you don't pass in a day length, it will create a certificate of 100 years.
+                   If you do not pass in a day length, it will create a certificate of 100 years.
 
 Usage: self-signed-cert <path-to-key.key> <path-to-cert.pem> [length-in-days]
 
@@ -170,7 +173,7 @@ Options:
 '
 find-in-files () {
 
-    if [ "$3" == "-f" -o "$3" == '--filenames' ]; then
+    if [ "$3" == "-f" ] || [ "$3" == '--filenames' ]; then
         find "$1" -type f -print0 | xargs -0 grep --files-with-matches "$2"
     else
         find "$1" -type f -print0 | xargs -0 grep "$2"
@@ -199,6 +202,6 @@ process-starttime () {
 
     seconds_the_process_started=$((now_seconds - (seconds_the_computer_is_up - seconds_the_process_is_up)))
     
-    printf "$seconds_the_process_started\n"
+    printf "%s\n" "$seconds_the_process_started"
 
 }

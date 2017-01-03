@@ -10,23 +10,22 @@
 # xpg_echo - align with ZSH behaviour
 # lastpipe - align with ZSH behaviour
 # no_empty_cmd_completion - align with ZSH behaviour
-BASHOPTS=\
-'autocd:\
-cdspell:\
-checkhash:\
-checkjobs:\
-checkwinsize:\
-cmdhist:\
-extglob:\
-globstar:\
-histappend:\
-huponexit:\
-interactive_comments:\
-lastpipe:\
-lithist:\
-no_empty_cmd_completion:\
-shift_verbose:\
-xpg_echo'
+shopt -s autocd \ 
+         cdspell \
+         checkhash \
+         checkjobs \
+         checkwinsize \
+         cmdhist \
+         extglob \
+         globstar \
+         histappend \
+         huponexit \
+         interactive_comments \
+         lastpipe \
+         lithist \
+         no_empty_cmd_completion \
+         shift_verbose \
+         xpg_echo
 
 HISTFILE="${HOME}/.bash_history"
 HISTSIZE=10000

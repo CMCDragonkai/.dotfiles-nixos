@@ -48,10 +48,10 @@ ifelse(PH_SYSTEM, CYGWIN,
     export TEMP='/tmp'
 
     # setting windows code page to UTF8
-    chcp 65001 >/dev/null
+    chcp.com 65001 >/dev/null
 
     # if we're not in an SSH session, then the Windows GUI is available (and so we change to preferred GUI programs)
-    if [ -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a -z "$SSH_CONNECTION" ] -a ; then
+    if [ -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a -z "$SSH_CONNECTION" ]; then
 
         export VISUAL='emacs'
         export BROWSER='chromium'
@@ -61,7 +61,7 @@ ifelse(PH_SYSTEM, CYGWIN,
     # cygwin X
     if [ -n "$DISPLAY" ]; then
         
-        # ...
+        :
 
     fi
 
