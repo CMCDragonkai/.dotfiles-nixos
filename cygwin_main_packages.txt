@@ -236,3 +236,4 @@ libmodplug1
 libmodplug-devel
 libssh4
 libssh-devel
+libgfortran3
