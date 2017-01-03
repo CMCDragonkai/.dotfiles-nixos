@@ -121,6 +121,12 @@ EOF
     cygrunsrv --remove='cygserver' || true
     echo "yes" | cygserver-config
     cygrunsrv --start='cygserver'
+
+    # Symlinking locale.h to xlocale.h (extended locale)
+    # Note that xlocale.h is an Apple provided wrapper around locale.h
+    # Cygwin obviously does not distribute such a header
+    # Some libraries like numpy may expect xlocale.h, but we can just point them to the existing locale.h
+    ln --symbolic /usr/include/locale.h /usr/include/xlocale.h
     
 fi
 
