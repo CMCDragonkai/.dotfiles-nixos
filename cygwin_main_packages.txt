@@ -155,3 +155,5 @@ libgmp-devel
 libjpeg8
 libjpeg-devel
 libX11-devel
+libdbus1_3
+libdbus1-devel
