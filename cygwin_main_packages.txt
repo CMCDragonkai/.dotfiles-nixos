@@ -166,3 +166,5 @@ libglib2.0_0
 libglib2.0-devel
 libxml2
 libxml2-devel
+libxml++2.6_2
+libxml++2.6-devel
