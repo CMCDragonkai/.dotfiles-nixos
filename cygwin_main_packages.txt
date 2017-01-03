@@ -6,23 +6,25 @@ pv
 utils-linux
 psmisc
 procps
+procps-ng
 cygutils
 cygutils-extra
 cygutils-x11
 pkg-config
 tzcode
 tmux
-ncurses
 rebase
 findutils
 coreutils
 gmp
 man-pages-posix
 libcaca-bin
+fontconfig
 
 # network
 openssh
 openssl
+openssl-devel
 mosh
 wget
 curl
@@ -31,6 +33,7 @@ weechat
 inetutils
 inetutils-server
 nc
+nc6
 socat
 rsync
 ca-certificates
@@ -138,7 +141,6 @@ libjson-glib1.0-devel
 libblkid-devel
 libelf-devel
 libtool
-libglib2.0-devel
 libev4
 libev-devel
 libevent2.0_5
@@ -237,3 +239,6 @@ libmodplug-devel
 libssh4
 libssh-devel
 libgfortran3
+attr
+libattr1
+libattr-devel
