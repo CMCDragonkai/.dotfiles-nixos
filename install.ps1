@@ -218,11 +218,12 @@ if ($Stage -eq 0) {
         '9E2F88E3.Twitter' 
         'king.com.CandyCrushSodaSaga' 
         'Drawboard.DrawboardPDF' 
+        'Facebook.Facebook' 
     )
     
     foreach ($App in $AppsToBeUninstalled) {
         Get-AppxPackage -AllUsers -Name "$App" | Remove-AppxPackage -Confirm:$false
-        Get-AppxProvisionedPackage -Online | where DisplayName -EQ "$App" | Remove-AppxProvisionedPackage -Online
+        Get-AppxProvisionedPackage -Online | Where DisplayName -EQ "$App" | Remove-AppxProvisionedPackage -Online
     }
     
     # Setup Windows Package Management
@@ -232,7 +233,7 @@ if ($Stage -eq 0) {
     & "${PSScriptRoot}\tools\upstall-windows-symlinks-shortcuts.ps1"
 
     # Installing Cygwin Packages
-    & "${PSScriptRoot}\tools\upstall-cygwin-packages.ps1" -MainMirror "$MainMirror" -PortMirror "$PortMirror" -PortKey "$PortKey" -InstallationDirectory "$InstallationDirectory"
+    & "${PSScriptRoot}\tools\upstall-cygwin-packages.ps1" -MainMirror "$MainMirror" -PortMirror "$PortMirror" -PortKey "$PortKey" -InstallationDirectory "$InstallationDirectory" -CleanInstallation
 
     # Schedule a final reboot to start the Cygwin setup process
     Unregister-ScheduledTask -TaskName "Dotfiles - 2" -Confirm:$false -ErrorAction SilentlyContinue

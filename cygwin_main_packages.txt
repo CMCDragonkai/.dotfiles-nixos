@@ -6,12 +6,16 @@ pv
 utils-linux
 psmisc
 procps
-cygutils-extra
 cygutils
+cygutils-extra
+cygutils-x11
 pkg-config
 tzcode
 tmux
 ncurses
+rebase
+findutils
+coreutils
 
 # network
 openssh
@@ -32,6 +36,7 @@ mkisofs
 
 # documents
 graphviz
+gnuplot
 
 # development
 m4
@@ -40,6 +45,8 @@ nano
 make
 git
 mercurial
+subversion
+subversion-devel
 dos2unix
 binutils
 bison
@@ -48,8 +55,6 @@ automake
 diffutils
 patch
 cmake
-subversion
-subversion-devel
 
 # c and c++ and assembly
 scons
@@ -69,6 +74,9 @@ sqlite3
 mysqld
 mysql
 
+# X
+xinit
+
 # R
 R
 
@@ -86,11 +94,13 @@ python
 python-setuptools
 python-devel
 python-numpy
+python-lxml
 python-gtk2.0
 python3
 python3-setuptools
 python3-devel
 python3-numpy
+python3-lxml
 
 # tcl
 tcl-tk
@@ -110,6 +120,8 @@ gdal
 GraphicsMagick
 
 # libraries
+libclang3.8
+libclang-devel
 libxml2
 libyaml
 libboost
@@ -135,3 +147,11 @@ libcurl-devel
 libcrypt-devel
 libpng12
 libpng16
+libpq-devel
+libffi6
+libffi-devel
+gmp
+libgmp-devel
+libjpeg8
+libjpeg-devel
+libX11-devel

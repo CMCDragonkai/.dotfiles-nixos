@@ -1,8 +1,4 @@
-.build/*
-!.build/.gitkeep
-
-.src/*
-!.src/.gitkeep
+build/*
 
 # OS generated files #
 ######################

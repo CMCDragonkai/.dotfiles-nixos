@@ -6,7 +6,8 @@ param (
     [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
     [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports", 
     [string]$PortKey = "http://cygwinports.org/ports.gpg", 
-    [string]$InstallationDirectory = "$Env:UserProfile"
+    [string]$InstallationDirectory = "$Env:UserProfile", 
+    [switch]$CleanInstallation
 )
 
 # Create the necessary directories
@@ -26,37 +27,83 @@ $PortPackages = (Get-Content "${PSScriptRoot}\..\cygwin_port_packages.txt" | Whe
 # Main Packages
 
 if ($MainPackages) {
-    Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
-        "--quiet-mode",
-        "--download",
-        "--local-install",
-        "--no-shortcuts",
-        "--no-startmenu",
-        "--no-desktop",
-        "--arch x86_64",
-        "--upgrade-also",
-        "--delete-orphans",
-        "--root `"${InstallationDirectory}\cygwin64`"",
-        "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
-        "--site `"$MainMirror`"",
-        "--packages `"$MainPackages`""
+
+    if ($CleanInstallation) {
+
+        Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+            "--quiet-mode",
+            "--download",
+            "--local-install",
+            "--no-shortcuts",
+            "--no-startmenu",
+            "--no-desktop",
+            "--arch x86_64",
+            "--upgrade-also",
+            "--delete-orphans",
+            "--root `"${InstallationDirectory}\cygwin64`"",
+            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
+            "--site `"$MainMirror`"",
+            "--packages `"$MainPackages`""
+
+    } else {
+
+        Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+            "--quiet-mode",
+            "--download",
+            "--local-install",
+            "--no-shortcuts",
+            "--no-startmenu",
+            "--no-desktop",
+            "--arch x86_64",
+            "--upgrade-also",
+            "--root `"${InstallationDirectory}\cygwin64`"",
+            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
+            "--site `"$MainMirror`"",
+            "--packages `"$MainPackages`""
+
+    }
+
 }
 
 # Cygwin Port Packages (make sure not to --delete-orphans) or else it will wipeout the original packages
 
 if ($PortPackages) {
-    Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
-        "--quiet-mode",
-        "--download",
-        "--local-install",
-        "--no-shortcuts",
-        "--no-startmenu",
-        "--no-desktop",
-        "--arch x86_64",
-        "--upgrade-also",
-        "--root `"${InstallationDirectory}\cygwin64`"",
-        "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
-        "--site `"$PortMirror`"",
-        "--pubkey `"$PortKey`"",
-        "--packages `"$PortPackages`""
+
+    if (-not ($MainPackages) -and $CleanInstallation) {
+
+        Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+            "--quiet-mode",
+            "--download",
+            "--local-install",
+            "--no-shortcuts",
+            "--no-startmenu",
+            "--no-desktop",
+            "--arch x86_64",
+            "--upgrade-also",
+            "--delete-orphans",
+            "--root `"${InstallationDirectory}\cygwin64`"",
+            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
+            "--site `"$PortMirror`"",
+            "--pubkey `"$PortKey`"",
+            "--packages `"$PortPackages`""
+
+    } else {
+
+        Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
+            "--quiet-mode",
+            "--download",
+            "--local-install",
+            "--no-shortcuts",
+            "--no-startmenu",
+            "--no-desktop",
+            "--arch x86_64",
+            "--upgrade-also",
+            "--root `"${InstallationDirectory}\cygwin64`"",
+            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
+            "--site `"$PortMirror`"",
+            "--pubkey `"$PortKey`"",
+            "--packages `"$PortPackages`""
+
+    }
+
 }

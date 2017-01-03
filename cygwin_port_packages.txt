@@ -8,6 +8,9 @@ putty
 
 # development
 
+# python
+python3-crypto
+
 # media
 ffmpeg
 
