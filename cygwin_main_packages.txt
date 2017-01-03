@@ -96,14 +96,10 @@ rubygems
 python
 python-setuptools
 python-devel
-python-numpy
-python-lxml
 python-gtk2.0
 python3
 python3-setuptools
 python3-devel
-python3-numpy
-python3-lxml
 
 # tcl
 tcl-tk
