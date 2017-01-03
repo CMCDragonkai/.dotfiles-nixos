@@ -166,8 +166,8 @@ if [[ $(uname -s) == CYGWIN* ]]; then
 
     # Install Python packages on Cygwin
     # Executables should be preferably Python 3, and will be installed in ~/.local/bin
-    pip2 install --ignore-installed --force-reinstall --requirement "$script_path/pip2_requirements.txt"
-    pip3 install --ignore-installed --force-reinstall --requirement "$script_path/pip3_requirements.txt"
+    pip2 install --requirement "$script_path/pip2_requirements.txt"
+    pip3 install --requirement "$script_path/pip3_requirements.txt"
     
     # Install via the source installation scripts
     # All of these are Makefiles with install and uninstall targets

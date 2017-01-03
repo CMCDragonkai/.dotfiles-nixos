@@ -103,6 +103,7 @@ python
 python-setuptools
 python-devel
 python-gtk2.0
+python-crypto
 python3
 python3-setuptools
 python3-devel
