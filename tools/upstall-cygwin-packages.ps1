@@ -30,6 +30,8 @@ if ($MainPackages) {
 
     if ($CleanInstallation) {
 
+        echo "Cleanly installing Main Packages"
+
         Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
             "--download",
@@ -46,6 +48,8 @@ if ($MainPackages) {
             "--packages `"$MainPackages`""
 
     } else {
+
+        echo "Installing Main Packages"
 
         Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
@@ -71,6 +75,8 @@ if ($PortPackages) {
 
     if (-not ($MainPackages) -and $CleanInstallation) {
 
+        echo "Cleanly installing Port Packages"
+
         Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
             "--download",
@@ -88,6 +94,8 @@ if ($PortPackages) {
             "--packages `"$PortPackages`""
 
     } else {
+
+        echo "Installing Port Packages"
 
         Start-Process -FilePath "${PSScriptRoot}\..\profile\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
             "--quiet-mode",
