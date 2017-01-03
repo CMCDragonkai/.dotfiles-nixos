@@ -168,3 +168,10 @@ libxml2
 libxml2-devel
 libxml++2.6_2
 libxml++2.6-devel
+libxslt
+libxslt-devel
+libpcre2_8_0
+libpcre2_16_0
+libpcre2_32_0
+libpcre2-posix1
+libpcre2-devel
