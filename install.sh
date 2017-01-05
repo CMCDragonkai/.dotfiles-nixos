@@ -91,14 +91,14 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     # For now git subtree seems like an easier to use tool
     pushd "$script_path/build" 
     git init 
-    git config --file="./.gitmodules" --get-regexp '^submodule\..*\.path$' \
+    git config --file="$script_path/.gitmodules" --get-regexp '^submodule\..*\.path$' \
     | while read path_key path; do 
         
         url_key="$(sed 's/\.path/.url/' <<< "$path_key")"
         branch_key="$(sed 's/\.path/.branch/' <<< "$path_key")"
 
-        url="$(git config --file="./.gitmodules" --get "$url_key")"
-        branch="$(git config --file="./.gitmodules" --get "$branch_key")"
+        url="$(git config --file="$script_path/.gitmodules" --get "$url_key")"
+        branch="$(git config --file="$script_path/.gitmodules" --get "$branch_key")"
 
         rm --recursive --force "$path"
 
