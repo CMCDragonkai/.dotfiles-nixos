@@ -76,8 +76,8 @@ precmd_functions=($precmd_functions precmd_job_count)
 # Colour variables
 typeset -AHg FG BG
 for color in {000..255}; do
-    FG[$color]="%{[38;5;${color}m%}"
-    BG[$color]="%{[48;5;${color}m%}"
+    FG[$color]="%{[38;5;${color}m%}"
+    BG[$color]="%{[48;5;${color}m%}"
 done
 
 PROMPT='%{$FG[100]%}%n%{$reset_color%} ➜ %{$FG[112]%}%m%{$reset_color%} ➜ %{$FG[100]%}%B${PWD/#$HOME/~}%b%{$reset_color%}
