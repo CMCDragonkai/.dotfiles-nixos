@@ -187,6 +187,7 @@ if [[ $(uname -s) == CYGWIN* ]]; then
 
     # Finally since the zip package is not a git repository, we shall clone the repository to HOME directory
     rm --recursive --force "$HOME/.dotfiles"
-    git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git "$HOME"
+    mkdir "$HOME/.dotfiles"
+    git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git "$HOME/.dotfiles"
 
 fi

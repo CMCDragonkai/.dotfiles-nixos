@@ -3,6 +3,7 @@
 SRCDIR := $(HOME)/.src/picocom
 
 install:
+	rm --recursive --force "$(SRCDIR)"
 	mkdir --parents "$(SRCDIR)"
 	git clone https://github.com/npat-efault/picocom "$(SRCDIR)"
 	$(MAKE) --directory="$(SRCDIR)"
