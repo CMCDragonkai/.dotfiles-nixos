@@ -1,6 +1,6 @@
 .PHONY: install uninstall
 
-TEMPDIR := $(shell mktemp -d)
+TEMPDIR := $(shell mktemp --directory)
 
 install:
 	wget --directory-prefix="$(TEMPDIR)" "https://rawgit.com/git/git/master/contrib/subtree/git-subtree.sh"

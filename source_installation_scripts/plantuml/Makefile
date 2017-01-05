@@ -1,6 +1,6 @@
 .PHONY: install uninstall
 
-TEMPDIR := $(shell mktemp -d)
+TEMPDIR := $(shell mktemp --directory)
 
 install:
 	curl --location --output "$(TEMPDIR)/plantuml.jar" http://sourceforge.net/projects/plantuml/files/plantuml.jar/download
