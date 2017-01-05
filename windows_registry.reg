@@ -36,6 +36,29 @@ Windows Registry Editor Version 5.00
 "AllowAllTrustedApps"=dword:00000001
 "AllowDevelopmentWithoutDevLicense"=dword:00000001
 
+; CMD settings
+; Select by a line rather than by rectangles
+; Use consolas as the font
+; History doesn't remember duplicate commands (F7)
+; Enable Ctrl + Key shortcuts
+; Enable mouse selection
+[HKEY_CURRENT_USER\Console]
+"CtrlKeyShortcutsDisabled"=dword:00000000
+"FaceName"="Consolas"
+"HistoryNoDup"=dword:00000001
+"LineSelection"=dword:00000001
+"QuickEdit"=dword:00000001
+
+; 64 bit powershell (not ISE)
+[HKEY_CURRENT_USER\Console\%SystemRoot%_System32_WindowsPowerShell_v1.0_powershell.exe]
+"FaceName"="Consolas"
+"QuickEdit"=dword:00000001
+
+; 32 bit powershell (not ISE)
+[HKEY_CURRENT_USER\Console\%SystemRoot%_SysWOW64_WindowsPowerShell_v1.0_powershell.exe]
+"FaceName"="Consolas"
+"QuickEdit"=dword:00000001
+
 ; Change the default folder view options
 ; Show hidden files, folders and drives
 ; Don't hide file extensions
