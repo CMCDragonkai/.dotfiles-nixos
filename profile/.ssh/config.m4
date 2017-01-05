@@ -1,5 +1,3 @@
-m4_changequote(<|,|>)
-
 # Current identity file
 IdentityFile ~/.ssh/identity
 

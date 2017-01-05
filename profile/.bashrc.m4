@@ -1,7 +1,8 @@
+m4_dnl Changing quoting/escaping characters to something that won't be used!
+m4_changequote(`<<<@@||',`||@@>>>')
+
 # This .bashrc is sourced only on interactive sessions.
 # This script sets up interactive utilities.
-
-m4_changequote(<|,|>)
 
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
