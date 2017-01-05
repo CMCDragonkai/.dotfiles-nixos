@@ -60,7 +60,10 @@ cp --target-directory="$script_path/build" --recursive --update "${common_profil
 
 if [[ "$(uname -s)" == Linux* ]]; then
 
+    # Linux configuraiton files to be processed by m4 and put into ~
     cp --target-directory="$script_path/build" --recursive --update "${linux_profile[@]}"
+    
+    # Remove useless files
     
     # The only Linux I use is NIXOS
     system='NIXOS'
@@ -76,6 +79,9 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 
     # Cygwin configuration files to be processed by m4 and put into ~
     cp --target-directory="$script_path/build" --recursive --update "${cygwin_profile[@]}"
+    
+    # Remove useless files
+    rm "$script_path/build/.src/.gitkeep"
     
     system='CYGWIN'
     
