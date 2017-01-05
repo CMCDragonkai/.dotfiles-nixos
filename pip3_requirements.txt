@@ -8,5 +8,4 @@ mitmproxy==0.18.2
 virtualenv==15.0.3
 sphinx==1.5.1
 # libraries
-matplotlib==1.5.3
 pyserial==3.1.1
