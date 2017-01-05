@@ -7,7 +7,7 @@ param (
     [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
     [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports", 
     [string]$PortKey = "http://cygwinports.org/ports.gpg", 
-    [string]$InstallationDirectory = "$Env:ALLUSERSPROFILE", 
+    [string]$InstallationDirectory = "$Env:SystemDrive", 
     [string]$LogPath = $null, 
     [int]$Stage = 0
 )

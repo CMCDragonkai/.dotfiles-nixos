@@ -38,7 +38,7 @@ m4_ifelse(PH_SYSTEM, CYGWIN,
     # Prepend FHS bin paths
     export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:${PATH}"
 
-    # Cygwin will use pip to install python executables
+    # Local python executables
     export PATH="${HOME}/.local/bin:${PATH}"    
 
     # Windows has a user local temporary and a system temporary
