@@ -10,7 +10,7 @@
 # xpg_echo - align with ZSH behaviour
 # lastpipe - align with ZSH behaviour
 # no_empty_cmd_completion - align with ZSH behaviour
-shopt -s autocd \ 
+shopt -s autocd \
          cdspell \
          checkhash \
          checkjobs \
