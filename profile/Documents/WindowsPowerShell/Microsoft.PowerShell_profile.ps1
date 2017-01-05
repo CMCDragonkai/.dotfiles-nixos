@@ -17,7 +17,7 @@ function prompt {
     $status_prompt = if ($flag) { 
         @{ prompt =" >"; color = "darkgreen" } 
     } else { 
-        @{ prompt = " >" ; color = "darkred" } 
+        @{ prompt = " >" ; color = "red" } 
     }
 
     Write-Host -nonewline ($prompt_prefix + $env:username + " | " + $env:computername + " | " + (get-location) + "`n") -foregroundColor "cyan"
