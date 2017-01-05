@@ -46,7 +46,7 @@ export TTY="$(tty)"
 
 m4_include(shell_functions.conf.m4)
 
-$ '
+: '
 repeat - Repeatedly run a command. Basically the same as ZSH `repeat`.
 
 Usage: repeat <times> <command>
