@@ -1,5 +1,8 @@
 # Functions (for interactive only)
 
+# Changing m4 quoting/escaping instead of backtick and apostrophe
+changequote(<|,|>)
+
 ifelse(PH_SYSTEM, CYGWIN,
 
     # Cygwin-only functions
@@ -19,7 +22,7 @@ ifelse(PH_SYSTEM, CYGWIN,
     }
     
     : '
-    win-users - List all users, groups and built-in accounts. Does not include service accounts.
+    win-users - List all users<|,|> groups and built-in accounts. Does not include service accounts.
     
     Usage: win-users
     '
