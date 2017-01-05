@@ -1,6 +1,8 @@
 # This .zshrc is sourced only on interactive sessions.
 # This script sets up interactive utilities.
 
+m4_changequote(<|,|>)
+
 # Global options
 
 HISTFILE='~/.zsh_history'
@@ -34,7 +36,7 @@ compinit
 
 TTY="$(tty)"
 
-ifelse(PH_SYSTEM, NIXOS, 
+m4_ifelse(PH_SYSTEM, NIXOS, 
     HELPDIR="${HELPDIR:-/run/current-system/sw/share/zsh/${ZSH_VERSION}/help}"
 , PH_SYSTEM, CYGWIN, 
     HELPDIR="${HELPDIR:-/usr/share/zsh/${ZSH_VERSION}/help}"
@@ -42,11 +44,11 @@ ifelse(PH_SYSTEM, NIXOS,
 
 # ZSH Functions
 
-include(shell_functions.conf.m4)
+m4_include(shell_functions.conf.m4)
 
 # ZSH Aliases
 
-include(shell_aliases.conf.m4)
+m4_include(shell_aliases.conf.m4)
 
 # Sets up `help` command similar to bash.
 unalias run-help 2>/dev/null

@@ -3,4 +3,6 @@
 # load .xprofile unless it is configured inside .xinitrc.
 # Here we just setup environment variables.
 
-include(shell_environment.conf.m4)
+m4_changequote(<|,|>)
+
+m4_include(shell_environment.conf.m4)

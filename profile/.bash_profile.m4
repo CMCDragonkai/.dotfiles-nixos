@@ -2,6 +2,8 @@
 # If this is read, then ~/.bashrc will not automatically be read.
 # This file will setup things related to initial logins.
 
+m4_changequote(<|,|>)
+
 # if it is interactive, load ~/.bashrc, which will subsequently load ~/.bash_env
 # if it is not interactive, only load the ~/.bash_env
 [[ $- == *i* ]] && source "${HOME}/.bashrc" || source "${HOME}/.bash_env"

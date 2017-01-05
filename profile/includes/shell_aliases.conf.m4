@@ -1,6 +1,8 @@
 # Aliases (for interactive only)
 # Remember to use the `\` prefix to avoid alias recursion.
 
+m4_changequote(<|,|>)
+
 # enable alias expansion when using sudo or pkexec
 alias sudo='sudo '
 alias pkexec='pkexec '
@@ -57,7 +59,7 @@ alias archive-web='wget --mirror --convert-links --adjust-extension'
 # calendar
 alias cal='cal --monday --color'
 
-ifelse(PH_SYSTEM, CYGWIN, 
+m4_ifelse(PH_SYSTEM, CYGWIN, 
     
     # aliases for Cygwin
     alias open='cygstart' # Open things like Windows would 

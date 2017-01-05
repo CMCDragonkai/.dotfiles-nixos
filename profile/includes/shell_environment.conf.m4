@@ -1,6 +1,8 @@
 # Environment (for interactive and automated)
 
-include(shell_environment_functions.conf.m4)
+m4_changequote(<|,|>)
+
+m4_include(shell_environment_functions.conf.m4)
 
 # language and locale settings
 export LANG='en_US.UTF-8'
@@ -31,7 +33,7 @@ export GROFF_NO_SGR=1
 # default umask setting
 umask 022
 
-ifelse(PH_SYSTEM, CYGWIN,
+m4_ifelse(PH_SYSTEM, CYGWIN,
 
     # Prepend FHS bin paths
     export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:${PATH}"

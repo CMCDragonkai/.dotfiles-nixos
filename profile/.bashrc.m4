@@ -1,6 +1,8 @@
 # This .bashrc is sourced only on interactive sessions.
 # This script sets up interactive utilities.
 
+m4_changequote(<|,|>)
+
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
@@ -41,10 +43,10 @@ TTY="$(tty)"
 
 # Bash Functions
 
-include(shell_functions.conf.m4)
+m4_include(shell_functions.conf.m4)
 
 $ '
-repeat - Repeatedly run a command. Basically the same as ZSH \`repeat\`.
+repeat - Repeatedly run a command. Basically the same as ZSH `repeat`.
 
 Usage: repeat <times> <command>
 '
@@ -58,7 +60,7 @@ repeat () {
 
 # Bash Aliases
 
-include(shell_aliases.conf.m4)
+m4_include(shell_aliases.conf.m4)
 
 # Bash Prompt
 

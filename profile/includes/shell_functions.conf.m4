@@ -1,9 +1,8 @@
 # Functions (for interactive only)
 
-# Changing m4 quoting/escaping instead of backtick and apostrophe
-changequote(<|,|>)
+m4_changequote(<|,|>)
 
-ifelse(PH_SYSTEM, CYGWIN,
+m4_ifelse(PH_SYSTEM, CYGWIN,
 
     # Cygwin-only functions
 

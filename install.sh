@@ -29,6 +29,8 @@ common_profile=(
     "$script_path/profile/.zlogin.m4" 
     "$script_path/profile/.zshenv.m4" 
     "$script_path/profile/.zshrc.m4" 
+    "$script_path/profile/info" 
+    "$script_path/profile/man" 
 )
 
 # Linux specific configuration files to be processed by m4 and put into ~
@@ -62,9 +64,7 @@ if [[ "$(uname -s)" == Linux* ]]; then
 
     # Linux configuraiton files to be processed by m4 and put into ~
     cp --target-directory="$script_path/build" --recursive --update "${linux_profile[@]}"
-    
-    # Remove useless files
-    
+        
     # The only Linux I use is NIXOS
     system='NIXOS'
     
@@ -79,10 +79,7 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 
     # Cygwin configuration files to be processed by m4 and put into ~
     cp --target-directory="$script_path/build" --recursive --update "${cygwin_profile[@]}"
-    
-    # Remove useless files
-    rm "$script_path/build/.src/.gitkeep"
-    
+        
     system='CYGWIN'
     
     wintmp="$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')"
@@ -136,11 +133,17 @@ EOF
     
 fi
 
+# Remove useless files from the build directory  
+rm --force "$script_path/build/.src/.gitkeep"
+rm --force "$script_path/build/info/.gitkeep"
+rm --force "$script_path/build/man/.gitkeep"
+
 # Note that `PH_` is our namespace meaning "PolyHack"
 while IFS= read -r -d '' filepath; do 
     
     # Process to the filepath without the .m4 extension
     m4 \
+    --prefix-builtins \
     --include="$script_path/profile/includes" \
     --define=PH_SYSTEM="$system" \
     --define=PH_TZ="$tz" \

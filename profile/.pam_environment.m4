@@ -5,3 +5,5 @@
 # This is not a shell file as it is executed by PAM. It must follow the syntax defined in: http://www.linux-pam.org/Linux-PAM-html/sag-pam_env.html
 # Note that this may not be read if configured, and also that HOME may not be available when this is read.
 # This limits the usecase of this file to just absolute variables, and not relative variables.
+
+m4_changequote(<|,|>)

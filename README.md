@@ -192,9 +192,9 @@ Which means since `$SHELL` is not available as a Windows environment variable, i
 
 One important thing. There's no real point in making every shell a Login shell, so all shells launched from ConEmu to Mintty, they should all be non-login interactive shells. An explicit option should be offered to launch a login shell.
 
-The startup task for ConEmu for a non-login shell should be: `%USERPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico`.
+The startup task for ConEmu for a non-login shell should be: `%ALLUSERSPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico`.
 
-The startup task for ConEmu for a login shell should be: `%USERPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -`.
+The startup task for ConEmu for a login shell should be: `%ALLUSERSPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -`.
 
 Process Hierarchy on Cygwin
 ---------------------------
