@@ -20,6 +20,7 @@ common_profile=(
     "$script_path/profile/.ghci" 
     "$script_path/profile/.gitconfig" 
     "$script_path/profile/.gitignore_global" 
+    "$script_path/profile/.includes_sh" 
     "$script_path/profile/.inputrc" 
     "$script_path/profile/.my.cnf" 
     "$script_path/profile/.nanorc" 
@@ -29,7 +30,6 @@ common_profile=(
     "$script_path/profile/.zlogin.m4" 
     "$script_path/profile/.zshenv.m4" 
     "$script_path/profile/.zshrc.m4" 
-    "$script_path/profile/includes_sh" 
     "$script_path/profile/info" 
     "$script_path/profile/man" 
 )
