@@ -1,3 +1,2 @@
 # libraries
-numpy==1.12.0rc2
 pyserial==3.1.1

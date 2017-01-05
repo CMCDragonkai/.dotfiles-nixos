@@ -35,7 +35,7 @@ compinit
 
 # ZSH Environment Variables
 
-TTY="$(tty)"
+export TTY="$(tty)"
 
 m4_ifelse(PH_SYSTEM, NIXOS, 
     HELPDIR="${HELPDIR:-/run/current-system/sw/share/zsh/${ZSH_VERSION}/help}"

@@ -40,7 +40,7 @@ HISTTIMEFORMAT='%F %T '
 
 source "${HOME}/.bash_env"
 
-TTY="$(tty)"
+export TTY="$(tty)"
 
 # Bash Functions
 
