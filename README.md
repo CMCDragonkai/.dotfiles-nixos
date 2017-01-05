@@ -19,7 +19,8 @@ Windows installation requires multiple restarts so check the log later for detai
 Installation on Linux (NixOS) is:
 
 ```sh
-git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git ~
+mkdir '~/.dotfiles'
+git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git '~/.dotfiles'
 ~/.dotfiles/install.sh
 ```
 

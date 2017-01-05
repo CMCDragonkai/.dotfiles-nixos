@@ -80,7 +80,40 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 
     # Cygwin configuration files to be processed by m4 and put into ~
     cp --target-directory="$script_path/build" --recursive --update "${cygwin_profile[@]}"
+    
+    # We need to initialise the submodules in the build repository 
+    # This is because this was probably installed via the zip archive
+    # Zip archives via github do not contain submodules
+    # Unfortunately this means we cannot pin the submodules to specific commit
+    # We don't have information on the commit was
+    # Instead we must rely on a branches to pin the versions
+    # This means git submodules should rely on branch based versioning
+    # For now git subtree seems like an easier to use tool
+    pushd "$script_path/build" 
+    git init 
+    git config --file="./.gitmodules" --get-regexp '^submodule\..*\.path$' \
+    | while read path_key path; do 
         
+        url_key="$(sed 's/\.path/.url/' <<< "$path_key")"
+        branch_key="$(sed 's/\.path/.branch/' <<< "$path_key")"
+
+        url="$(git config --file="./.gitmodules" --get "$url_key")"
+        branch="$(git config --file="./.gitmodules" --get "$branch_key")"
+
+        rm --recursive --force "$path"
+
+        if [ -z "$branch" ]; then
+            git submodule add "$url" "$path"
+        else 
+            git submodule add --branch "$branch" "$url" "$path"
+        fi
+        
+        # Update the submodule recursively
+        git submodule update --init --recursive --depth 1 "$path"
+    
+    done
+    popd
+
     system='CYGWIN'
     
     wintmp="$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')"
