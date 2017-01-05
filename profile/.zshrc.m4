@@ -62,7 +62,7 @@ alias help='run-help'
 precmd_job_count () {
 
     job_count=${(M)#${jobstates%%:*}:#running}r/${(M)#${jobstates%%:*}:#suspended}s
-    if [[ $job_count == r0/s0 ]]; then 
+    if [[ $job_count == r0/s0 ]]; then
         job_count=''
     else
         job_count=" [$job_count] "
@@ -73,10 +73,17 @@ precmd_job_count () {
 # Hooking into pre-prompt commands
 precmd_functions=($precmd_functions precmd_job_count)
 
-PROMPT='%{$fg[green]%}%n%{$reset_color%} ➜ %{$fg[yellow]%}%m%{$reset_color%} ➜ %{$fg_bold[green]%}${PWD/#$HOME/~}%{$reset_color%} 
- ೱ ' 
+# Colour variables
+typeset -AHg FG BG
+for color in {000..255}; do
+    FG[$color]="%{[38;5;${color}m%}"
+    BG[$color]="%{[48;5;${color}m%}"
+done
 
-RPROMPT='%{$fg[yellow]%}${job_count}%{$reset_color%}%{$fg[cyan]%}%D %*' 
+PROMPT='%{$FG[100]%}%n%{$reset_color%} ➜ %{$FG[112]%}%m%{$reset_color%} ➜ %{$FG[100]%}%B${PWD/#$HOME/~}%b%{$reset_color%}
+ ೱ '
+
+RPROMPT='%{$FG[112]%}${job_count}%{$reset_color%}%{$FG[110]%}%D %*'
 
 # ZSH keys
 

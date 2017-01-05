@@ -90,17 +90,6 @@
 			<value name="StoreTaskbarCommands" type="hex" data="00"/>
 			<value name="SaveCmdHistory" type="hex" data="01"/>
 			<value name="CmdLineHistory" type="multi">
-				<line data="{Cygwin (Admin)}"/>
-				<line data="{Cygwin}"/>
-				<line data="{cmd 64/32}"/>
-				<line data="{cmd}"/>
-				<line data="{PowerShell}"/>
-				<line data="{PowerShell (Admin)}"/>
-				<line data="{cmd (Admin)}"/>
-				<line data="{GHCI}"/>
-				<line data="&quot;zsh.exe&quot;"/>
-				<line data="explorer"/>
-				<line data="{Show ANSI colors}"/>
 			</value>
 			<value name="SingleInstance" type="hex" data="01"/>
 			<value name="ShowHelpTooltips" type="hex" data="01"/>
@@ -184,11 +173,10 @@
 			<value name="ComSpec.Bits" type="hex" data="00"/>
 			<value name="ComSpec.UpdateEnv" type="hex" data="00"/>
 			<value name="ComSpec.EnvAddPath" type="hex" data="01"/>
-			<value name="ComSpec.EnvAddExePath" type="hex" data="01"/>
+			<value name="ComSpec.EnvAddExePath" type="hex" data="00"/>
 			<value name="ComSpec.UncPaths" type="hex" data="00"/>
 			<value name="ComSpec.Path" type="string" data=""/>
 			<value name="EnvironmentSet" type="multi">
-				<line data="set PATH=%ConEmuBaseDir%\Scripts;%PATH%"/>
 			</value>
 			<value name="CTS.Intelligent" type="hex" data="01"/>
 			<value name="CTS.IntelligentExceptions" type="string" data="far|vim.exe"/>
@@ -643,7 +631,7 @@
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
 					<value name="GuiArgs" type="string" data=""/>
-					<value name="Cmd1" type="string" data="cmd.exe"/>
+					<value name="Cmd1" type="string" data="cmd.exe /K %USERPROFILE%\.cmd_profile.bat"/>
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
@@ -652,7 +640,7 @@
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
 					<value name="GuiArgs" type="string" data=""/>
-					<value name="Cmd1" type="string" data="cmd.exe -new_console:a"/>
+					<value name="Cmd1" type="string" data="cmd.exe /K %USERPROFILE%\.cmd_profile.bat -new_console:a"/>
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
