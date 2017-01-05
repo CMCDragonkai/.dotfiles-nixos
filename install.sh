@@ -29,9 +29,7 @@ common_profile=(
     "$script_path/profile/.zlogin.m4" 
     "$script_path/profile/.zshenv.m4" 
     "$script_path/profile/.zshrc.m4" 
-    "$script_path/profile/includes_sh/shell_aliases_common.conf" 
-    "$script_path/profile/includes_sh/shell_environment_common.conf" 
-    "$script_path/profile/includes_sh/shell_functions_common.conf" 
+    "$script_path/profile/includes_sh" 
     "$script_path/profile/info" 
     "$script_path/profile/man" 
 )
@@ -45,9 +43,6 @@ linux_profile=(
     "$script_path/profile/.Xresources" 
     "$script_path/profile/.pam_environment.m4" 
     "$script_path/profile/.xprofile.m4" 
-    "$script_path/profile/includes_sh/shell_aliases_nixos.conf" 
-    "$script_path/profile/includes_sh/shell_environment_nixos.conf" 
-    "$script_path/profile/includes_sh/shell_functions_nixos.conf" 
 )
 
 # Cygwin specific configuration files to be processed by m4 and put into ~
@@ -57,9 +52,6 @@ cygwin_profile=(
     "$script_path/profile/.src" 
     "$script_path/profile/.cmd_profile" 
     "$script_path/profile/.minttyrc" 
-    "$script_path/profile/includes_sh/shell_aliases_cygwin.conf" 
-    "$script_path/profile/includes_sh/shell_environment_cygwin.conf" 
-    "$script_path/profile/includes_sh/shell_functions_cygwin.conf" 
 )
 
 mkdir --parents "$script_path/build"
