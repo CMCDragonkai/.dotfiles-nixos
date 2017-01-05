@@ -37,16 +37,18 @@ Windows Registry Editor Version 5.00
 "AllowDevelopmentWithoutDevLicense"=dword:00000001
 
 ; CMD settings
-; Select by a line rather than by rectangles
+; Enable Ctrl + Key shortcuts
 ; Use consolas as the font
 ; History doesn't remember duplicate commands (F7)
-; Enable Ctrl + Key shortcuts
+; Select by a line rather than by rectangles
+; Wrap line on resize
 ; Enable mouse selection
 [HKEY_CURRENT_USER\Console]
 "CtrlKeyShortcutsDisabled"=dword:00000000
 "FaceName"="Consolas"
 "HistoryNoDup"=dword:00000001
 "LineSelection"=dword:00000001
+"LineWrap"=dword:00000001
 "QuickEdit"=dword:00000001
 
 ; 64 bit powershell (not ISE)
