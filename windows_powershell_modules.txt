@@ -1,5 +1,12 @@
+# These modules must be installed first
 PowerShellGet,*
 PackageManagement,*
+
+# UI
 PSReadline,*,-SkipPublisherCheck
+
+# Utilities
 Carbon,*,-AllowClobber
+
+# Notifications
 BurntToast,*
