@@ -19,6 +19,7 @@ if ($Force) {
     Install-Module -Name PowerShellGet -Force
     Install-Module -Name PackageManagement -Force
     Install-Module -Name PSReadline -Force -SkipPublisherCheck
+    Install-Module -Name BurntToast -Force
 
 } else {
 
@@ -26,6 +27,7 @@ if ($Force) {
     Install-Module -Name PowerShellGet
     Install-Module -Name PackageManagement
     Install-Module -Name PSReadline -SkipPublisherCheck
+    Install-Module -Name BurntToast
 
 }
 
