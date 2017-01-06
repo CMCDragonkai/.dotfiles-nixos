@@ -3,7 +3,6 @@ dejavufonts,*,chocolateyget
 arduino,*,chocolateyget
 
 # shell/system utilities
-carbon,2.2.0,chocolateyget
 ConEmu,16.5.22.0,chocolateyget
 keepass,*,chocolateyget
 keepass-plugin-keeagent,*,chocolateyget
