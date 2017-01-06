@@ -1,5 +1,5 @@
 PowerShellGet
 PackageManagement
 PSReadline,-SkipPublisherCheck
-Carbon
+Carbon,-AllowClobber
 BurntToast
