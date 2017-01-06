@@ -1,0 +1,5 @@
+PowerShellGet
+PackageManagement
+PSReadline,-SkipPublisherCheck
+Carbon
+BurntToast
