@@ -2,39 +2,15 @@ Windows Registry Editor Version 5.00
 
 ; Verified for Windows 10 version 1607 (OS Build 14393.447)
 
-; UAC cannot be disabled anymore because some applications require it
-; Instead we set Administrators to never be prompted
-; Users will get prompted and be asked to reauthenticate
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
-"ConsentPromptBehaviorAdmin"=dword:00000000
-"ConsentPromptBehaviorUser"=dword:00000003
-"EnableLUA"=dword:00000001
-"FilterAdministratorToken"=dword:00000001
-
-; Removing NTFS compression arrow icons (requires transparent.ico to be loaded into %SYSTEMROOT%/system32/transparent.ico)
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
-"179"="%windir%\\System32\\transparent.ico"
-
-; Removing NTFS compression arrow icons from 32 bit applications
-[HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
-"179"="%windir%\\System32\\transparent.ico"
-
-; Disabling Cortana the personal assistant
-[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Search]
-"AllowCortana"=dword:00000000
+; Don't show notifications above the lock screen
+; Don't show notifications when duplicating the screen
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings]
+"NOC_GLOBAL_SETTING_ALLOW_TOASTS_ABOVE_LOCK"=dword:00000000
+"NOC_GLOBAL_SETTING_SUPRESS_TOASTS_WHILE_DUPLICATING"=dword:00000001
 
 ; Removing suggested application adverts from start menu
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
 "SystemPaneSuggestionsEnabled"=dword:00000000
-
-; Use higher transparency for task bar
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
-"UseOLEDTaskbarTransparency"=dword:00000001
-
-; Activate developer mode in Windows 10
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock]
-"AllowAllTrustedApps"=dword:00000001
-"AllowDevelopmentWithoutDevLicense"=dword:00000001
 
 ; CMD settings
 ; Enable Ctrl + Key shortcuts
@@ -109,6 +85,36 @@ Windows Registry Editor Version 5.00
 ; Disable tips
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
 "SoftLandingEnabled"=dword:00000000
+
+; UAC cannot be disabled anymore because some applications require it
+; Instead we set Administrators to never be prompted
+; Users will get prompted and be asked to reauthenticate
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"ConsentPromptBehaviorAdmin"=dword:00000000
+"ConsentPromptBehaviorUser"=dword:00000003
+"EnableLUA"=dword:00000001
+"FilterAdministratorToken"=dword:00000001
+
+; Removing NTFS compression arrow icons (requires transparent.ico to be loaded into %SYSTEMROOT%/system32/transparent.ico)
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
+"179"="%windir%\\System32\\transparent.ico"
+
+; Removing NTFS compression arrow icons from 32 bit applications
+[HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
+"179"="%windir%\\System32\\transparent.ico"
+
+; Disabling Cortana the personal assistant
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Search]
+"AllowCortana"=dword:00000000
+
+; Use higher transparency for task bar
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"UseOLEDTaskbarTransparency"=dword:00000001
+
+; Activate developer mode in Windows 10
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock]
+"AllowAllTrustedApps"=dword:00000001
+"AllowDevelopmentWithoutDevLicense"=dword:00000001
 
 ; Disable suggested apps in start menu tiles
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Cloud Content]
