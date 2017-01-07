@@ -24,6 +24,15 @@ git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git '~/.dotfiles
 ~/.dotfiles/install.sh
 ```
 
+PowerShell Execution of Windows Symlinks to Executables
+-------------------------------------------------------
+
+You actually have to use `Start-Process` or the shorcut `start`. You cannot just
+execute it directly by calling its executable name or using the call operator `&`.
+
+This is however not necessary in Cygwin shells, which will automatically launch
+them.
+
 DNS
 ---
 
@@ -246,7 +255,7 @@ Let's try to make ZSH propagate kill signals:
 
 According to http://superuser.com/q/662431/248499, for Bash, all child processes will receive SIGHUP if the SSH connection is closed and that `huponexit` is set to true. However if the SSH connection is killed or is dropped, then child processed will still receive SIGHUP regardless of `huponexit`.
 
-According to ZSH docs, simply `setopt HUP` should just result in ZSH closing all child processes. 
+According to ZSH docs, simply `setopt HUP` should just result in ZSH closing all child processes.
 
 Don't use orphan processes to create services/daemons. Create services using a service wrapper! Use your init's service wrapper capabilities. Systemd has services. So does Windows. Using orphan processes for services/daemons is totally deficient!! But you ask, what about user local processes!? Well systemd has user services too! Then you ask, what if I just want to run a long running process, and not look at it, and log out of SSH? I don't have the ability to create service! Well then that's when you us a terminal multiplexer called tmux or screen to create detached sessions! In no situation is orphaned processes the right answer. EXCEPT under one/two circumstance. When launching X applications or DE applications from the command line. That's the only time it makes sense to orphan a process, when it's like a GUI application that you want to launch independently. In that case, you're creating a "launcher", which is really a specific situation! It makes sense in this case, because firstly you don't want to control the process from the terminal (not even send signals), and it's not a long running daemon either, so it's not a service. Alternatively, if you do have tmux or screen, orphaning may not be required either. As you can just launch into detached sessions. HOWEVER this is kind of inefficient, as there's lots of baggage being carried around. Or you can just orphan it and make it be handled as an independent process. The only time where this makes sense is GUI applications like launching firefox.. etc. Make sure to attach its error handling into the X or DE based error handling. Which should be journald or syslog or .xsession-errors.
 
@@ -323,9 +332,9 @@ vice
 The `esyscmd` could be applied like:
 
 ```
-ifelse(esyscmd(`hash "firefox" 2>/dev/null && { printf "1"; } || { printf "0"; }'), 1, 
+ifelse(esyscmd(`hash "firefox" 2>/dev/null && { printf "1"; } || { printf "0"; }'), 1,
 FIREFOX IS INSTALLED
-, 
+,
 FIREFOX IS NOT INSTALLED
 )
 ```
@@ -441,7 +450,7 @@ It's however still kind of complicated, as it seems Microsoft no longer cares ab
 
 It's just much easier to use free Windows 10 upgrade directly. Burn it onto a CD or deploy it onto a USB drive, and install that instead. Make sure you first installed your old version of Windows, and activated it.
 
-Installing Windows 7 -> 10. 
+Installing Windows 7 -> 10.
 
 * Install Windows 7
 * Install Shuttle Drivers (to acquire Network Adapter Driver)
@@ -526,7 +535,7 @@ Linux:
 
 * RDP - rdesktop, remmina, guacamole
 * XDMCP - xnest, xephyr
-* VNC - vncviewer 
+* VNC - vncviewer
 
 Servers are more specific to the OS. Generally Linux has serving solutions for VNC, RDP and XDMCP. For Windows, generally there are VNC and RDP servers.
 
@@ -553,7 +562,7 @@ XDMCP
 Vim Packages
 ------------
 
-Packages should be first cloned to modules directory as submodule and then symlinked from `./profile/.vim/bundles`. 
+Packages should be first cloned to modules directory as submodule and then symlinked from `./profile/.vim/bundles`.
 
 Pathogen is also installed as a submodule and symlinked from `./profile/.vim/autoload/pathogen.vim`.
 

@@ -1,0 +1,47 @@
+-- Common extensions to load (for interactive input only, not loaded modules)
+
+-- Syntax Extensions
+:seti -XPackageImports
+:seti -XTupleSections
+:seti -XNumDecimals
+:seti -XUnicodeSyntax
+:seti -XBinaryLiterals
+:seti -XPatternGuards
+:seti -XViewPatterns
+:seti -XNumLiterals
+:seti -XTypeOperators
+:seti -XLambdaCase
+
+-- Type Extensions
+:seti -XExistentialQuantification
+:seti -XOverloadedStrings
+:seti -XRankNTypes
+:seti -XScopedTypeVariables
+
+-- Common modules to Load
+
+import "base" Data.List               -- List operations
+import "base" Data.Monoid             -- Monoid operations
+import "base" Control.Monad           -- Monad operations
+import "base" Data.Ratio              -- Ratio and Rational operations
+import "base" Text.Show.Functions     -- Function showing
+import "pretty-show" Text.Show.Pretty -- Pretty printing
+
+-- GHCi Settings
+
+:set editor "vim"
+
+-- Show loaded modules in window title
+:set prompt  "\SOH\ESC]0;GHCi: %s\BEL\ESC[32;1m\STX%l-λ:>\SOH\ESC[0m\STX "
+:set prompt2                    "\SOH\ESC[32;1m\STX%l-λ:|\SOH\ESC[0m\STX "
+
+-- Macros
+
+:def statusi (\_ -> return ":seti\n:show imports\n:show modules")
+
+-- Timing and Type Output and Multiline Input
+-- These must be last to prevent noise
+
+:set +t
+:set +s
+:set +m
