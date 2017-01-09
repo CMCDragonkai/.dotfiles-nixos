@@ -77,6 +77,14 @@ if ($Stage -eq 0) {
     Copy-Item "${PSScriptRoot}\..\.dotfiles-data\transparent.ico" "${Env:SYSTEMROOT}\system32"
     Unblock-File -Path "${Env:SYSTEMROOT}\system32\transparent.ico"
 
+    # Setup wallpaper
+    # Even if the image is smaller than the resolution of the screen, it will be filled to the resolution of the screen
+    # Preferably use a large resolution image like 3000 x 2000
+    $Wallpaper = $(Get-ChildItem "${PSScriptRoot}\..\.dotfiles-data\wallpaper.png")
+    Copy-Item -Path "$($Wallpaper.FullName)" -Destination "${Env:USERPROFILE}\Pictures"
+    Unblock-File -Path "${Env:USERPROFILE}\Pictures\$($Wallpaper.Name)"
+    & "${PSScriptRoot}\set-wallpaper.ps1" -WallpaperPath "${Env:USERPROFILE}\Pictures\$($Wallpaper.Name)" -Style 'Fill'
+
     # Allow Powershell scripts to be executable
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
 
