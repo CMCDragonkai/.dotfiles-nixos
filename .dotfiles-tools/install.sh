@@ -111,6 +111,7 @@ else
         sleep 5
         exit 1
     fi
+    chmod u=rwx,g=r,o=r "$processing_dir"
 
 fi
 popd
@@ -209,6 +210,12 @@ done < <(find "$processing_dir" -type f -name '*.m4' -not -path "$processing_dir
 # This requires wiping out any execute permissions first
 chmod --recursive a-x "$processing_dir/.ssh"
 chmod --recursive u=rwX,g=,o= "$processing_dir/.ssh"
+# Same for gnupg
+chmod --recursive a-x "$processing_dir/.gnupg"
+chmod --recursive u=rwX,g=,o= "$processing_dir/.gnupg"
+# Same for .aws
+chmod --recursive a-x "$processing_dir/.aws"
+chmod --recursive u=rwX,g=,o= "$processing_dir/.aws"
 
 # Copy the profiles over then run the final installations
 # It is VERY IMPORTANT for the subsequent copy commands ot run inside `$processing_dir`
