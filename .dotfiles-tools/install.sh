@@ -83,14 +83,37 @@ cygwin_profile=(
 # For example `.git/` will be missing and any submodules will not be installed
 # This means we must attempt a git clone
 
-processing_dir="$HOME/.dotfiles"
-rm --recursive --force "$processing_dir"
-mkdir --parents "$processing_dir"
-if ! git clone --recursive "$origin" "$processing_dir"; then
-    echo 'We attempted to clone to ~/.dotfiles, but this failed.'
-    echo 'Stopping installation here, fix git or internet connection and try again.'
-    exit 1
+# If we are already in git repository, then we just use the current repository instead of cloning
+repository_path="$(dirname "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )")"
+pushd "$repository_path"
+if git_directory="$(git rev-parse --show-toplevel 2>&1)" \
+&& [ "$git_directory" == "$repository_path" ] \
+&& { git remote show -n origin | grep --quiet "Fetch URL: $origin"; };
+then
+
+    if ! git diff-index --quiet HEAD || ! { u="$(git ls-files --exclude-standard --others)" && test -z "$u"; }; then
+        echo "$repository_path is a git repository, but it currently has changes."
+        echo 'Stopping installation here, commit your changes and try again.'
+        sleep 5
+        exit 1
+    fi
+
+    processing_dir="$repository_path"
+
+else
+
+    processing_dir="$HOME/.dotfiles"
+    rm --recursive --force "$processing_dir"
+    mkdir --parents "$processing_dir"
+    if ! git clone --recursive "$origin" "$processing_dir"; then
+        echo 'We attempted to clone to ~/.dotfiles, but this failed.'
+        echo 'Stopping installation here, fix git or internet connection and try again.'
+        sleep 5
+        exit 1
+    fi
+
 fi
+popd
 
 # Dive into the processing directory
 pushd "$processing_dir"
