@@ -103,6 +103,7 @@ gimp,*,chocolateyget
 # productivity
 synergy,*,chocolateyget
 toggl,*,chocolateyget
+f.lux,*,chocolateyget
 
 # finance and accounting
 electrum.portable,*,chocolateyget
@@ -119,13 +120,12 @@ AnonymousPro,*,chocolateyget
 hackfont,*,chocolateyget
 inconsolata,*,chocolateyget
 
-# these must be installed directly with choco install 
+# these must be installed directly with choco install
 # with options such as --allow-empty-checksums and --ignore-checksums
 # these may be fixed in the future
 # for now they will be processed automatically and will fail, but the installation will continue
 battle.net,*,chocolateyget
 gifcam,*,chocolateyget
-f.lux,*,chocolateyget
 kicad,*,chocolateyget
 
 # windows packages not yet available or do not work on chocolatey
@@ -138,12 +138,12 @@ kicad,*,chocolateyget
 # softether vpn server
 # adobe experience design
 # keybase
-# processing 
+# processing
 # wireedit
 # tabula
 # geforce driver
 # cuda
 # origin
 # spotify
-# adobe creative suite 
+# adobe creative suite
 # portfolio performance (https://github.com/buchen/portfolio)

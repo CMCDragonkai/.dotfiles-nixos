@@ -19,55 +19,77 @@ force="${force:-false}"
 
 # Fix the origin URL for this repository
 origin='https://github.com/CMCDragonkai/.dotfiles.git'
-# Processing directory is the directory that we perform the processing in
-# It could be `$HOME` or a temporary directory
-processing_dir=''
 
-# Bash has dynamic scope, it will acquire the changed `$cloning_tmp_dir`
-clean_up () {
-    if [ -n "$cloning_tmp_dir" ]; then
-        rm --recursive --force "$cloning_tmp_dir"
-    fi
-    exit "$1"
-}
+# Common profile paths
+common_profile=(
+    '.atom'
+    '.aws'
+    '.config'
+    '.gnupg'
+    '.includes_sh'
+    '.jupyter'
+    '.local'
+    '.ssh'
+    '.Templates'
+    '.vim'
+    'bin'
+    'Projects'
+    'Public'
+    '.bash_env'
+    '.bash_profile'
+    '.bashrc'
+    '.curlrc'
+    '.ghci'
+    '.gitconfig'
+    '.gitignore_global'
+    '.includes_sh'
+    '.inputrc'
+    '.my.cnf'
+    '.nanorc'
+    '.netrc'
+    '.sqliterc'
+    '.vimrc'
+    '.zlogin'
+    '.zshenv'
+    '.zshrc'
+    'info'
+    'man'
+)
 
-trap 'clean_up $?' INT TERM ERR
+# Linux specific profile
+linux_profile=(
+    '.nixpkgs'
+    '.xmonad'
+    '.Xmodmap'
+    '.Xresources'
+    '.pam_environment'
+    '.xprofile'
+)
+
+# Cygwin specific profile
+cygwin_profile=(
+    'AppData'
+    'Documents'
+    '.src'
+    '.cmd_profile.bat'
+    '.minttyrc'
+)
 
 # Installation might have started via a zipball download
 # The zipballs will not contain all files that would in a legitimate repository
 # For example `.git/` will be missing and any submodules will not be installed
-# This means we must attempt a git clone if `$HOME` is not already the .dotfiles repository
+# This means we must attempt a git clone
 
 # We need to be in $HOME to check if `$HOME` is a git repository
 pushd "$HOME"
 
-# If `$HOME` is already the .dotfiles git repository, then we just use that
-if git_directory="$(git rev-parse --show-toplevel 2>&1)" \
-&& [ "$git_directory" == "$HOME" ] \
-&& git remote show -n origin | grep --quiet "Fetch URL: $origin";
-then
-
-    # Check if the `$HOME` has uncommitted changes or untracked files that are not ignored
-    if ! git diff-index --quiet HEAD || ! { u="$(git ls-files --exclude-standard --others)" && test -z "$u"; }; then
-        echo '$HOME is a git repository, but it currently has changes.'
-        echo 'Stopping installation here, commit your changes and try again.'
-        exit 1
-    fi
-
-    processing_dir="$HOME"
-
-else
-
-    # Clone the repository into an empty temporary directory
-    cloning_tmp_dir="$(mktemp --directory -t '.dotfiles-cloning.XXX')"
-    if ! git clone --recursive "$origin" "$cloning_tmp_dir"; then
-        echo '$HOME is not a git repository, we attempted to clone, but this failed.'
-        echo 'Stopping installation here, fix git or internet connection and try again.'
-        exit 1
-    fi
-
-    processing_dir="$cloning_tmp_dir"
-
+processing_dir="$HOME/.dotfiles"
+rm --recursive --force "$processing_dir"
+mkdir --parents "$processing_dir"
+if ! git clone --recursive "$origin" "$processing_dir"; then
+    echo 'We attempted to clone to ~/.dotfiles, but this failed.'
+    echo 'Stopping installation here, fix git or internet connection and try again.'
+    exit 1
 fi
 
 # Dive into the processing directory
@@ -141,48 +163,6 @@ EOF
 fi
 
 # Now use m4 to process the templates
-# We must not process templates that are ignored by our `.gitignore`
-# Conversely this means we can use our `.gitignore` to know what directories and files are legal to scan
-
-# Enable globbing for hidden files and folders
-shopt -s dotglob
-# Read all the legal paths into included_path
-readarray -d '' -t included_paths_array < <(
-    printf '%s\0' "$processing_dir"/* \
-    | git check-ignore --stdin -z -v \
-    | perl -e 'undef $/; $s = <>; while ($s =~ /\.gitignore\0\d+\0!.+?\0(.+?)\0/g) { print "$1\0"; }' \
-    | while read -r -d '' included_path; do
-
-        # We only care about files and directories
-        # Directories need to have a globbing star added to it
-        # `find` will use it for inclusion
-        if [ -f "$included_path" ]; then
-            printf '%s\0' "$included_path"
-        elif [ -d "$included_path" ]; then
-            included_path="$included_path/*"
-            printf '%s\0' "$included_path"
-        fi
-
-    done
-)
-# Disable globbing for hidden files and folders
-shopt -u dotglob
-
-# Join the array with `-path` and `-or` in between
-printf -v included_paths -- "-path '%s' -or " "${included_paths_array[@]}"
-# Remove the last ` -or ` from the end of the string
-included_paths="${included_paths::-5}"
-
-# Interpolate the included paths
-# The .dotfiles directories however should not be scanned (they are the configuration and metadata for my profile)
-m4_scan_command="
-find '${processing_dir}' \
--type f \
--name '*.m4' \
-\( ${included_paths} \) \
--not -path '${processing_dir}/.dotfiles-*' \
--print0
-"
 
 # Process the legally found M4 templates
 while read -r -d '' m4_filepath; do
@@ -199,27 +179,31 @@ while read -r -d '' m4_filepath; do
     --define=PH_WINSYSTMP="$winsystmp" \
     "$m4_filepath" > "${m4_filepath%.*}"
 
-done < <(eval "$m4_scan_command")
+done < <(find "$processing_dir" -type f -name '*.m4' -not -path "$processing_dir/.dotfiles-*" -print0)
+
 
 # Make ~/.ssh directory and subdirectories 700, but the files 600
 # This requires wiping out any execute permissions first
 chmod --recursive a-x "$processing_dir/.ssh"
 chmod --recursive u=rwX,g=,o= "$processing_dir/.ssh"
 
-# Now we copy the built profile into $HOME but only if the processing directory isn't already `$HOME`
-if [ "$processing_dir" != "$HOME" ]; then
-    cp --archive "$processing_dir/." "$HOME/"
-fi
-
 # Pop the processing directory, return `$HOME`
 popd
+
+# Copy the profiles over then run the final installations
+common_profile=( "${common_profile[@]/#/$processing_dir/}" )
+cp --target-directory="$HOME" --archive --force "${common_profile[@]}"
 
 # Perform final package installations only after the profile has been copied or regenerated
 if [[ "$(uname -s)" == Linux* ]]; then
 
-    :
+    linux_profile=( "${linux_profile[@]/#/$processing_dir/}" )
+    cp --target-directory="$HOME" --archive --force "${linux_profile[@]}"
 
 elif [[ $(uname -s) == CYGWIN* ]]; then
+
+    cygwin_profile=( "${cygwin_profile[@]/#/$processing_dir/}" )
+    cp --target-directory="$HOME" --archive --force "${cygwin_profile[@]}"
 
     # Install python packages
     if $force; then

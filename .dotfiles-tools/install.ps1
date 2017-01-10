@@ -126,9 +126,9 @@ if ($Stage -eq 0) {
     Set-Service -Name "SshBroker" -Status Stopped -StartupType Disabled -Confirm:$false -ErrorAction SilentlyContinue
 
     # Remove useless profile folders
-    Remove-Item "${Env:UserProfile}\Contacts" -Recurse -Force
-    Remove-Item "${Env:UserProfile}\Favorites" -Recurse -Force
-    Remove-Item "${Env:UserProfile}\Links" -Recurse -Force
+    Remove-Item "${Env:UserProfile}\Contacts" -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item "${Env:UserProfile}\Favorites" -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item "${Env:UserProfile}\Links" -Recurse -Force -ErrorAction SilentlyContinue
 
     # Uninstall Windows 10 Bloat
     & "${PSScriptRoot}\uninstall-windows-apps.ps1"
@@ -173,14 +173,19 @@ if ($Stage -eq 0) {
         "${InstallationDirectory}\cygwin64\sbin;" +
         "${Env:Path};"
     )
-    Start-Process -FilePath "$InstallationDirectory\cygwin64\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "`"${PSScriptRoot}\install.sh`""
+
+    if ($ForceReinstallation) {
+        Start-Process -FilePath "$InstallationDirectory\cygwin64\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "`"${PSScriptRoot}\install.sh`" --force"
+    } else {
+        Start-Process -FilePath "$InstallationDirectory\cygwin64\bin\bash.exe" -Wait -Verb RunAs -ArgumentList "`"${PSScriptRoot}\install.sh`""
+    }
 
     echo "Finished deploying on Windows."
     echo "There are some final tasks to remember!"
     echo "1. Install any not-yet-automated packages."
     echo "2. Use gpedit.msc to disable OneDrive by going to Local Computer Policy\Computer Configuration\Administrative Templates\Windows Components\OneDrive, and also remove the OneDrive environment variable."
     echo "3. Use msconfig to disable startup services and tasks that are unnecessary. This will speed up bootup and restarts."
-    echo "4. Remember to run ${PSScriptRoot}\set-windows-path.ps1."
+    echo "4. Remember to run ${Env:USERPROFILE}/.dotfiles/.dotfiles-tools/set-windows-path.ps1."
     echo "5. Configure to use your local DNS server and Hosts file, point your DNS address on relevant network interfaces to 127.0.0.1 and ::1."
     echo "6. Finally restart your computer!"
 

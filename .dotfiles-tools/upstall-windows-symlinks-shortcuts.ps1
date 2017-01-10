@@ -72,7 +72,7 @@ foreach ($Map in $GlobalSymlinkMapping) {
     # expand MSDOS environment variables
     $Target = [System.Environment]::ExpandEnvironmentVariables("$Target")
     if (Test-Path "$Target" -PathType Leaf) {
-        New-Item -ItemType SymbolicLink -Force -Path "${Env:ALLUSERSPROFILE}\bin\${Link}" -Value "$Target"
+        New-Item -ItemType SymbolicLink -Force -Path "${Env:ALLUSERSPROFILE}\bin\${Link}" -Value "$Target" >$null
     } else {
         echo "Symbolic link target could not be found: ${Target}"
     }
@@ -94,7 +94,7 @@ foreach ($Map in $LocalSymlinkMapping) {
     # expand MSDOS environment variables
     $Target = [System.Environment]::ExpandEnvironmentVariables("$Target")
     if (Test-Path "$Target" -PathType Leaf) {
-        New-Item -ItemType SymbolicLink -Force -Path "${Env:LOCALAPPDATA}\bin\${Link}" -Value "$Target"
+        New-Item -ItemType SymbolicLink -Force -Path "${Env:LOCALAPPDATA}\bin\${Link}" -Value "$Target" >$null
     } else {
         echo "Symbolic link target could not be found: ${Target}"
     }

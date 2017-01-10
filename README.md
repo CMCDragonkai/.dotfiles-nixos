@@ -9,19 +9,21 @@ Launch Powershell as Administrator and run...
 ```posh
 $ComputerName = 'POLYHACK-?'
 Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip' -OutFile '~/Downloads/.dotfiles-master.zip'
+Remove-Item '~/Downloads/.dotfiles-master' -Recurse -Force -ErrorAction SilentlyContinue
 Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~/Downloads' -Force
-powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/install.ps1' -ComputerName '$ComputerName' -LogPath '${Env:TEMP}\.dotfiles.log'"
+powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/.dotfiles-tools/install.ps1' -ComputerName '$ComputerName' -LogPath '${Env:TEMP}\.dotfiles.log'"
+# Install all the remaining applications you want manually then run this:
 powershell -NoExit -NoLogo -NoProfile -ExecutionPolicy Unrestricted "& '~/Downloads/.dotfiles-master/tools/set-windows-path.ps1'"
 ```
 
-Windows installation requires multiple restarts so check the log later for details. It is also not fully unattended, there are some package installations that require prompts. Also the `.dotfiles` repository will be cloned to `~` because the zip package offered by Github is not a full Git repository.
+Windows installation requires multiple restarts so check the log later for details. It is also not fully unattended, there are some package installations that require prompts.
 
 Installation on Linux (NixOS) is:
 
 ```sh
-mkdir '~/.dotfiles'
-git clone --recursive https://github.com/CMCDragonkai/.dotfiles.git '~/.dotfiles'
-~/.dotfiles/install.sh
+curl --location --create-dirs https://github.com/CMCDragonkai/.dotfiles/archive/master.tar.gz --output ~/Downloads/.dotfiles-master.tar.gz
+rm --recursive --force ~/Downloads/.dotfiles-master && tar xvzf ~/Downloads/.dotfiles-master.tar.gz --directory ~/Downloads
+~/Downloads/.dotfiles-master/.dotfiles-tools/install.sh
 ```
 
 PowerShell Execution of Windows Symlinks to Executables
