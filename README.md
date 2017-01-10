@@ -26,6 +26,11 @@ rm --recursive --force ~/Downloads/.dotfiles-master && tar xvzf ~/Downloads/.dot
 ~/Downloads/.dotfiles-master/.dotfiles-tools/install.sh
 ```
 
+Permissions
+-----------
+
+Git only persists 755 or 644 for files, and directories are always 755. This means without any further processing after installation all files will appear either as executables or non-executables with read permission for the group and others, while directories are always readable and executable for the group and others. Sensitive folders should be explicitly modified to have their read and execute permissions for non-owners removed.
+
 PowerShell Execution of Windows Symlinks to Executables
 -------------------------------------------------------
 

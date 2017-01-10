@@ -111,7 +111,7 @@ else
         sleep 5
         exit 1
     fi
-    chmod u=rwx,g=r,o=r "$processing_dir"
+    chmod u=rwx,g=,o= "$processing_dir"
 
 fi
 popd
@@ -186,6 +186,9 @@ EOF
 
 fi
 
+# Generated and copied files during profile installation should start with a mask of 077 disallowing groups and other access
+umask 077
+
 # Now use m4 to process the templates
 
 # Process the legally found M4 templates
@@ -205,21 +208,10 @@ while read -r -d '' m4_filepath; do
 
 done < <(find "$processing_dir" -type f -name '*.m4' -not -path "$processing_dir/.dotfiles-*" -print0)
 
-
-# Make ~/.ssh directory and subdirectories 700, but the files 600
-# This requires wiping out any execute permissions first
-chmod --recursive a-x "$processing_dir/.ssh"
-chmod --recursive u=rwX,g=,o= "$processing_dir/.ssh"
-# Same for gnupg
-chmod --recursive a-x "$processing_dir/.gnupg"
-chmod --recursive u=rwX,g=,o= "$processing_dir/.gnupg"
-# Same for .aws
-chmod --recursive a-x "$processing_dir/.aws"
-chmod --recursive u=rwX,g=,o= "$processing_dir/.aws"
+# It is VERY IMPORTANT for the subsequent commands to run inside `$processing_dir`
 
 # Copy the profiles over then run the final installations
-# It is VERY IMPORTANT for the subsequent copy commands ot run inside `$processing_dir`
-cp --target-directory="$HOME" --archive --parents --force "${common_profile[@]}"
+cp --target-directory="$HOME" --parents --force "${common_profile[@]}"
 
 # Perform final package installations only after the profile has been copied or regenerated
 if [[ "$(uname -s)" == Linux* ]]; then
@@ -244,5 +236,18 @@ fi
 
 # Pop the processing directory
 popd
+
+# Make sensitive directories and subdirectories 700, but their files 600
+# This requires wiping out any execute permissions first
+chmod --recursive a-x "$HOME/.ssh"
+chmod --recursive u=rwX,g=,o= "$HOME/.ssh"
+chmod --recursive a-x "$HOME/.gnupg"
+chmod --recursive u=rwX,g=,o= "$HOME/.gnupg"
+chmod --recursive a-x "$HOME/.aws"
+chmod --recursive u=rwX,g=,o= "$HOME/.aws"
+
+# Make the Public folder public
+chmod --recursive a-x "$HOME/Public"
+chmod --recursive u=rwX,g=r,o=r "$HOME/Public"
 
 exit 0

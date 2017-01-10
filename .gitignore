@@ -45,6 +45,7 @@
 !.cmd_profile.bat
 !.curlrc
 !.ghci
+!.git_cache_mode
 !.gitconfig
 !.gitignore_global
 !.inputrc
