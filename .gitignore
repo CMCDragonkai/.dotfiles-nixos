@@ -61,3 +61,14 @@
 !.zlogin.m4
 !.zshenv.m4
 !.zshrc.m4
+
+# Ignore generated files (mostly important for files inside directories)
+/.ssh/config
+.bash_env
+.bash_profile
+.bashrc
+.pam_environment
+.xprofile
+.zlogin
+.zshenv
+.zshrc
