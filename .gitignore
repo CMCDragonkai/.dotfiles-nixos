@@ -19,6 +19,7 @@
 !/.dotfiles-tools/
 
 # Actual profile
+!/.atom/
 !/.aws/
 !/.config/
 !/.gnupg/
@@ -36,6 +37,7 @@
 !/Documents/
 !/info/
 !/man/
+!/Projects/
 !/Public/
 !.bash_env.m4
 !.bash_profile.m4
