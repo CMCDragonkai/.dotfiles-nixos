@@ -25,11 +25,15 @@ common_profile=(
     '.atom'
     '.aws'
     '.config'
+    '.dotfiles-modules'
     '.gnupg'
     '.includes_sh'
     '.jupyter'
     '.local'
-    '.ssh'
+    '.ssh/keys'
+    '.ssh/authorized_keys'
+    '.ssh/config'
+    '.ssh/identity.pub'
     '.Templates'
     '.vim'
     'bin'
@@ -42,7 +46,6 @@ common_profile=(
     '.ghci'
     '.gitconfig'
     '.gitignore_global'
-    '.includes_sh'
     '.inputrc'
     '.my.cnf'
     '.nanorc'
@@ -79,9 +82,6 @@ cygwin_profile=(
 # The zipballs will not contain all files that would in a legitimate repository
 # For example `.git/` will be missing and any submodules will not be installed
 # This means we must attempt a git clone
-
-# We need to be in $HOME to check if `$HOME` is a git repository
-pushd "$HOME"
 
 processing_dir="$HOME/.dotfiles"
 rm --recursive --force "$processing_dir"
@@ -187,23 +187,18 @@ done < <(find "$processing_dir" -type f -name '*.m4' -not -path "$processing_dir
 chmod --recursive a-x "$processing_dir/.ssh"
 chmod --recursive u=rwX,g=,o= "$processing_dir/.ssh"
 
-# Pop the processing directory, return `$HOME`
-popd
-
 # Copy the profiles over then run the final installations
-common_profile=( "${common_profile[@]/#/$processing_dir/}" )
-cp --target-directory="$HOME" --archive --force "${common_profile[@]}"
+# It is VERY IMPORTANT for the subsequent copy commands ot run inside `$processing_dir`
+cp --target-directory="$HOME" --archive --parents --force "${common_profile[@]}"
 
 # Perform final package installations only after the profile has been copied or regenerated
 if [[ "$(uname -s)" == Linux* ]]; then
 
-    linux_profile=( "${linux_profile[@]/#/$processing_dir/}" )
-    cp --target-directory="$HOME" --archive --force "${linux_profile[@]}"
+    cp --target-directory="$HOME" --archive --parents --force "${linux_profile[@]}"
 
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
-    cygwin_profile=( "${cygwin_profile[@]/#/$processing_dir/}" )
-    cp --target-directory="$HOME" --archive --force "${cygwin_profile[@]}"
+    cp --target-directory="$HOME" --archive --parents --force "${cygwin_profile[@]}"
 
     # Install python packages
     if $force; then
@@ -217,7 +212,7 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 
 fi
 
-# Pop the home directory
+# Pop the processing directory
 popd
 
 exit 0
