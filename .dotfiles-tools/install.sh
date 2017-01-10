@@ -2,6 +2,21 @@
 
 shopt -s extglob
 
+# process the command line parameters
+while [[ $# -gt 0 ]]; do
+  key="$1"
+  case $key in
+      # Force for forcing reinstallation of packages
+      -f|--force)
+      force=true
+      shift
+      ;;
+  esac
+  shift # past argument or value
+done
+
+force="${force:-false}"
+
 # Fix the origin URL for this repository
 origin='https://github.com/CMCDragonkai/.dotfiles.git'
 # Processing directory is the directory that we perform the processing in
@@ -13,12 +28,10 @@ clean_up () {
     if [ -n "$cloning_tmp_dir" ]; then
         rm --recursive --force "$cloning_tmp_dir"
     fi
-    exit $1
+    exit "$1"
 }
 
 trap 'clean_up $?' INT TERM ERR
-
-script_path=$(dirname "$(readlink -f "$0")")
 
 # Installation might have started via a zipball download
 # The zipballs will not contain all files that would in a legitimate repository
@@ -209,9 +222,13 @@ if [[ "$(uname -s)" == Linux* ]]; then
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
     # Install python packages
-    "$processing_dir"/.dotfiles-tools/upstall-python-packages.sh
+    if $force; then
+        "$processing_dir"/.dotfiles-tools/upstall-python-packages.sh --force
+    else
+        "$processing_dir"/.dotfiles-tools/upstall-python-packages.sh
+    fi
 
-    # Install packages from source
+    # Install packages from source (no way to update them, they will always be forced)
     "$processing_dir"/.dotfiles-tools/upstall-source-packages.sh
 
 fi

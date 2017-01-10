@@ -3,11 +3,11 @@
 #requires -Version 5.0
 
 param (
-    [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin",
+    [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
     [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports",
     [string]$PortKey = "http://cygwinports.org/ports.gpg",
     [string]$InstallationDirectory = "$Env:SystemDrive",
-    [switch]$CleanInstallation
+    [switch]$Force
 )
 
 # Create the necessary directories
@@ -28,7 +28,7 @@ $PortPackages = (Get-Content "${PSScriptRoot}\..\.dotfiles-config\cygwin_port_pa
 
 if ($MainPackages) {
 
-    if ($CleanInstallation) {
+    if ($Force) {
 
         echo "Cleanly installing Main Packages"
 
@@ -73,7 +73,7 @@ if ($MainPackages) {
 
 if ($PortPackages) {
 
-    if (-not ($MainPackages) -and $CleanInstallation) {
+    if (-not ($MainPackages) -and $Force) {
 
         echo "Cleanly installing Port Packages"
 

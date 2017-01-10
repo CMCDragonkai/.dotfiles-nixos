@@ -9,7 +9,8 @@ param (
     [string]$PortKey = "http://cygwinports.org/ports.gpg",
     [string]$InstallationDirectory = "$Env:SystemDrive",
     [string]$LogPath = $null,
-    [int]$Stage = 0
+    [int]$Stage = 0,
+    [switch]$ForceReinstallation
 )
 
 if ($LogPath) {
@@ -30,7 +31,7 @@ function ScheduleRebootTask {
     # So we use an alternative syntax to execute the script
     $Action = New-ScheduledTaskAction -Execute 'powershell.exe' -WorkingDirectory "$($PWD.Path)" -Argument (
         '-NoLogo -NoProfile -ExecutionPolicy Unrestricted -NoExit ' +
-        "`"& '${PSCommandPath}' -MainMirror '${MainMirror}' -PortMirror '${PortMirror}' -PortKey '${PortKey}' -InstallationDirectory '${InstallationDirectory}' -LogPath '${LogPath}' -Stage ${Stage}`""
+        "`"& '${PSCommandPath}' -MainMirror '${MainMirror}' -PortMirror '${PortMirror}' -PortKey '${PortKey}' -InstallationDirectory '${InstallationDirectory}' -LogPath '${LogPath}' -Stage ${Stage} -ForceReinstallation:`$${ForceReinstallation}`""
     )
 
     # Trigger the script only when the current user has logged on
@@ -133,16 +134,16 @@ if ($Stage -eq 0) {
     & "${PSScriptRoot}\uninstall-windows-apps.ps1"
 
     # Setup Windows Package Management
-    & "${PSScriptRoot}\upstall-windows-packages.ps1" -Force
+    & "${PSScriptRoot}\upstall-windows-packages.ps1" -Force:$ForceReinstallation
 
     # Install Powershell Help Files (so we can use -?)
-    Update-Help -Force
+    Update-Help -Force:$ForceReinstallation
 
     # Setup Chrome App Shortcuts and Symlinks to Native Packages
     & "${PSScriptRoot}\upstall-windows-symlinks-shortcuts.ps1"
 
     # Installing Cygwin Packages
-    & "${PSScriptRoot}\upstall-cygwin-packages.ps1" -MainMirror "$MainMirror" -PortMirror "$PortMirror" -PortKey "$PortKey" -InstallationDirectory "$InstallationDirectory" -CleanInstallation
+    & "${PSScriptRoot}\upstall-cygwin-packages.ps1" -MainMirror "$MainMirror" -PortMirror "$PortMirror" -PortKey "$PortKey" -InstallationDirectory "$InstallationDirectory" -Force:$ForceReinstallation
 
     # Use Carbon's Grant-Privilege feature to give us the ability to create Windows symbolic links
     # Because I am an administrator user, this doesn't give me unelevated access to creating native symlinks.
