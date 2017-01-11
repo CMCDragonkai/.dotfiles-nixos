@@ -124,6 +124,9 @@ lua
 proj
 gdal
 
+# data manipulation
+jq
+
 # media
 GraphicsMagick
 

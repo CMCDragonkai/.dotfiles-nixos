@@ -1,74 +1,25 @@
-# This repository is intended to be cloned to ~
-# So we need to ignore everything that isn't part of this repository
+# OS generated files #
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
 
-# Ignore everything by default (.git is never ignored)
-/*
-/*/
+# Vim Files #
+*~             # backup files
+.*.un~         # undo files
+.*.sw[m-p]     # swap files
+Session.vim    # session files
 
-# Standard repository files
-!.gitignore
-!.gitmodules
-!.gitattributes
-!README.md
-!LICENSE
+# Do not ignore any `.gitkeep` files #
+!.gitkeep
 
-# Installation scripts and data and dependencies
-!/.dotfiles-config/
-!/.dotfiles-data/
-!/.dotfiles-modules/
-!/.dotfiles-tools/
-
-# Actual profile
-!/.atom/
-!/.aws/
-!/.config/
-!/.gnupg/
-!/.includes_sh/
-!/.jupyter/
-!/.local/
-!/.nixpkgs/
-!/.src/
-!/.ssh/
-!/.Templates/
-!/.vim/
-!/.xmonad/
-!/AppData/
-!/bin/
-!/Documents/
-!/info/
-!/man/
-!/Projects/
-!/Public/
-!.bash_env.m4
-!.bash_profile.m4
-!.bashrc.m4
-!.cmd_profile.bat
-!.curlrc
-!.ghci
-!.gitconfig
-!.gitignore_global
-!.inputrc
-!.minttyrc
-!.my.cnf
-!.nanorc
-!.netrc
-!.pam_environment.m4
-!.sqliterc
-!.vimrc
-!.Xmodmap
-!.xprofile.m4
-!.Xresources
-!.zlogin.m4
-!.zshenv.m4
-!.zshrc.m4
-
-# Ignore generated files (mostly important for files inside directories)
+# Ignore generated files #
 /.ssh/config
-.bash_env
-.bash_profile
-.bashrc
-.pam_environment
-.xprofile
-.zlogin
-.zshenv
-.zshrc
+/.bash_env
+/.bash_profile
+/.bashrc
+/.pam_environment
+/.xprofile
+/.zlogin
+/.zshenv
+/.zshrc

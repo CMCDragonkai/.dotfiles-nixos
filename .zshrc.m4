@@ -62,8 +62,8 @@ alias help='run-help'
 precmd_job_count () {
 
     job_count=${(M)#${jobstates%%:*}:#running}r/${(M)#${jobstates%%:*}:#suspended}s
-    if [[ $job_count == r0/s0 ]]; then
-        job_count=''
+    if [[ $job_count == '0r/0s' ]]; then
+        job_count=' '
     else
         job_count=" [$job_count] "
     fi
@@ -73,22 +73,30 @@ precmd_job_count () {
 # Hooking into pre-prompt commands
 precmd_functions=($precmd_functions precmd_job_count)
 
-# Colour variables
-typeset -AHg FG BG
-for color in {000..255}; do
-    FG[$color]="%{[38;5;${color}m%}"
-    BG[$color]="%{[48;5;${color}m%}"
-done
-
-PROMPT='%{$FG[100]%}%n%{$reset_color%} ➜ %{$FG[112]%}%m%{$reset_color%} ➜ %{$FG[100]%}%B${PWD/#$HOME/~}%b%{$reset_color%}
+PROMPT='%F{100}%n%f ➜ %F{112}%m%f ➜ %F{100}%B${PWD/#$HOME/~}%b%f
  ೱ '
 
-RPROMPT='%{$FG[112]%}${job_count}%{$reset_color%}%{$FG[110]%}%D %*'
+RPROMPT='%F{104}${job_count}%f%F{110}%*%f'
 
 # ZSH keys
 
 # Enable Vi key bindings
 bindkey -v
+
+# Show [NORMAL] status during vi command mode
+function zle-line-init zle-keymap-select {
+    VIM_PROMPT='[% NORMAL]'
+    RPROMPT='%F{104}${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}${job_count}%f%F{110}%*%f'
+    zle reset-prompt
+}
+zle -N zle-keymap-select
+
+# Enable partial search (and jump to the end)
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^[[A" history-beginning-search-backward-end
+bindkey "^[[B" history-beginning-search-forward-end
 
 # Allows one to use Ctrl + Z to switch between foreground and background
 _ctrl-z () {
