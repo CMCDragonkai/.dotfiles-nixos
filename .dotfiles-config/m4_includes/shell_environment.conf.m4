@@ -1,8 +1,8 @@
 source "$HOME/.includes_sh/shell_environment_common.conf"
 
-# timezone will be set during installation, and passed as M4 macro variables
-export TZ="PH_TZ"
-export TZDIR="PH_TZDIR"
+# If TZ isn't set, then applications will assume `/etc/localtime`
+# If TZDIR isn't set, then applications will assume `/usr/share/zoneinfo` or `/etc/zoneinfo` depending on the OS
+# Since we manipulate the filesystem instead, these vairables do not need to be set.
 
 m4_ifelse(PH_SYSTEM, CYGWIN,
 
@@ -13,7 +13,7 @@ m4_ifelse(PH_SYSTEM, CYGWIN,
 
 ,)
 
-m4_ifelse(PH_SYSTEM, NIXOS, 
+m4_ifelse(PH_SYSTEM, NIXOS,
 
     source "$HOME/.includes_sh/shell_environment_nixos.conf"
 

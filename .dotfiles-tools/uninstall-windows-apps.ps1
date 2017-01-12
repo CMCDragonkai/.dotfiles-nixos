@@ -24,6 +24,7 @@ $AppsToBeUninstalled = @(
     'Microsoft.WindowsMaps'
     'Microsoft.ZuneMusic'
     'Microsoft.Freshpaint'
+    'microsoft.windowscommunicationsapps'
     'Flipboard.Flipboard'
     '9E2F88E3.Twitter'
     'king.com.CandyCrushSodaSaga'
