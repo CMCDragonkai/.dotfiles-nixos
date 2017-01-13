@@ -14,6 +14,7 @@ $AppsToBeUninstalled = @(
     'Microsoft.Office.Sway'
     'Microsoft.XboxApp'
     'Microsoft.MicrosoftStickyNotes'
+    'Microsoft.MinecraftUWP'
     'Microsoft.ConnectivityStore'
     'Microsoft.CommsPhone'
     'Microsoft.WindowsPhone'
@@ -30,6 +31,7 @@ $AppsToBeUninstalled = @(
     'king.com.CandyCrushSodaSaga'
     'Drawboard.DrawboardPDF'
     'Facebook.Facebook'
+    'Playtika.CaesarsSlotsFreeCasino'
 )
 
 foreach ($App in $AppsToBeUninstalled) {

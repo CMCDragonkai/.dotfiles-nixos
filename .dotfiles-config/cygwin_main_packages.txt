@@ -1,4 +1,6 @@
 # shell/system utilities
+cygwin
+cygwin32
 zsh
 ncurses
 gnupg
@@ -21,6 +23,8 @@ man-pages-posix
 libcaca-bin
 fontconfig
 xdg-user-dirs
+cron
+chere
 
 # network
 openssh
@@ -28,6 +32,7 @@ openssl
 openssl-devel
 mosh
 wget
+aria2
 curl
 whois
 weechat
@@ -58,15 +63,17 @@ subversion
 subversion-devel
 dos2unix
 binutils
+cygwin32-binutils
 bison
 autoconf
 automake
 diffutils
 patch
 cmake
+gdb
 cygport
 
-# c and c++ and assembly
+# c and c++ and assembly (64 bit cygwin, 32 bit cygwin, 64 bit mingw, 32 bit mingw)
 scons
 nasm
 llvm
@@ -75,9 +82,17 @@ mingw64-x86_64-llvm
 gcc-core
 gcc-g++
 gcc-fortran
+cygwin32-gcc-core
+cygwin32-gcc-g++
+cygwin32-gcc-fortran
+cygwin32-w32api-runtime
+cygwin32-w32api-headers
 mingw64-x86_64-gcc-core
 mingw64-x86_64-gcc-g++
 mingw64-x86_64-gcc-fortran
+mingw64-i686-gcc-core
+mingw64-i686-gcc-g++
+mingw64-i686-gcc-fortran
 
 # database
 sqlite3
@@ -94,6 +109,16 @@ R
 php
 php-curl
 php-json
+php-zip
+php-simplexml
+php-gd
+php-zlib
+php-posix
+php-sqlite3
+php-sockets
+php-ctype
+php-fileinfo
+php-phar
 
 # ruby
 ruby
@@ -221,6 +246,7 @@ libcdio_paranoia2
 libcdio_paranoia-devel
 libpulse0
 libpulse-devel
+libpulse-simple0
 libopenal1
 libopenal-devel
 libxcb-shape0
@@ -247,3 +273,20 @@ libgfortran3
 attr
 libattr1
 libattr-devel
+libgif4
+libgif-devel
+libmng1
+libmng2
+libmng-devel
+libdv4
+libdv-devel
+libopenjpeg1
+libopenjpeg-devel
+libilmbase12
+libilmbase-devel
+libIlmImf22
+libIlmImf-devel
+libdvdread4
+libdvdread-devel
+libaudio2
+libaudio-devel

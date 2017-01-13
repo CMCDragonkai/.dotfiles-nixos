@@ -1,2 +1,4 @@
+# executables
+dns-lexicon
 # libraries
 pyserial==3.1.1

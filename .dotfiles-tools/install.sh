@@ -92,14 +92,31 @@ EOF
     # The service will be setup
     rm --force /etc/cygserver.conf
     cygrunsrv --remove='cygserver' || true
-    echo "yes" | cygserver-config
+    echo 'yes' | cygserver-config
     cygrunsrv --start='cygserver'
+
+    # Enable cyglsa to allow user context switching without passing passwords
+    # This will be important for cron and sshd... etc
+    # However I cannot continue until I restart
+    echo 'yes' | cyglsa-config
+
+    # Enable cron as a service, running as Local System, using cyglsa, but don't start it running (start on reboot)
+    # Run `crontab -e` to setup a cron job or `cronevents` to view the log (only available on cygwin)
+    echo "yes\n\nno\nyes\nno" | cron-config
+
+    # Enable chere for right click context menu
+    chere -i -t mintty -s zsh
+
+    # Remember that cygrunsrv --list can be used to list all cygwin services
 
     # Symlinking locale.h to xlocale.h (extended locale)
     # Note that xlocale.h is an Apple provided wrapper around locale.h
     # Cygwin obviously does not distribute such a header
     # Some libraries like numpy may expect xlocale.h, but we can just point them to the existing locale.h
     ln --symbolic --force /usr/include/locale.h /usr/include/xlocale.h
+
+    # PHP's PCRE extension must not have JIT enabled because of data execution prevention
+    sed --regexp-extended --in-place 's/^;?pcre\.jit=[[:digit:]]/pcre.jit=0/g' /etc/php.ini
 
 fi
 
@@ -122,5 +139,10 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 
     # Install packages from source (no way to update them, they will always be forced)
     "$processing_dir"/.dotfiles-tools/upstall-source-packages.sh
+
+    # Assuming composer was installed by source installation scripts
+    if hash composer 2>/dev/null; then
+        composer global install --no-interaction
+    fi
 
 fi

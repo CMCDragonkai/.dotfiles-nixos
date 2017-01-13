@@ -167,6 +167,8 @@ if ($Stage -eq 0) {
     # This is because the PATH is not been completely configured for Cygwin before install.sh runs
     # This is only needed temporarily
     $Env:Path = (
+        "${InstallationDirectory}\cygwin64\usr\local\bin;" +
+        "${InstallationDirectory}\cygwin64\usr\local\sbin;" +
         "${InstallationDirectory}\cygwin64\usr\bin;" +
         "${InstallationDirectory}\cygwin64\usr\sbin;" +
         "${InstallationDirectory}\cygwin64\bin;" +

@@ -6,7 +6,6 @@ arduino,*,chocolateyget
 ConEmu,16.12.6.0,chocolateyget
 vault,*,chocolateyget
 keepass,*,chocolateyget
-keepass-plugin-keeagent,*,chocolateyget
 keeweb,*,chocolateyget
 procexp,*,chocolateyget
 procmon,*,chocolateyget

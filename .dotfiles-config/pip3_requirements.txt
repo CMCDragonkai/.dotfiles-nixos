@@ -6,5 +6,9 @@ csvkit==0.9.1
 awscli==1.11.12
 virtualenv==15.0.3
 sphinx==1.5.1
+youtube_dl==2017.1.10
 # libraries
 pyserial==3.1.1
+
+# requires python 3.5 (wait till it is available)
+# mitmproxy

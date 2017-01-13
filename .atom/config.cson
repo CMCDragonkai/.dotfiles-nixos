@@ -10,5 +10,9 @@
     userId: "5cd65f0b-caa6-1a82-0e97-7baebc07b937"
   "line-ending-selector":
     defaultLineEnding: "LF"
+  "spell-check":
+    locales: [
+      "en-GB"
+    ]
   welcome:
     showOnStartup: false
