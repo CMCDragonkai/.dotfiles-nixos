@@ -1,6 +1,9 @@
 # If any file is text, convert to LF
 * text=auto
 
+# Patch files should not be normalised
+*.diff -text
+
 # Archives
 *.gz binary
 *.xz binary

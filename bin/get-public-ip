@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 
-# try one of them until one succeeds
+# because different sources might be spoofed, it's best to use multiple sources
+# if you only want the first successful answer, then just read a line at a time until you get an answer and discard all previous lines
 
-# if dig exists
-dig +short myip.opendns.com @resolver1.opendns.com | tr -d "\n"
-dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | tr -d '"'
+if hash dig 2>/dev/null; then
+    echo -e "opendns.com:\t""$(dig +short myip.opendns.com @resolver1.opendns.com | head --lines=1 | tr --delete ' \t\n\r\f')"
+    echo -e "google.com:\t""$(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | head --lines=1 | tr --delete '" \t\n\r\f')"
+else
+    echo -e "opendns.com:\t""$(host myip.opendns.com resolver1.opendns.com | grep 'myip.opendns.com has address ' | cut -c 30- | tr --delete ' \t\n\r\f')"
+fi
 
-# if dig doesn't exist
-host myip.opendns.com resolver1.opendns.com | grep 'myip.opendns.com has address ' | cut -c 30-
-
-# if all of the above didn't work, try one of the below
-# echo is required to make sure we always get a newline
-echo $(curl ipecho.net/plain 2>/dev/null)
-echo $(curl icanhazip.com 2>/dev/null)
-echo $(curl ip.appspot.com 2>/dev/null)
-echo $(curl eth0.me 2>/dev/null)
+echo -e "ipecho.net:\t""$(curl ipecho.net/plain 2>/dev/null)"
+echo -e "icanhazip.com:\t""$(curl icanhazip.com 2>/dev/null)"
+echo -e "ip.appspot.com:\t""$(curl ip.appspot.com 2>/dev/null)"
+echo -e "eth0.me:\t""$(curl eth0.me 2>/dev/null)"

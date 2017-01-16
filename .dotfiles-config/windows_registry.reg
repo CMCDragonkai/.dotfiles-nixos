@@ -2,6 +2,10 @@ Windows Registry Editor Version 5.00
 
 ; Verified for Windows 10 version 1607 (OS Build 14393.447)
 
+; Make sure the lock screen shows after screen timeout, screen saver, sleep or hibernate
+[HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Control Panel\Desktop]
+"ScreenSaverIsSecure"="1"
+
 ; Don't show notifications above the lock screen
 ; Don't show notifications when duplicating the screen
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings]

@@ -1,5 +1,5 @@
 {
     "require": {
-        "psy/psysh": "@stable"
+        "psy/psysh": "0.8.0"
     }
 }

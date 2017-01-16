@@ -1,0 +1,2 @@
+# use pacakge@latest if you want the latest one
+resume-cli,0.4.12

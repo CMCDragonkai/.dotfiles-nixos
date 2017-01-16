@@ -602,3 +602,43 @@ rem The above will clean all the build artifacts including the nbody.exe
 This shows you don't really need all of Visual Studio to work with CUDA. You just need the Visual C++ Build Tools package.
 
 Running the above requires the .NET Framework 3.5 feature to be enabled. This is already automated in `./install.ps1`.
+
+---
+
+Microsoft SQL Server Express is installed. Use `Start-Service -Name 'MSSQL$SQLEXPRESS'` and `Restart-Service -Name 'MSSQL$SQLEXPRESS'` to start the service up when you want to work on it.
+
+You must enable Named Pipes and TCP/IP connections via `Sql Server Configuration Manager`, and the settings are located at `SQL Server Network Configuration/Protocols for SQLEXPRESS`. When enabling the TCP/IP connection, make sure to check the properties so it is not listening on all IPs. Instead individually enable the interfaces you want SQL Server to listen on. In the beginning, only enable `127.0.0.1` and `::1` interfaces. Make sure to set the `TCP port` to `1433` (for both `127.0.0.1` and `::1`) and blank out the `TCP Dynamic Ports` field.
+
+After restarting Powershell, you can run `sqlcmd -S .\SQLEXPRESS`.
+
+You are now connected to SQL Server via the Powershell command line. Note that the `sqlcmd` will not be available in the Cygwin environment.
+
+Try this (yes the command terminator is a `GO` line...):
+
+```
+>> sp_databases;
+>> GO
+```
+
+Or if running directly from the terminal:
+
+```
+> sqlcmd -S .\SQLEXPRESS -Q "sp_databases;"
+```
+
+To connect via DBeaver, follow these instructions:
+
+> To create a "Microsoft Driver" connection in DBeaver
+> Create a new connection, specifying MS SQL Server | Microsoft Driver
+> Fill out the info on the first (General) tab, without specifying User name and Password (leave them blank).
+> Go to the Driver properties tab and set integratedSecurity=true.
+> And, once again, just to emphasize where to enter this: it's entered on the "Driver properties" tab -- not in the dialog box you get to by clicking the "Edit Driver Settings" button that's on the General tab.
+> Click the "Test Connection..." button to make sure it works, click Next a couple of times, then click Finish.
+
+---
+
+Generate the resume with:
+
+```
+cd ~ && resume export 'Roger Qiu.html' --theme=slick
+```

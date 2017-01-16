@@ -14,30 +14,30 @@
 # System PATH is given priority over User PATH because it is prepended
 # Windows doesn't just look for executables but anything in the PATHEXT including DLLs
 
-$UserPaths = 
+$UserPaths =
     # Original User Paths
     '%LOCALAPPDATA%\Microsoft\WindowsApps',
     # Custom local executables
     '%LOCALAPPDATA%\bin'
 
-$SystemPaths = 
+$SystemPaths =
     # Original System Paths
-    '%SystemRoot%\system32', 
-    '%SystemRoot%', 
-    '%SystemRoot%\System32\Wbem', 
-    '%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\', 
+    '%SystemRoot%\system32',
+    '%SystemRoot%',
+    '%SystemRoot%\System32\Wbem',
+    '%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\',
     # NVIDIA graphics driver DLLs
-    '%ProgramFiles(x86)%\NVIDIA Corporation\PhysX\Common', 
+    '%ProgramFiles(x86)%\NVIDIA Corporation\PhysX\Common',
     # Custom global executables
-    '%ALLUSERSPROFILE%\bin', 
+    '%ALLUSERSPROFILE%\bin',
     # Chocolatey global executables
-    '%ChocolateyInstall%\bin', 
+    '%ChocolateyInstall%\bin',
     # JDK (preferred over JRE)
-    '%JAVA_HOME%\bin', 
+    '%JAVA_HOME%\bin',
     # Windows 10 SDK
-    '%ProgramFiles(x86)%\Windows Kits\10\Windows Performance Toolkit', 
+    '%ProgramFiles(x86)%\Windows Kits\10\Windows Performance Toolkit',
     # CUDA
-    '%CUDA_PATH%\bin', 
+    '%CUDA_PATH%\bin',
     '%CUDA_PATH%\libnvvp'
 
 # Filter out PATHs that don't exist

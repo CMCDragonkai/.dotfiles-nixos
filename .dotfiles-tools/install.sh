@@ -65,6 +65,8 @@ if [[ "$(uname -s)" == Linux* ]]; then
 
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
+    "$processing_dir"/.dotfiles-tools/set-timezone.sh
+
     # Merge Windows User Temporary with Cygwin /tmp
     cat <<'EOF' >/etc/fstab
 # /etc/fstab
@@ -72,8 +74,6 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
 none /cygdrive cygdrive binary,posix=0,user 0 0
 none /tmp usertemp binary,posix=0 0 0
 EOF
-
-    "$processing_dir"/.dotfiles-tools/set-timezone.sh
 
     # Change default shell to zsh
     # On Linux we could use chsh --shell
@@ -109,14 +109,20 @@ EOF
 
     # Remember that cygrunsrv --list can be used to list all cygwin services
 
+    # Compatibility tweaks...
+
     # Symlinking locale.h to xlocale.h (extended locale)
     # Note that xlocale.h is an Apple provided wrapper around locale.h
     # Cygwin obviously does not distribute such a header
     # Some libraries like numpy may expect xlocale.h, but we can just point them to the existing locale.h
     ln --symbolic --force /usr/include/locale.h /usr/include/xlocale.h
 
-    # PHP's PCRE extension must not have JIT enabled because of data execution prevention
-    sed --regexp-extended --in-place 's/^;?pcre\.jit=[[:digit:]]/pcre.jit=0/g' /etc/php.ini
+    # Patching npm to make it work in Cygwin (specifically Cygwin's git)
+    # Patch derived from https://github.com/emigenix/npm_on_cygwin
+    # This was created with `unix2dos` and `diff --unified`
+    if patch --dry-run --force --silent "$PROGRAMFILES/nodejs/node_modules/npm/lib/utils/git.js" "$processing_dir/.dotfiles-data/npm-git.diff" >/dev/null 2>&1; then
+        patch --backup "$PROGRAMFILES/nodejs/node_modules/npm/lib/utils/git.js" "$processing_dir/.dotfiles-data/npm-git.diff"
+    fi
 
 fi
 
@@ -135,6 +141,12 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
         "$processing_dir"/.dotfiles-tools/upstall-python-packages.sh --force
     else
         "$processing_dir"/.dotfiles-tools/upstall-python-packages.sh
+    fi
+
+    if $force; then
+        "$processing_dir"/.dotfiles-tools/upstall-node-packages.sh --force
+    else
+        "$processing_dir"/.dotfiles-tools/upstall-node-packages.sh
     fi
 
     # Install packages from source (no way to update them, they will always be forced)

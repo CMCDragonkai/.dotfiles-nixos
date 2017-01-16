@@ -1,0 +1,177 @@
+{
+    "basics": {
+        "name": "Roger Qiu",
+        "label": "Entrepreneur, Developer and Designer",
+        "email": "roger.qiu@polyhack.io",
+        "location": {
+            "address": "Sydney"
+        },
+        "profiles": [
+            {
+                "network": "Github",
+                "username": "CMCDragonkai",
+                "url": "https://gist.github.com/CMCDragonkai"
+            }
+        ]
+    },
+    "work": [
+        {
+            "company": "Matrix AI",
+            "position": "Founder",
+            "website": "https://matrix.ai",
+            "startDate": "2014-04-01",
+            "summary": "Operating System for Distributed Infrastructure and Internet of Things",
+            "highlights": [
+                "Developing a compiler for a new language designed for type-safe distributed service composition. This involved research into type systems, compilers, distributed systems and operating system fundamentals.",
+                "Contributor to the NixOS and Nixpkgs Open Source Community, developed stage 1 and stage 2 boot logging feature. (https://github.com/NixOS/nixpkgs/pull/13119)",
+                "Developing a content addressed store based on IPFS for package sources in order to improve package build reproducibility. (https://github.com/MatrixAI/Forge-Package-Archiving)",
+                "Experiments involving many infrastructure tools including Packer, Git, Vagrant, Vault, Mesos, CoreOS, Docker, Ansible, Let's Encrypt, Scheduling, Network Namespaces, systemd, Unix security (DAC, Polkit, ACLs, MAC)."
+            ]
+        },
+        {
+            "company": "Illuminate Imaging",
+            "position": "CoFounder",
+            "website": "https://illuminate.io",
+            "startDate": "2015-09-01",
+            "summary": "Image Processing Consulting Group with a Focus on the Resources Industry.",
+            "highlights": [
+                "Won first place in accuracy (second place in prize money) during the GoldFields sponsored Unearthed Ore-X Datascience Competition involving Gold Ore Quality Detection in Underground Tunnel Mining Photos. (http://portal.unearthed.solutions/2-gold-fields-aug-2015)",
+                "Won the NASSCOM National Student Innovation Award in 2016. (https://nasscom.org.au/awards-2016/)",
+                "Currently involved in project involving Noise Reduction in Geomagnetic Surveys in Australia."
+            ]
+        },
+        {
+            "company": "PhonicsHero",
+            "position": "Software Developer Consultant",
+            "website": "https://phonicshero.com",
+            "startDate": "2014-10-01",
+            "summary": "Developed Frontend and Backend Features along with Database Maintenance",
+            "highlights": [
+                "Rewrote a legacy PHP payment system from Paypal to Braintree. This touched many areas in the backend and frontend.",
+                "Restored server operations and database data from backups during a complete server failure."
+            ]
+        },
+        {
+            "company": "Toyota East Timor",
+            "position": "Software Developer Consultant",
+            "website": "https://github.com/Polycademy/autotimorleste",
+            "startDate": "2013-11-01",
+            "endDate": "2015-02-22",
+            "summary": "Developed Wordpress website for Toyota East Timor."
+        },
+        {
+            "company": "SnapSearch",
+            "position": "CoFounder",
+            "website": "https://snapsearch.io",
+            "startDate": "2013-09-01",
+            "summary": "1. SEO for JavaScript, HTML5 and Single Page Applications 2. JavaScript Enhanced Data Scraping 3. Firefox as a Service",
+            "highlights": [
+                "Network namepacing the Firefox workers so that the network processing is handled in an isolated container from the rest of the server.",
+                "Implemented a utility-tracking payment system that handled complex payment flows such as grace periods and integrated into Stripe. (https://gist.github.com/CMCDragonkai/da87036942f99f531510654b2cd9b19f)",
+                "Automated Firefox workers to intelligently scrape JavaScript enhanced websites in order to produce a snapshot so that simple spider bots can parse JavaScript enhanced content.",
+                "Project managed and developed 4 client middleware in PHP, Ruby, Node.js and Python.",
+                "Frontend of SnapSearch implemented in AngularJS."
+            ]
+        },
+        {
+            "company": "Polycademy",
+            "position": "Founder",
+            "website": "http://polycademy.com",
+            "startDate": "2012-11-01",
+            "summary": "Setup an Physical School for Web Application Development and Entrepreneurship in Canberra. Developed course material involving Web Design, PHP and AngularJS. Taught 4 students over 3 months and one-on-one tutoring for another 3 months.",
+            "highlights": [
+                "First Proper Company!",
+                "First developer bootcamp in Australia.",
+                "Got the first cohort of students to develop their application, and was able to have a demo day at the end showcasing an online chess game, parking finder application and more.",
+                "Licensed Polycademy's course material to Code Master Institute in Perth (and they are still running with it!). (http://www.codemasterinstitute.com)",
+                "Developed a Codeacademy-like application teaching PHP. (https://github.com/Polycademy/php_bounce)",
+                "Started Code for Australia."
+            ]
+        }
+    ],
+    "volunteer": [
+        {
+            "organization": "AIESEC ANU",
+            "position": "President",
+            "website": "http://www.aiesecaustralia.org/",
+            "startDate": "2011-12-01",
+            "endDate": "2012-11-01",
+            "summary": "President of AIESEC Australian National University, a student society focused on leadership development and international internships.",
+            "highlights": [
+                "Awarded 'Best Role Model of 2012'",
+                "Organised the 'Initiate The Tour: Leadership & Convergence' conference. Acquired the ANU Vice Chancellor to speak at the event with roughly 80 participants.",
+                "Developed the website for AIESEC ANU."
+            ]
+        }
+    ],
+    "education": [
+        {
+            "institution": "Australian National University",
+            "area": "International Relations",
+            "studyType": "Bachelor",
+            "startDate": "2010-01-01",
+            "endDate": "2013-12-01",
+            "courses": [
+                "Economics",
+                "Sociology",
+                "Environmental Science",
+                "Classical Chinese"
+            ]
+        }
+    ],
+    "publications": [
+        {
+            "name": "Building a Physical Analogue for Feedback Rich Systems",
+            "releaseDate": "2016-11-13",
+            "website": "https://github.com/MatrixAI/Inertial-Orbit-Detection",
+            "summary": "Co-developed the controller, game and server software for a systems engineering thesis at the Australian National University. This involved processing code for a flappy bird clone, C for the arduino rotational sensor, and Python for rotation processing server which handles serial input from the controller, sampling a rolling window of inertial sensor data, signal processing the raw data into a sine wave, and frequency estimation via numpy and scipy. It finally plots the data and sends the data to the game as input."
+        },
+        {
+            "name": "History Data Structures",
+            "releaseDate": "2016-06-15",
+            "website": "https://gist.github.com/CMCDragonkai/d266a3055735545447439f0fa662a0e1",
+            "summary": "A discussion about data structures supporting history traversal."
+        }
+    ],
+    "skills": [
+        {
+            "name": "Software Development",
+            "keywords": [
+                "PHP (https://gist.github.com/search?l=PHP&q=user%3ACMCDragonkai)",
+                "SQL (https://gist.github.com/search?l=SQL&q=user%3ACMCDragonkai)",
+                "Haskell (https://gist.github.com/search?l=Haskell&q=user%3ACMCDragonkai)",
+                "Elixir (https://gist.github.com/search?l=Elixir&q=user%3ACMCDragonkai)",
+                "Python (https://gist.github.com/search?l=Python&q=user%3ACMCDragonkai)",
+                "Javascript (https://gist.github.com/search?l=JS&q=user%3ACMCDragonkai)",
+                "Twelf (https://gist.github.com/search?q=user%3ACMCDragonkai+Twelf&ref=searchresults)",
+                "Bash (https://gist.github.com/search?l=Shell&q=user%3ACMCDragonkai)",
+                "C (https://gist.github.com/search?l=C&q=user%3ACMCDragonkai)",
+                "C++ (https://gist.github.com/search?l=C%2B%2B&q=user%3ACMCDragonkai)",
+                "Git (https://gist.github.com/search?q=user%3ACMCDragonkai+git&ref=searchresults)"
+            ]
+        },
+        {
+            "name": "Software Design",
+            "keywords": [
+                "Photoshop (pixelapse website)"
+            ]
+        },
+        {
+            "name": "Business Management",
+            "keywords": [
+                "Completed Australian R&D Tax Incentive applications 4 times for my projects and startups.",
+                "Managed the accounting and tax reporting of 3 businesses."
+            ]
+        }
+    ],
+    "languages": [
+        {
+            "language": "English",
+            "fluency": "Native speaker"
+        },
+        {
+            "language": "Chinese",
+            "fluency": "Working proficiency"
+        }
+    ]
+}

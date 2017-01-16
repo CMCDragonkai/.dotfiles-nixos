@@ -119,6 +119,10 @@ php-sockets
 php-ctype
 php-fileinfo
 php-phar
+php-readline
+php-tokenizer
+php-iconv
+php-mbstring
 
 # ruby
 ruby
