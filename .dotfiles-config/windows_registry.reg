@@ -2,10 +2,6 @@ Windows Registry Editor Version 5.00
 
 ; Verified for Windows 10 version 1607 (OS Build 14393.447)
 
-; Make sure the lock screen shows after screen timeout, screen saver, sleep or hibernate
-[HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Control Panel\Desktop]
-"ScreenSaverIsSecure"="1"
-
 ; Don't show notifications above the lock screen
 ; Don't show notifications when duplicating the screen
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings]
@@ -128,14 +124,6 @@ Windows Registry Editor Version 5.00
 [HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Internet Explorer\Main]
 "DisableFirstRunCustomize"=dword:00000001
 
-; Show hibernate option in power menu
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings]
-"ShowHibernateOption"=dword:00000001
-
-; Enable fast boot (disable this if you're doing dual booting)
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power]
-"HiberbootEnabled"=dword:00000001
-
 ; Removing all folders from Frequent Places ("This PC")
 ; Placing folders is just redundant, it's just a lot of UI noise
 
@@ -174,6 +162,43 @@ Windows Registry Editor Version 5.00
 "ThisPCPolicy"="Hide"
 [HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag]
 "ThisPCPolicy"="Hide"
+
+; Showing settings in Advanced Power Options (in some cases it also makes the settings show in powercfg)
+; require password on wakeup
+; console lock display off time-out
+; dim display after
+; network connectivity in standby
+; allow away mode policy
+; sleep after
+; allow wake timers
+; allow system required policy
+; allow display required policy
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\0E796BDB-100D-47D6-A2D5-F7D2DAA51F51]
+"Attributes"=dword:00000002
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\7516b95f-f776-4464-8c53-06167f40cc99\8EC4B3A5-6868-48c2-BE75-4F3044BE88A7]
+"Attributes"=dword:00000002
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\7516b95f-f776-4464-8c53-06167f40cc99\17aaa29b-8b43-4b94-aafe-35f64daaf1ee]
+"Attributes"=dword:00000002
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\F15576E8-98B7-4186-B944-EAFA664402D9]
+"Attributes"=dword:00000002
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\238C9FA8-0AAD-41ED-83F4-97BE242C8F20\25DFA149-5DD1-4736-B5AB-E8A37B5B8187]
+"Attributes"=dword:00000002
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\238C9FA8-0AAD-41ED-83F4-97BE242C8F20\29f6c1db-86da-48c5-9fdb-f2b67b1f44da]
+"Attributes"=dword:00000002
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\238C9FA8-0AAD-41ED-83F4-97BE242C8F20\BD3B718A-0680-4D9D-8AB2-E1D2B4AC806D]
+"Attributes"=dword:00000002
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\238C9FA8-0AAD-41ED-83F4-97BE242C8F20\A4B195F5-8225-47D8-8012-9D41369786E2]
+"Attributes"=dword:00000002
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\7516b95f-f776-4464-8c53-06167f40cc99\A9CEB8DA-CD46-44FB-A98B-02AF69DE4623]
+"Attributes"=dword:00000002
+
+; Show hibernate option in power menu
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings]
+"ShowHibernateOption"=dword:00000001
+
+; Enable fast boot (disable this if you're doing dual booting)
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power]
+"HiberbootEnabled"=dword:00000001
 
 ; Initial JAVA Preferences (an empty key suffices)
 ; Not doing this means many Java applications show a useless warning

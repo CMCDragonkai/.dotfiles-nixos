@@ -189,7 +189,8 @@ if ($Stage -eq 0) {
     echo "3. Use msconfig to disable startup services and tasks that are unnecessary. This will speed up bootup and restarts."
     echo "4. Remember to run ${Env:USERPROFILE}/.dotfiles/.dotfiles-tools/set-windows-path.ps1."
     echo "5. Configure to use your local DNS server and Hosts file, point your DNS address on relevant network interfaces to 127.0.0.1 and ::1."
-    echo "6. Finally restart your computer!"
+    echo "6. Remember to check your Sign-in options and make sure to select that you want to sign-in on every time you are away."
+    echo "7. Finally restart your computer!"
 
 }
 

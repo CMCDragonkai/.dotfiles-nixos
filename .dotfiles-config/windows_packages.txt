@@ -129,6 +129,7 @@ gifcam,*,chocolateyget
 kicad,*,chocolateyget
 
 # windows packages not yet available or do not work on chocolatey
+# remember to prefer using AppData\Local not AppData\Roaming!
 # wordweb
 # netsetman
 # protege
@@ -147,3 +148,4 @@ kicad,*,chocolateyget
 # spotify
 # adobe creative suite
 # portfolio performance (https://github.com/buchen/portfolio)
+# gisto
