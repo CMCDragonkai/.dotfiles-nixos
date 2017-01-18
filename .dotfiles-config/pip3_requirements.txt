@@ -9,6 +9,8 @@ sphinx==1.5.1
 youtube_dl==2017.1.10
 # libraries
 pyserial==3.1.1
+boto3==1.4.4
+GDAL==2.1.0
 
 # requires python 3.5 (wait till it is available)
 # mitmproxy
