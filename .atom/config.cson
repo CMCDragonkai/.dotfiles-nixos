@@ -1,5 +1,7 @@
 "*":
   core:
+    autoHideMenuBar: true
+    openEmptyEditorOnStart: false
     projectHome: "%USERPROFILE%\\Projects"
     telemetryConsent: "no"
   editor:

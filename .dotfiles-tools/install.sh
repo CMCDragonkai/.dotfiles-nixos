@@ -20,6 +20,7 @@ done
 
 # Fix the origin URL for this repository
 origin='https://github.com/CMCDragonkai/.dotfiles.git'
+origin_git='git@github.com:CMCDragonkai/.dotfiles.git'
 
 # Installation might have started via a zipball download
 # The zipballs will not contain all files that would in a legitimate repository
@@ -54,6 +55,10 @@ pushd "$repository_path"
             sleep 5
             exit 1
         fi
+        # HTTP cloning does not require authentication
+        # However it does not allow push access
+        # So we convert to using SSH instead of HTTP
+        cd "$processing_dir" && git remote set-url origin "$origin_git"
         chmod u=rwx,g=,o= "$processing_dir"
 
     fi

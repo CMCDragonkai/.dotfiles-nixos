@@ -81,6 +81,7 @@ calibre,*,chocolateyget
 evernote,*,chocolateyget
 ghostscript.app,*,chocolateyget
 xmind,*,chocolateyget
+miktex,*,chocolateyget
 
 # communication
 skype,*,chocolateyget

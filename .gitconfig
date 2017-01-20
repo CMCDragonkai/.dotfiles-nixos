@@ -1,8 +1,9 @@
 [core]
-    autocrlf = input 
-    safecrlf = true 
+    autocrlf = input
+    safecrlf = true
     eol = lf
-    excludesfile = ~/.gitignore_global
+    excludesfile = ~/.config/git/ignore
+    attributesfile = ~/.config/git/attributes
 [user]
     name = Roger Qiu
     email = roger.qiu@polycademy.com
@@ -13,3 +14,7 @@
     tree = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit
     tree-stat = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit --stat
     tree-patch = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit --patch
+    srv = !git daemon --base-path=. --reuseaddr --informative-errors --verbose
+    srv-all = !git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose
+    srv-rcv = !git daemon --base-path=. --enable=receive-pack --reuseaddr --informative-errors --verbose
+    srv-rcv-all = !git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose
