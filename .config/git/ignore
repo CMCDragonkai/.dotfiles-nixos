@@ -1,3 +1,6 @@
+# Do not ignore any `.gitkeep` files #
+!.gitkeep
+
 # OS generated files #
 .DS_Store
 .DS_Store?
@@ -9,17 +12,3 @@ Thumbs.db
 .*.un~         # undo files
 .*.sw[m-p]     # swap files
 Session.vim    # session files
-
-# Do not ignore any `.gitkeep` files #
-!.gitkeep
-
-# Ignore generated files #
-/.ssh/config
-/.bash_env
-/.bash_profile
-/.bashrc
-/.pam_environment
-/.xprofile
-/.zlogin
-/.zshenv
-/.zshrc
