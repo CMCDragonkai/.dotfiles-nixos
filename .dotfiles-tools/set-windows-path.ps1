@@ -38,7 +38,11 @@ $SystemPaths =
     '%ProgramFiles(x86)%\Windows Kits\10\Windows Performance Toolkit',
     # CUDA
     '%CUDA_PATH%\bin',
-    '%CUDA_PATH%\libnvvp'
+    '%CUDA_PATH%\libnvvp',
+    # Windows Git
+    '%ProgramFiles%\Git\cmd',
+    # MikTex 2.9
+    '%ProgramFiles%\MiKTeX 2.9\miktex\bin\x64\'
 
 # Filter out PATHs that don't exist
 $UserPaths = $UserPaths | Where-Object { Test-Path "$([System.Environment]::ExpandEnvironmentVariables(`"$_`"))" -PathType Container }
@@ -47,6 +51,9 @@ $SystemPaths = $SystemPaths | Where-Object { Test-Path "$([System.Environment]::
 # We should always have a semicolon at the very end to make it predictable to append
 $UserPaths = ($UserPaths -Join ';') + ';'
 $SystemPaths = ($SystemPaths -Join ';') + ';'
+
+# Because these PATHs have expandable strings, we cannot use the normal [Environment]::SetEnvironmentVariable function
+# Instead we need to go the registry and make sure our environment variable is considered an expandable string
 
 try {
 

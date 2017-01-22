@@ -60,3 +60,8 @@ function Append-Idempotent {
 # Disable Cygwin warning about Unix file paths
 [Environment]::SetEnvironmentVariable("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("CYGWIN", "nodosfilewarning", [System.EnvironmentVariableTarget]::Process)
+
+# GOPATH points to where go dependencies should be installed
+# This is only required because Golang is a Windows executable
+[Environment]::SetEnvironmentVariable("GOPATH", "${Env:UserProfile}\.go", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("GOPATH", "${Env:UserProfile}\.go", [System.EnvironmentVariableTarget]::Process)

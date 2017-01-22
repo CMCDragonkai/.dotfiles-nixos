@@ -154,6 +154,12 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
         "$processing_dir"/.dotfiles-tools/upstall-node-packages.sh
     fi
 
+    if $force; then
+        "$processing_dir"/.dotfiles-tools/upstall-go-packages.sh --force
+    else
+        "$processing_dir"/.dotfiles-tools/upstall-go-packages.sh
+    fi
+
     # Install packages from source (no way to update them, they will always be forced)
     "$processing_dir"/.dotfiles-tools/upstall-source-packages.sh
 

@@ -1,3 +1,5 @@
+# Not all executables work using Windows symlinks, since some applications use relative addressing
+
 chrome.exe,%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe
 opera.exe,%ProgramFiles(x86)%\Opera\Launcher.exe
 fiddler.exe,%ProgramFiles(x86)%\Fiddler2\Fiddler.exe
