@@ -76,6 +76,29 @@ eval-unpack () {
 
 }
 
+: '
+set-title - Set the shell title
+'
+set_title() {
+
+	# emacs terminal does not support settings the title
+	(( ${+EMACS} )) && return
+
+	# tell the terminal we are setting the title
+	print -n '\e]0;'
+	# show hostname if connected through ssh
+	[[ -n $SSH_CONNECTION ]] && print -Pn '(%m) '
+	case $1 in
+		expand-prompt)
+			print -Pn $2;;
+		ignore-escape)
+			print -rn $2;;
+	esac
+	# end set title
+	print -n '\a'
+
+}
+
 # ZSH Aliases
 
 m4_include(shell_aliases.conf.m4)
@@ -139,7 +162,7 @@ create_rprompt () {
     if git_status="$(rprompt_git_status)"; then
         rprompt+="$git_status "
     fi
-    rprompt+='%f%F{110}%*%f'
+    rprompt+='%f%F{81}%y%f %F{110}%*%f'
     printf '%s' "$rprompt"
 
 }
@@ -168,15 +191,40 @@ TRAPUSR1 () {
     zle reset-prompt
 }
 
-# Hooking into pre-prompt commands
-precmd_functions=($precmd_functions precmd_job_count precmd_rprompt)
 
-chpwd_functions=($chpwd_functions chpwd_git_repo)
+if [[ -n $SSH_CONNECTION ]]; then
+    PROMPT='%F{100}%n%f ➜ %F{112}%m%f '
+else
+    PROMPT=''
+fi
 
-PROMPT='%F{100}%n%f ➜ %F{112}%m%f ➜ %F{100}%B${PWD/#$HOME/~}%b%f
- ೱ '
+PROMPT+='%F{150}»»%f %F{100}%B${PWD/#$HOME/~}%b%f
+ %F{180}%(!.%(?.♔.♚).%(?.♖.♜))%f '
 
 RPROMPT=''
+
+# ZSH Title
+
+precmd_set_title () {
+
+    set_title 'expand-prompt' '$SHELL: %~'
+
+}
+
+preexec_set_title () {
+
+    set_title 'ignore-escape' "$2: ${PWD/#$HOME/~}"
+
+}
+
+# ZSH Hooks
+
+# Hooking into pre-prompt commands
+precmd_functions=($precmd_functions precmd_job_count precmd_rprompt precmd_set_title)
+
+preexec_functions=($preexec_functions preexec_set_title)
+
+chpwd_functions=($chpwd_functions chpwd_git_repo)
 
 zshexit () {
     rm --force "$ph_async_rprompt_file"
