@@ -34,6 +34,7 @@
 *.so binary
 *.o binary
 *.dll binary
+*.a binary
 
 # Documents
 *.pdf binary
