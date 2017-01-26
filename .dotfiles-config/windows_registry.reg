@@ -86,6 +86,14 @@ Windows Registry Editor Version 5.00
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
 "SoftLandingEnabled"=dword:00000000
 
+; Don't show the windows ink workspace on the task bar (you can still access its features in the pen settings)
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\PenWorkspace]
+"PenWorkspaceButtonDesiredVisibility"=dword:00000000
+
+; Don't show touch keyboard on taskbar (you can still access it in tablet mode)
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\TabletTip\1.7]
+"TipbandDesiredVisibility"=dword:00000000
+
 ; UAC cannot be disabled anymore because some applications require it
 ; Instead we set Administrators to never be prompted
 ; Users will get prompted and be asked to reauthenticate

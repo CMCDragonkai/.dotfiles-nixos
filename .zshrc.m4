@@ -192,13 +192,13 @@ TRAPUSR1 () {
 }
 
 
+PROMPT='%F{150}»»%f '
+
 if [[ -n $SSH_CONNECTION ]]; then
-    PROMPT='%F{100}%n%f ➜ %F{112}%m%f '
-else
-    PROMPT=''
+    PROMPT+='%F{100}%n%f ➜ %F{112}%m%f '
 fi
 
-PROMPT+='%F{150}»»%f %F{100}%B${PWD/#$HOME/~}%b%f
+PROMPT+='%F{100}%B${PWD/#$HOME/~}%b%f
  %F{180}%(!.%(?.♔.♚).%(?.♖.♜))%f '
 
 RPROMPT=''

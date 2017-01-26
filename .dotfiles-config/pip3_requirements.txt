@@ -12,6 +12,7 @@ pyserial==3.1.1
 boto3==1.4.4
 GDAL==2.1.0
 SQLAlchemy==1.1.4
+overpass==0.5.6
 
 # requires python 3.5 (wait till it is available)
 # mitmproxy

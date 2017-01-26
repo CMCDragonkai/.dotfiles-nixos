@@ -642,3 +642,74 @@ Generate the resume with:
 ```
 cd ~ && resume export 'Roger Qiu.html' --theme=slick
 ```
+
+---
+
+Windows Ink Workspace Settings:
+
+Pen settings, make sure to turn on bluetooth and disconnect and re-pair the pen by holding down on the top button.
+
+Click once: Launch screen sketch in Windows Ink Workspace.
+Double tap: Send screen shot to OneNote.
+Press and Hold: Launch Sketchpad.
+
+---
+
+Virtual desktops/Workspaces:
+
+Windows:
+
+Win + Ctrl + D : to create new desktop
+Win + Ctrl + F4 (Fn) : to destroy current desktop (moves all windows to previous desktop)
+Win + Ctrl + Left/Right : move between desktops
+Win + Tab : Show all windows and virtual desktops
+Four Finger Scroll Left/Right : move between desktops
+Three Finger Scroll Left/Right : see alt+tab
+
+Unfortunately on Windows, you cannot project virtual desktops to multiple monitors
+
+XMonad:
+
+---
+
+Full Disk Encryption
+
+Windows:
+
+Go to gpedit.msc and `Computer Configuration -> Administrative Templates -> Windows Components -> Bitlocker Drive Encryption -> Operating System Drives`, and activate these 3:
+
+* Require additional authentication at startup
+* Enable use of Bitlocker authentication requiring preboot keyboard input on slates
+* Allow enhanced PINs for startup
+
+All the sub-options can be left as default.
+
+You can now add a TPMAndPin authentication:
+
+```
+manage-bde -protectors -add c: -TPMAndPin
+```
+
+Remember to backup your Recovery Key (called "Numerical Password" or "Recovery Password") to a USB and paper.
+
+You never use the recovery key unless you need it. This is equivalent to key escrow.
+
+Beware, this requires you to have used storage spaces to softraid multiple drives if necessary, NTFS compression enabled, for your hardware to have TPM enabled and for your hardware to have a preboot input capability. Certain tablets do not have preboot input capability (which requires a USB keyboard connected at preboot). Surface Pros 2, 3, and 4 have it, but I don't know if Surface Pro 1 supports it.
+
+Unlike the Linux method, the keys are not password-protected. Even with TPMAndPin, all this means is that you need both the key inside the TPM and the Pin. If it were like Linux, you'd only need the key inside TPM, but the key itself would be password protected. This is a limitation we must live with... However it is possible for you to password protect the recovery key, and only backup the encrypted version, but that's up to you.
+
+Hibernation will cause bitlocker to lock the drive btw.
+
+Also unlike Linux, Bitlocker can work on top of Storage Spaces. Whereas on Linux until native ZFS encryption arrives, you're stuck with ZFS on top of LUKS (instead of LUKS on top of ZFS). This is where the complication of LUKS comes in, when you need to deal with multiple drives, each which needs to be unlocked prior to ZFS being able to mount its root. However there is one major issue, storage spaces are not bootable (unlike mdadm raid or lvm on Linux), so the bitlocker encryption for a storage space will be completely separate from the systemdrive that we assume above. If you would like the chain them together, it's generally sufficient to make a script that unlocks the storage space upon bootup of the OS.
+
+Linux:
+
+> It is possible to define up to 8 different keys per LUKS partition. This enables the user to create access keys for save backup storage: In a so-called key escrow, one key is used for daily usage, another kept in escrow to gain access to the partition in case the daily passphrase is forgotten or a keyfile is lost/damaged. Also a different key-slot could be used to grant access to a partition to a user by issuing a second key and later revoking it again.
+
+We can create a similar "Recovery Key" for Linux by using a second key slot. Key slots are numbered from 0 to 7. This recovery key should be further encrypted using GPG. That this "Recovery Key" should be a gpg password-protected key. This means anybody acquiring your recovery key will still need something you know before being able to use it. Back up this recovery key (along with the LUKS header) to USB and paper backup.
+
+The daily-usage key which should also be gpg-encrypted password-protected should be stored on a TPM module, or a HSM (or just a USB). The stage-1 booting should ask TPM to release this key to unlock the drive. In the process of unlocking, gpg should be engaged to ask the user for a password. This key does not need to be backed up, we rely on TPM hardware reliability. This requires using tpm-tools and gpg in the initramfs.
+
+When using this method on cloud OSes or remote servers, you need to also enable dropbear ssh server at stage-1 booting, which also requires enabling LAN or WLAN at stage-1 booting. LAN would be the most reliable, but it's also possible for WLAN to be connected at stage-1.
+
+LUKS will need to be setup on all drives, ZFS root is then built from the unlocked drives, if you use GRUB you can move the kernel and initramfs back into ZFS root, and make GRUB try to unlock the drives and mount the ZFS root to acquire the kernel and initramfs.

@@ -38,6 +38,7 @@ bind-toolsonly,*,chocolateyget
 hostsman,*,chocolateyget
 dnsagent,*,chocolateyget
 iperf3,*,chocolateyget
+phantomjs,*,chocolateyget
 
 # gaming
 steam,*,chocolateyget
