@@ -713,3 +713,56 @@ The daily-usage key which should also be gpg-encrypted password-protected should
 When using this method on cloud OSes or remote servers, you need to also enable dropbear ssh server at stage-1 booting, which also requires enabling LAN or WLAN at stage-1 booting. LAN would be the most reliable, but it's also possible for WLAN to be connected at stage-1.
 
 LUKS will need to be setup on all drives, ZFS root is then built from the unlocked drives, if you use GRUB you can move the kernel and initramfs back into ZFS root, and make GRUB try to unlock the drives and mount the ZFS root to acquire the kernel and initramfs.
+
+---
+
+Setting up prey (on windows) (you must call from administrator mode):
+
+```
+prey config gui
+```
+
+Follow the prompts to sign into prey. (This is done after installing the package).
+
+---
+
+One problem with using windows symlinks is that Cygwin actually understands them as normal symlinks, which means relative addressing from those programs will work in Cygwin. However if you run this in Powershell, it actually doesn't work because it also understands windows symlinks but it doesn't change current working directory to where the symlink is when it is executing them.
+
+This appears to occur more often than not for cmd scripts. Like `npm.cmd` and `prey.cmd`.
+
+Also note that cygwin can't seem to execute the cmd scripts without having the cmd suffix.
+
+While this usually won't be a problem since I prefer executing things inside Cygwin, it does become a problem in the case of using winpty, which appears to run the program like Windows Powershell or CMD would execute it and therefore fail to work as relative addressing fails.
+
+According to https://cygwin.com/cygwin-ug-net/using-specialnames.html it shows that only `.exe` is auto-added. All other extensions must be called directly. This means if you're going to use Windows symlinks to Windows applications, if it is `.exe`, that's fine, but if it's not and it is an executable that you want to call, you're going to want to use non-extension based program. Better yet, remove all extensions from the global and local symlink mapping.
+
+I just noticed by removing the `.cmd` extension from the symlink to the `%WinDir%\Prey\current\bin\prey.cmd`, it results in Powershell being able to execute it, but it gets executed in a new CMD console that then immediately exits. No more relative addressing errors. However if you access it directly with `%WinDir%\Prey\current\bin\prey.cmd` then it actually does properly attach itself to the current Powershell terminal.
+
+So the best of both worlds is to make sure all bin symlinks have no extension on them. What a weird issue on Windows...
+
+Unfortunately by doing so, the `winpty` can no longer find `prey` with this error:
+
+```
+Could not start 'prey': The system cannot find the file specified. (error 0x2)
+```
+
+A whole heap of things start working once you use the non-extension based form. Only winpty suffers.
+
+Ok everything changed to non-extension based. Now applications that didn't work in Powershell now work, and also in Cygwin.
+
+Only problem left is CMD and Winpty: https://github.com/rprichard/winpty/issues/98
+
+---
+
+# Not all executables work using Windows symlinks due to relative addressing
+# A little hack to solve this problem is by removing the extension for the symlink name
+# Symlinks without extensions won't be executable directly in CMD
+# However you can explicitly use `start program-name` in CMD
+# Powershell will autostart executables that have no extension
+# Cygwin doesn't care
+# Occasionally the extension will be needed for some reason
+# You can either add both the extension-less and extension-full versions
+# Or you can just add one of them
+# It relies on testing on what works and what doesn't
+
+So basically if it can't be found in CMD, it also can't be found in winpty.

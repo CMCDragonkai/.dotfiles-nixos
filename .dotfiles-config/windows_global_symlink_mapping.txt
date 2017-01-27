@@ -1,97 +1,111 @@
-# Not all executables work using Windows symlinks, since some applications use relative addressing
+# Not all executables work using Windows symlinks due to relative addressing
+# A little hack to solve this problem is by removing the extension for the symlink name
+# Symlinks without extensions won't be executable directly in CMD
+# However you can explicitly use `start program-name` in CMD
+# Powershell will autostart executables that have no extension
+# Cygwin doesn't care
+# Occasionally the extension will be needed for some reason
+# You can either add both the extension-less and extension-full versions
+# Or you can just add one of them
+# It relies on testing on what works and what doesn't
 
-chrome.exe,%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe
-opera.exe,%ProgramFiles(x86)%\Opera\Launcher.exe
-fiddler.exe,%ProgramFiles(x86)%\Fiddler2\Fiddler.exe
-firefox.exe,%ProgramFiles%\Mozilla Firefox\firefox.exe
-thunderbird.exe,%ProgramFiles(x86)%\Mozilla Thunderbird\thunderbird.exe
-conemu.exe,%ProgramFiles%\ConEmu\ConEmu64.exe
-virtualbox.exe,%ProgramFiles%\Oracle\VirtualBox\VirtualBox.exe
-vboxheadless.exe,%ProgramFiles%\Oracle\VirtualBox\VBoxHeadless.exe
-vboxmanage.exe,%ProgramFiles%\Oracle\VirtualBox\VBoxManage.exe
-vagrant.exe,%SystemDrive%\HashiCorp\Vagrant\bin\vagrant.exe
-sourcetree.exe,%ProgramFiles(x86)%\Atlassian\SourceTree\SourceTree.exe
-linqpad.exe,%ProgramFiles(x86)%\LINQPad5\LINQPad.exe
-steam.exe,%ProgramFiles(x86)%\Steam\Steam.exe
-cyberduck.exe,%ProgramFiles(x86)%\Cyberduck\Cyberduck.exe
-dbeaver.exe,%ProgramFiles%\DBeaver\dbeaver.exe
-zeal.exe,%ProgramFiles(x86)%\Zeal\zeal.exe
-wireshark.exe,%ProgramFiles%\Wireshark\Wireshark.exe
-tshark.exe,%ProgramFiles%\Wireshark\tshark.exe
-text2pcap.exe,%ProgramFiles%\Wireshark\text2pcap.exe
-mergecap.exe,%ProgramFiles%\Wireshark\mergecap.exe
-rawshark.exe,%ProgramFiles%\Wireshark\rawshark.exe
-reordercap.exe,%ProgramFiles%\Wireshark\reordercap.exe
-dumpcap.exe,%ProgramFiles%\Wireshark\dumpcap.exe
-editcap.exe,%ProgramFiles%\Wireshark\editcap.exe
-editcap.exe,%ProgramFiles%\Wireshark\editcap.exe
-capinfos.exe,%ProgramFiles%\Wireshark\capinfos.exe
-osqueryi.exe,%ProgramData%\osquery\osqueryi.exe
-osqueryd.exe,%ProgramData%\osquery\osqueryd\osqueryd.exe
-logparser.exe,%ProgramFiles(x86)%\Log Parser 2.2\LogParser.exe
-arduino.exe,%ProgramFiles(x86)%\Arduino\arduino.exe
-arduino-builder.exe,%ProgramFiles(x86)%\Arduino\arduino-builder.exe
-nmap.exe,%ProgramFiles(x86)%\Nmap\nmap.exe
-ncat.exe,%ProgramFiles(x86)%\Nmap\ncat.exe
-ndiff.exe,%ProgramFiles(x86)%\Nmap\ndiff.exe
-nping.exe,%ProgramFiles(x86)%\Nmap\nping.exe
-nmap-update.exe,%ProgramFiles(x86)%\Nmap\nmap-update.exe
-zenmap.exe,%ProgramFiles(x86)%\Nmap\zenmap.exe
-skype.exe,%ProgramFiles(x86)%\Skype\Phone\Skype.exe
+chrome,%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe
+googleearth,%ProgramFiles(x86)%\Google\Google Earth Pro\client\googleearth.exe
+opera,%ProgramFiles(x86)%\Opera\Launcher.exe
+fiddler,%ProgramFiles(x86)%\Fiddler2\Fiddler.exe
+firefox,%ProgramFiles%\Mozilla Firefox\firefox.exe
+thunderbird,%ProgramFiles(x86)%\Mozilla Thunderbird\thunderbird.exe
+conemu,%ProgramFiles%\ConEmu\ConEmu64.exe
+virtualbox,%ProgramFiles%\Oracle\VirtualBox\VirtualBox.exe
+vboxheadless,%ProgramFiles%\Oracle\VirtualBox\VBoxHeadless.exe
+vboxmanage,%ProgramFiles%\Oracle\VirtualBox\VBoxManage.exe
+vagrant,%SystemDrive%\HashiCorp\Vagrant\bin\vagrant.exe
+sourcetree,%ProgramFiles(x86)%\Atlassian\SourceTree\SourceTree.exe
+linqpad,%ProgramFiles(x86)%\LINQPad5\LINQPad.exe
+steam,%ProgramFiles(x86)%\Steam\Steam.exe
+cyberduck,%ProgramFiles(x86)%\Cyberduck\Cyberduck.exe
+dbeaver,%ProgramFiles%\DBeaver\dbeaver.exe
+zeal,%ProgramFiles(x86)%\Zeal\zeal.exe
+wireshark,%ProgramFiles%\Wireshark\Wireshark.exe
+tshark,%ProgramFiles%\Wireshark\tshark.exe
+text2pcap,%ProgramFiles%\Wireshark\text2pcap.exe
+mergecap,%ProgramFiles%\Wireshark\mergecap.exe
+rawshark,%ProgramFiles%\Wireshark\rawshark.exe
+reordercap,%ProgramFiles%\Wireshark\reordercap.exe
+dumpcap,%ProgramFiles%\Wireshark\dumpcap.exe
+editcap,%ProgramFiles%\Wireshark\editcap.exe
+editcap,%ProgramFiles%\Wireshark\editcap.exe
+capinfos,%ProgramFiles%\Wireshark\capinfos.exe
+osqueryi,%ProgramData%\osquery\osqueryi.exe
+osqueryd,%ProgramData%\osquery\osqueryd\osqueryd.exe
+logparser,%ProgramFiles(x86)%\Log Parser 2.2\LogParser.exe
+arduino,%ProgramFiles(x86)%\Arduino\arduino.exe
+arduino-builder,%ProgramFiles(x86)%\Arduino\arduino-builder.exe
+nmap,%ProgramFiles(x86)%\Nmap\nmap.exe
+ncat,%ProgramFiles(x86)%\Nmap\ncat.exe
+ndiff,%ProgramFiles(x86)%\Nmap\ndiff.exe
+nping,%ProgramFiles(x86)%\Nmap\nping.exe
+nmap-update,%ProgramFiles(x86)%\Nmap\nmap-update.exe
+zenmap,%ProgramFiles(x86)%\Nmap\zenmap.exe
+skype,%ProgramFiles(x86)%\Skype\Phone\Skype.exe
+prey,%WinDir%\Prey\current\bin\prey.cmd
+git,%ProgramFiles%\Git\cmd\git.exe
 
 # node
 node.exe,%ProgramFiles%\nodejs\node.exe
-npm.cmd,%ProgramFiles%\nodejs\npm.cmd
+npm,%ProgramFiles%\nodejs\npm.cmd
 
 # go
 go.exe,%SystemDrive%\tools\go\bin\go.exe
+godoc,%SystemDrive%\tools\go\bin\godoc.exe
 godoc.exe,%SystemDrive%\tools\go\bin\godoc.exe
+gofmt,%SystemDrive%\tools\go\bin\gofmt.exe
 gofmt.exe,%SystemDrive%\tools\go\bin\gofmt.exe
 
 # rust
-rustc.exe,%ProgramFiles%\Rust stable GNU 1.13\bin\rustc.exe
-rustdoc.exe,%ProgramFiles%\Rust stable GNU 1.13\bin\rustdoc.exe
-cargo.exe,%ProgramFiles%\Rust stable GNU 1.13\bin\cargo.exe
+rustc,%ProgramFiles%\Rust stable GNU 1.13\bin\rustc.exe
+rustdoc,%ProgramFiles%\Rust stable GNU 1.13\bin\rustdoc.exe
+cargo,%ProgramFiles%\Rust stable GNU 1.13\bin\cargo.exe
 
 # calibre
-calibre-complete.exe,%ProgramFiles%\Calibre2\calibre-complete.exe
-calibre-customize.exe,%ProgramFiles%\Calibre2\calibre-customize.exe
-calibre-debug.exe,%ProgramFiles%\Calibre2\calibre-debug.exe
-calibre-eject.exe,%ProgramFiles%\Calibre2\calibre-eject.exe
-calibre-parallel.exe,%ProgramFiles%\Calibre2\calibre-parallel.exe
-calibre-server.exe,%ProgramFiles%\Calibre2\calibre-server.exe
-calibre-smtp.exe,%ProgramFiles%\Calibre2\calibre-smtp.exe
-calibre.exe,%ProgramFiles%\Calibre2\calibre.exe
-calibredb.exe,%ProgramFiles%\Calibre2\calibredb.exe
-cjpeg-calibre.exe,%ProgramFiles%\Calibre2\cjpeg-calibre.exe
-ebook-convert.exe,%ProgramFiles%\Calibre2\ebook-convert.exe
-ebook-device.exe,%ProgramFiles%\Calibre2\ebook-device.exe
-ebook-edit.exe,%ProgramFiles%\Calibre2\ebook-edit.exe
-ebook-meta.exe,%ProgramFiles%\Calibre2\ebook-meta.exe
-ebook-polish.exe,%ProgramFiles%\Calibre2\ebook-polish.exe
-ebook-viewer.exe,%ProgramFiles%\Calibre2\ebook-viewer.exe
-fetch-ebook-metadata.exe,%ProgramFiles%\Calibre2\fetch-ebook-metadata.exe
-lrf2lrs.exe,%ProgramFiles%\Calibre2\lrf2lrs.exe
-lrfviewer.exe,%ProgramFiles%\Calibre2\lrfviewer.exe
-lrs2lrf.exe,%ProgramFiles%\Calibre2\lrs2lrf.exe
-markdown-calibre.exe,%ProgramFiles%\Calibre2\markdown-calibre.exe
-optipng-calibre.exe,%ProgramFiles%\Calibre2\optipng-calibre.exe
-pdfinfo.exe,%ProgramFiles%\Calibre2\pdfinfo.exe
-pdftohtml.exe,%ProgramFiles%\Calibre2\pdftohtml.exe
-pdftoppm.exe,%ProgramFiles%\Calibre2\pdftoppm.exe
-web2disk.exe,%ProgramFiles%\Calibre2\web2disk.exe
+calibre-complete,%ProgramFiles%\Calibre2\calibre-complete.exe
+calibre-customize,%ProgramFiles%\Calibre2\calibre-customize.exe
+calibre-debug,%ProgramFiles%\Calibre2\calibre-debug.exe
+calibre-eject,%ProgramFiles%\Calibre2\calibre-eject.exe
+calibre-parallel,%ProgramFiles%\Calibre2\calibre-parallel.exe
+calibre-server,%ProgramFiles%\Calibre2\calibre-server.exe
+calibre-smtp,%ProgramFiles%\Calibre2\calibre-smtp.exe
+calibre,%ProgramFiles%\Calibre2\calibre.exe
+calibredb,%ProgramFiles%\Calibre2\calibredb.exe
+cjpeg-calibre,%ProgramFiles%\Calibre2\cjpeg-calibre.exe
+ebook-convert,%ProgramFiles%\Calibre2\ebook-convert.exe
+ebook-device,%ProgramFiles%\Calibre2\ebook-device.exe
+ebook-edit,%ProgramFiles%\Calibre2\ebook-edit.exe
+ebook-meta,%ProgramFiles%\Calibre2\ebook-meta.exe
+ebook-polish,%ProgramFiles%\Calibre2\ebook-polish.exe
+ebook-viewer,%ProgramFiles%\Calibre2\ebook-viewer.exe
+fetch-ebook-metadata,%ProgramFiles%\Calibre2\fetch-ebook-metadata.exe
+lrf2lrs,%ProgramFiles%\Calibre2\lrf2lrs.exe
+lrfviewer,%ProgramFiles%\Calibre2\lrfviewer.exe
+lrs2lrf,%ProgramFiles%\Calibre2\lrs2lrf.exe
+markdown-calibre,%ProgramFiles%\Calibre2\markdown-calibre.exe
+optipng-calibre,%ProgramFiles%\Calibre2\optipng-calibre.exe
+pdfinfo,%ProgramFiles%\Calibre2\pdfinfo.exe
+pdftohtml,%ProgramFiles%\Calibre2\pdftohtml.exe
+pdftoppm,%ProgramFiles%\Calibre2\pdftoppm.exe
+web2disk,%ProgramFiles%\Calibre2\web2disk.exe
 
 # docker
 # docker is provided by either docker for windows or docker toolbox
 # here we add both sets of symlinks, installation will check if they exist prior to creating the symlink
-docker for windows.exe,%ProgramFiles%\Docker\Docker\Docker for Windows.exe
-docker.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker.exe
-docker-compose.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker-compose.exe
-docker-credential-wincred.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker-credential-wincred.exe
-docker-machine.exe,%ProgramFiles%\Docker\Docker\resources\bin\docker-machine.exe
-notary.exe,%ProgramFiles%\Docker\Docker\resources\bin\notary.exe
-docker.exe,%ProgramFiles%\Docker Toolbox\docker.exe
-docker-compose.exe,%ProgramFiles%\Docker Toolbox\docker-compose.exe
-docker-credential-wincred.exe,%ProgramFiles%\Docker Toolbox\docker-credential-wincred.exe
-docker-machine.exe,%ProgramFiles%\Docker Toolbox\docker-machine.exe
-notary.exe,%ProgramFiles%\Docker Toolbox\notary.exe
+docker for windows,%ProgramFiles%\Docker\Docker\Docker for Windows.exe
+docker,%ProgramFiles%\Docker\Docker\resources\bin\docker.exe
+docker-compose,%ProgramFiles%\Docker\Docker\resources\bin\docker-compose.exe
+docker-credential-wincred,%ProgramFiles%\Docker\Docker\resources\bin\docker-credential-wincred.exe
+docker-machine,%ProgramFiles%\Docker\Docker\resources\bin\docker-machine.exe
+notary,%ProgramFiles%\Docker\Docker\resources\bin\notary.exe
+docker,%ProgramFiles%\Docker Toolbox\docker.exe
+docker-compose,%ProgramFiles%\Docker Toolbox\docker-compose.exe
+docker-credential-wincred,%ProgramFiles%\Docker Toolbox\docker-credential-wincred.exe
+docker-machine,%ProgramFiles%\Docker Toolbox\docker-machine.exe
+notary,%ProgramFiles%\Docker Toolbox\notary.exe

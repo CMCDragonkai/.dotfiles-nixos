@@ -44,6 +44,11 @@ socat
 rsync
 ca-certificates
 
+# email
+exim
+email
+mutt
+
 # filesystem
 mkisofs
 

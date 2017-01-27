@@ -39,6 +39,7 @@ hostsman,*,chocolateyget
 dnsagent,*,chocolateyget
 iperf3,*,chocolateyget
 phantomjs,*,chocolateyget
+prey,*,chocolateyget
 
 # gaming
 steam,*,chocolateyget

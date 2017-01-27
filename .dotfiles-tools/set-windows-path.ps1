@@ -34,15 +34,13 @@ $SystemPaths =
     '%ChocolateyInstall%\bin',
     # JDK (preferred over JRE)
     '%JAVA_HOME%\bin',
-    # Windows 10 SDK
-    '%ProgramFiles(x86)%\Windows Kits\10\Windows Performance Toolkit',
     # CUDA
     '%CUDA_PATH%\bin',
     '%CUDA_PATH%\libnvvp',
-    # Windows Git
-    '%ProgramFiles%\Git\cmd',
     # MikTex 2.9
-    '%ProgramFiles%\MiKTeX 2.9\miktex\bin\x64\'
+    '%ProgramFiles%\MiKTeX 2.9\miktex\bin\x64',
+    # Windows 10 SDK
+    '%ProgramFiles(x86)%\Windows Kits\10\Windows Performance Toolkit'
 
 # Filter out PATHs that don't exist
 $UserPaths = $UserPaths | Where-Object { Test-Path "$([System.Environment]::ExpandEnvironmentVariables(`"$_`"))" -PathType Container }

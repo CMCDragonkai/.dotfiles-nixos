@@ -30,8 +30,8 @@ if [[ "$(uname -s)" == Linux* ]]; then
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
     system='CYGWIN'
-    wintmp="$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')"
-    winsystmp="$(cmd /c 'ECHO %SYSTEMROOT%' | tr --delete '[:space:]')\Temp"
+    wintmp="$(cygpath --mixed "$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')")"
+    winsystmp="$(cygpath --mixed "$(cmd /c 'ECHO %SYSTEMROOT%' | tr --delete '[:space:]')\Temp")"
 
 fi
 
