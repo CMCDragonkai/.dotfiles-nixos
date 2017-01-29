@@ -25,6 +25,7 @@ fontconfig
 xdg-user-dirs
 cron
 chere
+tree
 
 # network
 openssh

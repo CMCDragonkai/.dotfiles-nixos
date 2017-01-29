@@ -8,7 +8,6 @@
 :seti -XBinaryLiterals
 :seti -XPatternGuards
 :seti -XViewPatterns
-:seti -XNumLiterals
 :seti -XTypeOperators
 :seti -XLambdaCase
 
@@ -32,8 +31,8 @@ import "pretty-show" Text.Show.Pretty -- Pretty printing
 :set editor "vim"
 
 -- Show loaded modules in window title
-:set prompt  "\SOH\ESC]0;GHCi: %s\BEL\ESC[32;1m\STX%l-λ:>\SOH\ESC[0m\STX "
-:set prompt2                    "\SOH\ESC[32;1m\STX%l-λ:|\SOH\ESC[0m\STX "
+:set prompt  "%l:> "
+:set prompt2 "%l:| "
 
 -- Macros
 

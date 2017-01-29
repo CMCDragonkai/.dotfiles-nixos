@@ -766,3 +766,11 @@ Only problem left is CMD and Winpty: https://github.com/rprichard/winpty/issues/
 # It relies on testing on what works and what doesn't
 
 So basically if it can't be found in CMD, it also can't be found in winpty.
+
+---
+
+Haskell stack
+
+After running run this without administrator mode: `stack setup`.
+
+Then use `stack install pretty-show`.
