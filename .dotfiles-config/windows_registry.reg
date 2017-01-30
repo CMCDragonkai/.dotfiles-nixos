@@ -213,3 +213,7 @@ Windows Registry Editor Version 5.00
 ; WOW6432Node is for 64 bit windows running 32 bit JVM
 [HKEY_LOCAL_MACHINE\Software\JavaSoft\Prefs]
 [HKEY_LOCAL_MACHINE\Software\WOW6432Node\JavaSoft\Prefs]
+
+; Remove 3D Builder from Context Menu
+[-HKEY_CLASSES_ROOT\SystemFileAssociations\.jpg\Shell\T3D Print]
+[-HKEY_CLASSES_ROOT\SystemFileAssociations\.png\Shell\T3D Print]

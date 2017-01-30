@@ -774,3 +774,21 @@ Haskell stack
 After running run this without administrator mode: `stack setup`.
 
 Then use `stack install pretty-show`.
+
+---
+
+Make sure to disable most Windows 10 Applications from Running in the Background.
+
+Allowing them to do so, would mean when you click close on their window, their application is still runnig in suspended status.
+
+Most of time if I close something, I really want it to close. Allow whichever applications you think is appropriate.
+
+Search "Background Apps" in your search bar.
+
+---
+
+Set default photoviewer to xnview (it's much faster than the photo viewer).
+Set default browser to chrome
+Set default music player to musicbee or spotify
+Set default email to thunderbird
+Set default media player to VLC

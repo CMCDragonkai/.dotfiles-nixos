@@ -48,6 +48,7 @@ nping,%ProgramFiles(x86)%\Nmap\nping.exe
 nmap-update,%ProgramFiles(x86)%\Nmap\nmap-update.exe
 zenmap,%ProgramFiles(x86)%\Nmap\zenmap.exe
 skype,%ProgramFiles(x86)%\Skype\Phone\Skype.exe
+xnview,%ProgramFiles%\XnViewMP\xnviewmp.exe
 prey,%WinDir%\Prey\current\bin\prey.cmd
 git,%ProgramFiles%\Git\cmd\git.exe
 

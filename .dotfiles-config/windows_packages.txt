@@ -91,6 +91,7 @@ teamviewer,*,chocolateyget
 slack,*,chocolateyget
 
 # media
+xnviewmp,*,chocolateyget
 vlc,*,chocolateyget
 k-litecodecpackmega,*,chocolateyget
 sharex,*,chocolateyget
