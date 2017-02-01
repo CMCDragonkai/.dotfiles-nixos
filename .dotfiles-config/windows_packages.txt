@@ -24,7 +24,7 @@ Firefox,*,chocolateyget
 GoogleChrome,*,chocolateyget
 qbittorrent,3.3.4,chocolateyget
 winscp,5.7.7,chocolateyget
-npcap,*,chocolateyget
+npcap,*,chocolateyget,/npf_startup=yes /loopback_support=yes /dlt_null=no /admin_only=no /dot11_support=yes /vlan_support=yes /winpcap_mode=yes
 wireshark,*,chocolateyget
 nmap,*,chocolateyget
 fiddler4,*,chocolateyget

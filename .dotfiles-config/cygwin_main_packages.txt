@@ -104,6 +104,7 @@ mingw64-i686-gcc-fortran
 sqlite3
 mysqld
 mysql
+freetds
 
 # X
 xinit
@@ -300,3 +301,5 @@ libdvdread4
 libdvdread-devel
 libaudio2
 libaudio-devel
+libsybdb5
+libsybdb-devel

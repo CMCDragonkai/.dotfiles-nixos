@@ -39,8 +39,12 @@ if ($Force) {
     Install-Package -Name 'mssqlserver2014express' -ProviderName 'chocolateyget'
 }
 Set-Service -Name 'MSSQL$SQLEXPRESS' -StartupType Manual
+Set-Service -Name 'SQLAgent$SQLEXPRESS' -StartupType Manual
+Set-Service -Name 'SQLBrowser' -StartupType Manual
 Set-Service -Name 'SQLWriter' -StartupType Manual
 Stop-Service -Name 'MSSQL$SQLEXPRESS'
+Stop-Service -Name 'SQLAgent$SQLEXPRESS'
+Stop-Service -Name 'SQLBrowser'
 Stop-Service -Name 'SQLWriter'
 
 # We will have 2 different Git installations, a Windows one, and a Cygwin one
@@ -54,13 +58,13 @@ Stop-Service -Name 'SQLWriter'
 if ($Force) {
 
     Install-Package -Name 'git' -ProviderName 'chocolateyget' -AdditionalArguments @'
-        --params '"/GitOnlyOnPath /NoAutoCrlf"'
+        --params '"/GitOnlyOnPath /NoAutoCrlf /NoShellIntegration"'
     '@ -Force
 
 } else {
 
     Install-Package -Name 'git' -ProviderName 'chocolateyget' -AdditionalArguments @'
-        --params '"/GitOnlyOnPath /NoAutoCrlf"'
+        --params '"/GitOnlyOnPath /NoAutoCrlf /NoShellIntegration"'
 '@
 
 }

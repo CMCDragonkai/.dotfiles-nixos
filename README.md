@@ -609,7 +609,9 @@ Microsoft SQL Server Express is installed. Use `Start-Service -Name 'MSSQL$SQLEX
 
 You must enable Named Pipes and TCP/IP connections via `Sql Server Configuration Manager`, and the settings are located at `SQL Server Network Configuration/Protocols for SQLEXPRESS`. When enabling the TCP/IP connection, make sure to check the properties so it is not listening on all IPs. Instead individually enable the interfaces you want SQL Server to listen on. In the beginning, only enable `127.0.0.1` and `::1` interfaces. Make sure to set the `TCP port` to `1433` (for both `127.0.0.1` and `::1`) and blank out the `TCP Dynamic Ports` field.
 
-After restarting Powershell, you can run `sqlcmd -S .\SQLEXPRESS`.
+Alternatively you can set the dynamic port field to 0, and clear the `TCP Port`. This will make SQLSERVEREXPRESS start on a dynamic port that is available. In order to be able to contact the sql server, you need to have `SQLBrowser` started. So you can run `Start-Service -Name 'SQLBrowser'`. Afterwards any client that uses the named instance `SQLEXPRESS` will find the dynamic port via `SQLBrowser` service automatically. Do note that you will need to remember to have both services started. The advantage of this is that you can run multiple sql servers, and also you can free up the default port `1433` for other things.
+
+After restarting Powershell, you can run `sqlcmd -S .\SQLEXPRESS`. Note that the fullname is actually `sqlcmd -S localhost\SQLEXPRESS`.
 
 You are now connected to SQL Server via the Powershell command line. Note that the `sqlcmd` will not be available in the Cygwin environment.
 
@@ -633,7 +635,9 @@ To connect via DBeaver, follow these instructions:
 > Fill out the info on the first (General) tab, without specifying User name and Password (leave them blank).
 > Go to the Driver properties tab and set integratedSecurity=true.
 > And, once again, just to emphasize where to enter this: it's entered on the "Driver properties" tab -- not in the dialog box you get to by clicking the "Edit Driver Settings" button that's on the General tab.
-> Click the "Test Connection..." button to make sure it works, click Next a couple of times, then click Finish.
+> Click the "Test Connection..." button to make sure it works, click Next a couple of times, then click Finish
+
+Remember that if you're using dynamic ports, you have pass in the hostname as `localhost\SQLEXPRESS`. No port is needed.
 
 ---
 
@@ -792,3 +796,24 @@ Set default browser to chrome
 Set default music player to musicbee or spotify
 Set default email to thunderbird
 Set default media player to VLC
+
+---
+
+Docker for Windows
+
+You need to first launch Docker for Windows (it's not launched by default).
+This will start the HyperV virtual machine. By default it tries to launch with 2GiB of RAM.
+Switch this down to 1.5 GiB in the Docker for Windows Settings (just for my 8 GiB laptop).
+
+A default NIC (sometimes called "virtual switch") for Docker will be running.
+
+The docker creates a HyperV VM called MobyLinuxVM which is booted with mobylinux.iso.
+
+This VM can be managed by Hyper-V Manager. The only network card attached to it is the DockerNAT.
+Which is only internal, so it has no external internet access. Remmeber this is just like Virtual Box.
+
+With Hyper-V switched ON, VirtualBox is not able to run!
+
+The VM is a full Linux VM using the `Kernel Version: 4.4.27-moby` kernel.
+
+The OS is `Alpine Linux v3.4`. It's harddisk is by default located in: `C:\Users\Public\Documents\Hyper-V\Virtual Hard Disks\MobyLinuxVM.vhdx`.
