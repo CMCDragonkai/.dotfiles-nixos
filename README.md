@@ -817,3 +817,243 @@ With Hyper-V switched ON, VirtualBox is not able to run!
 The VM is a full Linux VM using the `Kernel Version: 4.4.27-moby` kernel.
 
 The OS is `Alpine Linux v3.4`. It's harddisk is by default located in: `C:\Users\Public\Documents\Hyper-V\Virtual Hard Disks\MobyLinuxVM.vhdx`.
+
+---
+
+Firewall Profiles.
+
+On most desktop computers, outbound connections are by default allowed, but inbound connections not matching a particular rule are by default disallowed.
+
+Which means we are mostly going to be allowing things via inbound rules, and disallowing things via outbound rules.
+
+This is true for both Windows and Linux. Although on Windows, there are 3 firewall profiles used for 3 different network profiles: Domain, Private and Public. In all 3 profiles the above is still true (although it is editable). We'll leave that to be default to keep things simple.
+
+Now a network adapter or "network interface card/controller" is piece of hardware. A network interface is a software construct. A single network adapter can expose multiple network interfaces. An OS can create virtual network interfaces that only exist in software. Like virtual ethernets.. etc. See: https://en.wikipedia.org/wiki/Virtual_network_interface
+
+Each network interface can be given a network profile on Windows. Each network profile has its corresponding firewall rule set.
+
+The 3 profiles are: Domain, Private and Public. Domain is used specifically for Windows Domain network. We will not bother with this except, by considering that Domain networks will be as safe as Private networks. Private networks should be used for trusted networks. And public should be used for any network where you don't control all the nodes or you don't trust all the nodes.
+
+A network profile is sometimes called a "network location". I guess a firewall profile has a 1 to 1 correspondence with "network location".
+
+Now I thought each individual known WiFi network has a setting for network location, I wouldn't think an entire interface is set to a particular network location. At least it would make sense for this setting to be specific to each WiFi network. Your home wifi network should be private, but your coffee shop wifi should be public.
+
+* `InterfaceAlias` - Name of the network interface. (Can be renamed from `Control Panel\Network and Internet\Network Connections`)
+* `InterfaceDescription` - Description of the network interface.
+* `InterfaceIndex` - Numeric index of the network interface.
+* `NetworkCategory`/`Network Location`/`Firewall Profile` - Public/Private/Domain
+* `Network Name`/`Connection Profile` - A particular connection that the network interface is connected to. Having a network interface doesn't mean it's connected to an actual connection! You could have a WiFi network interface that isn't connected to anything, and when it is, it is connected to a WiFi network. That WiFi network represents a single connection profile with a network name is assigned to the WiFi SSID.
+
+The Control Panel\Network and Internet\Network Connections switching to list view is actually quite confusing.
+
+To be exact what we actually see is:
+
+* Name -> InterfaceAlias
+* Status -> Disabled, Enabled, Not Connected, <Network Name/Connection Name>
+* Device Name -> InterfaceDescription
+* Connectivity -> Blank, No network access, No Internet access, Internet access
+* Network Category -> Domain network, Private network, Public network
+
+The weird thing is Status and Connectivity. Both are quite confusing. The important thing is that Status can actually show you the network name/connection profile when that interface thinks its connected to something. For WiFi adapter, this is often set automatically to the WiFi SSID. For Ethernet adapters, this is often set to an enumerated name like `Network 3`. For virtual network interfaces, this name may not be set, which means it is defaulted to `Unidentified network`.
+
+I'm not sure what the difference between `Enabled` and `Not Connected` is. Anyway, the GUI is ultimately unreliable, so we have to use powershell commands.
+
+The main point is that network names are not really important for ethernet interfaces or virtual network interfaces, since these are most likely alwaysb plugged to the same connection. However network names are quite important for the wifi interface, as this is how you know which wifi network you're connected to, and you most likely will want a specific network category for a specific wifi network name.
+
+```
+# Gets all the network interfaces (does not include loopback)
+Get-NetAdapter
+# Gets all the network interfaces including hidden interfaces (does not include loopback)
+Get-NetAdapter -IncludeHidden
+# Gets all the network interfaces corresponding to an actual network adapter (does not include loopback)
+Get-NetAdapter -Physical
+# Gets all network interfaces that have an IP address (IPv4 and IPv6) (includes loopback interfaces)
+Get-NetIPInterface
+# Gets all the actual connections. Shows the network name for the connection, the interface that the connection is connected to
+Get-NetConnectionProfile
+# Gets all the IPs assigned to the interfaces (there can be multiple IPs to each interface)
+Get-NetIPAddress
+# Gets the relationship between network interfaces and IPs along with metadata
+Get-NetIPConfiguration
+# Gets the relationship betwene network interfaces (including hidden network interfaces) and IPs along with even more metadata
+Get-NetIPConfiguration -All -Detailed
+# Gets the routing table (compare with `route PRINT`)
+Get-NetRoute
+```
+
+In looking up the hidden network interfaces, we can see quite a few interesting network interfaces that are hidden:
+
+* `Microsoft Wi-Fi Direct Virtual Adapter` - this is the new interface that replaces the hosted network feature in older windows devices (if you want to use this, you need to go into windows 10 settings, and go to "Mobile hotspot", haven't found any powershell automation for this)
+* `Microsoft Kernel Debug Network Adapter` - this adapter is used to allow another computer to debug this computer's kernel remotely
+
+Loopback interfaces however are still now shown. But we can find them via `Get-NetIPAddress`:
+
+* `Loopback Pseudo-Interface 1` - 127.0.0.1 and ::1
+
+But there's not much to do with the loopback interface, so let's try something else.
+
+What if we want to be able to create a virtual network interface. Just some random interface for the purposes of creating of simulating a LAN party. We could potentially launch multiple programs binding to the virtual network interface using a particular IP (a static IP) or running a virtual DHCP server on this interface. Well
+
+
+Common networks to ping!
+
+```
+ping google-public-dns-a.google.com
+ping 8.8.8.8
+ping google-public-dns-b.google.com
+ping 8.8.4.4
+ping internetbeacon.msedge.net
+ping 13.107.4.52
+ping b.resolvers.level3.net
+ping 4.2.2.2
+```
+
+You can show your network password being used for a particular connection by doing:
+
+```
+netsh wlan show profiles name="Network Name" key=clear
+```
+
+It also shows some interesting metadata for the connection profile.
+
+You can also delete profiles by doing this:
+
+```
+netsh wlan delete profile name="<profile-name>"
+```
+
+There are some interesting properties of profiles you can do:
+
+```
+# enables MAC randomization for a profile
+# this means the MAC is randomly set for the particular profile, and does not change upon reconnection
+# an alternative policy is to change it daily (which then changes the mac daily)
+# while you can't use this to get around open wifi schemes, you can use this for privacy reasons
+netsh wlan set profileparameter name="<profile-name>" Randomization=yes|no|daily
+# sets whether to connect when in range automatically
+netsh wlan set profileparameter name="<profile-name>" ConnectionMode=auto|manual
+# sets whether the connection is metered or not (unrestricted is the default), while fixed is when it is metered
+# setting something to metered can make windows 10 apps not try to run updates on these connections, or make them use less data
+# can be useful for wifi connections where you have limited data!
+netsh wlan set profileparameter name="<profile-name>" cost=default|unrestricted|fixed|variable
+# choose whether to connect even when the network is not broadcasting its ssid
+netsh wlan set profileparameter name="<profile-name>" nonBroadcast=yes|no
+# choose whether to automatically switch to a higher priority wifi network if that network becomes in range
+# only works if the ConnectionMode is auto (not sure if this is the current network or the higher prority network)
+netsh wlan set profileparameter name="<profile-name>" autoSwitch=yes|no
+```
+
+There is a priority order that can be changed for wlan profiles:
+
+```
+# set this profile on this interface to be on priority 1
+# all 3 parameters are required
+netsh wlan set profileorder name="<profile-name>" interface="<interface-alias>" priority=1
+```
+
+The order is shown on `netsh wlan show profiles`.
+
+This is only useful for the autoswitching functionality, and when there are multiple wifi networks in range you want to connect to.
+
+After doing all of this, it's possible to export the WiFi profiles.
+
+---
+
+The only way to change the names of any profile in a fool proof manner is to use regedit. While yes you can change the name by using `Get-NetConnectionProfile` and then `Set-NetConnectionProfile`, this only works for currently connected connection profiles. TO do it for any profile whether LAN or WLAN whether connected or not connected, you have to do with: `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles`, and change the `ProfileName`. It is the `ProfileName` that gets used, however do note that you will need to restart before this name is propagated everywhere. Note the `Description` field which is often just number truncated version of `ProfileName`. Also note that unindentified connection profiles will not be listed here!
+
+> First let’s start with what NLA does. For each network interface the PC is connected to, NLA aggregates the network information available to the PC and generates a globally unique identifier (GUID) to identify each network. In other words, it creates a Network Profile for any network it connects to. The Windows Firewall then uses that information to apply rules from the appropriate Windows Firewall Profile. This allows you to apply a different set of Firewall rules depending on which network you are connected to. For example, a Public network could get a very restrictive set of rules, a Home network could get a less restrictive set of rules, and a Managed network could get a set of rules determined by an administrator. NLA can be used for more but I want to focus on how it interacts with the Windows Firewall.
+
+It turns out that the only way to set a connection profile's category (regardless of whether that connection profile is currently connected) is via this same registry area. Basically this is controlled by the `Category` DWORD. Where `0` means public and `1` means private.
+
+Ok and since there aren't any powershell modules dealing with this, one can create a simple script that allows showing all the profiles, and allows you to change its category and its name and description. Simple!!
+
+To have LAN profiles shown, one must activate the Wired AutoConfig service. Does this end up showing the unindentified profiles!?
+
+---
+
+Need a command that interrogates that and gives options. Really for WiFi management.
+
+Need a command to test if a firewall port is open or something.
+
+Need a command to change connection profile names for local connections. This is not necessary really.
+
+HOWEVER it is important to be able to set the network category for the ethernet networks, and without the necessary labels, you can't do this!? And the registry doesn't support it. It's because they are still unidentified, the first method doesn't work!
+
+That is basically it.
+```
+devcon64 find '*MSLOOP'
+devcon64 install ${Env:WINDIR}\INF\netloop.inf '*MSLOOP'
+devcon64 remove @ROOT\NET\0000
+```
+
+
+OH SHIT i lost my npcap adapter. I need to add it again by reinstalling the npcap.
+
+---
+
+Any unidentified networks are all put into the public category. For virtual interfaces, they are often directly connected to some unindentified network, the computer doesn't ask you what category you want to put them in, and the only way to set their categories is via `Get-NetConnectionProfile` and `Set-NetConnectionProfile`. This results in a minor problem. One way to get around this is to have Public category firewall rules that address this particular issue. These rules apply to the Public Category, but they specify that the remote address must be a local subnet. This appears to refer to a set of addresses that Microsoft considers to be a local subnet. I don't know exactly what these are addresses are, but I know that loopback addresses are considered to be from the a local subnet.
+
+The scopes of reserved IP addresses are relevant here: https://en.wikipedia.org/wiki/Reserved_IP_addresses
+
+My guess is that these 2 are definitely considered to be part of "local subnet" from Microsoft's firewall point of view.
+
+```
+127.0.0.0/8
+169.254.0.0/16
+```
+
+When you activate Docker's shared drive feature, it appears to add an extra rule called the `DockerProxy` rule, that says that the firewall should accept on all profiles any connection originating from 10.0.75.2 to 10.0.75.1 for TCP port 445. Now the 10.0.75.1 is the primary address of the `vEthernet (DockerNAT)` interface. While `10.0.75.2` is assigned to the MobyLinuxVM. The fact that this rule exists suggests that the `10.0.0.0/8` addresses are not part of local subnet.
+
+Anyway, the main problem with doing the above, is that this may lead to an actual ethernet connection being considered part of a local subnet. So the best solution is to change network category to private, and then set to allow 445 SMB on Private and Domain networks unconditonally.
+
+Note that the Linux Equivalent of Connection Profiles is Network Zones. However support for this has only been implemented with Network Manager + firewalld. Without firewalld, there's no ability to have Network Zones. Actually Shorewall also has a zoning concept, but has no network location awareness. As in the zones are applied to each interface, rather than to a particular connection that the interface is on. NLA (network location awareness) is important to have properly functioning firewall zones, as you can associate a firewall set with a particular identifying characteristics of the network. Firewalld is the closest implementation on Network Location Awareness similar to the Windows features.
+
+> Existing firewall tools, however, fall short in two ways. First, they know only about network interfaces, not about the networks themselves (trust information in particular). Second, they require stopping and restarting the firewall in order to change any settings. Red Hat's Thomas Woerner developed a solution tackling both issues based on GNOME's NetworkManager, and a new firewall application named Firewalld.
+> https://lwn.net/Articles/484506/
+
+So while shorewall probably has more featuers than firewalld, firewalld seems more user friendly usable for laptops/desktop linux. You don't really need this feature for server linux.
+
+Figure out how to integrate firewalld into NixOS: https://devhen.org/using-firewalld/ Especially since iptables appears to be set by NixOS firewall module.
+
+On Windows, inbound rules appears not to apply to loopback sources. That is when you are contacting from loopback, everything appears to be always accessible. At least, when I removed rules enabling inbound SMB, I was still able to access it via loopback.
+
+`Set-NetConnectionProfile -Name 'Undentified network' -NetworkCategory Private` - sets all unidentified networks to private category. Not a good idea.
+
+169.254.34.160
+
+
+---
+
+Regarding unindentified networks on Windows: https://github.com/docker/for-win/issues/367
+
+> The DockerNAT switch is named so historically. It used to provide external connectivity, but now it's just used for host local communication and the main network connectivity for containers is done via VPNKit
+> https://forums.docker.com/t/no-external-network-connectivity-from-inside-docker-container/8045/18
+
+Yea I thought so, that interface is essentially a private network interface with no bridge to the outside internet. To do that you need other tricks. (Like bridging into a public network). It seems Hyper-V and Docker uses VPNKit to do this.
+
+Ultimately I'm keeping the Unidentified networks as public for now. Made the ipv4 network for docker identifiable and made that private.
+
+I just need to write a script that exposes connection profiles.
+
+---
+
+https://en.wikipedia.org/wiki/Zero-configuration_networking ultimately boils down to 3 things:
+
+* Address Selection - Autoconfiguration or DHCP
+* Name Resolution - mDNS
+* Service Discovery - dns-sd
+
+Many competing protocols but the one that is most popular and most accepted right now is mDNS + DNS-SD. Implemented as Bonjour on Mac and Windows, and as Avahi on Linux and Cygwin.
+
+Zeroconf is the umbrella name given to mdns + DNS SD + link local address autoconfiguration.
+
+https://news.ycombinator.com/item?id=8565704
+
+It replaces NetBIOS, UPnP, LLMNR and whole bunch of stuff!
+
+http://www.zeroconf.org/zeroconfandupnp.html
+
+Mac addresses are mapped to IP addresses are mapped to Domain names lol!
+Each operating at a different level of abstraction.
+
+> When you understand that IP-to-IP communication is really just a series of MAC-to-MAC communication taking place at each router hop, then you'll see why both are necessary.
