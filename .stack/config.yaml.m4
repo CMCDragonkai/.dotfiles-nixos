@@ -1,4 +1,4 @@
-local-bin-path: .local/bin
+local-bin-path: PH_LOCALBIN
 
 templates:
   params:

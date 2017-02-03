@@ -65,3 +65,7 @@ function Append-Idempotent {
 # This is only required because Golang is a Windows executable
 [Environment]::SetEnvironmentVariable("GOPATH", "${Env:UserProfile}\.go", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("GOPATH", "${Env:UserProfile}\.go", [System.EnvironmentVariableTarget]::Process)
+
+# STACKROOT points to where stack dependencies should be installed
+[Environment]::SetEnvironmentVariable("STACK_ROOT", "${Env:UserProfile}\.stack", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("STACK_ROOT", "${Env:UserProfile}\.stack", [System.EnvironmentVariableTarget]::Process)
