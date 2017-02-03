@@ -26,12 +26,14 @@ if [[ "$(uname -s)" == Linux* ]]; then
     system='NIXOS'
     wintmp=''
     winsystmp=''
+    localbin="$(dirname "${XDG_DATA_HOME:-$HOME/.local/share}")/bin"
 
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
     system='CYGWIN'
     wintmp="$(cygpath --mixed "$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')")"
     winsystmp="$(cygpath --mixed "$(cmd /c 'ECHO %SYSTEMROOT%' | tr --delete '[:space:]')\Temp")"
+    localbin="$(cygpath --mixed "$HOME/.local/bin")"
 
 fi
 
@@ -48,6 +50,7 @@ pushd "$processing_dir"
         --define=PH_SYSTEM="$system" \
         --define=PH_WINTMP="$wintmp" \
         --define=PH_WINSYSTMP="$winsystmp" \
+        --define=PH_LOCALBIN="$localbin" \
         "$m4_filepath" > "${m4_filepath%.*}"
 
     done < <(find "$processing_dir" -type f -name '*.m4' -not -path "$processing_dir/.dotfiles-*" -print0)
