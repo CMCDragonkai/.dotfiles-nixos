@@ -109,6 +109,14 @@ EOF
     # Run `crontab -e` to setup a cron job or `cronevents` to view the log (only available on cygwin)
     echo "yes\n\nno\nyes\nno" | cron-config
 
+    # Enable dbus as a service
+    # Edit /etc/dbus-1/system.conf
+    echo "yes\nyes" | messagebus-config
+
+    # Enable avahi as a service (relies on dbus) (integrates into Windows bonjour service)
+    # Edit /etc/avahi/avahi-daemon.conf
+    echo "yes\nyes" | avahi-daemon-config
+
     # Enable chere for right click context menu
     chere -i -t mintty -s zsh
 

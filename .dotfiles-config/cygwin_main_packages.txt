@@ -28,6 +28,8 @@ chere
 tree
 
 # network
+avahi
+avahi-tools
 openssh
 openssl
 openssl-devel

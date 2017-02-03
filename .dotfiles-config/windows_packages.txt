@@ -20,6 +20,7 @@ logparser,*,chocolateyget
 devcon.portable,*,chocolateyget
 
 # network
+bonjour,*,chocolateyget
 Firefox,*,chocolateyget
 GoogleChrome,*,chocolateyget
 qbittorrent,3.3.4,chocolateyget
