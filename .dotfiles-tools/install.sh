@@ -120,6 +120,9 @@ EOF
     # Enable chere for right click context menu
     chere -i -t mintty -s zsh
 
+    # Enabling CPAN for perl
+    echo "\n\nno\nexit" | perl -MCPAN -e shell
+
     # Remember that cygrunsrv --list can be used to list all cygwin services
 
     # Compatibility tweaks...

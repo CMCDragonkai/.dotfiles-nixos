@@ -154,6 +154,7 @@ tcl-tk
 perl
 perl_manpages
 perl-Data-Dump
+perl-IO-Tty
 
 # lua
 lua
@@ -305,3 +306,7 @@ libaudio2
 libaudio-devel
 libsybdb5
 libsybdb-devel
+libncursesw10
+libncurses-devel
+libprotobuf8
+libprotobuf-devel
