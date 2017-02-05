@@ -7,6 +7,7 @@
 *.csv -text
 *.tsv -text
 *.ini -text
+*.eml -text
 
 # Archives
 *.gz binary
