@@ -49,12 +49,6 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     localconfig="$HOME/.config"
     localconfig_win="$(cygpath --mixed "$localconfig")"
 
-    # Convert ~/.emacs.d to a Windows symlink
-    # On Cygwin, Emacs will be installed as a Windows Application
-    emacs_submodule_path="$(readlink "$processing_dir/.emacs.d")"
-    rm "$processing_dir/.emacs.d" \
-    && cmd /c mklink '/D' "$(cygpath --windows --absolute "$processing_dir/.emacs.d")" "$(cygpath --windows "$emacs_submodule_path")"
-
 fi
 
 pushd "$processing_dir"
@@ -100,6 +94,8 @@ pushd "$processing_dir"
 
 popd
 
+# Final tweaks to the $HOME
+
 # Make sensitive directories and subdirectories 700, but their files 600
 # This requires wiping out any execute permissions first
 chmod --recursive a-x "$HOME/.ssh"
@@ -112,3 +108,12 @@ chmod --recursive u=rwX,g=,o= "$HOME/.aws"
 # Make the Public folder public
 chmod --recursive a-x "$HOME/Public"
 chmod --recursive u=rwX,g=r,o=r "$HOME/Public"
+
+if [ "$system" == 'CYGWIN' ]; then
+
+    # Convert ~/.emacs.d to a Windows symlink
+    # On Cygwin, Emacs will be installed as a Windows Application
+    emacs_submodule_path="$(readlink "$HOME/.emacs.d")"
+    rm "$HOME/.emacs.d" && cmd /c mklink '/D' "$(cygpath --windows --absolute "$HOME/.emacs.d")" "$(cygpath --windows "$emacs_submodule_path")"
+
+fi
