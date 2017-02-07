@@ -27,13 +27,33 @@ if [[ "$(uname -s)" == Linux* ]]; then
     wintmp=''
     winsystmp=''
     localbin="$(dirname "${XDG_DATA_HOME:-$HOME/.local/share}")/bin"
+    localbin_win="$localbin"
+    localdata="${XDG_DATA_HOME:-$HOME/.local/share}"
+    localdata_win="$localdata"
+    localconfig="${XDG_CONFIG_HOME:-$HOME/.config}"
+    localconfig_win="$localconfig"
 
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
+    # if a configuration file uses the *_win version
+    # this means they get a windows path using C:/...
+    # however when the configuration file is used in Linux, it still get the same unix path
+    # the *_win version is only needed for configuration files that prefer the windows path when available
     system='CYGWIN'
     wintmp="$(cygpath --mixed "$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')")"
     winsystmp="$(cygpath --mixed "$(cmd /c 'ECHO %SYSTEMROOT%' | tr --delete '[:space:]')\Temp")"
-    localbin="$(cygpath --mixed "$HOME/.local/bin")"
+    localbin="$HOME/.local/bin"
+    localbin_win="$(cygpath --mixed "$localbin")"
+    localdata="$HOME/.local/share"
+    localdata_win="$(cygpath --mixed "$localdata")"
+    localconfig="$HOME/.config"
+    localconfig_win="$(cygpath --mixed "$localconfig")"
+
+    # Convert ~/.emacs.d to a Windows symlink
+    # On Cygwin, Emacs will be installed as a Windows Application
+    emacs_submodule_path="$(readlink "$processing_dir/.emacs.d")"
+    rm "$processing_dir/.emacs.d" \
+    && cmd /c mklink '/D' "$(cygpath --windows --absolute "$processing_dir/.emacs.d")" "$(cygpath --windows "$emacs_submodule_path")"
 
 fi
 
@@ -51,6 +71,11 @@ pushd "$processing_dir"
         --define=PH_WINTMP="$wintmp" \
         --define=PH_WINSYSTMP="$winsystmp" \
         --define=PH_LOCALBIN="$localbin" \
+        --define=PH_LOCALBINWIN="$localbin_win" \
+        --define=PH_LOCALDATA="$localdata" \
+        --define=PH_LOCALDATAWIN="$localdata_win" \
+        --define=PH_LOCALCONFIG="$localconfig" \
+        --define=PH_LOCALCONFIGWIN="$localconfig_win" \
         "$m4_filepath" > "${m4_filepath%.*}"
 
     done < <(find "$processing_dir" -type f -name '*.m4' -not -path "$processing_dir/.dotfiles-*" -print0)

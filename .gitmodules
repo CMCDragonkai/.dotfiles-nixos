@@ -16,3 +16,6 @@
 [submodule ".dotfiles-modules/zsh-syntax-highlighting"]
 	path = .dotfiles-modules/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule ".dotfiles-modules/spacemacs"]
+	path = .dotfiles-modules/spacemacs
+	url = https://github.com/syl20bnr/spacemacs

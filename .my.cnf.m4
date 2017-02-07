@@ -5,7 +5,7 @@
 # Remember to perform this during a fresh installation (it replaces `mysql_secure_installation`):
 #
 # Execute: `mysql_install_db`.
-# Execute: `{ mysqld & } && mysql`
+# Execute: `{ mysqld & } && sleep 2 && mysql`
 # Run:
 # DELETE FROM mysql.user WHERE User='';
 # DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
@@ -15,6 +15,7 @@
 # Then you're in a local MySQL, enjoy!
 # By the way, the above makes sure that root can only login on localhost.
 # To do a remote login, just use SSH as a proxy first.
+# Finish: mysqladmin shutdown
 
 [client]
 user=root
@@ -27,7 +28,7 @@ pager="less --quit-if-one-screen --no-init --LONG-PROMPT --HILITE-UNREAD --statu
 [mysqld]
 port=3306
 socket="/tmp/mysql.sock"
-datadir="./.local/share/mysql"
+datadir="PH_LOCALDATA/mysql"
 tmpdir="/tmp"
 
 # Use `\G` instead of `;` to produce vertical output.
