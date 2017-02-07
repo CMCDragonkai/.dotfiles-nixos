@@ -5,6 +5,7 @@
     projectHome: "%USERPROFILE%\\Projects"
     telemetryConsent: "no"
   editor:
+    fontFamily: "Fira Code Light"
     scrollPastEnd: true
     softWrap: true
     tabLength: 4

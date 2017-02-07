@@ -140,6 +140,11 @@ Shell Commands:
 * <kbd>Ctrl</kbd> + <kbd>\</kbd> - Send SIGQUIT
 * <kbd>Ctrl</kbd> + <kbd>U</kbd> - Send SIGTERM
 
+For Spacemacs (not all keybindings are shown here, only the important ones):
+
+* Copy to System Clipboard - <kbd>"</kbd> + <kbd>+</kbd> + <kbd>y</kbd>
+* Paste from System Clipboard - <kbd>"</kbd> + <kbd>+</kbd> + <kbd>p</kbd>
+
 Hotkey Hierarchy:
 
 * Linux Commands -> XMonad Commands -> Konsole Commands -> Tmux Commands -> Shell Commands -> Application Commands
@@ -176,6 +181,7 @@ The most ideal ones are those that are multilingual, monospaced, supports ligatu
 * Monoid
 * Hasklig
 * Input
+* DejaVu Sans Mono
 
 Paid Fonts:
 
@@ -435,6 +441,8 @@ Vim currently keeps the focus on the original buffer. And instead I would sugges
 > A tab page is a collection of windows.
 
 Use `:tabe` to open a new tab. Then use `:qa` to close everything, thus saving the entire session.
+
+In Spacemacs, the hierarchy goes: frames -> windows -> buffers. A frame in Spacemacs corresponds to a tab in Vim. Since Spacemacs can be a GUI application, this means a frame is an system window, and therefore can be managed by the system windows manager. So it is up to the user whether they want to use windows within a single frame, thus making Spacemacs like a windows manager, or use frames instead and rely on the system windows manager like XMonad. It is then possible to configure spacemacs to have a tab bar that shows frames, windows or buffers.
 
 ---
 

@@ -55,6 +55,7 @@ ext2fsd,*,chocolateyget
 
 # development
 emacs64,*,chocolateyget
+pt,*,chocolateyget
 atom,*,chocolateyget
 dbeaver,*,chocolateyget
 virtualbox,*,chocolateyget
@@ -124,6 +125,7 @@ sourcecodepro,*,chocolateyget
 AnonymousPro,*,chocolateyget
 hackfont,*,chocolateyget
 inconsolata,*,chocolateyget
+firacode,*,chocolateyget
 
 # these must be installed directly with choco install
 # with options such as --allow-empty-checksums and --ignore-checksums
