@@ -19,7 +19,7 @@ Also see `winln` in `cygutils-extra` package.
 '
 
 if [ "$#" -ge "3" ]; then
-    cmd /c mklink "$1" "$(cygpath --windows --absolute "$2")" "$(cygpath --windows --absolute "$3")"
+    cmd /c mklink "$1" "$(cygpath --windows --absolute "$2")" "$(cygpath --windows "$3")"
 else
-    cmd /c mklink "$(cygpath --windows --absolute "$1")" "$(cygpath --windows --absolute "$2")"
+    cmd /c mklink "$(cygpath --windows --absolute "$1")" "$(cygpath --windows "$2")"
 fi

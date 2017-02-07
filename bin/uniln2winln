@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+# need administrator mode before running this, as it relies on CMD, and
+# CMD's mklink does not respect the create symbolic link privilege
+# right now relative symlinks gets converted to absolute symlinks
+# this is not because of mklink, but due to cygpath
+
+: '
+uniln2winln - Convert a Unix symlink to a Windows NTFS symlink
+
+Usage: uniln2winln <path-to-link>
+'
+
+target_path="$(readlink "$1")"
+
+if [ -d "$target_path" ]; then
+
+    rm "$1" && cmd /c mklink '/D' "$(cygpath --windows --absolute "$1")" "$(cygpath --windows "$target_path")"
+
+else
+
+    rm "$1" && cmd /c mklink "$(cygpath --windows --absolute "$1")" "$(cygpath --windows "$target_path")"
+
+fi

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+: '
+winln2uniln - Convert a Windows NTFS symlink to a Unix symlink
+
+Usage: winln2uniln <path-to-link>
+'
+
+target_path="$(readlink "$1")"
+
+rm "$1" && ln --symbolic "$target_path" "$1"
