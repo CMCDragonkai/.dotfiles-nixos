@@ -273,15 +273,15 @@ On adding new dependencies:
 
 ```
 cd "$(git rev-parse --show-toplevel)"
-git submodule add <repo> modules/<repo-name>
-git submodule update --init --recursive --depth 1 modules/<repo-name>
+git submodule add <repo> .dotfiles-modules/<repo-name>
+git submodule update --init --recursive --depth 1 .dotfiles-modules/<repo-name>
 ```
 
 On removing dependencies that have been committed:
 
 ```
 cd "$(git rev-parse --show-toplevel)"
-package="modules/package"
+package=".dotfiles-modules/package"
 git submodule deinit --force "$package"
 git rm --force "$package"
 rm --verbose --recursive --force --dir ".git/modules/$package"
@@ -291,14 +291,14 @@ On updating dependencies to the latest in their branch:
 
 ```
 cd "$(git rev-parse --show-toplevel)"
-git submodule update --init --recursive --remote --merge modules/<repo-name>
+git submodule update --init --recursive --remote --merge .dotfiles-modules/<repo-name>
 ```
 
 On changing dependency upstream URL:
 
 ```
 cd "$(git rev-parse --show-toplevel)"
-git config --file=".gitmodules" "submodule.modules/<repo-name>.url" "<repo>"
+git config --file=".gitmodules" "submodule..dotfiles-modules/<repo-name>.url" "<repo>"
 git submodule sync
 ```
 
