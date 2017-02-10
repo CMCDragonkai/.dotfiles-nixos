@@ -1,6 +1,6 @@
-ASCIIFlow Infinity,http://asciiflow.com/
-Desmos Graphing Calculator,https://www.desmos.com/calculator
-Regex 101,https://regex101.com/
+ASCIIFlow,http://asciiflow.com/
+Desmos,https://www.desmos.com/calculator
+Regex101,https://regex101.com/
 Mailtrap,https://mailtrap.io/inboxes
 Inkbrush,https://www.inkbrush.com/app
 ZeroSSL,https://zerossl.com/free-ssl/#crt
