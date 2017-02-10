@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+urls_list=/dev/stdin
+sitemap_file=/dev/stdout
+
+if [[ -n "$1" ]]; then
+
+    if [[ "$1" == '-' ]]; then
+        urls_list=/dev/stdin
+    else
+        urls_list="$1"
+    fi
+
+    if [[ -n "$2" ]]; then
+
+        if [[ "$2" == '-' ]]; then
+            sitemap_file=/dev/stdout
+        else
+            sitemap_file="$2"
+        fi
+
+    fi
+
+fi
+
+cat <<'EOF' >"$sitemap_file"
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+EOF
+
+while read -r url lastmod frequency priority || [[ -n "$line" ]]; do
+
+cat <<EOF >>"$sitemap_file"
+    <url>
+EOF
+
+if [[ -n "$url" ]]; then
+cat <<EOF >>"$sitemap_file"
+        <loc>$url</loc>
+EOF
+fi
+
+if [[ -n "${lastmod// }" ]]; then
+cat <<EOF >>"$sitemap_file"
+        <lastmod>$lastmod</lastmod>
+EOF
+fi
+
+if [[ -n "${frequency// }" ]]; then
+cat <<EOF >>"$sitemap_file"
+        <changefreq>$frequency</changefreq>
+EOF
+fi
+
+if [[ -n "${priority// }" ]]; then
+cat <<EOF >>"$sitemap_file"
+        <priority>$priority</priority>
+EOF
+fi
+
+cat <<EOF >>"$sitemap_file"
+    </url>
+EOF
+
+done <"$urls_list"
+
+cat <<'EOF' >>"$sitemap_file"
+</urlset>
+EOF
