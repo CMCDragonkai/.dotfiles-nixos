@@ -132,9 +132,15 @@ php-readline
 php-tokenizer
 php-iconv
 php-mbstring
+php-mcrypt
+php-mysqli
+php-opcache
+php-PEAR
+php-bz2
 
 # ruby
 ruby
+ruby-devel
 rubygems
 
 # python
