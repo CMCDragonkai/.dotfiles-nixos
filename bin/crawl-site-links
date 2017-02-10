@@ -1,0 +1,20 @@
+!#/usr/bin/env sh
+
+website_url="$1"
+
+# sort uses temporary files for sorting out-of-memory
+# so there won't be any output until wget finishes
+# the grep will filter to only successful URLs
+# adjust the rejection list if necessary
+# level=0 makes the levels infinite
+
+wget \
+--no-verbose \
+--no-directories \
+--spider \
+--recursive \
+--level=0 \
+--reject=jpg,jpeg,png,gif,pdf \
+"$website_url" 2>&1 \
+| sort --unique \
+| grep --only-matching --perl-regexp '(?<=URL:)https?[^ ]+'
