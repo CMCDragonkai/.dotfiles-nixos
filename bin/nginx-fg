@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+if [ "$#" -eq 0 ]; then
+    echo "Pass in path to config file!"
+    exit 1
+fi
+
+config_directory="$(dirname "$1")"
+config_file="$(basename "$1")"
+
+nginx \
+    -p "$config_directory" \
+    -c "$config_file"
