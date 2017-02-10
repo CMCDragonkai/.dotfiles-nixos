@@ -1065,3 +1065,7 @@ Mac addresses are mapped to IP addresses are mapped to Domain names lol!
 Each operating at a different level of abstraction.
 
 > When you understand that IP-to-IP communication is really just a series of MAC-to-MAC communication taking place at each router hop, then you'll see why both are necessary.
+
+---
+
+Get tesseract installed.
