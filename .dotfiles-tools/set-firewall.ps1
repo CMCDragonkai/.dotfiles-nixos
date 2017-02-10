@@ -83,7 +83,7 @@ New-NetFirewallRule `
     -Enabled True `
     >$null
 
-# Setup firewall to accept connections from 55555 in Domain and Private networks
+# Setup firewall to accept connections from 55555 in Domain, Private networks
 Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (TCP-In)" -ErrorAction SilentlyContinue
 Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (UDP-In)" -ErrorAction SilentlyContinue
 New-NetFirewallRule `
@@ -105,4 +105,29 @@ New-NetFirewallRule `
     -Action Allow `
     -Profile "Domain,Private" `
     -Enabled True `
+    >$null
+
+# Setup firewall to accept connections from 55555 in Public networks
+# Disabled by default
+Remove-NetFirewallRule -DisplayName "Polyhack - Public Development Port (TCP-In)" -ErrorAction SilentlyContinue
+Remove-NetFirewallRule -DisplayName "Polyhack - Public Development Port (UDP-In)" -ErrorAction SilentlyContinue
+New-NetFirewallRule `
+    -DisplayName "Polyhack - Public Development Port (TCP-In)" `
+    -Direction Inbound `
+    -EdgeTraversalPolicy Allow `
+    -Protocol TCP `
+    -LocalPort 55555 `
+    -Action Allow `
+    -Profile "Public" `
+    -Enabled False `
+    >$null
+New-NetFirewallRule `
+    -DisplayName "Polyhack - Public Development Port (UDP-In)" `
+    -Direction Inbound `
+    -EdgeTraversalPolicy Allow `
+    -Protocol UDP `
+    -LocalPort 55555 `
+    -Action Allow `
+    -Profile "Public" `
+    -Enabled False `
     >$null
