@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
+
+    cat<<EOF
+crawl-sitelinks - Crawl a website for all internal links.
+                  This can be later converted to a sitemap.
+                  Does not support Javascript.
+
+Usage:
+    crawl-sitelinks [-p | --progress] <url> [rejection-list]
+    curl-upload-file -h | --help
+
+Options:
+    -h --help       Show this help text.
+    -p --progress   Show progress (otherwise it is silent).
+EOF
+
+    exit 64
+
+fi
+
+progress="/dev/null"
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -p|--progress)
+            progress="/dev/stderr"
+        ;;
+        *)
+            # finished flags, jump to positional arguments
+            break
+        ;;
+    esac
+    shift # shift past the key or value (in this case, it's all keys)
+done
+
+website_url="$1"
+rejection_list="$2"
+
+# level=0 makes recursion infinite
+# sort uses temporary files for sorting out-of-memory
+# the grep will filter to only successful URLs
+
+wget \
+--no-verbose \
+--no-directories \
+--directory-prefix=/tmp \
+--spider \
+--recursive \
+--level=0 \
+--reject="$rejection_list" \
+"$website_url" 2>&1 \
+| tee "$progress" \
+| sort --unique \
+| grep --only-matching --perl-regexp '(?<=URL:)https?[^ ]+'
