@@ -37,7 +37,7 @@ Transparency=off
 # Cursor
 
 AllowBlinking=no
-CursorType=line
+CursorType=block
 CursorBlinks=no
 
 # Fonts
