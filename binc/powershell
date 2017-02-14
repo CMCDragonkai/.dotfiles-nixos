@@ -1,3 +1,14 @@
 #!/usr/bin/env sh
 
-exec winpty powershell -NoLogo -ExecutionPolicy Bypass
+executable="$(command which --all "$(basename "$0")" | grep --max-count=1 --invert-match "$(realpath --no-symlinks "$0")")"
+
+if [ -t 0 -a -t 1 ]; then
+
+    exec winpty "$(realpath "$executable")" -NoLogo -ExecutionPolicy Bypass $@
+
+else
+
+    exec "$(realpath "$executable")" $@
+
+fi
+

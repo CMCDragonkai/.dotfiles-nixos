@@ -5,10 +5,10 @@ ehthumbs.db
 Thumbs.db
 
 # Vim Files #
-*~             # backup files
-.*.un~         # undo files
-.*.sw[m-p]     # swap files
-Session.vim    # session files
+*~
+.*.un~
+.*.sw[m-p]
+Session.vim
 
 # Emacs Files #
 .\#*

@@ -1,3 +1,24 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-winpty cmd /K %USERPROFILE%\\.cmd_profile.bat
+if [ -t 0 -a -t 1 ]; then
+
+    # if any point the command has a /C or /K, then you cannot specify another /K to the profile
+    cmd_command=false
+    for p in "$@"; do
+        if [[ "${p,,}" == "/c" || "${p,,}" == "/k" ]]; then
+            cmd_command=true
+            break
+        fi
+    done
+    
+    if ! $cmd_command; then
+        exec winpty /cygdrive/c/WINDOWS/system32/cmd /K %USERPROFILE%\\.cmd_profile.bat $@
+    else
+        exec winpty /cygdrive/c/WINDOWS/system32/cmd $@
+    fi
+
+else
+    
+    exec /cygdrive/c/WINDOWS/system32/cmd $@
+
+fi
