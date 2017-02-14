@@ -28,7 +28,7 @@ cat <<'EOF' >"$sitemap_file"
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 EOF
 
-while read -r url lastmod frequency priority || [[ -n "$line" ]]; do
+while read -r url lastmod frequency priority || [[ -n "$url" ]]; do
 
 cat <<EOF >>"$sitemap_file"
     <url>
