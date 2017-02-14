@@ -1,4 +1,4 @@
-local-bin-path: PH_LOCALBINWIN
+local-bin-path: PH_WINHOME/.stack/bin
 
 templates:
   params:

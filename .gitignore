@@ -10,6 +10,9 @@ Thumbs.db
 .*.sw[m-p]     # swap files
 Session.vim    # session files
 
+# Emacs Files #
+.\#*
+
 # Do not ignore any `.gitkeep` files #
 !.gitkeep
 

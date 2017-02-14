@@ -12,3 +12,6 @@ Thumbs.db
 .*.un~         # undo files
 .*.sw[m-p]     # swap files
 Session.vim    # session files
+
+# Emacs Files #
+.\#*

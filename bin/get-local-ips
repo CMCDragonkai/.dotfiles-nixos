@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+case "$(uname -s)" in
+
+    Linux)
+        ip addr 
+    ;;
+
+    CYGWIN*|MINGW32*|MSYS*)
+        powershell -Command 'Get-NetAdapter | Get-NetIPAddress | Select InterfaceAlias, IPAddress | Sort InterfaceAlias'
+    ;;
+
+    *)
+        exit 1 
+    ;;
+
+esac
+

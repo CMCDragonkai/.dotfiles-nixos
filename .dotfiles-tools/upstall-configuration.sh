@@ -20,12 +20,21 @@ if ! source "$processing_dir/.dotfiles-config/profile_paths.conf"; then
     exit 1
 fi
 
+# Some applications require Unix paths, some applications require Windows paths
+# We will define unix and windows versions of path variables
+# On linux, the unix and windows version will be the same thing
+# On Cygwin, they can be different
+# Use the windows version of the paths, when using a windows application
+# If the same application is using the same configuration while on linux, the path will resolve a unix path
 if [[ "$(uname -s)" == Linux* ]]; then
 
     # The only Linux I use is NIXOS
     system='NIXOS'
-    wintmp=''
-    winsystmp=''
+    home="$HOME"
+    winhome="$home"
+    tmp="$TMPDIR"
+    wintmp="$tmp"
+    winsystmp="$tmp"
     localbin="$(dirname "${XDG_DATA_HOME:-$HOME/.local/share}")/bin"
     localbin_win="$localbin"
     localdata="${XDG_DATA_HOME:-$HOME/.local/share}"
@@ -35,11 +44,10 @@ if [[ "$(uname -s)" == Linux* ]]; then
 
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
-    # if a configuration file uses the *_win version
-    # this means they get a windows path using C:/...
-    # however when the configuration file is used in Linux, it still get the same unix path
-    # the *_win version is only needed for configuration files that prefer the windows path when available
     system='CYGWIN'
+    home="$HOME"
+    winhome="$(cygpath --mixed "$home")"
+    tmp="$TMPDIR"
     wintmp="$(cygpath --mixed "$(cmd /c 'ECHO %TMP%' | tr --delete '[:space:]')")"
     winsystmp="$(cygpath --mixed "$(cmd /c 'ECHO %SYSTEMROOT%' | tr --delete '[:space:]')\Temp")"
     localbin="$HOME/.local/bin"
@@ -62,6 +70,9 @@ pushd "$processing_dir"
         --prefix-builtins \
         --include="${processing_dir}/.dotfiles-config/m4_includes" \
         --define=PH_SYSTEM="$system" \
+        --define=PH_HOME="$home" \
+        --define=PH_WINHOME="$winhome" \
+        --define=PH_TMP="$tmp" \
         --define=PH_WINTMP="$wintmp" \
         --define=PH_WINSYSTMP="$winsystmp" \
         --define=PH_LOCALBIN="$localbin" \

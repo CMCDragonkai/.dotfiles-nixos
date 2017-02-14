@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+winpty cmd /K %USERPROFILE%\\.cmd_profile.bat

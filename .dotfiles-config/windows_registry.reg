@@ -208,6 +208,14 @@ Windows Registry Editor Version 5.00
 [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power]
 "HiberbootEnabled"=dword:00000001
 
+; Allow paths longer than 260 characters, but up to approximately 32,000 characters
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+"LongPathsEnabled"=dword:00000001
+
+; If you don't have bitlocker enabled, you should encrypt your paging file
+; [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+; "NtfsEncryptPagingFile"=dword:00000001
+
 ; Initial JAVA Preferences (an empty key suffices)
 ; Not doing this means many Java applications show a useless warning
 ; WOW6432Node is for 64 bit windows running 32 bit JVM

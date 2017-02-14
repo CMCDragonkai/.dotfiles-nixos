@@ -1091,3 +1091,8 @@ Cygwin applications, and general development use.
 Since Cygwin PATH will be ahead of the Windows PATH, Cygwin's git will take
 priority over Windows git. So it should all work.
 The same git configuration works for both Windows and Cygwin git.
+
+---
+
+We may have to separate bin/ into Common, NixOS and Cygwin.
+This is because some bin scripts only make sense in Cygwin environment

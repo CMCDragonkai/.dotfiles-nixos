@@ -18,7 +18,15 @@ $UserPaths =
     # Original User Paths
     '%LOCALAPPDATA%\Microsoft\WindowsApps',
     # Custom local executables
-    '%LOCALAPPDATA%\bin'
+    '%LOCALAPPDATA%\bin',
+    # Custom profile executables 
+    '%USERPROFILE%\binw',
+    # Profile NPM Executables
+    '%USERPROFILE%\.npm',
+    # Profile Go Executables
+    '%USERPROFILE%\.go\bin',
+    # Profile Stack Executables
+    '%USERPROFILE%\.stack\bin'
 
 $SystemPaths =
     # Original System Paths
@@ -40,7 +48,17 @@ $SystemPaths =
     # MikTex 2.9
     '%ProgramFiles%\MiKTeX 2.9\miktex\bin\x64',
     # Windows 10 SDK
-    '%ProgramFiles(x86)%\Windows Kits\10\Windows Performance Toolkit'
+    '%ProgramFiles(x86)%\Windows Kits\10\Windows Performance Toolkit',
+    # Microsoft SQL Server
+    '%ProgramFiles(x86)%\Microsoft SQL Server\120\Tools\Binn',
+    '%ProgramFiles%\Microsoft SQL Server\120\Tools\Binn',
+    '%ProgramFiles%\Microsoft SQL Server\120\DTS\Binn',
+    '%ProgramFiles%\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn',
+    # Python
+    '%SystemDrive%\python2',
+    '%SystemDrive%\python2\Scripts',
+    '%SystemDrive%\python3',
+    '%SystemDrive%\python3\Scripts'
 
 # Filter out PATHs that don't exist
 $UserPaths = $UserPaths | Where-Object { Test-Path "$([System.Environment]::ExpandEnvironmentVariables(`"$_`"))" -PathType Container }
