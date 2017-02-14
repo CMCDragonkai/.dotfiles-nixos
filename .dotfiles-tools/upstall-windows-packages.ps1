@@ -101,11 +101,16 @@ foreach ($Package in $WindowsPackages) {
     $Version = $Package[1].trim()
     $Provider = $Package[2].trim()
 
-    # the fourth parameter is optional completely, there's no need to even have a comma
     if ($Package.Length -eq 4) {
-        $AdditionalArguments = $Package[3].trim()
+        $PackageParams = $ExecutionContext.InvokeCommand.ExpandString($Package[3].trim())
     } else {
-        $AdditionalArguments = ''
+        $PackageParams = ''
+    }
+
+    if ($Package.Length -eq 5) {
+        $InstallArguments = $ExecutionContext.InvokeCommand.ExpandString($Package[4].trim())
+    } else {
+        $InstallArguments = ''
     }
 
     $InstallCommand = "Install-Package -Name '$Name' "
@@ -118,18 +123,27 @@ foreach ($Package in $WindowsPackages) {
         $InstallCommand += "-ProviderName '$Provider' "
     }
 
-    if ($AdditionalArguments) {
+    if ($PackageParams -or $InstallArguments) {
 
-        # heredoc in powershell (must have no spaces before ending `'@`)
-        $InstallCommand += "-AdditionalArguments @'
-            --installargs `"$AdditionalArguments`"
-'@ "
+        $AdditionalArguments = '--confirm'
+
+        if ($PackageParams) {
+           $AdditionalArguments += " --params=`"$PackageParams`""
+        }
+
+        if ($InstallArguments) {
+            $AdditionalArguments += " --installargs=`"$InstallArguments`""
+        }
+
+        $InstallCommand += "-AdditionalArguments '$AdditionalArguments'"
 
     }
 
     if ($Force) {
         $InstallCommand += '-Force'
     }
+
+    Write-Host "Installing $Name"
 
     Invoke-Expression "$InstallCommand"
 
