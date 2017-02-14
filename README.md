@@ -1069,3 +1069,25 @@ Each operating at a different level of abstraction.
 ---
 
 Get tesseract installed.
+
+---
+
+Use sysexits.h when you need more exit codes.
+
+http://stackoverflow.com/a/1535733/582917
+
+---
+
+Look into moving to Python on native Windows, instead of through Cygwin. More things work there.
+Also some things on Cygwin will still require python, but just make them use that...
+Actually what does use python on Linux? I could get numpy and other stuff working.
+
+---
+
+We will have 2 different Git installations, a Windows one, and a Cygwin one
+The Windows one will be part of the Windows System PATH, and will be used by
+Windows applications like Go and Node. While the Cygwin one will be used by
+Cygwin applications, and general development use.
+Since Cygwin PATH will be ahead of the Windows PATH, Cygwin's git will take
+priority over Windows git. So it should all work.
+The same git configuration works for both Windows and Cygwin git.
