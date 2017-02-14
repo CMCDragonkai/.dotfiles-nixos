@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
-    
+
     cat<<EOF
-curl-upload-file - Upload a single file via curl. 
+curl-upload-file - Upload a single file via curl.
                    It uses the content type of the file itself.
                    This is not a form submission.
                    Using \`-\` allows you to read from stdin.
-                   
-Usage: 
+
+Usage:
     curl-upload-file <url> (<file-path> | -) [file-name]
     curl-upload-file <url> (<file-path> | -) [file-name] -- [curl-flags]...
     curl-upload-file (-po | --post | -pu | --put) <url> (<file-path> | -) [file-name]
@@ -32,7 +32,7 @@ The \`curl\` has the \`--upload-file\` has deficient behaviour with regards to H
 Combine this with \`chunk.io\` (it uses PUT, not POST) for spectacular results!
 EOF
 
-    exit 0
+    exit 64
 
 fi
 
@@ -73,17 +73,17 @@ file_path="$2"
 file_name=''
 curl_flags=''
 
-if [ "$3" != '--' ]; then 
+if [ "$3" != '--' ]; then
 
     file_name="$3"
-    
+
     # check whether there's -- for curl flags
     if [ "$4" == '--' ]; then
         shift 4
         curl_flags="$*"
     fi
 
-else 
+else
 
     # no file name, we just have '--', so acquire the curl flags
     shift 3
@@ -93,26 +93,26 @@ fi
 
 # test for emptyness including just whitespace
 
-if [ -z "${url// }" ]; then 
-    printf 'Error: You need an URL!\n' >&2 
+if [ -z "${url// }" ]; then
+    printf 'Error: You need an URL!\n' >&2
     exit 1
 fi
 
 if [ -z "${file_path// }" ]; then
-    printf 'Error: You need an input file!\n' >&2 
+    printf 'Error: You need an input file!\n' >&2
     exit 1
 fi
 
-if [ "$file_path" == '-' ]; then 
+if [ "$file_path" == '-' ]; then
 
     # while `file` can read from stdin as well, its difficult to do process orchestration to split stdin
     # and it may require streaming over the file twice, which is annoying
     file_content_type='application/octet-stream'
 
-else 
+else
 
-    if [ ! -r "$file_path" ]; then 
-        printf 'Error: Input file does not exist or is not readable!\n' >&2 
+    if [ ! -r "$file_path" ]; then
+        printf 'Error: Input file does not exist or is not readable!\n' >&2
         exit 1
     fi
 
@@ -124,7 +124,7 @@ fi
 
 command="curl '$url'"
 
-if [ "$request_type" == 'POST' ]; then 
+if [ "$request_type" == 'POST' ]; then
     command="$command --request 'POST'"
 elif [ "$request_type" == 'PUT' ]; then
     command="$command --request 'PUT'"
@@ -132,7 +132,7 @@ fi
 
 command="$command --header 'Content-Type: $file_content_type'"
 
-if [ -n "${file_name// }" ]; then 
+if [ -n "${file_name// }" ]; then
     command="$command --header 'Content-Disposition: attachment; filename=\"$file_name\"'"
 fi
 
@@ -151,16 +151,16 @@ if [ "$file_path" == '-' ]; then
     else
         command="$command --data-binary '@-'"
     fi
-    
-else 
+
+else
 
     if "$gzipped"; then
         command="$command --data-binary @<(gzip --stdout '$file_path')"
     else
         command="$command --data-binary '@$file_path'"
     fi
-    
-fi 
+
+fi
 
 if [ -n "${curl_flags// }" ]; then
     command="$command $curl_flags"
