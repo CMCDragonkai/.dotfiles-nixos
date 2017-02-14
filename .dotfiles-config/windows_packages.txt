@@ -3,7 +3,7 @@ dejavufonts,*,chocolateyget
 arduino,*,chocolateyget
 
 # shell/system utilities
-ConEmu,16.12.6.0,chocolateyget
+ConEmu,17.1.18.0,chocolateyget
 vault,*,chocolateyget
 keepass,*,chocolateyget
 keeweb,*,chocolateyget
@@ -20,7 +20,6 @@ logparser,*,chocolateyget
 devcon.portable,*,chocolateyget
 
 # network
-bonjour,*,chocolateyget
 Firefox,*,chocolateyget
 GoogleChrome,*,chocolateyget
 qbittorrent,3.3.4,chocolateyget
@@ -55,7 +54,6 @@ ext2fsd,*,chocolateyget
 
 # development
 emacs64,*,chocolateyget
-pt,*,chocolateyget
 atom,*,chocolateyget
 dbeaver,*,chocolateyget
 virtualbox,*,chocolateyget
@@ -159,3 +157,5 @@ kicad,*,chocolateyget
 # adobe creative suite
 # portfolio performance (https://github.com/buchen/portfolio)
 # gisto
+# pt
+# bonjour
