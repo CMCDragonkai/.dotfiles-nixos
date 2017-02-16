@@ -1,3 +1,11 @@
 #!/usr/bin/env sh
 
-exec winpty stack runhaskell
+if [ -t 0 -a -t 1]; then
+
+    exec winpty stack runhaskell "$@"
+
+else
+
+    exec stack runhaskell "$@"
+
+fi

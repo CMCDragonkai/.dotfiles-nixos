@@ -4,11 +4,11 @@ executable="$(command which --all "$(basename "$0")" | grep --max-count=1 --inve
 
 if [ -t 0 -a -t 1 ]; then
 
-    exec winpty "$(realpath "$executable")" $@
+    exec winpty "$(realpath "$executable")" "$@"
 
 else
 
-    exec "$(realpath "$executable")" $@
+    exec "$(realpath "$executable")" "$@"
 
 fi
 

@@ -12,13 +12,13 @@ if [ -t 0 -a -t 1 ]; then
     done
     
     if ! $cmd_command; then
-        exec winpty /cygdrive/c/WINDOWS/system32/cmd /K %USERPROFILE%\\.cmd_profile.bat $@
+        exec winpty /cygdrive/c/WINDOWS/system32/cmd /K %USERPROFILE%\\.cmd_profile.bat "$@"
     else
-        exec winpty /cygdrive/c/WINDOWS/system32/cmd $@
+        exec winpty /cygdrive/c/WINDOWS/system32/cmd "$@"
     fi
 
 else
     
-    exec /cygdrive/c/WINDOWS/system32/cmd $@
+    exec /cygdrive/c/WINDOWS/system32/cmd "$@"
 
 fi
