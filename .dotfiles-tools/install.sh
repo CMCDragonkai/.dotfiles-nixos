@@ -152,7 +152,9 @@ if [[ "$(uname -s)" == Linux* ]]; then
 
 elif [[ $(uname -s) == CYGWIN* ]]; then
 
-    # Install python packages
+    # Install packages from source (they will be forced)
+    "$processing_dir"/.dotfiles-tools/upstall-source-packages.sh
+
     if $force; then
         "$processing_dir"/.dotfiles-tools/upstall-python-packages.sh --force
     else
@@ -170,9 +172,6 @@ elif [[ $(uname -s) == CYGWIN* ]]; then
     else
         "$processing_dir"/.dotfiles-tools/upstall-go-packages.sh
     fi
-
-    # Install packages from source (no way to update them, they will always be forced)
-    "$processing_dir"/.dotfiles-tools/upstall-source-packages.sh
 
     # Assuming composer was installed by source installation scripts
     if hash composer 2>/dev/null; then
