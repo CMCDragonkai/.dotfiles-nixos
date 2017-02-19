@@ -6,6 +6,10 @@
 .DS_Store?
 ehthumbs.db
 Thumbs.db
+*.stackdump
+
+# Process ID files #
+*.pid
 
 # Vim Files #
 *~
