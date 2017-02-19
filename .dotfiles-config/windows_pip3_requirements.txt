@@ -1,0 +1,22 @@
+# windows pip3
+# the order of dependencies set out below matters
+
+# executables
+youtube_dl==2017.2.14
+httpie==0.9.9
+overpass==0.5.6
+awscli==1.11.47
+csvkit==1.0.1
+sphinx==1.5.2
+virtualenv==15.1.0
+dns-lexicon==1.2.4
+pgcli==1.4.0
+mitmproxy==1.0.2
+
+# libraries
+capstone-windows==3.0.4
+pyserial==3.2.1
+boto3==1.4.4
+odo==0.5.0
+altair==1.2.0
+protobuf==3.2.0

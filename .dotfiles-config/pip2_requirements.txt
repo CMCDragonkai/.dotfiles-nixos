@@ -1,6 +1,0 @@
-# executables
-dns-lexicon
-# libraries
-pyserial==3.1.1
-boto3==1.4.4
-GDAL==2.1.0

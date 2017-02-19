@@ -57,9 +57,7 @@ $SystemPaths =
     '%ProgramFiles%\Microsoft SQL Server\120\DTS\Binn',
     '%ProgramFiles%\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn',
     # Python
-    '%SystemDrive%\python2',
     '%SystemDrive%\python2\Scripts',
-    '%SystemDrive%\python3',
     '%SystemDrive%\python3\Scripts'
 
 # Filter out PATHs that don't exist

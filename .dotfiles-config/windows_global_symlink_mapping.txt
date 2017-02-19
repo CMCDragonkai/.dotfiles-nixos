@@ -52,6 +52,13 @@ xnview,%ProgramFiles%\XnViewMP\xnviewmp.exe
 prey,%WinDir%\Prey\current\bin\prey.cmd
 git,%ProgramFiles%\Git\cmd\git.exe
 
+# python
+python.exe,%SystemDrive%\python2\python.exe
+python2.exe,%SystemDrive%\python2\python.exe
+python2w.exe,%SystemDrive%\python2\pythonw.exe
+python3.exe,%SystemDrive%\python3\python.exe
+python3w.exe,$%SystemDrive%\python3\pythonw.exe
+
 # node
 node.exe,%ProgramFiles%\nodejs\node.exe
 npm,%ProgramFiles%\nodejs\npm.cmd

@@ -1,0 +1,13 @@
+numpy/numpy‑1.12.0+mkl‑cp36‑cp36m‑win_amd64.whl
+scipy/scipy‑0.18.1‑cp36‑cp36m‑win_amd64.whl
+pillow/Pillow‑3.4.2‑cp36‑cp36m‑win_amd64.whl
+matplotlib/matplotlib‑2.0.0‑cp36‑cp36m‑win_amd64.whl
+gdal/GDAL‑2.1.3‑cp36‑cp36m‑win_amd64.whl
+pandas/pandas‑0.19.2‑cp36‑cp36m‑win_amd64.whl
+fiona/Fiona‑1.7.3‑cp36‑cp36m‑win_amd64.whl
+rasterio/rasterio‑1.0a5‑cp36‑cp36m‑win_amd64.whl
+shapely/Shapely‑1.5.17‑cp36‑cp36m‑win_amd64.whl
+scikit-image/scikit_image‑0.12.3‑cp36‑cp36m‑win_amd64.whl
+scikit-learn/scikit_learn‑0.18.1‑cp36‑cp36m‑win_amd64.whl
+opencv/opencv_python‑3.2.0‑cp36‑cp36m‑win_amd64.whl
+tensorflow/tensorflow_gpu‑0.12.1‑cp36‑cp36m‑win_amd64.whl
