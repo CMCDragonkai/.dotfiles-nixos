@@ -152,6 +152,7 @@ kicad,*,chocolateyget
 # tabula
 # geforce driver
 # cuda
+# cudnn
 # origin
 # spotify
 # adobe creative suite
