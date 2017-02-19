@@ -45,6 +45,8 @@ $SystemPaths =
     # CUDA
     '%CUDA_PATH%\bin',
     '%CUDA_PATH%\libnvvp',
+    # QEMU
+    '%ProgramFiles%\qemu',
     # MikTex 2.9
     '%ProgramFiles%\MiKTeX 2.9\miktex\bin\x64',
     # Windows 10 SDK

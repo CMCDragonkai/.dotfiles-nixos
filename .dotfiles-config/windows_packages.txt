@@ -159,3 +159,4 @@ kicad,*,chocolateyget
 # gisto
 # pt
 # bonjour
+# qemu
