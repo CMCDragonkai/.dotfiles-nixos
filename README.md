@@ -611,6 +611,8 @@ This shows you don't really need all of Visual Studio to work with CUDA. You jus
 
 Running the above requires the .NET Framework 3.5 feature to be enabled. This is already automated in `./install.ps1`.
 
+Then you want to get the cuDNN library. To do this, you need to go get the appropriate cuDNN library. For Windows, it's a matter of downloading the zip file, and copying the `bin`, `lib` and `include` directories into `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\`. I've already added the appropriate directories to the PATH.
+
 ---
 
 Microsoft SQL Server Express is installed. Use `Start-Service -Name 'MSSQL$SQLEXPRESS'` and `Restart-Service -Name 'MSSQL$SQLEXPRESS'` to start the service up when you want to work on it.
@@ -1096,3 +1098,11 @@ The same git configuration works for both Windows and Cygwin git.
 
 We may have to separate bin/ into Common, NixOS and Cygwin.
 This is because some bin scripts only make sense in Cygwin environment
+
+---
+
+On Windows, the path hierarchy goes SYSTEM PATH + USER PATH. This means the SYSTEM PATH always takes precedence over the USER PATH. This means USER PATH executables can never shadow SYSTEM PATH executables.
+
+However on Linux, it is the other way around, local PATH customisations are intended be prepended to the PATH (although you do have the option of appending it), that way you can wrap system executables. This is in fact what we do, while leaving the Windows user path to be appended to the system path, Cygwin path additions are always prepended.
+
+Just something to beaware of you intend to wrap Windows executables
