@@ -1106,3 +1106,7 @@ On Windows, the path hierarchy goes SYSTEM PATH + USER PATH. This means the SYST
 However on Linux, it is the other way around, local PATH customisations are intended be prepended to the PATH (although you do have the option of appending it), that way you can wrap system executables. This is in fact what we do, while leaving the Windows user path to be appended to the system path, Cygwin path additions are always prepended.
 
 Just something to beaware of you intend to wrap Windows executables
+
+---
+
+Node and Node-Gyp. Some Node packages require the usage of Node-Gyp and Windows Python to compile on Windows. For this to work you must first run `npm config set msvs_version 2015`, in this case, I have already set it to the 2015 version, because I have the 2015 Visual C++ Build tools. But then afterwards, you may need to run the entire `npm install -g ...` command inside the Visual C++ 201* x64 Build Tools Command Prompt so it can find the necessary tools (MSBuild.. etc).

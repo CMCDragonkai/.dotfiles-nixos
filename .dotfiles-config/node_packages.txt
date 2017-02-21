@@ -3,3 +3,6 @@ resume-cli,0.4.12
 query-overpass,1.1.0
 geojsonio-cli,0.2.1
 wellknown,0.5.0
+
+# packages that need special installation
+# dat - install inside Visual C++ 2015 x64 Native Build Tools Command Prompt
