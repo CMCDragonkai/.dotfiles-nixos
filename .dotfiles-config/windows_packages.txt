@@ -161,3 +161,4 @@ kicad,*,chocolateyget
 # pt
 # bonjour
 # qemu
+# gnuwin32 packages (for bringing in one-off gnu utilities to be used)

@@ -45,10 +45,6 @@ $SystemPaths =
     # CUDA
     '%CUDA_PATH%\bin',
     '%CUDA_PATH%\libnvvp',
-    # QEMU
-    '%ProgramFiles%\qemu',
-    # MikTex 2.9
-    '%ProgramFiles%\MiKTeX 2.9\miktex\bin\x64',
     # Windows 10 SDK
     '%ProgramFiles(x86)%\Windows Kits\10\Windows Performance Toolkit',
     # Microsoft SQL Server
@@ -56,6 +52,16 @@ $SystemPaths =
     '%ProgramFiles%\Microsoft SQL Server\120\Tools\Binn',
     '%ProgramFiles%\Microsoft SQL Server\120\DTS\Binn',
     '%ProgramFiles%\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn',
+    # GNU Win32
+    '%ProgramFiles(x86)%\GnuWin32\bin',
+    # QEMU
+    '%ProgramFiles%\qemu',
+    # MikTex 2.9
+    '%ProgramFiles%\MiKTeX 2.9\miktex\bin\x64',
+    # Git
+    '%ProgramFiles%\Git\cmd',
+    # Node
+    '%ProgramFiles%\nodejs',
     # Python
     '%SystemDrive%\python2\Scripts',
     '%SystemDrive%\python3\Scripts'
