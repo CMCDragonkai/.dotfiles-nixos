@@ -10,6 +10,7 @@
 # It relies on testing on what works and what doesn't
 
 chrome,%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe
+chromium,%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe
 googleearth,%ProgramFiles(x86)%\Google\Google Earth Pro\client\googleearth.exe
 opera,%ProgramFiles(x86)%\Opera\Launcher.exe
 fiddler,%ProgramFiles(x86)%\Fiddler2\Fiddler.exe
