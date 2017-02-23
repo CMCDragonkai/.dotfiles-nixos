@@ -54,7 +54,6 @@ ext2fsd,*,chocolateyget
 
 # development
 emacs64,*,chocolateyget
-atom,*,chocolateyget
 dbeaver,*,chocolateyget
 virtualbox,*,chocolateyget
 vagrant,*,chocolateyget
@@ -65,6 +64,7 @@ packer,*,chocolateyget
 git,*,chocolateyget,"/GitOnlyOnPath /NoAutoCrlf /NoShellIntegration"
 
 # language runtimes
+androidstudio,*,chocolateyget
 vcbuildtools,*,chocolateyget,,/Full
 visualfsharptools,*,chocolateyget
 javaruntime,*,chocolateyget
@@ -102,6 +102,7 @@ obs-mp,*,chocolateyget
 musicbee,*,chocolateyget
 avidemux,*,chocolateyget
 flashplayerplugin,*,chocolateyget
+ffmpeg,*,chocolateyget
 
 # design
 inkscape,*,chocolateyget

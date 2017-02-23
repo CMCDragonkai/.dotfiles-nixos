@@ -19,7 +19,7 @@ $UserPaths =
     '%LOCALAPPDATA%\Microsoft\WindowsApps',
     # Custom local executables
     '%LOCALAPPDATA%\bin',
-    # Custom profile executables 
+    # Custom profile executables
     '%USERPROFILE%\binw',
     # Profile NPM Executables
     '%USERPROFILE%\.npm',
@@ -27,6 +27,10 @@ $UserPaths =
     '%USERPROFILE%\.go\bin',
     # Profile Stack Executables
     '%USERPROFILE%\.stack\bin'
+    # Profile Android Executables
+    '%LOCALAPPDATA%\Android\android-sdk\tools'
+    '%LOCALAPPDATA%\Android\android-sdk\platform-tools'
+
 
 $SystemPaths =
     # Original System Paths

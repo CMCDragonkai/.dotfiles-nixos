@@ -69,3 +69,7 @@ function Append-Idempotent {
 # STACKROOT points to where stack dependencies should be installed
 [Environment]::SetEnvironmentVariable("STACK_ROOT", "${Env:UserProfile}\.stack", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("STACK_ROOT", "${Env:UserProfile}\.stack", [System.EnvironmentVariableTarget]::Process)
+
+# ANDROID_HOME points to where android sdk is
+[Environment]::SetEnvironmentVariable("ANDROID_HOME", "${Env:LOCALAPPDATA}\Android\android-sdk", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("ANDROID_HOME", "${Env:LOCALAPPDATA}\Android\android-sdk", [System.EnvironmentVariableTarget]::Process)
