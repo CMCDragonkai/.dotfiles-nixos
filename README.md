@@ -766,6 +766,19 @@ Ok everything changed to non-extension based. Now applications that didn't work 
 
 Only problem left is CMD and Winpty: https://github.com/rprichard/winpty/issues/98
 
+Ultimately in many cases, CMD won't execute windows symlinks to executables. Some executables do work as symlinks like Python does, others like Windows git don't. So it's a case by case basis. For the ones that don't work as symlinks in CMD, you will need to add their location to the Windows PATH.
+
+Binaries that don't work as Windows Symlinks:
+
+* npm
+* node
+* git
+
+Binaries that do work:
+
+* python
+* go
+
 ---
 
 # Not all executables work using Windows symlinks due to relative addressing
