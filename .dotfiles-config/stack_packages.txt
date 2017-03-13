@@ -1,0 +1,5 @@
+pretty-show
+cabal-install
+stylish-haskell
+hlint
+hasktags

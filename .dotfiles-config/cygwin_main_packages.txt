@@ -26,6 +26,7 @@ xdg-user-dirs
 cron
 chere
 tree
+bc
 
 # network
 avahi
@@ -45,6 +46,7 @@ nc
 nc6
 socat
 rsync
+stunnel
 ca-certificates
 
 # email
@@ -137,6 +139,9 @@ php-mysqli
 php-opcache
 php-PEAR
 php-bz2
+php-xmlreader
+php-xmlwriter
+php-pdo_mysql
 
 # ruby
 ruby

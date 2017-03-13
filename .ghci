@@ -24,7 +24,6 @@ import "base" Data.Monoid             -- Monoid operations
 import "base" Control.Monad           -- Monad operations
 import "base" Data.Ratio              -- Ratio and Rational operations
 import "base" Text.Show.Functions     -- Function showing
-import "pretty-show" Text.Show.Pretty -- Pretty printing
 
 -- GHCi Settings
 
@@ -36,7 +35,11 @@ import "pretty-show" Text.Show.Pretty -- Pretty printing
 
 -- Macros
 
+-- Show Language, Extensions, Flags and Imports
 :def statusi (\_ -> return ":seti\n:show imports\n:show modules")
+
+-- Pretty prints a String expression (use it for large records)
+:def pp (\e -> return $ ":cmd return $ \":!echo \" ++ y ++ \" | ppsh\"")
 
 -- Timing and Type Output and Multiline Input
 -- These must be last to prevent noise

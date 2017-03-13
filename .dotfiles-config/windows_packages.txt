@@ -163,3 +163,4 @@ kicad,*,chocolateyget
 # bonjour
 # qemu
 # gnuwin32 packages (for bringing in one-off gnu utilities to be used)
+# z3 - need to compile from source in windows

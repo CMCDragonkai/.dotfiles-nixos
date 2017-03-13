@@ -83,6 +83,33 @@ New-NetFirewallRule `
     -Enabled True `
     >$null
 
+# TCP Port for Synergy Server for Domain, Private networks (by default port is 24800, however this can be changed)
+# The Synergy Server is the computer with the keyboard and mouse
+# The Synergy Client is the computer with the display to be controlled
+# Synergy clients connect to the Synergy server, and the server is what controls the clients
+# On windows the synergy GUI executable is also listening on 0.0.0.0:38400
+Remove-NetFirewallRule -DisplayName "Synergy" -ErrorAction SilentlyContinue
+New-NetFirewallRule `
+  -DisplayName "Synergy" `
+  -Direction Inbound `
+  -EdgeTraversalPolicy Allow `
+  -Protocol TCP `
+  -LocalPort Any `
+  -Profile "Domain,Private" `
+  -Program "${Env:ProgramFiles}\Synergy\synergys.exe" `
+  -Enabled true `
+  >$null
+New-NetFirewallRule `
+  -DisplayName "synergy" `
+  -Direction Inbound `
+  -EdgeTraversalPolicy Allow `
+  -Protocol TCP `
+  -LocalPort Any `
+  -Profile "Domain,Private" `
+  -Program "${Env:ProgramFiles}\Synergy\synergy.exe" `
+  -Enabled true `
+  >$null
+
 # Setup firewall to accept connections from 55555 in Domain, Private networks
 Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (TCP-In)" -ErrorAction SilentlyContinue
 Remove-NetFirewallRule -DisplayName "Polyhack - Private Development Port (UDP-In)" -ErrorAction SilentlyContinue

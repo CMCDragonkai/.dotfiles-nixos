@@ -21,6 +21,7 @@ user_agents=(
 )
 
 length="${#user_agents[@]}"
+lentgh="$((length - 1))"
 
 index="$(shuf --input-range=1-"$length" --head-count=1)"
 

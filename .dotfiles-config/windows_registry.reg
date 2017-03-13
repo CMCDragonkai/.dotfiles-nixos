@@ -94,6 +94,11 @@ Windows Registry Editor Version 5.00
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\TabletTip\1.7]
 "TipbandDesiredVisibility"=dword:00000000
 
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"MMTaskbarEnabled"=dword:00000001
+"MMTaskbarGlomLevel"=dword:00000001
+"MMTaskbarMode"=dword:00000002
+
 ; UAC cannot be disabled anymore because some applications require it
 ; Instead we set Administrators to never be prompted
 ; Users will get prompted and be asked to reauthenticate

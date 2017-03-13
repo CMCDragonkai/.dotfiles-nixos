@@ -150,6 +150,10 @@ Hotkey Hierarchy:
 * Linux Commands -> XMonad Commands -> Konsole Commands -> Tmux Commands -> Shell Commands -> Application Commands
 * Windows Commands -> ConEmu Commands -> Mintty Commands -> Tmux Commands -> Shell Commands -> Application Commands
 
+Linux Commands:
+
+* <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>F*</kbd> - Switch between TTYs and also X.
+
 Terminal Emulator
 -----------------
 
@@ -1123,3 +1127,36 @@ Just something to beaware of you intend to wrap Windows executables
 ---
 
 Node and Node-Gyp. Some Node packages require the usage of Node-Gyp and Windows Python to compile on Windows. For this to work you must first run `npm config set msvs_version 2015`, in this case, I have already set it to the 2015 version, because I have the 2015 Visual C++ Build tools. But then afterwards, you may need to run the entire `npm install -g ...` command inside the Visual C++ 201* x64 Build Tools Command Prompt so it can find the necessary tools (MSBuild.. etc).
+
+
+---
+
+Python Z3 needs to be installed from source on Windows.
+
+Git clone the directory into `~/.src`, follow the build instructions (use the Visual C++ 2015 x64 Native Build Tools Prompt). Build the python binding by running `python scripts/mk_make.py -x --python`.
+
+To make use of it:
+
+1. Run `cp ~/.src/z3/build/z3.exe ~/.src/z3/build/libz3.dll ~/binw`.
+2. Copy `~/.src/z3/build/python/z3` directory into Python site packages. You can find the Python site packages using: `wpython3 -c 'import site; print(site.getsitepackages())'`.
+3. Run `wpython3 -c 'from z3 import *; x = Int('x')'`.
+
+The libz3.dll is used by Python and other things to link to it. While z3.exe is independent and the program works by itself.
+
+The build process seems to be able to use `python` as `python2`, and build something for `python3`.
+
+For Pytables to work, HDF5 needs to be installed, this should be packaged as a Chocolatey package. There's a windows installation package that requires automation. It will add to the PATH as well.
+
+---
+
+Network Security and Network Local Development.
+
+Usage of `localhost` for web application development is not very secure. Not only does it sometimes confuse things (as like PHP which assumes `localhost` for MySQL connection means unix domain socket and not 127.0.0.1), it means you don't get any isolation from for mutually untrusting web applications as things like cookies are not isolated by port, which means `localhost:3000` and `localhost:3001` both receive the same cookies, and both can overwrite each other. This can cause race conditions and other problems. Finally `localhost` HTTPS is problematic, because it requires you to create a certificate for `localhost` FQDN. You may think this is secure, but it isn't, useragents could resolve `localhost` over public addresses, it doesn't always mean `127.0.0.1`. Public CAs won't accept `localhost` domains either. So you don't really want a `localhost` certificate, and you can't the HTTPS. Finally `localhost` isn't supposed to have subdomains, as in `x.localhost` is not allowed, which can be problematic if you're testing subdomain functionality.
+
+The solution is to use a public domain for your application, and use a `localhost` subdomain. This can be done easily without even owning the public domain. You can use `localhost.coolapp.com`, and register it in the hosts file. Then you can either register a public certificate using letsencrypt, or just create a self-signed one for `localhost.coolapp.com`. So there's no problem!
+
+To make it work in a more automated way, you should setup a local DNS server that forwards all `localhost.*` to 127.0.0.1. Then you need to run a local HTTP server supporting HTTPS and SNI binding to 127.0.0.1 and listening on port 80 and port 443. Then you write a small bash script to automate the creation of new self-signed certificates for `localhost.*`. (Caddy might be good for this, it can even use letsencrypt for publically signed certificates). Create virtual hosts on your local http server whenever you want to work on a new web application. Make sure to know that you can still run a foreground HTTP server, FASTCGI server, proxy.. etc when working on the application itself.
+
+Note that you could also use pound/hitch/stunnel for HTTPS termination instead of using Caddy. But I think Caddy is the best solution for this style of dev.
+
+Remember to point your default internet interface (Wifi and Ethernet) to use your local DNS server, instead of using the DNS server provided by the router (DHCP) protocol. The DNS server must support relaying it back to the router (DHCP) DNS, and then to remote DNS like google's dns... etc.

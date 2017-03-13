@@ -51,6 +51,8 @@ $SystemPaths =
     '%CUDA_PATH%\libnvvp',
     # Windows 10 SDK
     '%ProgramFiles(x86)%\Windows Kits\10\Windows Performance Toolkit',
+    # Synergy
+    '%ProgramFiles%\Synergy',
     # Microsoft SQL Server
     '%ProgramFiles(x86)%\Microsoft SQL Server\120\Tools\Binn',
     '%ProgramFiles%\Microsoft SQL Server\120\Tools\Binn',
@@ -60,6 +62,8 @@ $SystemPaths =
     '%ProgramFiles(x86)%\GnuWin32\bin',
     # QEMU
     '%ProgramFiles%\qemu',
+    # HDF5
+    '%ProgramFiles%\HDF_Group\HDF5\1.10.0\bin',
     # MikTex 2.9
     '%ProgramFiles%\MiKTeX 2.9\miktex\bin\x64',
     # Git
@@ -67,7 +71,9 @@ $SystemPaths =
     # Node
     '%ProgramFiles%\nodejs',
     # Python
+    '%SystemDrive%\python2',
     '%SystemDrive%\python2\Scripts',
+    '%SystemDrive%\python3',
     '%SystemDrive%\python3\Scripts'
 
 # Filter out PATHs that don't exist
