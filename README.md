@@ -59,11 +59,50 @@ Set-DnsClientServerAddress -InterfaceAlias 'WiFi' -ServerAddresses '::1' -Valida
 Note that DNSAgent supports both ipv4 and ipv6 and is listening on both. Verify with Windows:
 
 ```
-netstat -a -b -p udp | select-string -SimpleMatch '[::1]:53' -Context 0,1
-netstat -a -b -p udpv6 | select-string -SimpleMatch '[::1]:53' -Context 0,1
+netstat -a -b -p udp | select-string -SimpleMatch '127.0.0.1:53 ' -Context 0,1
+netstat -a -b -p udpv6 | select-string -SimpleMatch '[::1]:53 ' -Context 0,1
 ```
 
-You can also set it for Local Area Connection. But you'll need to find what your Interface Alias is, WiFi is common for laptops and Local Area Connection is common for desktops. Use `Get-IPInterface` to see all available interfaces. Note that unconnected interfaces may be hidden.
+You can also set it for Local Area Connection. But you'll need to find what your Interface Alias is, WiFi is common for laptops and Local Area Connection is common for desktops. Use `Get-NetAdapter` to see all available interfaces. Note that unconnected interfaces may be hidden. Also to check what all the interfacers have their DNS set to, run `Get-DnsClientServerAddress`. You can then set the DNS servers as well as their alternatives for IPv4 and IPv6 interfaces.
+
+After changing the options, make sure to restart the service:
+
+```
+Restart-Service 'DNSAgent'
+```
+
+Here is the `options.cfg` and `rules.cfg` that I set (it had to be set in C:\ProgramData\chocolatey\lib\dnsagent\tools):
+
+```
+{
+    "HideOnStart": false,
+    "ListenOn": "127.0.0.1:53, [::1]",
+    "DefaultNameServer": "8.8.8.8, 2001:4860:4860::8888",
+    "UseHttpQuery": false,
+    "QueryTimeout": 4000,
+    "CompressionMutation": false,
+    "CacheResponse": true,
+    "CacheAge": 86400,
+    "NetworkWhitelist": null
+}
+```
+
+```
+[
+    {
+        "Pattern": "^localhost\\..+",
+        "Address": "127.0.0.1"
+    }
+]
+```
+
+This will make `localhost.*...` resolve to 127.0.0.1. Unfortunately I wasn't able to make to also provide `AAAA` records. Now we can create certificates for `localhost.*` domains, and even public CAs will accept these certificate registrations.
+
+Due to the tool's limitations, I think I should head back to Acrylic DNS, it seems to be more flexible, and even has a GUI monitor and command line automation for it. However there's no Chocolatey package for it yet.
+
+Or just dive into BIND on Windows. 
+
+Alternatively explore Serva.
 
 Java
 ----

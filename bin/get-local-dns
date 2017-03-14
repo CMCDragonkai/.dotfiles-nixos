@@ -1,0 +1,13 @@
+#!/usr/bin/sh
+
+case "$(uname -s)" in
+    Linux)
+        nmcli --fields general.device,general.connection,ip4.dns,ip6.dns device show
+    ;;
+    CYGWIN*|MINGW32*|MSYS*)
+        powershell -Command 'Get-NetAdapter | Get-DnsClientServerAddress -ErrorAction SilentlyContinue | Sort InterfaceAlias'
+    ;;
+    *)
+        exit 1
+    ;;
+esac

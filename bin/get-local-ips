@@ -1,18 +1,14 @@
 #!/usr/bin/env sh
 
 case "$(uname -s)" in
-
     Linux)
-        ip addr 
+        ip addr
     ;;
-
     CYGWIN*|MINGW32*|MSYS*)
-        powershell -Command 'Get-NetAdapter | Get-NetIPAddress -ErrorAction SilentlyContinue | Select InterfaceAlias, IPAddress | Sort InterfaceAlias'
+        powershell -Command 'Get-NetAdapter | Get-NetIPAddress -ErrorAction SilentlyContinue | Select InterfaceAlias, InterfaceIndex, IPAddress | Sort InterfaceAlias'
     ;;
-
     *)
-        exit 1 
+        exit 1
     ;;
-
 esac
 
