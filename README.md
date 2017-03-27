@@ -43,11 +43,7 @@ them.
 DNS
 ---
 
-Local DNS server running on Windows: DNSAgent.
-
-It's more of a DNS proxy rather than a full DNS server.
-
-Its configuration currently involves editing the options.cfg and rules.cfg within the same directory it is installed. Currently asking the developer if we can change that. The service would need to be changed to accomodate. Alternatively one can delete the 2 files, and provide NTFS symlinks pointing to files in the user profile, but that's not really a good thing to do here, because it's a global position pointing to a local position. Instead just add configuration to the ChocolateyInstall/lib/dnsagent/tools/options.cfg and rules.cfg accordingly later when you have figured it out.
+Run acrylic with these configuration.
 
 You will need powershell to point DNS server to localhost 127.0.0.1.
 
@@ -65,44 +61,7 @@ netstat -a -b -p udpv6 | select-string -SimpleMatch '[::1]:53 ' -Context 0,1
 
 You can also set it for Local Area Connection. But you'll need to find what your Interface Alias is, WiFi is common for laptops and Local Area Connection is common for desktops. Use `Get-NetAdapter` to see all available interfaces. Note that unconnected interfaces may be hidden. Also to check what all the interfacers have their DNS set to, run `Get-DnsClientServerAddress`. You can then set the DNS servers as well as their alternatives for IPv4 and IPv6 interfaces.
 
-After changing the options, make sure to restart the service:
-
-```
-Restart-Service 'DNSAgent'
-```
-
-Here is the `options.cfg` and `rules.cfg` that I set (it had to be set in C:\ProgramData\chocolatey\lib\dnsagent\tools):
-
-```
-{
-    "HideOnStart": false,
-    "ListenOn": "127.0.0.1:53, [::1]",
-    "DefaultNameServer": "8.8.8.8, 2001:4860:4860::8888",
-    "UseHttpQuery": false,
-    "QueryTimeout": 4000,
-    "CompressionMutation": false,
-    "CacheResponse": true,
-    "CacheAge": 86400,
-    "NetworkWhitelist": null
-}
-```
-
-```
-[
-    {
-        "Pattern": "^localhost\\..+",
-        "Address": "127.0.0.1"
-    }
-]
-```
-
-This will make `localhost.*...` resolve to 127.0.0.1. Unfortunately I wasn't able to make to also provide `AAAA` records. Now we can create certificates for `localhost.*` domains, and even public CAs will accept these certificate registrations.
-
-Due to the tool's limitations, I think I should head back to Acrylic DNS, it seems to be more flexible, and even has a GUI monitor and command line automation for it. However there's no Chocolatey package for it yet.
-
-Or just dive into BIND on Windows. 
-
-Alternatively explore Serva.
+If you're using Hyper-V and bridging into your WiFi, you will find that WiFi is no longer available, and instead you'll need to configure your DNS via an interface that begins with `vEthernet` interface.
 
 Java
 ----
@@ -1199,3 +1158,11 @@ To make it work in a more automated way, you should setup a local DNS server tha
 Note that you could also use pound/hitch/stunnel for HTTPS termination instead of using Caddy. But I think Caddy is the best solution for this style of dev.
 
 Remember to point your default internet interface (Wifi and Ethernet) to use your local DNS server, instead of using the DNS server provided by the router (DHCP) protocol. The DNS server must support relaying it back to the router (DHCP) DNS, and then to remote DNS like google's dns... etc.
+
+So I found an issue. When you're connected to the internet on the virtual ethernet switch, the DNS just breaks completely. Dig just doesn't work at all. In those cases, only hosts file work. I wonder if Acrylic has this solved. If it has, it's a deal breaker for DNSAgent.
+
+Trying to download acrylic now.
+
+---
+
+Save stunnel work...

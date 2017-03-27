@@ -1,8 +1,8 @@
-# Colours (Solarized Dark)
+# Colours (Solarized Dark with modifications)
 
 ForegroundColour=131,148,150
 BackgroundColour=0,43,54
-CursorColour=220,50,47
+CursorColour=225,175,43
 
 Black=7,54,66
 BoldBlack=0,43,54

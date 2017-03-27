@@ -49,6 +49,9 @@ set mouse=a
 " Show number line
 set number
 
+" Relative number lines
+set relativenumber
+
 " Indent breaks for indented wrapped lines
 set breakindent
 
@@ -63,6 +66,15 @@ set title
 
 " Allow the opening of new buffers without closing existing buffers, they become hidden
 set hidden
+
+" Change cursor shape when in command or insert mode, also works in TMUX
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+else
+    let &t_SI = "\e[5 q"
+    let &t_EI = "\e[2 q"
+endif
 
 " Show literal tabs as 4 spaces width
 set tabstop=4

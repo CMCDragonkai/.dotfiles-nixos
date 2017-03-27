@@ -82,6 +82,7 @@ patch
 cmake
 gdb
 cygport
+gettext
 
 # c and c++ and assembly (64 bit cygwin, 32 bit cygwin, 64 bit mingw, 32 bit mingw)
 scons

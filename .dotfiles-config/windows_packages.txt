@@ -33,10 +33,10 @@ opera,*,chocolateyget
 putty.portable,*,chocolateyget
 deluge,*,chocolateyget
 namebench,*,chocolateyget
+acrylic-dns-proxy,0.9.35,chocolateyget
 thunderbird,*,chocolateyget
 bind-toolsonly,*,chocolateyget
 hostsman,*,chocolateyget
-dnsagent,*,chocolateyget
 iperf3,*,chocolateyget
 phantomjs,*,chocolateyget
 prey,*,chocolateyget

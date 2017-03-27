@@ -51,6 +51,8 @@ zenmap,%ProgramFiles(x86)%\Nmap\zenmap.exe
 skype,%ProgramFiles(x86)%\Skype\Phone\Skype.exe
 xnview,%ProgramFiles%\XnViewMP\xnviewmp.exe
 prey,%WinDir%\Prey\current\bin\prey.cmd
+AcrylicController,%ProgramFiles(x86)%\Acrylic DNS Proxy\AcrylicController.exe
+AcrylicConsole,%ProgramFiles(x86)%\Acrylic DNS Proxy\AcrylicConsole.exe
 
 # python
 python.exe,%SystemDrive%\python2\python.exe
