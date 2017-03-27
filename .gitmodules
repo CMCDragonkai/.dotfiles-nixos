@@ -19,3 +19,6 @@
 [submodule ".dotfiles-modules/spacemacs"]
 	path = .dotfiles-modules/spacemacs
 	url = https://github.com/syl20bnr/spacemacs
+[submodule ".dotfiles-modules/vim-nix"]
+	path = .dotfiles-modules/vim-nix
+	url = https://github.com/LnL7/vim-nix.git
