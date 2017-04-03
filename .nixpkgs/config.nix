@@ -9,19 +9,19 @@
                     # Web
                     firefox chromium
                     # Data Science
-                    sqlite-interactive sqlite3_analyzer jq goPackages.json2csv
+                    sqlite-interactive sqlite3_analyzer jq
                     gnuplot sc-im python27Packages.csvkit go-pup
                     # Documents and Graphs
                     zathura libreoffice ghostscriptX
                     pandoc plantuml graphviz
                     # System Management & Monitoring
-                    lnav smem numactl ncdu htop atop iftop iptraf iotop conky
-                    python35packages.glances
+                    lnav smem ncdu htop atop iftop iptraf iotop conky
+                    python35Packages.glances
                     # Math
                     R bc synergy
                     # Shell Utilities
-                    file findutils physlock kde5.konsole tree parallel asciinema
-                    reptyr fuser lsof rmlint pv cv proot lsof picocom
+                    file findutils physlock tree parallel asciinema
+                    reptyr lsof rmlint pv cv proot lsof picocom
                     kdeApplications.konsole gnum4
                     # Security
                     keybase vault gnupg plasma5.polkit-kde-agent certbot
@@ -30,20 +30,20 @@
                     # Network
                     openssl putty wget httpie aria mailutils bind
                     rsync wireshark nmap ncat socat
-                    hans iodine udptunnel httptunnel pwnnat
+                    hans iodine udptunnel httptunnel pwnat
                     caddy ngrok geoipWithDatabase iperf
                     # Storage
-                    nfs-utils sambaFull netatalk dropbox awscli
+                    nfs-utils samba4 netatalk dropbox awscli
                     # Development
                     nix-repl binutils nix-prefetch-scripts
-                    man-pages man-pages.docdev libcap_manpages
+                    man-pages posix_man_pages libcap_manpages
                     nix-repl emacs vim tmux vagrant
-                    python35packages.httpbin binwalk-full
+                    python35Packages.httpbin python35Packages.binwalk-full
                     docker gdb lldb rr
                     # Chat
                     weechat skype slack
                     # X Window and XMonad
-                    xdg_utils xdg-users-dirs xdotool dmenu
+                    xdg_utils xdg-user-dirs xdotool dmenu
                     xorg.xmessage xorg.xwininfo xorg.xdpyinfo
                     xdotool xclip hsetroot
                     # Media
@@ -61,13 +61,7 @@
     allowUnfree = true;
     pulseaudio = true;
 
-    firefox = {
-        enableAdobeFlash = true;
-        enableAdobeReader = true;
-    };
-
     chromium = {
-        enablePepperFlash = true;
         pulseSupport = true;
         enableNaCl = true;
     };
