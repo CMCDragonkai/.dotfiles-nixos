@@ -155,6 +155,8 @@ if ($Stage -eq 0) {
     Import-Module Carbon -Force
     Grant-Privilege -Identity "$Env:UserName" -Privilege SeCreateSymbolicLinkPrivilege
 
+    & "${PSScriptRoot}\set-dns.ps1"
+
     # Schedule a final reboot to start the Cygwin setup process
     Unregister-ScheduledTask -TaskName "Dotfiles - 2" -Confirm:$false -ErrorAction SilentlyContinue
     ScheduleRebootTask -Name "Dotfiles - " -Stage 2

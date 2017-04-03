@@ -1085,37 +1085,6 @@ Each operating at a different level of abstraction.
 
 ---
 
-Get tesseract installed.
-
----
-
-Use sysexits.h when you need more exit codes.
-
-http://stackoverflow.com/a/1535733/582917
-
----
-
-Look into moving to Python on native Windows, instead of through Cygwin. More things work there.
-Also some things on Cygwin will still require python, but just make them use that...
-Actually what does use python on Linux? I could get numpy and other stuff working.
-
----
-
-We will have 2 different Git installations, a Windows one, and a Cygwin one
-The Windows one will be part of the Windows System PATH, and will be used by
-Windows applications like Go and Node. While the Cygwin one will be used by
-Cygwin applications, and general development use.
-Since Cygwin PATH will be ahead of the Windows PATH, Cygwin's git will take
-priority over Windows git. So it should all work.
-The same git configuration works for both Windows and Cygwin git.
-
----
-
-We may have to separate bin/ into Common, NixOS and Cygwin.
-This is because some bin scripts only make sense in Cygwin environment
-
----
-
 On Windows, the path hierarchy goes SYSTEM PATH + USER PATH. This means the SYSTEM PATH always takes precedence over the USER PATH. This means USER PATH executables can never shadow SYSTEM PATH executables.
 
 However on Linux, it is the other way around, local PATH customisations are intended be prepended to the PATH (although you do have the option of appending it), that way you can wrap system executables. This is in fact what we do, while leaving the Windows user path to be appended to the system path, Cygwin path additions are always prepended.
@@ -1125,7 +1094,6 @@ Just something to beaware of you intend to wrap Windows executables
 ---
 
 Node and Node-Gyp. Some Node packages require the usage of Node-Gyp and Windows Python to compile on Windows. For this to work you must first run `npm config set msvs_version 2015`, in this case, I have already set it to the 2015 version, because I have the 2015 Visual C++ Build tools. But then afterwards, you may need to run the entire `npm install -g ...` command inside the Visual C++ 201* x64 Build Tools Command Prompt so it can find the necessary tools (MSBuild.. etc).
-
 
 ---
 
@@ -1147,22 +1115,10 @@ For Pytables to work, HDF5 needs to be installed, this should be packaged as a C
 
 ---
 
-Network Security and Network Local Development.
+Waiting 10 seconds for key file /dev/mapper/luks-key-encrypted to appear ..... ok?
 
-Usage of `localhost` for web application development is not very secure. Not only does it sometimes confuse things (as like PHP which assumes `localhost` for MySQL connection means unix domain socket and not 127.0.0.1), it means you don't get any isolation from for mutually untrusting web applications as things like cookies are not isolated by port, which means `localhost:3000` and `localhost:3001` both receive the same cookies, and both can overwrite each other. This can cause race conditions and other problems. Finally `localhost` HTTPS is problematic, because it requires you to create a certificate for `localhost` FQDN. You may think this is secure, but it isn't, useragents could resolve `localhost` over public addresses, it doesn't always mean `127.0.0.1`. Public CAs won't accept `localhost` domains either. So you don't really want a `localhost` certificate, and you can't the HTTPS. Finally `localhost` isn't supposed to have subdomains, as in `x.localhost` is not allowed, which can be problematic if you're testing subdomain functionality.
+Enter passphrase for /luks-key.img.
 
-The solution is to use a public domain for your application, and use a `localhost` subdomain. This can be done easily without even owning the public domain. You can use `localhost.coolapp.com`, and register it in the hosts file. Then you can either register a public certificate using letsencrypt, or just create a self-signed one for `localhost.coolapp.com`. So there's no problem!
+killall: cryptsetup: no process killed
 
-To make it work in a more automated way, you should setup a local DNS server that forwards all `localhost.*` to 127.0.0.1. Then you need to run a local HTTP server supporting HTTPS and SNI binding to 127.0.0.1 and listening on port 80 and port 443. Then you write a small bash script to automate the creation of new self-signed certificates for `localhost.*`. (Caddy might be good for this, it can even use letsencrypt for publically signed certificates). Create virtual hosts on your local http server whenever you want to work on a new web application. Make sure to know that you can still run a foreground HTTP server, FASTCGI server, proxy.. etc when working on the application itself.
-
-Note that you could also use pound/hitch/stunnel for HTTPS termination instead of using Caddy. But I think Caddy is the best solution for this style of dev.
-
-Remember to point your default internet interface (Wifi and Ethernet) to use your local DNS server, instead of using the DNS server provided by the router (DHCP) protocol. The DNS server must support relaying it back to the router (DHCP) DNS, and then to remote DNS like google's dns... etc.
-
-So I found an issue. When you're connected to the internet on the virtual ethernet switch, the DNS just breaks completely. Dig just doesn't work at all. In those cases, only hosts file work. I wonder if Acrylic has this solved. If it has, it's a deal breaker for DNSAgent.
-
-Trying to download acrylic now.
-
----
-
-Save stunnel work...
+What is all that for?

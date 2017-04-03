@@ -31,9 +31,29 @@
             env-all = superPkgs.buildEnv { # make sure to use the non-overridden buildEnv 
                 name = "env-all";
                 paths = with selfPkgs; [ # allows packages here to install overridden packages
+                    gnupg
+                    ponymix
+                    tree
+                    file
+                    bc
+                    ncdu
+                    ffmpeg
+                    graphicsmagick
+                    sox
+                    nix-repl
+                    binutils
+                    findutils
+                    atop
+                    htop
+                    openssl
+                    xdotool
+                    dmenu
+                    xorg.xmessage
+                    xorg.xwininfo
+                    nettools # ifconfig hostname arp... etc
                     # Web
-                    firefox 
-                    chromium 
+                    firefox
+                    chromium
                     # Data Science 
                     sqlite-interactive      # personal database
                     sqlite3_analyzer        # analysers statistics about sqlite databases
