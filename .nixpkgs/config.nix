@@ -1,9 +1,9 @@
-{ selfPkgs }: {
+{
     packageOverrides = superPkgs:
-        {
-          env-all = superPkgs.buildEnv {
+        with superPkgs; {
+          env-all = with pkgs; buildEnv {
                 name = "env-all";
-                paths = with selfPkgs; [
+                paths = [
                     # Fonts
                     fira fira-mono fira-code dejavu_fonts
                     # Web
@@ -22,7 +22,7 @@
                     # Shell Utilities
                     file findutils physlock kde5.konsole tree parallel asciinema
                     reptyr fuser lsof rmlint pv cv proot lsof picocom
-                    kdeApplications.konsole
+                    kdeApplications.konsole gnum4
                     # Security
                     keybase vault gnupg plasma5.polkit-kde-agent certbot
                     # Archive Management

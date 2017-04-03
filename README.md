@@ -26,6 +26,10 @@ rm --recursive --force ~/Downloads/.dotfiles-master && tar xvzf ~/Downloads/.dot
 ~/Downloads/.dotfiles-master/.dotfiles-tools/install.sh
 ```
 
+Actually since NixOS system configuration will have Git, it's easy to do.
+
+However some steps needs to be reversed. On NixOS, we must first install all the tools before bringing in all the other .dotfiles. So our install.sh must copy `config.nix` first, then install everything with `nix-env -i env-all`.
+
 Permissions
 -----------
 
