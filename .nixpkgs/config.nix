@@ -20,7 +20,7 @@
                     # Math
                     R bc synergy
                     # Shell Utilities
-                    file findutils physlock tree parallel asciinema
+                    file findutils i3lock tree parallel asciinema
                     reptyr lsof rmlint pv cv proot lsof picocom
                     kdeApplications.konsole gnum4
                     # Security
@@ -49,7 +49,7 @@
                     # Media
                     ffmpeg graphicsmagick sox ponymix python35Packages.youtube-dl
                     beets feh imagemagick graphicsmagick vlc mplayer v4l_utils
-                    mediainfo perlPackages.ImageExifTool dcraw
+                    mediainfo perlPackages.ImageExifTool dcraw spotify
                     # Radio
                     gnuradio-with-packages gqrx
                     # Gaming
