@@ -1,0 +1,14 @@
+# this only works if you're using user-specific pulseaudio and not system-wide pulseaudio
+# user-specific pulseaudio is the default recommended setup
+.include /etc/pulse/default.pa
+
+# creates a sink called combined, this becomes the default sink for for pulseaudio clients
+# this sink will create additional playback clients for each sink it combines
+# the additional playback clients can then be mapped to their original sinks, or they can be muted
+# this allows you play sounds on all sinks, or some subset of them
+load-module module-combine-sink sink_name=combined
+set-default-sink combined
+
+# you still need to set the correct profile for each card
+# and to setup the correct port for each sink/source
+# profiles often determine what sinks/sources are available, and what ports they can be mapped to
