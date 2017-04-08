@@ -3,3 +3,5 @@ cabal-install
 stylish-haskell
 hlint
 hasktags
+digits
+split
