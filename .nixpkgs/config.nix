@@ -47,9 +47,9 @@
                     xorg.xmessage xorg.xwininfo xorg.xdpyinfo
                     xdotool xclip hsetroot
                     # Media
-                    ffmpeg graphicsmagick sox ponymix python35Packages.youtube-dl
-                    beets feh imagemagick graphicsmagick vlc mplayer v4l_utils
-                    mediainfo perlPackages.ImageExifTool dcraw spotify
+                    ffmpeg graphicsmagick sox pavucontrol ffcast
+                    python35Packages.youtube-dl beets feh imagemagick graphicsmagick
+                    vlc mplayer v4l_utils mediainfo perlPackages.ImageExifTool dcraw spotify
                     # Radio
                     gnuradio-with-packages gqrx
                     # Gaming
