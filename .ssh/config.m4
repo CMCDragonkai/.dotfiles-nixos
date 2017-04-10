@@ -14,3 +14,5 @@ m4_ifelse(PH_SYSTEM, CYGWIN, ,
     ControlMaster auto
     ControlPath /tmp/ssh-control:%h:%p:%r
 )
+
+Include hosts
