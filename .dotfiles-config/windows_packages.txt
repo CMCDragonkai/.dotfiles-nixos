@@ -70,7 +70,7 @@ visualfsharptools,*,chocolateyget
 javaruntime,*,chocolateyget
 jdk8,8.0.112,chocolateyget
 nodejs,7.3.0,chocolateyget
-haskell-stack,1.3.2,chocolateyget
+haskell-stack,1.4.0,chocolateyget,"/NoLocalBinPath /NoStackRoot"
 idris,0.12.3,chocolateyget
 golang,1.7.3,chocolateyget
 rust,1.13.0,chocolateyget

@@ -1,23 +1,5 @@
 # shell/system utilities
 parallel
-keychain
-
-# network
-putty
-
-# filesystem
-
-# development
-
-# python
-python3-crypto
 
 # media
 ffmpeg
-mplayer
-
-# libraries
-libagg2
-libagg-devel
-libbsd0
-libbsd-devel

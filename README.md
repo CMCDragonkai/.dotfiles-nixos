@@ -1126,3 +1126,75 @@ Enter passphrase for /luks-key.img.
 killall: cryptsetup: no process killed
 
 What is all that for?
+
+---
+
+NiXxOS has a nat module. It switches on NAT for Linux. All it does is use iptables and enable /proc/sys/net/ipv4/ip_forward. The relevant table is the NAT table. And it has chains:
+
+1. PREROUTING
+2. POSTROUTING
+
+NAT is what we need to use when a computer has multiple network interfaces, and we need to take packets from one interface and inject them into another interface.
+
+The prerouting is responsible for the packets that just arrived. At this point, it is not known if the packets are to be forwarded to another machine, or to be interpreted locally. After the packet has passed the prerouting chain, the routing decision is to be made. In case the local machine is the recipient, the packet is directed to the process. On the other case, it is sent to another machine. If it is about the leave, it goes through the POSTROUTING chain. For locally generated packets, instead of passing through the prerouting chain, it passes through an OUTPUT chain, and then moved to the POSTROUTING chain.
+
+IPV4 has a ip_forward setting, and the IPv6 seems like it doesn't.
+
+We need these kernel modules:
+
+```
+modprobe ip_tables
+modprobe ip_conntrack
+modprobe ip_conntrack_irc
+modprobe ip_conntrack_ftp
+```
+
+The NixOS module is: nixpkgs/nixos/modules/services/networking/nat.nix.
+
+It shows that if nat is enabled, we bring in the iptables package and the `nf_nat_ftp` kernel module `nf_nat_ftp` which might be superseding the old ftp module.
+
+It also uses the `kernel.sysctl` setting to set `net.ipv4.conf.all.forwarding` and `net.ipv4.conf.default.forwarding`. What does these do? It appears that these basically set it up so that ipv4 forwarding is done by default at bootup. There are corresponding settings for ipv6, but it doesn't appear to be used by the nat service module.
+
+IPv6 shouldn't be using NAT, it has alternative mechanisms.
+
+The module then sets up some firewall commands. Which is to flush their NAT rules prior to running the setupNat, all of this is merged into the existing extraCommands. I'm not sure how `mkMerge` works, but I think it's meant to merge this into existing commands. When the service is terminated, it flushes all the NAT commands as well.
+
+A service is assigned if the firewall is not enabled, because if it was enabled, it would already be a service. But this means NAT can be used without a firewall.
+
+It specifically runs a command like `iptables -w -t nat -A nixos-nat-pre -i ... -j MARK --set-mark 1`. What happens is that in the PREROUTING chain, service activation automatically makes the PREROUTING send all packets to the user defined chain which is `nixos-nat-pre`. Inside this chain, a rule is applied where any packet coming from the interface specified under `-i` is then jumped to MARK with the option `--set-mark 1`. Note that the interface name can have 2 modalities on it. If you have a name like `!wlp6s0`, it means match any interfaces that doesn't have this name. While if you use `wlp6s0+` it means match any interfaces that start with this name. If we use them both, it would be match any interfaces that doesn't start with this name. For now, we are going to be using our WiFi interface as a internal interface, our own network, and our ethernet as the external interface, so we know exactly what our interface names will be, and they will have persistent names. Not entirely sure how systemd works out persistent names...
+
+This is how persistent names are done in systemd, so yes, each laptop or machine will have persistent names based on how the hardware is situated (PCI bus, slot numbers, function indexes... etc).
+
+https://major.io/2015/08/21/understanding-systemds-predictable-network-device-names/
+
+But my generic configuration will now have specific configuration inside Github. So that's ok for small fleets. In the future, larger fleets will need a better system.
+
+The MARK target inside iptables essentially associates a number to a packet, the packet itself does not contain the number, but the number is maintained by the kernel. We can use this to mark a packet, and then react to the markings of the packet downstream.
+
+Later another command is in nixos-nat-post. Here we use the -m to check against the mark extension, and to see if the packet has been marked as 1. If so, it outputs to the external interface with a destination. This is only done if there are internal interfaces specified. The dest specification has 2 styles, one is `-j MASQUERADE`, and the other is `-j SNAT --to-source ${cfg.externalIP}`.
+
+So if I don't specif an external IP, is it defaulting on the assigned external IP? That would be more useful!?
+
+The masquerade target is exactly that. It automatically finds the IP being assigned to the external interface. It is good for DHCP assigned IPs, but static IPs it can be more efficient to specify the exact IP and to use the SNAT target.
+
+It appears that it's possible to specify internalIPs AND/OR internalInterfaces. If all you have is an interfaceInterface, it is NATTED by marking all packets from theinternalInterface and then sent to the postrouting and then NATTED to the external interface. On the other hand, if you have specified internal IPs (which has no relation to whether there's an internal interface or not, and remember this can happen if you setup virtual ethernets), then it just adds a rule to the postrouting chain, which checks that if the packet comes from a certain IP, it will output them to the external interface. So we don't even need to specify an internal IP range, an interface is enough.
+
+Remember that the SNAT target changes the source ip address of the packet (mangles the packet). Whereas DNAT target changes the destination ip address of the packet.
+
+NixOS only supports forwarding TCP ports at this point, with nothing specify UDP ports.
+
+One thing that doesn't make sense is that when marking, it's done in prerouting, when NATTING to the external interface, it's in the post routing chain, but NATTING back from external to internal interface is done at the prerouting chain. Why is this like this?
+
+It's beacuse the DNAT target is only available in the prerouting chain, while SNAT target is only available in the postrouting chain. This might be because, prerouting is where you decide where a packet is going, whereas postrouting is when you decide how the packet is leaving. So you can use DNAT when a packet enters the system, but just as when it's leaving the system, you can mangle aspects of the target such as the source IP addresss.
+
+Ok so we have our NAT ready to go, but we still need to convert our WiFi interface into infrastructure mode or adhoc mode. Not sure which.
+
+Given that all packets from internal interface is marked as 1, how does this work if we intend to contact the router directly? I think they would be marked 1, but they won't go to the postrouting system, because their destination doesn't point to the external IP address (which the routing system would send to the gateway), if they point to the router itself, it will go into some local process.
+
+Nothing in the rules indiciate how NAT keeps tracks of packets coming back into the external interface as a response to a request coming from an internal interface. Perhaps this is the default behaviour.
+
+Oh I get it now, inside each iptables rules, the `-o` and `-m` and `-s` are all conditions. They all have to be true, for the rule to be applied. The rule is actually the `-j`, it is the command that is executed for the packet. So we can see now that in the post routing, it checks not only that the packet is marked with 1, but it is also leaving for the external interface. It is the job of the routing table to know where to send packets. Remember the packet may be looking for 192.168.1.2, but your external interface IP address is actually 192.168.1.1. The routing table woul tell the packet that to get to 192.168.1.2, you must go through 192.168.1.1, and the iptables postrouting rule is the one that captures this condition and performs a NAT command either `-j MASQUERADE` or `-j SNAT`...
+
+So remember that -o is not about where the packet is intending to go, but which interface the packet is leaving on (which itself is named as an IP address).
+
+Cool, we're almost there. Running the hostapd service requires network manager to state that wlp6s0 is unmanaged. However hostapd doesn't assign IPs to the interface itself, now you need DHCP to do that. But since you are the router, you need to statically set the IP address for the interface now. I wonder how that can be done inside NiXOS configuration. Furthermore, even after hostapd is setup, a DHCP service needs to be running, either dhcpd or something else. I wonder if the routing needs to be configured as well. The configuration here has made me realise that the system configuration should be generic and optionally load up a wireless profile or a a region profile if it exists, and uses that to configure wireless stuff and monitor setup, this is independent of generic hardware. Of course, I can always just add more fleet profiles to the NixOS fleets.

@@ -33,7 +33,7 @@
                     hans iodine udptunnel httptunnel pwnat
                     caddy ngrok geoipWithDatabase iperf
                     # Storage
-                    nfs-utils samba4 netatalk dropbox awscli
+                    nfs-utils samba4 netatalk dropbox-cli awscli
                     # Development
                     nix-repl binutils nix-prefetch-scripts
                     man-pages posix_man_pages libcap_manpages

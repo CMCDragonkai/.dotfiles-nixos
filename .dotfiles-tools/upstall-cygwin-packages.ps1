@@ -4,8 +4,6 @@
 
 param (
     [string]$MainMirror = "http://mirrors.kernel.org/sourceware/cygwin", 
-    [string]$PortMirror = "ftp://ftp.cygwinports.org/pub/cygwinports",
-    [string]$PortKey = "http://cygwinports.org/ports.gpg",
     [string]$InstallationDirectory = "$Env:SystemDrive",
     [switch]$Force
 )
@@ -18,9 +16,6 @@ New-Item -ItemType Directory -Force -Path "$InstallationDirectory\cygwin64\packa
 # Acquire Package Lists
 
 $MainPackages = (Get-Content "${PSScriptRoot}\..\.dotfiles-config\cygwin_main_packages.txt" | Where-Object {
-    $_.trim() -ne '' -and $_.trim() -notmatch '^#'
-}) -Join ','
-$PortPackages = (Get-Content "${PSScriptRoot}\..\.dotfiles-config\cygwin_port_packages.txt" | Where-Object {
     $_.trim() -ne '' -and $_.trim() -notmatch '^#'
 }) -Join ','
 
@@ -64,53 +59,6 @@ if ($MainPackages) {
             "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
             "--site `"$MainMirror`"",
             "--packages `"$MainPackages`""
-
-    }
-
-}
-
-# Cygwin Port Packages (make sure not to --delete-orphans) or else it will wipeout the original packages
-
-if ($PortPackages) {
-
-    if (-not ($MainPackages) -and $Force) {
-
-        echo "Cleanly installing Port Packages"
-
-        Start-Process -FilePath "${PSScriptRoot}\..\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
-            "--quiet-mode",
-            "--download",
-            "--local-install",
-            "--no-shortcuts",
-            "--no-startmenu",
-            "--no-desktop",
-            "--arch x86_64",
-            "--upgrade-also",
-            "--delete-orphans",
-            "--root `"${InstallationDirectory}\cygwin64`"",
-            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
-            "--site `"$PortMirror`"",
-            "--pubkey `"$PortKey`"",
-            "--packages `"$PortPackages`""
-
-    } else {
-
-        echo "Installing Port Packages"
-
-        Start-Process -FilePath "${PSScriptRoot}\..\bin\cygwin-setup-x86_64.exe" -Wait -Verb RunAs -ArgumentList `
-            "--quiet-mode",
-            "--download",
-            "--local-install",
-            "--no-shortcuts",
-            "--no-startmenu",
-            "--no-desktop",
-            "--arch x86_64",
-            "--upgrade-also",
-            "--root `"${InstallationDirectory}\cygwin64`"",
-            "--local-package-dir `"${InstallationDirectory}\cygwin64\packages`"",
-            "--site `"$PortMirror`"",
-            "--pubkey `"$PortKey`"",
-            "--packages `"$PortPackages`""
 
     }
 

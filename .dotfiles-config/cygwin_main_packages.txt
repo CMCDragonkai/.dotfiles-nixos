@@ -27,6 +27,7 @@ cron
 chere
 tree
 bc
+keychain
 
 # network
 avahi
@@ -48,6 +49,7 @@ socat
 rsync
 stunnel
 ca-certificates
+putty
 
 # email
 exim
@@ -109,6 +111,10 @@ mingw64-i686-gcc-fortran
 sqlite3
 mysqld
 mysql
+postgresql
+postgresql-contrib
+postgresql-doc
+postgresql-client
 freetds
 
 # X
