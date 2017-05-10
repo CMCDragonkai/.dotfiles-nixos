@@ -1198,3 +1198,69 @@ Oh I get it now, inside each iptables rules, the `-o` and `-m` and `-s` are all 
 So remember that -o is not about where the packet is intending to go, but which interface the packet is leaving on (which itself is named as an IP address).
 
 Cool, we're almost there. Running the hostapd service requires network manager to state that wlp6s0 is unmanaged. However hostapd doesn't assign IPs to the interface itself, now you need DHCP to do that. But since you are the router, you need to statically set the IP address for the interface now. I wonder how that can be done inside NiXOS configuration. Furthermore, even after hostapd is setup, a DHCP service needs to be running, either dhcpd or something else. I wonder if the routing needs to be configured as well. The configuration here has made me realise that the system configuration should be generic and optionally load up a wireless profile or a a region profile if it exists, and uses that to configure wireless stuff and monitor setup, this is independent of generic hardware. Of course, I can always just add more fleet profiles to the NixOS fleets.
+
+---
+
+Ok we are going to setup our internal network to use the router's IP address to be:
+
+10.0.0.1. The subnet will be 10.0.0.0/24, which gives addresses from 10.0.0.0 to 10.0.0.255. In total there will be 255 - 1 for the broadcast - 1 for the router - 1 for the subnet. So there will be 252 addresses available for the router.
+
+For IPv6, we also need to assign an address and prefix length. What can it be?
+
+Well there is a unique local address range for Ipv6 intended for private usage. I am bit confused. It says that the address block `fc00::/7` is for private IPv6 address. This is further split into 2 `/8` blocks. Why? Well `/7` means the first 7 bits are fixed, which means the 8th bit can either be 0 or 1. If we fix the 8th bit to 0, we get `fc00::/8`. If we fix the 8th bit to 1, then we get `fd00::/8`. Remember that hex digits are 2 digits to 1 byte. So this is a change in byte. `fc` + 1 equals `fd`. The first block is reserved for a central allocation authority, so we are not meant to be using this. The second block has a specific protocol that we are meant to follow to prevent the likelihood of private network IP conflicts in case there is ever a network merge.
+
+You first get a random 40 bits. There's a thing called the SIXXS registry, it's a voluntary registry, where you can ask to generate a unique random 40 bits that don't conflict with anybody else. This random 40 bits will act as your "organisation" unique local prefix.
+
+So let's do it. Here's my randomly generated 40 bit prefix (we'll call it the Matrix address):
+
+```
+Prefix: fd99:cbc4:692::/48
+1st Subnet: fd99:cbc4:692::/64
+Last Subnet: fd99:cbc4:692:ffff::/64
+```
+
+So within this organisation, we're going to create the very first subnet.
+
+The interface address is:
+
+```
+fd99:cbc4:692::1/64
+```
+
+The hostapd configuration requires some PULL Requests as well. We need to pull into our NixOS configuration, and change it, add it as a remote to pull in, and then push it to Nixpkgs proper. Specifically channel limit needs to be lifted, as you can select channel 0 for automatic selection.
+
+However the wlp6s0 is down currently, and I can't bring it up.
+
+What does scope global tentative mean?
+
+Also you can manually addresses easily like here:
+
+```
+ip add addr fd99:cbc4:692::1/64 dev wlp6s0
+```
+
+But this doesn't change the fact that we still have a problem with it.
+
+Disabling network manager appears to have an effect here. Without it enabled, the setting of IP addresses is possible on the interface, it still has a state of down, but there is an big UP or DOWN. And we no longer get repeating log messages of the sort we had before. However hostapd now doesn't work.
+
+Ok it appears by setting the interface down, then forcing a restart with `sudo systemctl restart hostapd`, appears to make it work.
+
+Setting it to `a` which is 5 Ghz doesn't work for some reason. There is some stateful failure possible, one can remove the IP even when specified inside the NixOS configuration.
+
+If we enable DFS, country code set to AU, and wpa set to 2, and our own wpa_passphrase, it all works nicely. But changing hwMode to a does mean it fails.
+
+Since the IP is actaully set via a service, it's possible to force restart the service which is `sudo systemctl restart network-addresses-wlp6s0.service`. However this didn't work properly for me, because it's probably stateful as well.
+
+Yea even though my card definitely supports 5ghz, the ac mode a settings or channel = 0 ACS setting simply doesn't work. So no point moving forward with this.
+
+Various NixOS configuration is not truly purely declarative and not atomic. Mostly things related to kernel settings, dbus settings and networking settings. Alot of these may require restarting of the computer to fully atomically set these settings. Many modules may have conflicts or just plain not work depending on the state of the OS.
+
+Cool I finally understand bridged networking.
+
+Ok so I need to setup a bridge (while I don't need to, since I only have WiFi and no physical ethernet). 
+
+The bridge stuff is too flaky and I don't need it for now.
+
+The other thing is that network manager is useless now because you don't need it for wired connections, only really for wireless connections, if the wireless is intended to act as a router, it doesn't make sense to keep network manager around.
+
+It is fine for the wifi interface to have scope global and scope link. The link local address always exists for any IPv6 enabled interface remember that. And your router will be handing out addresses from your own assigned IP. Just setup your DHCP to handle this. Also it turns I'm using networkd now, it worked and no problems after reboot. When switching network stuff, the first test to see if it works is via: `nixos-rebuild switch boot && shutdown --reboot now`.

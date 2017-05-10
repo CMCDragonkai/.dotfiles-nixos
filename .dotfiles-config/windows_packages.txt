@@ -18,6 +18,7 @@ rufus.portable,*,chocolateyget
 osquery,*,chocolateyget
 logparser,*,chocolateyget
 devcon.portable,*,chocolateyget
+cpu-z.portable,*,chocolateyget
 
 # network
 Firefox,*,chocolateyget
@@ -164,3 +165,5 @@ kicad,*,chocolateyget
 # qemu
 # gnuwin32 packages (for bringing in one-off gnu utilities to be used)
 # z3 - need to compile from source in windows
+# gephi
+# ftdi virtual com port driver
