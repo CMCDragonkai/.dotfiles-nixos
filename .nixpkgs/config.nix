@@ -32,6 +32,7 @@
                     rsync wireshark nmap ncat socat
                     hans iodine udptunnel httptunnel pwnat
                     caddy ngrok geoipWithDatabase iperf
+                    conntrack_tools
                     # Storage
                     nfs-utils samba4 netatalk dropbox-cli awscli
                     # Development

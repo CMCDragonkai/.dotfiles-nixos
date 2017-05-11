@@ -7,3 +7,11 @@ m4_changequote(`<<<@@||',`||@@>>>')
 # Here we just setup environment variables.
 
 m4_include(shell_environment.conf.m4)
+
+# If your computer is intended to be portable,
+# here is where you should write your (xrandr) multi-monitor configuration.
+# If those monitors are not present, xrandr will silently fail.
+# As in there will be no error codes.
+# They shouldn't be committed to source control, as your user profile may be 
+# used in many different monitor configurations.
+# Example: xrandr --output DP-1 --right-of DP-0
