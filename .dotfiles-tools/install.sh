@@ -143,7 +143,7 @@ EOF
 fi
 
 # Process templates and copy the processed profile to `$HOME`
-"$processing_dir"/.dotfiles-tools/upstall_configuration.sh
+"$processing_dir"/.dotfiles-tools/upstall-configuration.sh
 
 # Perform final package installations only after the profile has been copied or regenerated
 if [[ "$(uname -s)" == Linux* ]]; then
