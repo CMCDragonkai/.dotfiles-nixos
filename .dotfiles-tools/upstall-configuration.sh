@@ -109,16 +109,19 @@ popd
 
 # Make sensitive directories and subdirectories 700, but their files 600
 # This requires wiping out any execute permissions first
-chmod --recursive a-x "$HOME/.ssh"
-chmod --recursive u=rwX,g=,o= "$HOME/.ssh"
-chmod --recursive a-x "$HOME/.gnupg"
-chmod --recursive u=rwX,g=,o= "$HOME/.gnupg"
-chmod --recursive a-x "$HOME/.aws"
-chmod --recursive u=rwX,g=,o= "$HOME/.aws"
+
+find "$HOME/.ssh" -type f -exec chmod 600 {} \;
+find "$HOME/.ssh" -type d -exec chmod 700 {} \;
+
+find "$HOME/.gnupg" -type f -exec chmod 600 {} \;
+find "$HOME/.gnupg" -type d -exec chmod 700 {} \;
+
+find "$HOME/.aws" -type f -exec chmod 600 {} \;
+find "$HOME/.aws" -type d -exec chmod 700 {} \;
 
 # Make the Public folder public
-chmod --recursive a-x "$HOME/Public"
-chmod --recursive u=rwX,g=r,o=r "$HOME/Public"
+find "$HOME/Public" -type f -exec chmod 644 {} \;
+find "$HOME/Public" -type d -exec chmod 700 {} \;
 
 if [ "$system" == 'CYGWIN' ]; then
 
