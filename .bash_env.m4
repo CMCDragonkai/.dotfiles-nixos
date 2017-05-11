@@ -10,4 +10,4 @@ m4_include(shell_environment.conf.m4)
 
 # Bash Environment
 
-export SHELL="bash"
+export SHELL="${SHELL:-bash}"

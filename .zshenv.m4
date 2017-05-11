@@ -9,4 +9,4 @@ m4_include(shell_environment.conf.m4)
 
 # ZSH Environment
 
-export SHELL="zsh"
+export SHELL="${SHELL:-zsh}"
