@@ -87,8 +87,8 @@ pushd "$processing_dir"
 
     # It is VERY IMPORTANT for the subsequent commands to run inside `$processing_dir`
 
-    # Generated and copied files during profile installation should start with a mask of 077 disallowing groups and other access
-    umask 077
+    # Generated and copied files during profile installation should start with a mask of 027 disallowing other access
+    umask 027
 
     # Copy the profiles over then run the final installations
     cp --target-directory="$HOME" --recursive --no-dereference --preserve=links --parents --force "${common_profile[@]}"
@@ -120,8 +120,9 @@ find "$HOME/.aws" -type f -exec chmod 600 {} \;
 find "$HOME/.aws" -type d -exec chmod 700 {} \;
 
 # Make the Public folder public
+# For this to work, the home directory must be 755
 find "$HOME/Public" -type f -exec chmod 644 {} \;
-find "$HOME/Public" -type d -exec chmod 700 {} \;
+find "$HOME/Public" -type d -exec chmod 744 {} \;
 
 if [ "$system" == 'CYGWIN' ]; then
 
