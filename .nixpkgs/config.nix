@@ -24,7 +24,7 @@
                     reptyr lsof rmlint pv cv proot lsof picocom
                     kdeApplications.konsole gnum4
                     # Security
-                    keybase vault gnupg plasma5.polkit-kde-agent certbot
+                    keybase vault gnupg plasma5.polkit-kde-agent certbot keepass
                     # Archive Management
                     zip unzip gzip bzip2 lzma
                     # Network
