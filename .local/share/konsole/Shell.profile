@@ -1,7 +1,7 @@
 [Appearance]
 BoldIntense=true
 ColorScheme=Solarized
-Font=DejaVu Sans Mono,9.2,-1,5,50,0,0,0,0,0
+Font=Fira Code,9.2,-1,5,50,0,0,0,0,0
 LineSpacing=1
 UseFontLineCharacters=false
 

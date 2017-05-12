@@ -24,6 +24,7 @@ Session.vim
 /.bashrc
 /.my.cnf
 /.pam_environment
+/.spacemacs
 /.xprofile
 /.zlogin
 /.zshenv
