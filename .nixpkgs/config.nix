@@ -22,7 +22,9 @@
                     # Shell Utilities
                     file findutils i3lock tree parallel asciinema
                     reptyr lsof rmlint pv cv proot lsof picocom
-                    kdeApplications.konsole gnum4 dolphin platinum-searcher
+                    kdeApplications.konsole gnum4 platinum-searcher
+                    hicolor_icon_theme numix-gtk-theme gnome3.nautilus
+                    gnome3.dconf
                     # Security
                     keybase vault gnupg plasma5.polkit-kde-agent certbot keepass
                     # Archive Management
