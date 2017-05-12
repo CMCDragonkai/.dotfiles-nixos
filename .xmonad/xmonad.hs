@@ -49,7 +49,7 @@ matrixConfig = desktopConfig {
 matrixHooks =
     composeAll [
         -- make xmessage float in the center
-        className =? "Xmessage" --> doCenterFloat
+        className =? "Xmessage" --> doCenterFloat,
         className =? "feh" --> doCenterFloat
     ]
 
