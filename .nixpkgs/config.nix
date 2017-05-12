@@ -22,7 +22,7 @@
                     # Shell Utilities
                     file findutils i3lock tree parallel asciinema
                     reptyr lsof rmlint pv cv proot lsof picocom
-                    kdeApplications.konsole gnum4
+                    kdeApplications.konsole gnum4 dolphin platinum-searcher
                     # Security
                     keybase vault gnupg plasma5.polkit-kde-agent certbot keepass
                     # Archive Management
@@ -40,7 +40,7 @@
                     man-pages posix_man_pages libcap_manpages
                     nix-repl emacs vim tmux vagrant
                     python35Packages.httpbin python35Packages.binwalk-full
-                    docker gdb lldb rr
+                    docker gdb lldb rr nodePackages.tern
                     # Chat
                     weechat skype slack
                     # X Window and XMonad
