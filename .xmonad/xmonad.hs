@@ -30,20 +30,29 @@
 
 import XMonad
 import XMonad.Config.Desktop
-import XMonad.Hooks.ManageHelpers (composeOne, doCenterFloat, (-?>)) -- only doCenterFloat is working
+import XMonad.Util.Run (spawnPipe, hPutStrLn)
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks (docks)
+import XMonad.Hooks.ManageHelpers (composeOne, doCenterFloat, (-?>))
+import XMonad.Util.EZConfig (additionalKeys)
 import qualified XMonad.Actions.ConstrainedResize as ConstrainedResize
 
 import qualified Data.Map as Map
 
-matrixConfig = desktopConfig {
-    terminal = "konsole",
-    modMask = mod4Mask,
-    borderWidth = 2,
-    focusFollowsMouse = True,
-    manageHook = matrixHooks <+> manageHook desktopConfig,
-    mouseBindings = matrixMouse <+> mouseBindings desktopConfig,
-    workspaces = [ "1", "2", "3" ]
-}
+matrixConfig = desktopConfig
+    {
+        terminal = "konsole",
+        modMask = mod4Mask,
+        borderWidth = 2,
+        focusFollowsMouse = True,
+        manageHook = matrixHooks <+> manageHook desktopConfig,
+        mouseBindings = matrixMouse <+> mouseBindings desktopConfig,
+        workspaces = [ "1", "2", "3" ]
+    }
+    `additionalKeys`
+    [
+        ((mod4Mask .|. shiftMask, xK_z), spawn "i3lock && xset dpms force off")
+    ]
 
 -- actions to perform for specific window classes
 matrixHooks =
@@ -64,4 +73,7 @@ matrixMouse (XConfig { modMask }) =
     ]
 
 main = do
-    xmonad $ matrixConfig
+    xmproc <- spawnPipe "xmobar"
+    xmonad $ docks $ matrixConfig {
+        logHook = dynamicLogWithPP $ def { ppOutput = hPutStrLn xmproc, ppTitle = xmobarColor "green" "" . shorten 50 }
+    }

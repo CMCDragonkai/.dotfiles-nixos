@@ -48,7 +48,7 @@
                     # X Window and XMonad
                     xdg_utils xdg-user-dirs xdotool dmenu
                     xorg.xmessage xorg.xwininfo xorg.xdpyinfo
-                    xdotool xclip hsetroot
+                    xdotool xclip haskellPackages.xmobar
                     # Media
                     ffmpeg graphicsmagick sox pavucontrol ffcast
                     python35Packages.youtube-dl beets feh imagemagick graphicsmagick

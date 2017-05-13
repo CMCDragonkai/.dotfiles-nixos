@@ -1,0 +1,17 @@
+Config {
+    font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*",
+    borderColor = "black",
+    border = TopB,
+    bgColor = "black",
+    pickBroadest = True,
+    fgColor = "grey",
+    position = TopW L 100,
+    commands =
+        [
+            Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10,
+            Run StdinReader
+        ],
+    sepChar = "%",
+    alignSep = "}{",
+    template = "%StdinReader% | %cpu% "
+}
