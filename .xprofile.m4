@@ -15,3 +15,6 @@ m4_include(shell_environment.conf.m4)
 # They shouldn't be committed to source control, as your user profile may be 
 # used in many different monitor configurations.
 # Example: xrandr --output DP-1 --right-of DP-0
+
+# Set the wallpaper
+feh --bg-fill ~/Pictures/wallpaper.png
