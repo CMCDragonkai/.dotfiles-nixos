@@ -1119,6 +1119,10 @@ For Pytables to work, HDF5 needs to be installed, this should be packaged as a C
 
 ---
 
+Fonts use `fc-list` to show which fonts are available. This works on Cygwin and NixOS, however, Cygwin doesn't show all available Windows fonts. So those fonts in `fc-list` would be ones that Cygwin apps can find.
+
+---
+
 Waiting 10 seconds for key file /dev/mapper/luks-key-encrypted to appear ..... ok?
 
 Enter passphrase for /luks-key.img.
