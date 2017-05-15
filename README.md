@@ -690,6 +690,13 @@ Unfortunately on Windows, you cannot project virtual desktops to multiple monito
 
 XMonad:
 
+I changed from the original Mod + {W,E,R} to these:
+
+Mod + N - Switch Focus Workspace N
+Mod + Shift + N - Shift focused window to Workspace N
+Mod + Ctrl + N - Switch Focus to Screen N
+Mod + Alt + N - Shift focused window to Workspace at Screen N
+
 ---
 
 Full Disk Encryption
