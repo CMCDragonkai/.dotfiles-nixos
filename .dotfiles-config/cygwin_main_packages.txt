@@ -35,6 +35,7 @@ avahi-tools
 openssh
 openssl
 openssl-devel
+gnutls
 mosh
 wget
 aria2
@@ -190,6 +191,10 @@ jq
 GraphicsMagick
 
 # libraries
+libgettextpo0
+libgettextpo-devel
+libreadline-devel
+libgnutls-devel
 libgdal20
 libgdal-devel
 libclang3.8
