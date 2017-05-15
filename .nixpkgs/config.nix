@@ -15,8 +15,8 @@
                     zathura libreoffice ghostscriptX
                     pandoc plantuml graphviz
                     # System Management & Monitoring
-                    lnav smem ncdu htop atop iftop iptraf iotop conky
-                    python35Packages.glances
+                    lnav smem ncdu htop atop iftop iptraf iotop
+                    conky python35Packages.glances
                     # Math
                     R bc synergy
                     # Shell Utilities
@@ -46,17 +46,18 @@
                     # Chat
                     weechat skype slack
                     # X Window and XMonad
-                    xdg_utils xdg-user-dirs xdotool dmenu
+                    xdg_utils xdg-user-dirs dmenu xorg.xev
                     xorg.xmessage xorg.xwininfo xorg.xdpyinfo
-                    xdotool xclip haskellPackages.xmobar
+                    xdotool xclip hsetroot haskellPackages.xmobar
                     # Media
-                    ffmpeg graphicsmagick sox pavucontrol ffcast
-                    python35Packages.youtube-dl beets feh imagemagick graphicsmagick
-                    vlc mplayer v4l_utils mediainfo perlPackages.ImageExifTool dcraw spotify
+                    ffmpeg graphicsmagick sox pavucontrol playerctl
+                    ffcast python35Packages.youtube-dl beets feh
+                    imagemagick graphicsmagick vlc mplayer v4l_utils
+                    mediainfo perlPackages.ImageExifTool dcraw spotify
                     # Radio
                     gnuradio-with-packages gqrx
                     # Gaming
-                    steam
+                    steam flightgear
                 ];
             };
         };
