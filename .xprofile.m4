@@ -17,4 +17,4 @@ m4_include(shell_environment.conf.m4)
 # Example: xrandr --output DP-1 --right-of DP-0
 
 # Set the wallpaper
-feh --bg-fill ~/Pictures/wallpaper.png
+feh --bg-fill "$HOME/Pictures/wallpaper.png"
