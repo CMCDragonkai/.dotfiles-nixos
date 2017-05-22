@@ -20,6 +20,33 @@ import XMonad
 import Graphics.X11.Types
 import Graphics.X11.ExtraTypes.XF86
 
+data NATO = Alpha
+          | Bravo
+          | Charlie
+          | Delta
+          | Echo
+          | Foxtrot
+          | Golf
+          | Hotel
+          | India
+          | Juliett
+          | Kilo
+          | Lima
+          | Mike
+          | November
+          | Oscar
+          | Papa
+          | Quebec
+          | Romeo
+          | Sierra
+          | Tango
+          | Uniform
+          | Victor
+          | Whiskey
+          | Xray
+          | Yankee
+          | Zulu deriving (Show, Enum)
+
 myConfig config = config
   {
     terminal          = "konsole",
@@ -32,7 +59,7 @@ myConfig config = config
     manageHook        = myHooks <+> manageHook config,
     mouseBindings     = myMouse <+> mouseBindings config,
     keys              = myKeys <+> (keys $ EZ.removeKeys config (removedKeys mod4Mask)),
-    workspaces        = [ "1:main", "2:comms", "3:media", "4:logging" ]
+    workspaces        = map (\(i,n) -> show i ++ ":" ++ show n) $ zip [1..9] [Alpha .. Zulu]
   }
 
 myEvents = Ewmh.ewmhDesktopsEventHook <+> Ewmh.fullscreenEventHook
@@ -44,9 +71,7 @@ myLayouts layouts = Docks.avoidStruts layouts
 myHooks =
   composeAll [
     className =? "Xmessage" --> doCenterFloat,
-    className =? "feh" --> doCenterFloat,
-    className =? "skype" --> doShift "2:comms",
-    stringProperty "WM_NAME" =? "Volume Control" --> doShift "3:media"
+    className =? "feh" --> doCenterFloat
   ]
 
 myMouse (XConfig { modMask }) =
@@ -122,4 +147,6 @@ main = do
           }
       }
 
--- todo: http://thinkingeek.com/2011/11/21/simple-guide-configure-xmonad-dzen2-conky/
+-- todo:
+-- http://thinkingeek.com/2011/11/21/simple-guide-configure-xmonad-dzen2-conky/
+-- https://pbrisbin.com/posts/xmonad_statusbars/

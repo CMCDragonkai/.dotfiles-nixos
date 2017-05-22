@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
+
+    cat<<EOF
+chmod-global - Change permissions of path recursively to only allow global access.
+                This is designed for system configuration folders in /etc.
+
+Usage:
+    chmod-global <path>
+    chmod-global -h | --help
+
+Options:
+    -h --help       Show this help text.
+EOF
+
+    exit 64
+
+fi
+
+chmod --recursive u+rwX,go+rX,go-w "$1"

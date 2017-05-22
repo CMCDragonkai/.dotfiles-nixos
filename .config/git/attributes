@@ -36,6 +36,7 @@
 *.o binary
 *.dll binary
 *.a binary
+*.hex binary
 
 # Documents
 *.pdf binary

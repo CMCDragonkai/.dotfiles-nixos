@@ -1275,3 +1275,7 @@ The bridge stuff is too flaky and I don't need it for now.
 The other thing is that network manager is useless now because you don't need it for wired connections, only really for wireless connections, if the wireless is intended to act as a router, it doesn't make sense to keep network manager around.
 
 It is fine for the wifi interface to have scope global and scope link. The link local address always exists for any IPv6 enabled interface remember that. And your router will be handing out addresses from your own assigned IP. Just setup your DHCP to handle this. Also it turns I'm using networkd now, it worked and no problems after reboot. When switching network stuff, the first test to see if it works is via: `nixos-rebuild switch boot && shutdown --reboot now`.
+
+---
+
+To upload the new firmware to Ergodox EZ you need to run `teensy-loader-cli --mcu=atmega32u4 -w -v ./ergodox_ex_firmware_kmvzbe_dragon_flare.hex`

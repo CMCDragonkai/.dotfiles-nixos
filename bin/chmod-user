@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
+
+    cat<<EOF
+chmod-user - Change permissions of path recursively to only allow user access.
+             None of the files will be allowed to be executable.
+             Use this for user-profile private configuration files like ssh and gpg.
+
+Usage:
+    chmod-user <path>
+    chmod-user -h | --help
+
+Options:
+    -h --help       Show this help text.
+EOF
+
+    exit 64
+
+fi
+
+find "$1" -type f -exec chmod 600 {} \; &
+find "$1" -type d -exec chmod 700 {} \; &
+
+wait
