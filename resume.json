@@ -42,6 +42,16 @@
             ]
         },
         {
+            "company": "Holiday",
+            "position": "Senior Software Developer Consultant",
+            "website": "http://madeby.holiday/",
+            "startDate": "2017-01-25",
+            "summary": "Consulted for a client of Holiday called Splend, developed React based Mobile Web Application for Splend Drivers to track their earnings and performance. Developed a RESTful backend API gateway to all the services Splend uses.",
+            "highlights": [
+                "Hacked MySQL into a transactional queue processing system"
+            ]
+        },
+        {
             "company": "PhonicsHero",
             "position": "Software Developer Consultant",
             "website": "https://phonicshero.com",
