@@ -8,15 +8,20 @@
                     fira fira-mono fira-code dejavu_fonts
                     # Web
                     firefox chromium
+                    # Email
+                    thunderbird
                     # Data Science
                     sqlite-interactive sqlite3_analyzer jq
                     gnuplot sc-im python27Packages.csvkit go-pup
+                    gdal qgis
                     # Documents and Graphs
                     zathura libreoffice ghostscriptX
                     pandoc plantuml graphviz
                     # System Management & Monitoring
                     lnav smem ncdu htop atop iftop iptraf iotop
                     conky python35Packages.glances
+                    # Keyboard
+                    teensy-loader-cli
                     # Math
                     R bc synergy
                     # Shell Utilities
@@ -26,14 +31,14 @@
                     hicolor_icon_theme numix-gtk-theme gnome3.nautilus
                     gnome3.dconf
                     # Security
-                    keybase vault gnupg plasma5.polkit-kde-agent certbot keepass
+                    keybase vault plasma5.polkit-kde-agent certbot keepass
                     # Archive Management
                     zip unzip gzip bzip2 lzma
                     # Network
                     openssl putty wget httpie aria mailutils bind
                     rsync wireshark nmap ncat socat
                     hans iodine udptunnel httptunnel pwnat
-                    caddy ngrok geoipWithDatabase iperf
+                    caddy ngrok geoipWithDatabase iperf blueman
                     conntrack_tools
                     # Storage
                     nfs-utils samba4 netatalk dropbox-cli awscli
