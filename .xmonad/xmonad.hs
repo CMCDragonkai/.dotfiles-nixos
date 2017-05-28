@@ -138,6 +138,7 @@ myKeys (XConfig { modMask }) =
 
 main = do
     Run.unsafeSpawn "feh --bg-fill ~/Pictures/wallpaper.png"
+    Run.unsafeSpawn "dex --autostart"
     xmproc <- Run.spawnPipe "xmobar"
     xmonad $ Docks.docks $ Ewmh.ewmh $ myConfig $ def
       {
