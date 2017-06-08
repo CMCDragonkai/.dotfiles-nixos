@@ -28,7 +28,7 @@
                     file findutils i3lock tree parallel asciinema
                     reptyr lsof rmlint pv cv proot lsof picocom
                     kdeApplications.konsole gnum4 platinum-searcher
-                    dex hicolor_icon_theme numix-gtk-theme 
+                    dex hicolor_icon_theme numix-gtk-theme
                     gnome3.nautilus gnome3.dconf
                     # Security
                     keybase vault plasma5.polkit-kde-agent certbot keepass
@@ -38,7 +38,7 @@
                     openssl putty wget httpie aria mailutils bind
                     rsync wireshark nmap ncat socat
                     hans iodine udptunnel httptunnel pwnat
-                    caddy ngrok geoipWithDatabase iperf blueman
+                    caddy ngrok geoipWithDatabase iperf
                     conntrack_tools
                     # Storage
                     nfs-utils samba4 netatalk dropbox-cli awscli
@@ -51,8 +51,8 @@
                     # Chat
                     weechat skype slack
                     # X Window and XMonad
-                    xdg_utils xdg-user-dirs dmenu xorg.xev
-                    xorg.xmessage xorg.xwininfo xorg.xdpyinfo
+                    xdg_utils perlPackages.FileMimeInfo xdg-user-dirs
+                    dmenu xorg.xev xorg.xmessage xorg.xwininfo xorg.xdpyinfo
                     xdotool xclip hsetroot haskellPackages.xmobar
                     # Media
                     ffmpeg graphicsmagick sox pavucontrol playerctl
