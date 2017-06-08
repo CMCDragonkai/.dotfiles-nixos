@@ -51,9 +51,9 @@
                     # Chat
                     weechat skype slack
                     # X Window and XMonad
-                    xdg_utils perlPackages.FileMimeInfo xdg-user-dirs
-                    dmenu xorg.xev xorg.xmessage xorg.xwininfo xorg.xdpyinfo
-                    xdotool xclip hsetroot haskellPackages.xmobar
+                    xdg_utils xdg-user-dirs dmenu xorg.xev xorg.xmessage
+                    xorg.xwininfo xorg.xdpyinfo xdotool xclip hsetroot
+                    haskellPackages.xmobar
                     # Media
                     ffmpeg graphicsmagick sox pavucontrol playerctl
                     ffcast python35Packages.youtube-dl beets feh
