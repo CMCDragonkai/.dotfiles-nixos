@@ -1,6 +1,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
 import qualified Data.Map as Map
+import qualified System.Posix.Env as Env
 
 import qualified XMonad.StackSet as StackSet
 
@@ -137,6 +138,8 @@ myKeys (XConfig { modMask }) =
 
 
 main = do
+    Env.putEnv "XDG_CURRENT_DESKTOP=xmonad"
+    Env.putEnv "XDG_SESSION_DESKTOP=xmonad"
     Run.unsafeSpawn "feh --bg-fill ~/Pictures/wallpaper.png"
     Run.unsafeSpawn "dex --autostart"
     xmproc <- Run.spawnPipe "xmobar"
