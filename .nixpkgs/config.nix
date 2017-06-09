@@ -29,7 +29,7 @@
                     reptyr lsof rmlint pv cv proot lsof picocom
                     kdeApplications.konsole gnum4 platinum-searcher
                     dex hicolor_icon_theme numix-gtk-theme
-                    gnome3.nautilus gnome3.dconf
+                    gnome3.nautilus gnome3.dconf rlwrap
                     # Security
                     keybase vault plasma5.polkit-kde-agent certbot keepass
                     # Archive Management
@@ -45,7 +45,7 @@
                     # Development
                     nix-repl binutils nix-prefetch-scripts
                     man-pages posix_man_pages libcap_manpages
-                    nix-repl emacs vim tmux vagrant
+                    nix-repl emacs vimHugeX tmux vagrant
                     python35Packages.httpbin python35Packages.binwalk-full
                     docker gdb lldb rr nodePackages.tern
                     # Chat
