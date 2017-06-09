@@ -328,6 +328,10 @@ you should place your code here."
     )
 
   (my-setup-indent 2)
+
+  ;; Override indentation if there's an .editorconfig
+  (editorconfig-mode 1)
+
   (spacemacs/toggle-indent-guide-globally-on)
 
   ;; Start the server it hasn't already started
