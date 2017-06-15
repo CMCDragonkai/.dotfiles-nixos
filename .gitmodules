@@ -22,3 +22,6 @@
 [submodule ".dotfiles-modules/vim-nix"]
 	path = .dotfiles-modules/vim-nix
 	url = https://github.com/LnL7/vim-nix.git
+[submodule ".dotfiles-modules/vim-commentary"]
+	path = .dotfiles-modules/vim-commentary
+	url = https://github.com/tpope/vim-commentary
