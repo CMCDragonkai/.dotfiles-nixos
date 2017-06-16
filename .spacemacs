@@ -1,11 +1,28 @@
 ;; -*- mode: emacs-lisp -*-
-
-m4_changequote(,)
+;; This file is loaded by Spacemacs at startup.
+;; It must be stored in your home directory.
 
 (defun dotspacemacs/layers ()
+  "Configuration Layers declaration.
+You should not put any user code in this function besides modifying the variable
+values."
   (setq-default
+   ;; Base distribution to use. This is a layer contained in the directory
+   ;; `+distribution'. For now available distributions are `spacemacs-base'
+   ;; or `spacemacs'. (default 'spacemacs)
    dotspacemacs-distribution 'spacemacs
+   ;; Lazy installation of layers (i.e. layers are installed only when a file
+   ;; with a supported type is opened). Possible values are `all', `unused'
+   ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
+   ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
+   ;; lazy install any layer that support lazy installation even the layers
+   ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
+   ;; installation feature and you have to explicitly list a layer in the
+   ;; variable `dotspacemacs-configuration-layers' to install it.
+   ;; (default 'unused)
    dotspacemacs-enable-lazy-installation 'unused
+   ;; If non-nil then Spacemacs will ask for confirmation before installing
+   ;; a layer lazily. (default t)
    dotspacemacs-ask-for-lazy-installation t
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
@@ -14,32 +31,31 @@ m4_changequote(,)
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     (haskell :variables haskell-process-type 'stack-ghci)
+     yaml
+     (haskell :variables
+              haskell-process-type 'stack-ghci)
      windows-scripts
      javascript
      react
      php
      html
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
-     ;; <M-m f e R> (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
+     nixos
      helm
      auto-completion
-     ;; better-defaults
      emacs-lisp
      (git :variables
           git-magit-status-fullscreen t)
      markdown
      org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; spell-checking
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom
+            shell-default-full-span nil)
+     (spell-checking :variables
+                     spell-checking-enable-by-default nil
+                     enable-flyspell-auto-completion t)
      (syntax-checking :variables
                       syntax-checking-enable-by-default nil)
-     ;; version-control
      python
      )
    ;; List of additional packages that will be installed without being
@@ -127,20 +143,14 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   m4_ifelse(PH_SYSTEM, CYGWIN,
-   dotspacemacs-default-font '("Fira Code"
-                               :size 29
-                               :weight light
-                               :width normal
-                               :powerline-scale 1.6)
-   , PH_SYSTEM, NIXOS,
+
    dotspacemacs-default-font '("Fira Code"
                                :size 17
                                :weight light
                                :height 40
                                :width normal
                                :powerline-scale 1.6)
-   ,)
+
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -307,29 +317,25 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
-  "Configuration function for user code.
-This function is called at the very end of Spacemacs initialization after
-layers configuration.
-This is the place where most of your configurations should be done. Unless it is
-explicitly specified that a variable should be set before a package is loaded,
-you should place your code here."
   ;; Setup indent mode
   (defun my-setup-indent (n)
-    (setq haskell-indent-spaces n)
-    (setq c-basic-offset n)
-    (setq javascript-indent-level n)
-    (setq js-indent-level n)
-    (setq js2-basic-offset n) ; js2-mode, in latest js2-mode, it's alias of js-indent-level
-    (setq web-mode-markup-indent-offset n) ; web-mode, html tag in html file
-    (setq web-mode-css-indent-offset n) ; web-mode, css in html file
-    (setq web-mode-code-indent-offset n) ; web-mode, js code in html file
-    (setq css-indent-offset n) ; css-mode
-    (setq coffee-tab-width n) ; coffeescript
+    (setq-default haskell-indent-spaces n)
+    (setq-default c-basic-offset n)
+    (setq-default javascript-indent-level n)
+    (setq-default js-indent-level n) ; json indent for javascript layer
+    (setq-default js2-basic-offset n) ; javascript indent for javascript layer
+    (setq-default web-mode-markup-indent-offset n) ; web-mode, html tag in html file
+    (setq-default web-mode-css-indent-offset n) ; web-mode, css in html file
+    (setq-default web-mode-code-indent-offset n) ; web-mode, js code in html file
+    (setq-default css-indent-offset n) ; css-mode
+    (setq-default coffee-tab-width n) ; coffeescript
     )
+
+  (setq-default c-set-style "user")
 
   (my-setup-indent 2)
 
-  ;; Override indentation if there's an .editorconfig
+  ;; Override indentation if there's an editorconfig file
   (editorconfig-mode 1)
 
   (spacemacs/toggle-indent-guide-globally-on)
@@ -366,7 +372,7 @@ you should place your code here."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode powershell web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode phpunit phpcbf php-auto-yasnippets drupal-mode php-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic smeargle orgit org-projectile org-present org org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor helm-company helm-c-yasnippet company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete evil-unimpaired ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme))))
+    (flyspell-popup flyspell-correct-helm flyspell-correct auto-dictionary xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help editorconfig nix-mode helm-nixos-options company-nixos-options nixos-options yaml-mode intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode powershell web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode phpunit phpcbf php-auto-yasnippets drupal-mode php-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic smeargle orgit org-projectile org-present org org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor helm-company helm-c-yasnippet company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete evil-unimpaired ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
