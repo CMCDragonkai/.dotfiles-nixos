@@ -16,7 +16,7 @@
                     gdal qgis
                     # Documents and Graphs
                     zathura libreoffice ghostscriptX
-                    pandoc plantuml graphviz
+                    pandoc plantuml graphviz aspell aspellDicts.en
                     # System Management & Monitoring
                     lnav smem ncdu htop atop iftop iptraf iotop
                     conky python35Packages.glances
