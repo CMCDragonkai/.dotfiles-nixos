@@ -25,3 +25,6 @@
 [submodule ".dotfiles-modules/vim-commentary"]
 	path = .dotfiles-modules/vim-commentary
 	url = https://github.com/tpope/vim-commentary
+[submodule ".dotfiles-modules/vim-editorconfig"]
+	path = .dotfiles-modules/vim-editorconfig
+	url = https://github.com/sgur/vim-editorconfig.git
