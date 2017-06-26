@@ -54,7 +54,7 @@ peazip.portable,*,chocolateyget
 ext2fsd,*,chocolateyget
 
 # development
-emacs64,*,chocolateyget
+vim-tux,*,chocolateyget
 dbeaver,*,chocolateyget
 virtualbox,*,chocolateyget
 vagrant,*,chocolateyget
@@ -88,6 +88,7 @@ evernote,*,chocolateyget
 ghostscript.app,*,chocolateyget
 xmind,*,chocolateyget
 miktex,*,chocolateyget
+pdftk-server,*,chocolateyget
 
 # communication
 skype,*,chocolateyget
