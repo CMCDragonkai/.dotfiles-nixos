@@ -1289,3 +1289,7 @@ Use xdg-mime, it operates on the file ~/.local/share/applications/mimeapps.list.
 Note that I symlinked ~/.config/mimeapps.list to this file, to avoid confusion when you're added entries there, and forgot that it overrides the settings set by xdg-mime. That way there's only 1 place that sets the filetype associations.
 
 Also where are the desktop files located? They are in ~/.nix-profile/share/applications. Those are the places to look for desktop apps installed by nix-env. For system apps, the are located in `/run/current-system/sw/share/applications`. But most GUI apps should be part of nix-env, not the system configuration.
+
+---
+
+For Windows, spacemacs and atom are too slow, instead use gvim. Use windows native vim and terminal vim, best of both worlds. On NixOS use spacemacs. Simple! Notice how both cygwin will supply python2, python3, and windows will have wpython2 and wpython3 to get the best of both worlds. Use choco to install gvim.
