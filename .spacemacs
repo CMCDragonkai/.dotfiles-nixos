@@ -56,7 +56,8 @@ values."
                      enable-flyspell-auto-completion t)
      (syntax-checking :variables
                       syntax-checking-enable-by-default nil)
-     python
+     (python :variables
+             python-test-runner 'pytest)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -334,6 +335,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq-default c-set-style "user")
 
   (my-setup-indent 2)
+
+  (setq python-shell-interpreter "python3")
 
   ;; Override indentation if there's an editorconfig file
   (editorconfig-mode 1)

@@ -1,6 +1,34 @@
 {
     packageOverrides = superPkgs:
         with superPkgs; {
+
+          # custom python environment with python packages embedded
+          # nixos isolates each language specific dependency, they are not automatically exposed to the interpreter
+          # note that this should not be used for development
+          # only for IDE integration and experiments
+          pythonEnv = with pkgs; buildEnv {
+            name = "pythonEnv";
+            paths = [
+              (with python27Packages; python.buildEnv.override {
+                  extraLibs = [
+                    setuptools
+                    numpy
+                  ];
+              })
+              (with python35Packages; python.buildEnv.override {
+                  extraLibs = [
+                    setuptools
+                    jedi
+                    flake8
+                    isort
+                    yapf
+                    pytest
+                    numpy
+                  ];
+              })
+            ];
+          };
+
           env-all = with pkgs; buildEnv {
                 name = "env-all";
                 paths = [
@@ -16,7 +44,7 @@
                     gdal qgis
                     # Documents and Graphs
                     zathura libreoffice ghostscriptX
-                    pandoc plantuml graphviz aspell aspellDicts.en
+                    pandoc plantuml graphviz aspell aspellDicts.en pdftk
                     # System Management & Monitoring
                     lnav smem ncdu htop atop iftop iptraf iotop
                     conky python35Packages.glances
@@ -48,6 +76,7 @@
                     nix-repl emacs vimHugeX tmux vagrant
                     python35Packages.httpbin python35Packages.binwalk-full
                     docker gdb lldb rr nodePackages.tern
+                    pythonEnv
                     # Chat
                     weechat skype slack
                     # X Window and XMonad
