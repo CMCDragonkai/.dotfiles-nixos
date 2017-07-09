@@ -12,7 +12,6 @@
               (with python27Packages; python.buildEnv.override {
                   extraLibs = [
                     setuptools
-                    numpy
                   ];
               })
               (with python35Packages; python.buildEnv.override {
@@ -41,7 +40,7 @@
                     # Data Science
                     sqlite-interactive sqlite3_analyzer jq
                     gnuplot sc-im python27Packages.csvkit go-pup
-                    gdal qgis
+                    gdal proj qgis
                     # Documents and Graphs
                     zathura libreoffice ghostscriptX
                     pandoc plantuml graphviz aspell aspellDicts.en pdftk
