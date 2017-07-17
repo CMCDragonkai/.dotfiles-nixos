@@ -145,7 +145,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
 
-   dotspacemacs-default-font '("Fira Code"
+   dotspacemacs-default-font '("DejaVu Sans Mono"
                                :size 17
                                :weight light
                                :height 40
