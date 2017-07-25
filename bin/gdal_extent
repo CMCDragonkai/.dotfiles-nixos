@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
+
+    cat<<EOF
+gdal_extent - Get the extent of a raster file.
+
+Usage:
+    gdal_extent [-f <format>] [-l <order>] [-i <input-proj>] [-o <output-proj>] <raster>
+    gdal_extent -h | --help
+
+Options:
+    -h --help       Show this help text.
+    -f              Format can be TLBR or BRTL or BLTR or TRBL. Default is TLBR.
+    -l              Order can be longlat or latlong. Default is longlat.
+    -i              Force an input coordinate system to use. Default is autodetected.
+    -o              Force an output coordinate system to use. Default is +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs.
+EOF
+
+    exit 64
+
+fi
+
+order='longlat'
+format='TLBR'
+output_proj='+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+
+while [ "$#" -gt 1 ]; do
+    case "$1" in
+        -f)
+            format="$2"
+            shift
+        ;;
+        -l)
+            order="$2"
+            shift
+        ;;
+        -i)
+            input_proj="$2"
+            shift
+        ;;
+        -o)
+            output_proj="$2"
+            shift
+        ;;
+        *)
+            break
+        ;;
+    esac
+    shift
+done
+
+case "$format" in
+    TLBR)
+        formatting="grep 'Upper Left \|Lower Right'"
+    ;;
+    BRTL)
+        formatting="grep 'Upper Left \|Lower Right' | tac"
+    ;;
+    BLTR)
+        formatting="grep 'Lower Left \|Upper Right'"
+    ;;
+    TRBL)
+        formatting="grep 'Lower Left \|Upper Right' | tac"
+    ;;
+    *)
+        exit 64
+    ;;
+esac
+
+case "$order" in
+    longlat)
+        ordering=''
+    ;;
+    latlong)
+        ordering='-s'
+    ;;
+    *)
+        exit 64
+    ;;
+esac
+
+raster="$1"
+
+if [ -z "$input_proj" ] ; then
+    input_proj="$(gdalsrsinfo -o proj4 "$raster" | sed -e "s/^'//" -e "s/'$//")";
+    if [ -z "$input_proj" ]; then
+        exit 65
+    fi
+fi
+
+proj_cmd="cs2cs $ordering -f '%.6f' $input_proj +to $output_proj"
+extent_cmd="gdalinfo $raster | $formatting | sed -E 's/[^\(]+\(([^,]+),([^\)]+)\).+/\1 \2/'"
+
+while read extent_x extent_y; do
+    eval $proj_cmd <<< "$extent_x $extent_y" | awk '{print $1,$2}'
+done < <(eval $extent_cmd)
