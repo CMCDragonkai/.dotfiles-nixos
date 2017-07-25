@@ -415,40 +415,43 @@ Control the buffering:
 
 ---
 
-So vim has buffers and tabs. And `:buffers` or `:ls` and `:vsplit` is awesome.
+Vim and Spacemacs Controls.
 
-The commands:
+Both Vim and Spacemacs have:
+
+1. Buffers
+2. Windows
+
+Both have a similar concept to "workspaces". Vim has tabs while Spacemacs has layouts and also workspaces which act like sublayouts. This linke explains the similarity between Spacemacs layouts and Vim tabs: http://joshldavis.com/2014/04/05/vim-tab-madness-buffers-vs-tabs/
+
+Basically you only need "workspaces", when you're working across multiple independent projects that have no relation to each other.
+
+Note that the clipboard is shared between the same instance of Vim. This is better than running multiple Vim instances in separate terminals, and then coordinating the clipboard between Vim instances through the desktop system.
+
+Vim controls:
 
 ```
-:split
-:vsplit
+:ls - Show all buffers
+:buffers - Show all buffers
+:b# - Switch to buffer #
+:b ... - Switch to buffer ...
+:bnext - Next buffer
+:bprev - Previous buffer
+:e ... - Open file and edit as buffer
+:split - Split horizontally
+:vsplit - Split Vertically
+Ctrl-W + H/J/K/l - Move to a window by direction
+Ctrl-W C - Close current window
+:tabe - Open up a new tab workspace
+:tabn - Next tab
+:tabp - Previous tab
 ```
 
-Split the windows equally, and always shows a duplicated view of the buffer you're currently looking at. This sounds likes what you're looking for in your hybrid TUI and GUI. The idea of always duplicating your current buffer is a good idea.
+Spacemacs have equivalent commands all using the spacebar.
 
-And also focus is always placed on the new buffer being split. So horizontal split means the new buffer should be the bottom one, while vertical split means the new buffer should the right one. Focus is always placed onto the new window.
+Finally your window manager has it's own commands, and so does your terminal emulator.
 
-Wait so now we have XMonad -> Tmux -> Vim Buffers/Windows???
-
-And also Explorer -> ConEmu -> Tmux -> Vim.
-
-Vim tabs are meant to be a different layout. Actually vim tabs is similar meaning to XMonad workspace. Workspaces usually is placed onto another monitor. But it doesn't need to be. It can be overlayed and stacked on top of each other.
-
-1 X Screen -> X Monitors -> Y Workspaces(Tabs) -> Z Windows
-
-Sometimes like ConEmu, the tabs themselves are windows. So they don't have a separate workspace. Except as program tabs inside explorer. Like having a different ConEmu.
-
-Basically the concept of "tabs" is amorphous. For XMonad, tabs refers to workspaces. For Vim, tabs is also a form of workspaces. However in Sublime, tabs are actually per-buffer. While ConEmu, tabs is equivalent to windows. Basically the concept of a tab is kind of different across different things. One can make Vim do 1 buffer 1 tab. But that's what it was originally designed for.
-
-Vim currently keeps the focus on the original buffer. And instead I would suggest the new buffer should be the focus. But I guess that's configurable.
-
-> A buffer is the in-memory text of a file.
-> A window is a viewport on a buffer.
-> A tab page is a collection of windows.
-
-Use `:tabe` to open a new tab. Then use `:qa` to close everything, thus saving the entire session.
-
-In Spacemacs, the hierarchy goes: frames -> windows -> buffers. A frame in Spacemacs corresponds to a tab in Vim. Since Spacemacs can be a GUI application, this means a frame is an system window, and therefore can be managed by the system windows manager. So it is up to the user whether they want to use windows within a single frame, thus making Spacemacs like a windows manager, or use frames instead and rely on the system windows manager like XMonad. It is then possible to configure spacemacs to have a tab bar that shows frames, windows or buffers.
+It can be a good idea to use window manager to split various GUI applications. Use your terminal emulator to split between terminals, or use tmux for this instead, so it works across whichever terminal emulator you have (conemu/konsole/mintty no problem). Then use vim or spacemacs to split for text editing.
 
 ---
 
@@ -1293,3 +1296,31 @@ Also where are the desktop files located? They are in ~/.nix-profile/share/appli
 ---
 
 For Windows, spacemacs and atom are too slow, instead use gvim. Use windows native vim and terminal vim, best of both worlds. On NixOS use spacemacs. Simple! Notice how both cygwin will supply python2, python3, and windows will have wpython2 and wpython3 to get the best of both worlds. Use choco to install gvim.
+
+---
+
+Let's Encrypt best way and most natural would be DNS based authorisation. However, this is no automatic renewal this way, unless you can gain API access to the DNS. Acme.sh does support this, and in the future, it would a good idea to consolidate all domains into a good DNS registrar that has a proper API so that lets encrypt certificates can be maintained in this way. However while this would work for personal certificates, each self contained application may require DNS API just to change provide automatic renewal of their certificate. Which is why there is the web server style of renewal, which doesn't require DNS API support, but also means you need to provide a server just for this renewal, which is another moving part you have to maintain. Using acme.sh currently is using DNS, however that means it's not automatic, you need to change the DNS details each time you want to renew. Remember that different DNS management interfaces have different ways of interacting with it.
+
+---
+
+Databases
+
+(this will be a living state, make sure to gitignore it)
+Project specific databases:
+
+```
+rm -rf './testdb'
+mkdir './testdb'
+mysqld --datadir='./testdb' --defaults-file='./path/to/my.cnf' --tmpdir='/tmp' --initialize-insecure --user cmcdragonkai
+mysqld --datadir='./testdb'
+```
+
+We can also pass options to it for development.
+
+Will these options also be part of the production instance? Perhaps, it depends.
+
+Defaults file is not really necessary. User option is not necessary if you're not starting from root user. Point is that now we have a local mysql instance just for this project. Note that there's no port or address or /tmp isolation. Such things require a container. If you don't want to run a container just yet, then look into randomisation of the listening port and other stuff. But you'll need to pass that random port and propagate it to the client services.
+
+---
+
+Do not develop on /nix/nixpkgs. Do not development on /etc/nixos. These are root owned, and you won't be able to access them unless you use ssh auth and ssh-agent and propagate it to root. That means the repositories are use https remotes. There's an alternative which is that use http for pull, and ssh for push. But this means configuring it after setting up the remotes. Easier is just to have nixpkgs and your own nixos configuration inside a Project directory, develop on that, and push it, and then pull it from HTTPS.
