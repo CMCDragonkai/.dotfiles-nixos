@@ -24,6 +24,7 @@ socket="/tmp/mysql.sock"
 
 [mysql]
 pager="less --quit-if-one-screen --no-init --LONG-PROMPT --HILITE-UNREAD --status-column --chop-long-lines --shift .3"
+prompt='Ｍ[\u@\h@\d] » '
 
 [mysqld]
 port=3306
