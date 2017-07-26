@@ -1,7 +1,7 @@
 {
     "basics": {
         "name": "Roger Qiu",
-        "label": "Developer and Designer",
+        "label": "Developer",
         "email": "roger.qiu@polyhack.io",
         "location": {
             "address": "Sydney, Australia"
@@ -25,7 +25,27 @@
                 "Developing a compiler for a new language designed for type-safe distributed service composition. This involved research into type systems, compilers, distributed systems and operating system fundamentals.",
                 "Contributor to the NixOS and Nixpkgs Open Source Community, developed stage 1 and stage 2 boot logging feature. (https://github.com/NixOS/nixpkgs/pull/13119)",
                 "Developing a content addressed store based on IPFS for package sources in order to improve package build reproducibility. (https://github.com/MatrixAI/Forge-Package-Archiving)",
+                "Porting IPFS to Haskell for Integration into NixOS (https://github.com/MatrixAI/haskell-multiaddr)",
+                "Development of a privilege elevation demonstration involving C, Unix Domain Sockets, File Descriptor Passing, and Polkit infrastructure (https://github.com/MatrixAI/Privilege-Elevation)",
+                "Development of a secret sharing system implementing OpenPGP and Git in JavaScript (https://github.com/MatrixAI/PolyKey)",
+                "Developed an in-memory Unix filesystem supporting directories, files and symlinks using JavaScript (https://github.com/MatrixAI/VirtualFS)",
+                "Development of a new lazy recursive perfectly balanced dynamically growing and shrinking bitmap tree data structure for sequentially allocatable and deallocatable resource counter in JavaScript (https://github.com/MatrixAI/js-resource-counter)",
                 "Experiments involving many infrastructure tools including LUKS, ZFS, Packer, Git, Vagrant, Vault, Mesos, CoreOS, Docker, Ansible, Let's Encrypt, Scheduling, Network Namespaces, systemd, Unix security (DAC, Polkit, ACLs, MAC), AWS."
+            ]
+        },
+        {
+            "company": "Holiday/Splend",
+            "position": "Senior Lead Developer",
+            "website": "http://members.splend.com.au/",
+            "startDate": "2017-01-25",
+            "endDate": "2017-05-03",
+            "summary": "A short term contract to develop a React and Redux based Mobile Web Application for Uber and Splend Drivers. The application tracked and visualised their earnings and performance.",
+            "highlights": [
+                "Developed a batch processing system for millions of Uber driver transactions per year, this involved hacking MySQL into a queue processing system, and implementing a parallel map reduce in PHP, the result was a soft-realtime Uber earnings tracking system.",
+                "OAuth 2.0 authentication integration into both Zoho CRM and Uber Driver API.",
+                "Developed a custom PHP framework that integrated third party external services (Zoho CRM, Uber Driver API, Contentful CMS) and exposed these services as a REST API gateway for integration into the React frontend.",
+                "Used async ReactPHP to parallelise requests to the Uber API for batch concurrent processing of payments.",
+                "Used babel to program in ES2017 for JavaScript."
             ]
         },
         {
@@ -38,17 +58,8 @@
                 "Won first place in accuracy (second place in prize money) during the GoldFields sponsored Unearthed Ore-X Datascience Competition involving Gold Ore Quality Detection in Underground Tunnel Mining Photos. (http://portal.unearthed.solutions/2-gold-fields-aug-2015)",
                 "Won the NASSCOM National Student Innovation Award in 2016. (https://nasscom.org.au/awards-2016/)",
                 "Currently involved in project involving Noise Reduction in Geomagnetic Surveys in Australia.",
-                "Developing data analysis pipeline using GIS tools and GIS databases."
-            ]
-        },
-        {
-            "company": "Holiday",
-            "position": "Senior Software Developer Consultant",
-            "website": "http://madeby.holiday/",
-            "startDate": "2017-01-25",
-            "summary": "Consulted for a client of Holiday called Splend, developed React based Mobile Web Application for Splend Drivers to track their earnings and performance. Developed a RESTful backend API gateway to all the services Splend uses.",
-            "highlights": [
-                "Hacked MySQL into a transactional queue processing system"
+                "Developing data analysis pipeline using GIS tools (Geospatial Data Abstraction Library) and GIS databases.",
+                "Experience in the Python data science toolkit including numpy, scikit, opencv."
             ]
         },
         {
@@ -56,11 +67,12 @@
             "position": "Software Developer Consultant",
             "website": "https://phonicshero.com",
             "startDate": "2014-10-01",
-            "summary": "Developed Frontend and Backend Features along with Database Maintenance",
+            "endDate": "2017-01-24",
+            "summary": "Retainer agreement for developing frontend and backend features along with database maintenance",
             "highlights": [
                 "Rewrote a legacy PHP payment system from Paypal to Braintree. This touched many areas in the backend and frontend.",
                 "Restored server operations and database data from backups during a complete server failure.",
-                "Complete database migration from MySQL to MSSQL."
+                "Developed an automatic database migration tool in Python involving millions of records from MySQL to MSSQL."
             ]
         },
         {
@@ -92,7 +104,6 @@
             "startDate": "2012-11-01",
             "summary": "Setup an Physical School for Web Application Development and Entrepreneurship in Canberra. Developed course material involving Web Design, PHP and AngularJS. Taught 4 students over 3 months and one-on-one tutoring for another 3 months.",
             "highlights": [
-                "First Proper Company!",
                 "First developer bootcamp in Australia.",
                 "Got the first cohort of students to develop their application, and was able to have a demo day at the end showcasing an online chess game, parking finder application and more.",
                 "Licensed Polycademy's course material to Code Master Institute in Perth (and they are still running with it!). (http://www.codemasterinstitute.com)",
@@ -160,7 +171,9 @@
                 "Bash (https://gist.github.com/search?l=Shell&q=user%3ACMCDragonkai)",
                 "C (https://gist.github.com/search?l=C&q=user%3ACMCDragonkai)",
                 "C++ (https://gist.github.com/search?l=C%2B%2B&q=user%3ACMCDragonkai)",
-                "Git (https://gist.github.com/search?q=user%3ACMCDragonkai+git&ref=searchresults)"
+                "Git (https://gist.github.com/search?q=user%3ACMCDragonkai+git&ref=searchresults)",
+                "PowerShell (https://github.com/CMCDragonkai/.dotfiles)",
+                "x86 Assembly (https://github.com/CMCDragonkai/assembly)"
             ]
         },
         {

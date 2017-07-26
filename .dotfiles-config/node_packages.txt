@@ -2,6 +2,7 @@
 
 # random utilities
 resume-cli,0.4.12
+insect,4.7.0
 
 # gis
 query-overpass,1.1.0
