@@ -4,9 +4,13 @@
 # OS generated files #
 .DS_Store
 .DS_Store?
+.AppleDouble
+.LSOverride
 ehthumbs.db
+ehthumbs_vista.db
 Thumbs.db
 *.stackdump
+Desktop.ini
 
 # Process ID files #
 *.pid
