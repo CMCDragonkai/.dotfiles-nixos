@@ -29,69 +29,181 @@
       name = "env-all";
       paths = [
         # Fonts
-        fira fira-mono fira-code dejavu_fonts
+        fira
+        fira-mono
+        fira-code
+        dejavu_fonts
         # Web
-        firefox chromium
+        firefox
+        chromium
         # Email
         thunderbird
         # Data Science
-        sqlite-interactive sqlite3_analyzer jq
-        gnuplot sc-im python27Packages.csvkit go-pup
-        gdal proj qgis
+        sqlite-interactive
+        sqlite3_analyzer
+        jq
+        gnuplot
+        sc-im
+        python27Packages.csvkit
+        go-pup
+        gdal
+        proj
+        qgis
         # Documents and Graphs
-        zathura libreoffice ghostscriptX
-        pandoc plantuml graphviz aspell aspellDicts.en pdftk
+        zathura
+        libreoffice
+        ghostscriptX
+        pandoc
+        plantuml
+        graphviz
+        aspell
+        aspellDicts.en
+        pdftk
         # System Management & Monitoring
-        lnav smem ncdu htop atop iftop iptraf iotop
-        conky python35Packages.glances
+        lnav
+        smem
+        ncdu
+        htop
+        atop
+        iftop
+        iptraf
+        iotop
+        conky
+        python35Packages.glances
         # Keyboard
         teensy-loader-cli
         # Math
-        R bc synergy
+        R
+        bc
         # Shell and Environment Utilities
-        file findutils i3lock tree parallel asciinema
-        reptyr lsof rmlint pv cv proot lsof picocom
-        kdeApplications.konsole gnum4 platinum-searcher
-        dex hicolor_icon_theme numix-gtk-theme
-        gnome3.nautilus gnome3.dconf rlwrap
+        file
+        findutils
+        i3lock
+        tree
+        parallel
+        asciinema
+        reptyr
+        lsof
+        rmlint
+        pv
+        cv
+        proot
+        lsof
+        picocom
+        kdeApplications.konsole
+        gnum4
+        platinum-searcher
+        dex
+        hicolor_icon_theme
+        numix-gtk-theme
+        gnome3.nautilus
+        gnome3.dconf
+        rlwrap
         trash-cli
+        synergy
         # Security
-        keybase vault plasma5.polkit-kde-agent certbot keepass
+        plasma5.polkit-kde-agent
+        keybase
+        certbot
+        keepass
         # Archive Management
-        zip unzip gzip bzip2 lzma
+        zip
+        unzip
+        gzip
+        bzip2
+        lzma
         # Network
-        openssl putty wget httpie aria mailutils bind ipfs
-        rsync wireshark nmap ncat socat
-        hans iodine udptunnel httptunnel pwnat
-        caddy ngrok geoipWithDatabase iperf
+        openssl
+        putty
+        wget
+        httpie
+        aria
+        mailutils
+        bind
+        ipfs
+        rsync
+        wireshark
+        nmap
+        ncat
+        socat
+        hans
+        iodine
+        udptunnel
+        httptunnel
+        pwnat
+        ngrok
+        geoipWithDatabase
+        iperf
         conntrack_tools
         # Storage
-        nfs-utils samba4 netatalk dropbox-cli awscli
+        nfs-utils
+        samba4
+        netatalk
+        dropbox-cli
+        awscli
         unetbootin
         # Development
-        qemu nix-repl binutils nix-prefetch-scripts patchelf
-        man-pages posix_man_pages libcap_manpages
-        nix-repl emacs vimHugeX tmux vagrant
-        python35Packages.httpbin python35Packages.binwalk-full
-        docker gdb lldb rr nodePackages.tern
-        pythonEnv dos2unix
-        php71
-        php71Packages.phpcs
+        emacs
+        vimHugeX
+        tmux
+        nix-repl
+        nix-prefetch-scripts
+        python35Packages.binwalk-full
+        binutils
+        patchelf
+        dos2unix
+        qemu
+        vagrant
+        man-pages
+        posix_man_pages
+        libcap_manpages
+        valgrind
+        gdb
+        lldb
+        rr
+        # IDE dependencies
+        pythonEnv
+        nodePackages.tern
         # Chat
-        weechat skype slack
+        weechat
+        skype
+        slack
         # X Window and XMonad
-        xdg_utils xdg-user-dirs dmenu xorg.xev xorg.xmessage
-        xorg.xwininfo xorg.xdpyinfo xdotool xclip hsetroot
+        xdg_utils
+        xdg-user-dirs
+        dmenu
+        xorg.xev
+        xorg.xmessage
+        xorg.xwininfo
+        xorg.xdpyinfo
+        xdotool
+        xclip
+        hsetroot
         haskellPackages.xmobar
         # Media
-        ffmpeg graphicsmagick sox pavucontrol playerctl
-        ffcast python35Packages.youtube-dl beets feh
-        imagemagick graphicsmagick vlc mplayer v4l_utils
-        mediainfo perlPackages.ImageExifTool dcraw spotify
+        pavucontrol
+        vlc
+        mplayer
+        playerctl
+        spotify
+        beets
+        ffcast
+        ffmpeg
+        feh
+        sox
+        graphicsmagick
+        imagemagick
+        v4l_utils
+        mediainfo
+        python35Packages.youtube-dl
+        perlPackages.ImageExifTool
+        dcraw
         # Radio
-        gnuradio-with-packages gqrx
+        gnuradio-with-packages
+        gqrx
         # Gaming
-        steam flightgear
+        steam
+        flightgear
       ];
     };
   };

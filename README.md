@@ -1324,3 +1324,11 @@ Defaults file is not really necessary. User option is not necessary if you're no
 ---
 
 Do not develop on /nix/nixpkgs. Do not development on /etc/nixos. These are root owned, and you won't be able to access them unless you use ssh auth and ssh-agent and propagate it to root. That means the repositories are use https remotes. There's an alternative which is that use http for pull, and ssh for push. But this means configuring it after setting up the remotes. Easier is just to have nixpkgs and your own nixos configuration inside a Project directory, develop on that, and push it, and then pull it from HTTPS.
+
+---
+
+Trash cli has been installed, when attempting to reclaim space, make sure to use `trash-empty`.
+
+---
+
+While vagrant and qemu can be installed in the user-profile. The vagrant providers are actually system installed as they require global resources in a side-effectful manner. So you don't install virtualbox in a user profile, you enable virtualbox as a virtualisation option in your configuration.nix.
