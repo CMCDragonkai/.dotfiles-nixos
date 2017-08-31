@@ -1,8 +1,9 @@
 # Default settings for MySQL
-# The settings below are geared towards a local database.
-# That means a database that is not running as a system service.
+# These settings are designed for a profile-local database.
 # This sets mysql to be completely UTF8
 # The server ignores the client connections that don't use UTF8
+# On initial setup, do this:
+# mysqld --initialize-insecure
 
 [client]
 user=root
@@ -24,5 +25,6 @@ character-set-server=utf8mb4
 collation-server=utf8mb4_unicode_ci
 character-set-client-handshake=FALSE
 innodb_large_prefix=TRUE
+event_scheduler=ON
 
 # Use `\G` instead of `;` to produce vertical output.
