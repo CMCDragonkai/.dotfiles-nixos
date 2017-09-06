@@ -21,10 +21,11 @@ port=3306
 socket="/tmp/mysql.sock"
 datadir="PH_LOCALDATA/mysql"
 tmpdir="/tmp"
+event_scheduler=ON
+default-time-zone='+00:00'
 character-set-server=utf8mb4
 collation-server=utf8mb4_unicode_ci
 character-set-client-handshake=FALSE
 innodb_large_prefix=TRUE
-event_scheduler=ON
 
 # Use `\G` instead of `;` to produce vertical output.
