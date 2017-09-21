@@ -9,10 +9,13 @@ m4_changequote(`<<<@@||',`||@@>>>')
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
+DIRSTACKSIZE=20
 
 setopt \
     appendhistory \
     autocd \
+    autopushd \
+    pushdsilent \
     extendedglob \
     nomatch \
     interactivecomments \
