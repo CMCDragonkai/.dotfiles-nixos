@@ -132,6 +132,7 @@
         httptunnel
         pwnat
         ngrok
+        sslh
         geoipWithDatabase
         iperf
         conntrack_tools
