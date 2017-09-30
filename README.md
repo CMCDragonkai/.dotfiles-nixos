@@ -1281,7 +1281,13 @@ It is fine for the wifi interface to have scope global and scope link. The link 
 
 ---
 
-To upload the new firmware to Ergodox EZ you need to run `teensy-loader-cli --mcu=atmega32u4 -w -v ./ergodox_ex_firmware_kmvzbe_dragon_flare.hex`
+To upload the new firmware to Ergodox EZ you need to run:
+
+```
+sudo teensy-loader-cli --mcu=atmega32u4 -w -v ./ergodox_ex_firmware_kmvzbe_dragon_flare.hex
+```
+
+Make sure to have the reset button available.
 
 ---
 
