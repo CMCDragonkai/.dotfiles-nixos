@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+exec powershell -Command "(Get-ItemProperty $@).VersionInfo | Format-List"
