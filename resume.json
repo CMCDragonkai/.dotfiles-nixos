@@ -34,9 +34,20 @@
             ]
         },
         {
+
+            "company": "ShelfTrend",
+            "position": "Senior Developer",
+            "website": "http://shelftrend.com",
+            "startDate": "2017-07-01",
+            "summary": "Development Backend Analytics Platform and Promotions Platform",
+            "highlights": [
+                "Custom promotions platform that involved development of a SQL finite state machine using triggers and event schedulers to track promotion code status, constraining usage by time, global use-count, per-user-use-count, and custom constraints implemented with Attribate Based Access Control (ABAC)."
+            ]
+        },
+        {
             "company": "Holiday/Splend",
             "position": "Senior Lead Developer",
-            "website": "http://members.splend.com.au/",
+            "website": "https://members.splend.com.au",
             "startDate": "2017-01-25",
             "endDate": "2017-05-03",
             "summary": "A short term contract to develop a React and Redux based Mobile Web Application for Uber and Splend Drivers. The application tracked and visualised their earnings and performance.",
