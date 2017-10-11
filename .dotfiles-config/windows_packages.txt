@@ -63,9 +63,10 @@ linqpad,*,chocolateyget
 zeal.install,*,chocolateyget
 packer,*,chocolateyget
 git,*,chocolateyget,"/GitOnlyOnPath /NoAutoCrlf /NoShellIntegration"
+apktool,*,chocolateyget
+androidstudio,*,chocolateyget
 
 # language runtimes
-androidstudio,*,chocolateyget
 vcbuildtools,*,chocolateyget,,/Full
 visualfsharptools,*,chocolateyget
 javaruntime,*,chocolateyget
