@@ -63,9 +63,10 @@ linqpad,*,chocolateyget
 zeal.install,*,chocolateyget
 packer,*,chocolateyget
 git,*,chocolateyget,"/GitOnlyOnPath /NoAutoCrlf /NoShellIntegration"
+apktool,*,chocolateyget
+androidstudio,*,chocolateyget
 
 # language runtimes
-androidstudio,*,chocolateyget
 vcbuildtools,*,chocolateyget,,/Full
 visualfsharptools,*,chocolateyget
 javaruntime,*,chocolateyget
@@ -164,7 +165,8 @@ kicad,*,chocolateyget
 # pt
 # bonjour
 # qemu
-# gnuwin32 packages (for bringing in one-off gnu utilities to be used)
 # z3 - need to compile from source in windows
 # gephi
 # ftdi virtual com port driver
+# universal adb driver
+# gnuwin32 packages (for bringing in one-off gnu utilities to be used)

@@ -162,6 +162,8 @@
         gdb
         lldb
         rr
+        apktool
+        python27Packages.gplaycli
         # IDE dependencies
         pythonEnv
         nodePackages.tern

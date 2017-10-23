@@ -21,6 +21,7 @@ js-beautify,1.6.11
 eslint,3.16.1
 babel-eslint,7.1.1
 eslint-plugin-react,6.10.0
+flow-bin,0.56.0
 
 # packages that need special installation
 # dat - install inside Visual C++ 2015 x64 Native Build Tools Command Prompt
