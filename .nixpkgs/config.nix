@@ -205,6 +205,8 @@
         # Gaming
         steam
         flightgear
+        # Finance
+        electrum
       ];
     };
   };
