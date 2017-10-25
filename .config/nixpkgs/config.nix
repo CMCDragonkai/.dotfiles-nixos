@@ -168,6 +168,7 @@
         # IDE dependencies
         pythonEnv
         nodePackages.tern
+        nodePackages.js-beautify
         # Chat
         weechat
         skype
