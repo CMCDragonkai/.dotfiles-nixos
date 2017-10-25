@@ -104,6 +104,7 @@
         # Security
         plasma5.polkit-kde-agent
         keybase
+        oathToolkit
         certbot
         keepass
         # Archive Management
