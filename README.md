@@ -1338,3 +1338,7 @@ Trash cli has been installed, when attempting to reclaim space, make sure to use
 ---
 
 While vagrant and qemu can be installed in the user-profile. The vagrant providers are actually system installed as they require global resources in a side-effectful manner. So you don't install virtualbox in a user profile, you enable virtualbox as a virtualisation option in your configuration.nix.
+
+---
+
+Every time you update the Nix channel/Nix package set, make sure to rerun `nix-index` to rebuild the search index for `nix-locate`.

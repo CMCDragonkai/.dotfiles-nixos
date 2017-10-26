@@ -144,12 +144,14 @@
         dropbox-cli
         awscli
         unetbootin
+        # Nix
+        nix-repl
+        nix-prefetch-scripts
+        nix-index
         # Development
         emacs
         vimHugeX
         tmux
-        nix-repl
-        nix-prefetch-scripts
         python35Packages.binwalk-full
         binutils
         patchelf
