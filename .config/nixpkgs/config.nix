@@ -113,6 +113,7 @@
         gzip
         bzip2
         lzma
+        dpkg
         # Network
         openssl
         putty
@@ -165,6 +166,8 @@
         gdb
         lldb
         rr
+        # Android
+        libmtp
         apktool
         python27Packages.gplaycli
         # IDE dependencies
