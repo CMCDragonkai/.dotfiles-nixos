@@ -138,6 +138,7 @@
         geoipWithDatabase
         iperf
         conntrack_tools
+        nethogs
         # Storage
         nfs-utils
         samba4
