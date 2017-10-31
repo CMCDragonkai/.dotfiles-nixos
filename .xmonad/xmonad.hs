@@ -14,6 +14,7 @@ import qualified XMonad.Hooks.ManageDocks as Docks
 import qualified XMonad.Hooks.DynamicLog as DynamicLog
 
 import qualified XMonad.Actions.ConstrainedResize as ConstrainedResize
+import qualified XMonad.Actions.GridSelect as GridSelect
 
 import XMonad.Hooks.ManageHelpers (composeOne, doCenterFloat)
 
@@ -94,6 +95,8 @@ myKeys (XConfig { modMask }) =
     [
       ((modMask, xK_b),
         sendMessage Docks.ToggleStruts),
+      ((modMask, xK_g),
+        GridSelect.goToSelected GridSelect.def),
       ((modMask .|. shiftMask, xK_l),
         Run.unsafeSpawn "i3lock && xset dpms force off"),
       ((noModMask, xK_Print),
