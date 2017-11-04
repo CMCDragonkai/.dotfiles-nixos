@@ -143,6 +143,7 @@ myKeys (XConfig { modMask }) =
 main = do
     Env.putEnv "XDG_CURRENT_DESKTOP=xmonad"
     Env.putEnv "XDG_SESSION_DESKTOP=xmonad"
+    Env.putEnv "_JAVA_AWT_WM_NONREPARENTING=1"
     Run.unsafeSpawn "feh --bg-fill ~/Pictures/wallpaper.png"
     Run.unsafeSpawn "dex --autostart"
     xmproc <- Run.spawnPipe "xmobar"
