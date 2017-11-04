@@ -59,6 +59,7 @@
         aspell
         aspellDicts.en
         pdftk
+        yed
         # System Management & Monitoring
         lnav
         smem
@@ -92,7 +93,7 @@
         picocom
         kdeApplications.konsole
         gnum4
-        platinum-searcher
+        ag
         dex
         hicolor_icon_theme
         numix-gtk-theme
@@ -150,6 +151,7 @@
         nix-repl
         nix-prefetch-scripts
         nix-index
+        vulnix
         # Development
         emacs
         vimHugeX
