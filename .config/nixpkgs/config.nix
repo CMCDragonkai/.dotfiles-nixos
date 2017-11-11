@@ -164,6 +164,7 @@
         vagrant
         universal-ctags
         global
+        python36Packages.pygments
         man-pages
         posix_man_pages
         libcap_manpages
