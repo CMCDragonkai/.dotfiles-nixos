@@ -163,6 +163,7 @@
         qemu
         vagrant
         universal-ctags
+        global
         man-pages
         posix_man_pages
         libcap_manpages
