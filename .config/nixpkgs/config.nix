@@ -162,6 +162,7 @@
         dos2unix
         qemu
         vagrant
+        universal-ctags
         man-pages
         posix_man_pages
         libcap_manpages
