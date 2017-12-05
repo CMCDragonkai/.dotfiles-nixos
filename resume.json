@@ -3,6 +3,8 @@
         "name": "Roger Qiu",
         "label": "Developer",
         "email": "roger.qiu@polyhack.io",
+        "summary": "Software developer and designer focused on both front end architecture and infrastructure automation.",
+        "website": "https://gist.github.com/CMCDragonkai",
         "location": {
             "address": "Sydney, Australia"
         },
@@ -10,7 +12,12 @@
             {
                 "network": "Github",
                 "username": "CMCDragonkai",
-                "url": "https://gist.github.com/CMCDragonkai"
+                "url": "https://github.com/CMCDragonkai"
+            },
+            {
+                "network": "LinkedIn",
+                "username": "qiuroger",
+                "url": "https://www.linkedin.com/in/qiuroger"
             }
         ]
     },
