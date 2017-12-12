@@ -41,10 +41,12 @@
         # Data Science
         sqlite-interactive
         sqlite3_analyzer
-        jq
-        gnuplot
         sc-im
+        gnuplot
+        jq
         python27Packages.csvkit
+        basex
+        libxml2
         go-pup
         gdal
         proj
@@ -198,6 +200,7 @@
         haskellPackages.xmobar
         # Media
         pavucontrol
+        kdeApplications.spectacle
         vlc
         mplayer
         playerctl
@@ -211,7 +214,7 @@
         imagemagick
         v4l_utils
         mediainfo
-        python35Packages.youtube-dl
+        python36Packages.youtube-dl
         perlPackages.ImageExifTool
         dcraw
         # Radio
