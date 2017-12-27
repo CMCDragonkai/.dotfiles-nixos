@@ -5,3 +5,4 @@ hlint
 hasktags
 digits
 split
+statistics
