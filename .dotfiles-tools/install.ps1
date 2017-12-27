@@ -108,6 +108,9 @@ if ($Stage -eq 0) {
     # Change power settings for the current plan
     & "${PSScriptRoot}\set-power.ps1"
 
+    # Setup exclusions for windows defender
+    & "${PSSCriptRoot}\set-windows-defender-exclusions.ps1"
+
     # Rename the computer to the new name just before a restart
     Rename-Computer -NewName "$ComputerName" -Force >$null 2>&1
 

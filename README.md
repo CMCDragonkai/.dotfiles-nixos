@@ -1342,3 +1342,7 @@ While vagrant and qemu can be installed in the user-profile. The vagrant provide
 ---
 
 Every time you update the Nix channel/Nix package set, make sure to rerun `nix-index` to rebuild the search index for `nix-locate`.
+
+---
+
+Windows Defender can slow down compilation times, make sure to go to Windows Defender and add in process exclusions for your compilers. But don't do it for your interpreters as they can be used for malicious things. This is now done inside the install.ps1. This will add exclusions to speed up compilation.
