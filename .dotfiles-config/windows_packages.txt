@@ -117,7 +117,7 @@ toggl,*,chocolateyget
 f.lux,*,chocolateyget
 
 # finance and accounting
-electrum.portable,*,chocolateyget
+electrum.install,*,chocolateyget
 
 # gis
 whitebox.portable,*,chocolateyget

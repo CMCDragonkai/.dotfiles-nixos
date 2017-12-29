@@ -4,6 +4,7 @@ cygwin32
 zsh
 ncurses
 gnupg
+gnupg2
 pv
 utils-linux
 psmisc
