@@ -37,6 +37,7 @@
                 "Developed an in-memory Unix filesystem supporting directories, files and symlinks using JavaScript (https://github.com/MatrixAI/js-virtualfs).",
                 "Development of an in-memory Git in Javascript (https://github.com/MatrixAI/js-virtualgit).",
                 "Development of a new lazy recursive perfectly balanced dynamically growing and shrinking bitmap tree data structure for sequentially allocatable and deallocatable resource counter in JavaScript (https://github.com/MatrixAI/js-resource-counter).",
+                "All JavaScript development done with Flow type checking",
                 "Experiments involving many infrastructure tools including Emscripten, LUKS, ZFS, Packer, Git, Vagrant, Vault, Mesos, CoreOS, Docker, Ansible, Let's Encrypt, Scheduling, Network Namespaces, systemd, Unix security (DAC, Polkit, ACLs, MAC), AWS."
             ]
         },
