@@ -55,10 +55,10 @@
         {
             "company": "Holiday/Splend",
             "position": "Senior Lead Developer",
-            "website": "https://members.splend.com.au",
+            "website": "https://madeby.holiday/work/splend",
             "startDate": "2017-01-25",
             "endDate": "2017-05-03",
-            "summary": "A short term contract to develop a React and Redux based Mobile Web Application for Uber and Splend Drivers. The application tracked and visualised their earnings and performance.",
+            "summary": "React and Redux based Mobile Web Application for Splend Uber Drivers. The application tracked and visualised their earnings and performance. Drivers were able to report incidents on the application.",
             "highlights": [
                 "Developed a batch processing system for millions of Uber driver transactions per year, this involved hacking MySQL into a queue processing system, and implementing a parallel map reduce in PHP, the result was a soft-realtime Uber earnings tracking system.",
                 "OAuth 2.0 authentication integration into both Zoho CRM and Uber Driver API.",

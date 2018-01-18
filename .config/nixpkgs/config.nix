@@ -81,6 +81,7 @@
         # Shell and Environment Utilities
         file
         findutils
+        redshift
         i3lock
         tree
         parallel
