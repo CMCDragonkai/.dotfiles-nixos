@@ -14,7 +14,7 @@ RapidEE,*,chocolateyget
 sysinternals,*,chocolateyget
 regshot,1.9.3,chocolateyget
 virtualclonedrive,*,chocolateyget
-rufus.portable,*,chocolateyget
+rufus,*,chocolateyget
 osquery,*,chocolateyget
 logparser,*,chocolateyget
 devcon.portable,*,chocolateyget
