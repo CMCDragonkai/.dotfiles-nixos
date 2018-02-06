@@ -104,6 +104,7 @@
         gnome3.dconf
         rlwrap
         trash-cli
+        inotify-tools
         synergy
         # Security
         plasma5.polkit-kde-agent
@@ -126,6 +127,7 @@
         aria
         mailutils
         bind
+        ldns
         ipfs
         rsync
         wireshark
@@ -177,6 +179,7 @@
         rr
         # Android
         libmtp
+        go-mtpfs
         apktool
         python27Packages.gplaycli
         # IDE dependencies
