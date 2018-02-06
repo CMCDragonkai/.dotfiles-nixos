@@ -10,6 +10,8 @@
    dotspacemacs-configuration-layer-path '()
    dotspacemacs-configuration-layers
    '(
+     asm
+     c-c++
      sql
      csv
      yaml
@@ -25,6 +27,8 @@
      emacs-lisp
      markdown
      org
+     gtags
+     elixir
      (haskell :variables
               haskell-process-type 'stack-ghci)
      (git :variables
