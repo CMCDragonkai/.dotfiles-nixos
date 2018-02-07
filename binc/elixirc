@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+executable="$(command which --all "elixirc.bat" | grep --max-count=1 --invert-match "$(realpath --no-symlinks "elixirc.bat")")"
+
+if [ -t 0 -a -t 1 ]; then
+
+    exec winpty "$(realpath "$executable")" "$@"
+
+else
+
+    exec "$(realpath "$executable")" "$@"
+
+fi
+
