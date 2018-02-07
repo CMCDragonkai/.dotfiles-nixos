@@ -27,6 +27,8 @@ $UserPaths =
     '%USERPROFILE%\.go\bin',
     # Profile Stack Executables
     '%USERPROFILE%\.stack\bin'
+    # Profile Keybase Executables
+    '%LOCALAPPDATA%\Keybase'
     # Profile Android Executables
     '%LOCALAPPDATA%\Android\android-sdk\tools'
     '%LOCALAPPDATA%\Android\android-sdk\platform-tools'
