@@ -1346,3 +1346,15 @@ Every time you update the Nix channel/Nix package set, make sure to rerun `nix-i
 ---
 
 Windows Defender can slow down compilation times, make sure to go to Windows Defender and add in process exclusions for your compilers. But don't do it for your interpreters as they can be used for malicious things. This is now done inside the install.ps1. This will add exclusions to speed up compilation.
+
+---
+
+Elixir
+
+Elixir on Windows is just about using all the commands via powershell. Otherwise things will break.
+
+Unfortunately alot of the commands don't work with winpty.
+
+So if you really want to use iex from Cygwin, you cannot and you just have to run `iex --werl`.
+
+But from powershell, you can just use `iex.bat`. Note that powershell has a special function for `iex`. So you cannot directly use it!
