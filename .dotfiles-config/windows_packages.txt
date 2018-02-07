@@ -54,7 +54,6 @@ peazip.portable,*,chocolateyget
 ext2fsd,*,chocolateyget
 
 # development
-vim-tux,*,chocolateyget
 dbeaver,*,chocolateyget
 virtualbox,*,chocolateyget
 vagrant,*,chocolateyget
@@ -78,6 +77,8 @@ golang,1.7.3,chocolateyget
 rust,1.13.0,chocolateyget
 python2,2.7.13,chocolateyget,/InstallDir:${Env:SystemDrive}\python2
 python3,3.6.0,chocolateyget,/InstallDir:${Env:SystemDrive}\python3
+erlang,20.2,chocolateyget
+elixir,1.6.0,chocolateyget
 
 # documents
 pandoc,*,chocolateyget
