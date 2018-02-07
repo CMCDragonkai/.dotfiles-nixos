@@ -3,7 +3,7 @@
 TEMPDIR := $(shell mktemp --directory)
 
 install:
-	curl --location --output "$(TEMPDIR)/winpty.tar.gz" https://github.com/rprichard/winpty/releases/download/0.4.0/winpty-0.4.0-cygwin-2.5.2-x64.tar.gz
+	curl --location --output "$(TEMPDIR)/winpty.tar.gz" https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-cygwin-2.8.0-x64.tar.gz
 	mkdir "$(TEMPDIR)/winpty"
 	tar xfz "$(TEMPDIR)/winpty.tar.gz" --directory "$(TEMPDIR)/winpty" --strip-components 1
 	install --mode=755 -D "$(TEMPDIR)/winpty/bin/winpty.exe" /usr/local/bin
