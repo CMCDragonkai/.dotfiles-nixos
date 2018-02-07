@@ -26,13 +26,12 @@ $UserPaths =
     # Profile Go Executables
     '%USERPROFILE%\.go\bin',
     # Profile Stack Executables
-    '%USERPROFILE%\.stack\bin'
+    '%USERPROFILE%\.stack\bin',
     # Profile Keybase Executables
-    '%LOCALAPPDATA%\Keybase'
+    '%LOCALAPPDATA%\Keybase',
     # Profile Android Executables
-    '%LOCALAPPDATA%\Android\android-sdk\tools'
+    '%LOCALAPPDATA%\Android\android-sdk\tools',
     '%LOCALAPPDATA%\Android\android-sdk\platform-tools'
-
 
 $SystemPaths =
     # Original System Paths
@@ -76,7 +75,9 @@ $SystemPaths =
     '%SystemDrive%\python2',
     '%SystemDrive%\python2\Scripts',
     '%SystemDrive%\python3',
-    '%SystemDrive%\python3\Scripts'
+    '%SystemDrive%\python3\Scripts',
+    # Elixir (this should be inside %ChocolateyInstall%\bin instead)
+    '%ChocolateyInstall%\lib\Elixir\bin'
 
 # Filter out PATHs that don't exist
 $UserPaths = $UserPaths | Where-Object { Test-Path "$([System.Environment]::ExpandEnvironmentVariables(`"$_`"))" -PathType Container }
