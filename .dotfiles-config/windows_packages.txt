@@ -3,7 +3,7 @@ dejavufonts,*,chocolateyget
 arduino,*,chocolateyget
 
 # shell/system utilities
-ConEmu,17.1.18.0,chocolateyget
+ConEmu,18.2.6.0,chocolateyget
 vault,*,chocolateyget
 keepass,*,chocolateyget
 keeweb,*,chocolateyget
