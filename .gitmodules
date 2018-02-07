@@ -28,3 +28,6 @@
 [submodule ".dotfiles-modules/vim-editorconfig"]
 	path = .dotfiles-modules/vim-editorconfig
 	url = https://github.com/sgur/vim-editorconfig.git
+[submodule ".dotfiles-modules/vim-elixir"]
+	path = .dotfiles-modules/vim-elixir
+	url = https://github.com/elixir-editors/vim-elixir.git
