@@ -37,7 +37,8 @@
                 "Developed an in-memory Unix filesystem supporting directories, files and symlinks using JavaScript (https://github.com/MatrixAI/js-virtualfs).",
                 "Development of an in-memory Git in Javascript (https://github.com/MatrixAI/js-virtualgit).",
                 "Development of a new lazy recursive perfectly balanced dynamically growing and shrinking bitmap tree data structure for sequentially allocatable and deallocatable resource counter in JavaScript (https://github.com/MatrixAI/js-resource-counter).",
-                "All JavaScript development done with Flow type checking",
+                "Development of a Order Index Tree in JavaScript (https://github.com/MatrixAI/js-tree-order-index), and indexing data structure for trees for efficient queries and updates involving B+tree, immutability and concurrency, presented to a panel at the Sydney Papers Club.",
+                "All JavaScript development done with Facebook Flow plus Babel ES6/ES7.",
                 "Experiments involving many infrastructure tools including Emscripten, LUKS, ZFS, Packer, Git, Vagrant, Vault, Mesos, CoreOS, Docker, Ansible, Let's Encrypt, Scheduling, Network Namespaces, systemd, Unix security (DAC, Polkit, ACLs, MAC), AWS."
             ]
         },
@@ -174,6 +175,12 @@
             "releaseDate": "2016-06-15",
             "website": "https://gist.github.com/CMCDragonkai/d266a3055735545447439f0fa662a0e1",
             "summary": "A discussion about data structures supporting history traversal."
+        },
+        {
+            "name": "Indexing Highly Dynamic Hierarchal Data",
+            "releaseDate": "2015",
+            "website": "https://www.meetup.com/Sydney-Paper-Club/events/245454416/?eventId=245454416",
+            "summary": "Implemented data structure in JavaScript (https://github.com/MatrixAI/js-tree-order-index) and presented implementation to the Sydney Papers Club."
         }
     ],
     "skills": [
@@ -181,7 +188,7 @@
             "name": "Software Development",
             "keywords": [
                 "PHP (https://gist.github.com/search?l=PHP&q=user%3ACMCDragonkai)",
-                "SQL (https://gist.github.com/search?l=SQL&q=user%3ACMCDragonkai)",
+                "SQL - MySQL & PostgresSQL (https://gist.github.com/search?l=SQL&q=user%3ACMCDragonkai)",
                 "Haskell (https://gist.github.com/search?l=Haskell&q=user%3ACMCDragonkai)",
                 "Elixir (https://gist.github.com/search?l=Elixir&q=user%3ACMCDragonkai)",
                 "Python (https://gist.github.com/search?l=Python&q=user%3ACMCDragonkai)",
@@ -205,7 +212,7 @@
             "name": "Business Management",
             "keywords": [
                 "Completed Australian R&D Tax Incentive applications 4 times for my projects and startups.",
-                "Managed the accounting and tax reporting of 3 businesses."
+                "Managing a team of 4 software engineers in Matrix AI."
             ]
         }
     ],
