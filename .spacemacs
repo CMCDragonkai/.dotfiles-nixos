@@ -29,6 +29,8 @@
      org
      gtags
      elixir
+     rust
+     go
      (haskell :variables
               haskell-process-type 'stack-ghci)
      (git :variables

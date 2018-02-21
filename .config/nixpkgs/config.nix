@@ -186,6 +186,9 @@
         pythonEnv
         nodePackages.tern
         nodePackages.js-beautify
+        rustracer
+        gocode
+        godef
         # Chat
         weechat
         skype
