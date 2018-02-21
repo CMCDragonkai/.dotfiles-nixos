@@ -187,6 +187,7 @@
         nodePackages.tern
         nodePackages.js-beautify
         rustracer
+        go
         gocode
         godef
         # Chat
