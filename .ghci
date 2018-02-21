@@ -31,7 +31,7 @@ import "base" Text.Show.Functions     -- Function showing
 
 -- Show loaded modules in window title
 :set prompt  "%l:> "
-:set prompt2 "%l:| "
+:set prompt-cont "%l:| "
 
 -- Macros
 
