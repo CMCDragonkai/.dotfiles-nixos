@@ -7,7 +7,9 @@ Installation on Windows is (enter your computer name!):
 Launch Powershell as Administrator and run...
 
 ```posh
+# set your computer host name uniquely!
 $ComputerName = 'POLYHACK-?'
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 Invoke-WebRequest 'https://github.com/CMCDragonkai/.dotfiles/archive/master.zip' -OutFile '~/Downloads/.dotfiles-master.zip'
 Remove-Item '~/Downloads/.dotfiles-master' -Recurse -Force -ErrorAction SilentlyContinue
 Expand-Archive -Path '~/Downloads/.dotfiles-master.zip' -DestinationPath '~/Downloads' -Force
