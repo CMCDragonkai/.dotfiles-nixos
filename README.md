@@ -23,12 +23,17 @@ Windows installation requires multiple restarts so check the log later for detai
 Installation on Linux (NixOS) is:
 
 ```sh
+# if you already have git
+git clone --recurse-submodules https://github.com/CMCDragonkai/.dotfiles
+# need to wait for m4 installation first
+```
+
+```sh
+# if you don't have git
 curl --location --create-dirs https://github.com/CMCDragonkai/.dotfiles/archive/master.tar.gz --output ~/Downloads/.dotfiles-master.tar.gz
 rm --recursive --force ~/Downloads/.dotfiles-master && tar xvzf ~/Downloads/.dotfiles-master.tar.gz --directory ~/Downloads
 ~/Downloads/.dotfiles-master/.dotfiles-tools/install.sh
 ```
-
-Actually since NixOS system configuration will have Git, it's easy to do.
 
 However some steps needs to be reversed. On NixOS, we must first install all the tools before bringing in all the other .dotfiles. So our install.sh must copy `config.nix` first, then install everything with `nix-env -i env-all`.
 
