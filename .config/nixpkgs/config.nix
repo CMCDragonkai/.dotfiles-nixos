@@ -4,27 +4,6 @@
   {
     # python environment with python packages
     # used for IDE integration & experiments
-    pythonEnv = with pkgs; buildEnv {
-      name = "pythonEnv";
-      paths = [
-        (with python27Packages; python.buildEnv.override {
-          extraLibs = [
-            setuptools
-          ];
-        })
-        (with python35Packages; python.buildEnv.override {
-          extraLibs = [
-            setuptools
-            jedi
-            flake8
-            isort
-            yapf
-            pytest
-            numpy
-          ];
-        })
-      ];
-    };
     env-all = with pkgs; buildEnv {
       name = "env-all";
       paths = [
@@ -44,7 +23,7 @@
         sc-im
         gnuplot
         jq
-        python27Packages.csvkit
+        python36Packages.csvkit
         basex
         libxml2
         go-pup
@@ -61,7 +40,7 @@
         aspell
         aspellDicts.en
         pdftk
-        yed
+        dia
         # System Management & Monitoring
         lnav
         smem
@@ -72,7 +51,7 @@
         iptraf
         iotop
         conky
-        python35Packages.glances
+        python36Packages.glances
         # Keyboard
         teensy-loader-cli
         # Math
@@ -161,7 +140,6 @@
         emacs
         vimHugeX
         tmux
-        python35Packages.binwalk-full
         binutils
         patchelf
         dos2unix
@@ -169,6 +147,7 @@
         vagrant
         universal-ctags
         global
+        python36Packages.binwalk-full
         python36Packages.pygments
         man-pages
         posix_man_pages
@@ -183,7 +162,11 @@
         apktool
         python27Packages.gplaycli
         # IDE dependencies
-        pythonEnv
+        python36Packages.jedi
+        python36Packages.flake8
+        python36Packages.isort
+        python36Packages.yapf
+        python36Packages.pytest
         nodePackages.tern
         nodePackages.js-beautify
         rustracer
