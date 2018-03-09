@@ -124,6 +124,7 @@
         iperf
         conntrack_tools
         nethogs
+        openvpn
         # Storage
         nfs-utils
         samba4
