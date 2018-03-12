@@ -163,11 +163,19 @@
         apktool
         python27Packages.gplaycli
         # IDE dependencies
-        python36Packages.jedi
-        python36Packages.flake8
-        python36Packages.isort
-        python36Packages.yapf
-        python36Packages.pytest
+        (
+          with python36Packages;
+          python.buildEnv.override {
+            extraLibs = [
+              setuptools
+              jedi
+              flake8
+              isort
+              yapf
+              pytest
+            ];
+          }
+        )
         nodePackages.tern
         nodePackages.js-beautify
         rustracer
