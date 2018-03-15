@@ -210,6 +210,7 @@
         ffmpeg
         feh
         sox
+        gimp
         graphicsmagick
         imagemagick
         v4l_utils
