@@ -31,16 +31,17 @@
         proj
         qgis
         # Documents and Graphs
-        zathura
         libreoffice
+        zathura
         ghostscriptX
+        poppler_utils
+        pdftk
         pandoc
         plantuml
         graphviz
+        dia
         aspell
         aspellDicts.en
-        pdftk
-        dia
         # System Management & Monitoring
         lnav
         smem
