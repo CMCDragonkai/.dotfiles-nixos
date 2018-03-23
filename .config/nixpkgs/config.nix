@@ -126,6 +126,7 @@
         conntrack_tools
         nethogs
         openvpn
+        filezilla
         # Storage
         nfs-utils
         samba4
@@ -214,6 +215,7 @@
         gimp
         graphicsmagick
         imagemagick
+        libtiff
         v4l_utils
         mediainfo
         python36Packages.youtube-dl
