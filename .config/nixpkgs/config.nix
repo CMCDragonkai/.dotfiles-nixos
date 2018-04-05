@@ -159,6 +159,7 @@
         gdb
         lldb
         rr
+        docker_compose
         # Android
         libmtp
         go-mtpfs
