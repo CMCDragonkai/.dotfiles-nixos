@@ -148,6 +148,7 @@
         dos2unix
         qemu
         vagrant
+        shellcheck
         universal-ctags
         global
         python36Packages.binwalk-full
