@@ -1367,3 +1367,39 @@ Unfortunately alot of the commands don't work with winpty.
 So if you really want to use iex from Cygwin, you cannot and you just have to run `iex --werl`.
 
 But from powershell, you can just use `iex.bat`. Note that powershell has a special function for `iex`. So you cannot directly use it!
+
+---
+
+GnuPG supports the usage of hardware security tokens in the form of smartcards.
+
+An example of a smartcard is the Ledger Nano S. It is more than a smart card, but exposes the API.
+
+With the GnuPG app installed onto the Ledger Nano S, we can use as a hardware security token for our GnuPG.
+
+We intend to use it store our master keys. And only have master keys in our hardware tokens.
+
+However this means we need to backup the digital data in our hardware tokens.
+
+One can use `paperkey` to turn it into paper and then print it out.
+
+Note that the Ledger Nano S must be usable when connected to your computer, this means on Linux you need to appropriate udev rules.
+
+Right now it just makes the cmcdragonkai user own it.
+
+The GPG system is used as the SSH agent instead of the default SSH agent. It handles all the same operations. Nothing really changes here.
+
+By using the smart card in this way, you need to keep using Ledger Nano S or equivalent smart cards to contain these keys.
+
+Note that `ssh-add` still works the same way, and utilises GPG as the ssh agent now.
+
+Also keybase as well.
+
+So you need to enable the `pcscd` service on your NixOS.
+
+Then you also need `pcsdtools` package. And run the `pcsc_scan` to scan for smart card readers.
+
+https://github.com/LedgerHQ/blue-app-openpgp-card
+
+It appears that the latest firmware does not support the application yet. Once it does, we can continue with the tutorial.
+
+We still have to figure out how to back up these keys. Most likely via paperkey.
