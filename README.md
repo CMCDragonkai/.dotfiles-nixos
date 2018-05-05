@@ -1403,3 +1403,11 @@ https://github.com/LedgerHQ/blue-app-openpgp-card
 It appears that the latest firmware does not support the application yet. Once it does, we can continue with the tutorial.
 
 We still have to figure out how to back up these keys. Most likely via paperkey.
+
+Ok for the future:
+
+1. Use the Ledger Nano S Manager Chrome App to install updated GPG application
+2. Store master keys on the Ledger Nano S
+3. Make sure to backup the master key using paperkey (need to transport the encrypted key for printing)
+4. Using pcsctools and pscsd service and get the udev system working with the ledger system
+5. Need to carry around a USB cable for this
