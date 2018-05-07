@@ -10,6 +10,7 @@
 :seti -XViewPatterns
 :seti -XTypeOperators
 :seti -XLambdaCase
+:seti -XQuasiQuotes
 
 -- Type Extensions
 :seti -XExistentialQuantification

@@ -188,6 +188,7 @@
         go
         gocode
         godef
+        haskellPackages.stylish-haskell
         # Chat
         weechat
         skype
