@@ -88,10 +88,12 @@
         synergy
         # Security
         plasma5.polkit-kde-agent
-        keybase
         oathToolkit
         certbot
         keepass
+        keybase
+        pcsctools
+        paperkey
         # Archive Management
         zip
         unzip
@@ -186,6 +188,7 @@
         go
         gocode
         godef
+        haskellPackages.stylish-haskell
         # Chat
         weechat
         skype
