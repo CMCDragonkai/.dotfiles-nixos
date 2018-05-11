@@ -30,6 +30,7 @@
         gdal
         proj
         qgis
+        hdf5
         # Documents and Graphs
         libreoffice
         zathura
