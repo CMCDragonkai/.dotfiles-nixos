@@ -164,6 +164,7 @@
         lldb
         rr
         docker_compose
+        runc
         # Android
         libmtp
         go-mtpfs
@@ -190,6 +191,7 @@
         gocode
         godef
         haskellPackages.stylish-haskell
+        haskellPackages.pretty-show
         # Chat
         weechat
         skype
@@ -227,6 +229,7 @@
         python36Packages.youtube-dl
         perlPackages.ImageExifTool
         dcraw
+        zbar
         # Radio
         gnuradio-with-packages
         gqrx
