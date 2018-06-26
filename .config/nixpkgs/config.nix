@@ -54,6 +54,7 @@
         iotop
         conky
         python36Packages.glances
+        stress-ng
         # Keyboard
         teensy-loader-cli
         # Math
