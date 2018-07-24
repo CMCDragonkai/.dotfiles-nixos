@@ -31,6 +31,7 @@
         proj
         qgis
         hdf5
+        hdfview
         # Documents and Graphs
         libreoffice
         zathura
@@ -170,7 +171,7 @@
         libmtp
         go-mtpfs
         apktool
-        python27Packages.gplaycli
+        python36Packages.gplaycli
         # IDE dependencies
         (
           with python36Packages;
