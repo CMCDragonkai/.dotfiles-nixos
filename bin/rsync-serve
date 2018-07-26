@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
 if [[ "$@" == "" || "$@" == *-h* || "$@" == *--help* ]]; then
-    
+
     cat<<EOF
 rsync-serve - Simple rsync server bootstrapping for direct connections.
               It allows file transfer without SSH or other remote shells.
               Which means there's no encryption!
 
 Usage: 
-    rsync-serve <bind-address> <bind-port> <filesystem-path> <allowed-ips>
+    rsync-serve <bind-address> <bind-port> <filesystem-path> [allowed-ips]
     rsync-serve -h | --help
 
 Options:
@@ -20,14 +20,16 @@ It even works with spaces, as long as you escape the space. Usage styles here:
     Serving up a Directory:
     \`rsync-serve 10.0.0.1 55555 ./module 10.0.0.2\`
 
-    Remote \`ls -l\`: 
+    Remote \`ls -l\`:
     \`rsync --port 55555 10.0.0.1::module\`
 
-    Upload (resumable): 
+    Upload (resumable):
     \`rsync --port 55555 --partial --append-verify --progress --verbose ./file_to_upload 10.0.0.1::module/\`
 
-    Download (resumable): 
+    Download (resumable):
     \`rsync --port 55555 --partial --append-verify --progress --verbose 10.0.0.1::module/file_to_download ./\`
+
+Use the \`--recursive\` option to download or upload recursively.
 EOF
 
     exit 0
@@ -37,13 +39,20 @@ fi
 local_ip="$1"
 port="$2"
 location="$3"
-allowed_ip="$4"
+allowed_ips="$4"
+
+if [ -n "$allowed_ips" ]; then
+    hosts_allow="hosts allow $allowed_ips"
+else
+    hosts_allow=""
+fi
 
 # rsync requires read & write process substitution for the --config file, which is only available in ZSH
 rsync --daemon --address="$local_ip" --port "$port" --no-detach --log-file /dev/stdout --config =(
 cat <<EOT
 [$(basename "$location")]
-    hosts allow = $allowed_ip
+    ${hosts_allow}
+    # serve only this path
     path = $location
     # allow uploads to the server
     read only = no
