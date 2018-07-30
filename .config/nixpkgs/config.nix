@@ -105,6 +105,7 @@
         lzma
         dpkg
         # Network
+        mitmproxy
         openssl
         putty
         wget
