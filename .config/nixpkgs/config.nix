@@ -144,6 +144,7 @@
         nix-repl
         nix-prefetch-scripts
         nix-index
+        nix-bundle
         vulnix
         # Development
         emacs
