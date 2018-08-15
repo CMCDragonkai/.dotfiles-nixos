@@ -45,6 +45,7 @@
         dia
         aspell
         aspellDicts.en
+        # masterpdfeditor
         # System Management & Monitoring
         lnav
         smem
@@ -116,6 +117,7 @@
         bind
         ldns
         ipfs
+        nodePackages_8_x.dat
         rsync
         wireshark
         nmap
@@ -199,7 +201,7 @@
         haskellPackages.pretty-show
         # Chat
         weechat
-        skype
+        # skype
         slack
         # X Window and XMonad
         xdg_utils
