@@ -18,6 +18,7 @@
         # Email
         thunderbird
         # Data Science
+        schemaspy
         dbeaver
         sqlite-interactive
         sqlite3_analyzer
