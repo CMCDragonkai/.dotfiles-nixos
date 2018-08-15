@@ -18,6 +18,7 @@
         # Email
         thunderbird
         # Data Science
+        dbeaver
         sqlite-interactive
         sqlite3_analyzer
         sc-im
