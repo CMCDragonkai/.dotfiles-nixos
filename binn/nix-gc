@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# if no argument is passed in, we use the current directory
+dir="${1:-.}"
+while IFS= read -r -d '' file; do
+  store_path="$(readlink "$file")"
+  rm "$file"
+  nix-store --delete "$store_path"
+done < <(find "$dir" -maxdepth 1 -type l -name 'result*' -print0)
