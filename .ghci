@@ -30,9 +30,9 @@ import "base" Text.Show.Functions     -- Function showing
 
 :set editor "vim"
 
--- Show loaded modules in window title
-:set prompt  "%l:> "
-:set prompt-cont "%l:| "
+-- Using 256 colours
+:set prompt "\ESC[38;5;150m»»\ESC[m \ESC[38;5;100m\ESC[1m%s\ESC[0m\n ☯ "
+:set prompt-cont " | "
 
 -- Macros
 
