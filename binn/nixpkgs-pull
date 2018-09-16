@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+umask 022 && git -C /nix/nixpkgs pull

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+exec chmod --recursive u=rwX,g=,g=rX,o=,o=rX /nix/nixpkgs
