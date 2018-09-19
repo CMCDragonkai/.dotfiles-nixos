@@ -24,8 +24,11 @@ Installation on Linux (NixOS) is:
 
 ```sh
 # if you already have git
+# we need gnum4 to run the installation
+nix-env -i gnum4
 git clone --recurse-submodules https://github.com/CMCDragonkai/.dotfiles
-# need to wait for m4 installation first
+cd .dotfiles
+.dotfiles-tools/install.sh
 ```
 
 ```sh
@@ -375,30 +378,12 @@ Each terminal represents a `pty` or `tty`. You can then do `echo "haha" > /dev/t
 
 Remember it sends to the terminal emulator, not the shell that it is running. So this is an interesting way of sending side by side output. If we can easily acquire the address of particular terminal emulator.
 
-Fortunately it's easy. All you need is to run `tty` on the terminal emulator you're in. And you get the address to it.
-
-However consider if we can add this address persistently to the UI that runs the terminals. Like ConEmu, or Mintty, or Tmux.
-
-To find out who's listening:
-
-fuser /dev/pty2
-fuser --verbose --user /dev/pty2
-fuser --user /dev/pty2
-
-That gives you the shell. Or something, not the PID of the terminal emulator. The parent of the shell would be the terminal emulator, which is useful. Works even with nested commands, like if a shell ran less or another shell.
-
-Actually we don't even need to run `tty`, we can just `echo $TTY`.
-
-Now we just need something to add TTY to the window name of Mintty. Not sure.
-
 Also Windows con hosts get /dev/cons0 but this is not usable because of a limitation of Windows. So they get tty too, but its useless.
 
 * Investigate where TTY environment variable was set in ZSH
 * Make $TTY appear in Mintty's window title (or ZSH's RPROMPT).
     - http://randomartifacts.blogspot.com.au/2012/10/a-proper-cygwin-environment.html
 * Make $TTY appear in Tmux's panel title (or ZSH's RPROMPT).
-* Install stderred (https://github.com/sickill/stderred), however no CYGWIN support, also no bash support
-* Alternatively have explicit color http://stackoverflow.com/a/16178979/582917
 
 ---
 
@@ -471,36 +456,11 @@ Moving processes between terminal emulators, screens, shells... etc. And also ch
 
 ---
 
-When reinstalling old versions of Windows, the update system will most likely fail to work. Instead of using the automatic updates. It's recommended to use https://catalog.update.microsoft.com/ which can only be accessed by Internet Explorer 6 or higher. Visiting it will ask you to install an extension, you can then proceed to use this site to download any update you need.
-
-There are "rollup" updates that will install many updates that have been released for a certain time period for a given Windows version.
-
-These rollups should be released near the end of the mainstream support listed here: http://windows.microsoft.com/en-au/windows/lifecycle
-
-It's however still kind of complicated, as it seems Microsoft no longer cares about old operating system versions. For example, here is one person's journey reinstalling Windows 7 and attempting to bring it to the latest version: https://www.thurrott.com/windows/67305/convenience-rollup-makes-big-difference-windows-7-updating-still-broken
-
-It's just much easier to use free Windows 10 upgrade directly. Burn it onto a CD or deploy it onto a USB drive, and install that instead. Make sure you first installed your old version of Windows, and activated it.
-
-Installing Windows 7 -> 10.
-
-* Install Windows 7
-* Install Shuttle Drivers (to acquire Network Adapter Driver)
-* Activate Windows 7 (Go to Computer Properties)
-* Install Windows 10 (from USB) (do not install upgrades)
-* Replace Windows 7 with Windows 10
-* Install NVIDIA drivers and DVD Writer Drivers
-
-Windows 7 updates no longer work, so we need to change to Windows 10.
-
----
-
 Power monitoring:
 
-https://github.com/fenrus75/powertop
-http://upower.freedesktop.org/
-https://github.com/Spirals-Team/powerapi
+Use `powertop` to monitor against processes.
 
-Which one should we use?
+Use `upower` to check up on your power status of the computer.
 
 ---
 
@@ -629,63 +589,27 @@ Running the above requires the .NET Framework 3.5 feature to be enabled. This is
 
 Then you want to get the cuDNN library. To do this, you need to go get the appropriate cuDNN library. For Windows, it's a matter of downloading the zip file, and copying the `bin`, `lib` and `include` directories into `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\`. I've already added the appropriate directories to the PATH.
 
----
+## Full Disk Encryption
 
-Microsoft SQL Server Express is installed. Use `Start-Service -Name 'MSSQL$SQLEXPRESS'` and `Restart-Service -Name 'MSSQL$SQLEXPRESS'` to start the service up when you want to work on it.
+Windows:
 
-You must enable Named Pipes and TCP/IP connections via `Sql Server Configuration Manager`, and the settings are located at `SQL Server Network Configuration/Protocols for SQLEXPRESS`. When enabling the TCP/IP connection, make sure to check the properties so it is not listening on all IPs. Instead individually enable the interfaces you want SQL Server to listen on. In the beginning, only enable `127.0.0.1` and `::1` interfaces. Make sure to set the `TCP port` to `1433` (for both `127.0.0.1` and `::1`) and blank out the `TCP Dynamic Ports` field.
+Go to gpedit.msc and `Computer Configuration -> Administrative Templates -> Windows Components -> Bitlocker Drive Encryption -> Operating System Drives`, and activate these 3:
 
-Alternatively you can set the dynamic port field to 0, and clear the `TCP Port`. This will make SQLSERVEREXPRESS start on a dynamic port that is available. In order to be able to contact the sql server, you need to have `SQLBrowser` started. So you can run `Start-Service -Name 'SQLBrowser'`. Afterwards any client that uses the named instance `SQLEXPRESS` will find the dynamic port via `SQLBrowser` service automatically. Do note that you will need to remember to have both services started. The advantage of this is that you can run multiple sql servers, and also you can free up the default port `1433` for other things.
+* Require additional authentication at startup
+* Enable use of Bitlocker authentication requiring preboot keyboard input on slates
+* Allow enhanced PINs for startup
 
-After restarting Powershell, you can run `sqlcmd -S .\SQLEXPRESS`. Note that the fullname is actually `sqlcmd -S localhost\SQLEXPRESS`.
+All the sub-options can be left as default.
 
-You are now connected to SQL Server via the Powershell command line. Note that the `sqlcmd` will not be available in the Cygwin environment.
-
-Try this (yes the command terminator is a `GO` line...):
-
-```
->> sp_databases;
->> GO
-```
-
-Or if running directly from the terminal:
+You can now add a TPMAndPin authentication:
 
 ```
-> sqlcmd -S .\SQLEXPRESS -Q "sp_databases;"
+manage-bde -protectors -add c: -TPMAndPin
 ```
 
-To connect via DBeaver, follow these instructions:
+Remember to backup your Recovery Key (called "Numerical Password" or "Recovery Password") to a USB and paper.
 
-> To create a "Microsoft Driver" connection in DBeaver
-> Create a new connection, specifying MS SQL Server | Microsoft Driver
-> Fill out the info on the first (General) tab, without specifying User name and Password (leave them blank).
-> Go to the Driver properties tab and set integratedSecurity=true.
-> And, once again, just to emphasize where to enter this: it's entered on the "Driver properties" tab -- not in the dialog box you get to by clicking the "Edit Driver Settings" button that's on the General tab.
-> Click the "Test Connection..." button to make sure it works, click Next a couple of times, then click Finish
-
-Remember that if you're using dynamic ports, you have pass in the hostname as `localhost\SQLEXPRESS`. No port is needed.
-
----
-
-Generate the resume with:
-
-```
-cd ~ && resume export 'Roger Qiu.html' --theme=slick
-```
-
----
-
-Windows Ink Workspace Settings:
-
-Pen settings, make sure to turn on bluetooth and disconnect and re-pair the pen by holding down on the top button.
-
-Click once: Launch screen sketch in Windows Ink Workspace.
-Double tap: Send screen shot to OneNote.
-Press and Hold: Launch Sketchpad.
-
----
-
-Virtual desktops/Workspaces:
+## Virtual desktops/Workspaces
 
 Windows:
 
@@ -706,142 +630,6 @@ Mod + N - Switch Focus Workspace N
 Mod + Shift + N - Shift focused window to Workspace N
 Mod + Ctrl + N - Switch Focus to Screen N
 Mod + Alt + N - Shift focused window to Workspace at Screen N
-
----
-
-Full Disk Encryption
-
-Windows:
-
-Go to gpedit.msc and `Computer Configuration -> Administrative Templates -> Windows Components -> Bitlocker Drive Encryption -> Operating System Drives`, and activate these 3:
-
-* Require additional authentication at startup
-* Enable use of Bitlocker authentication requiring preboot keyboard input on slates
-* Allow enhanced PINs for startup
-
-All the sub-options can be left as default.
-
-You can now add a TPMAndPin authentication:
-
-```
-manage-bde -protectors -add c: -TPMAndPin
-```
-
-Remember to backup your Recovery Key (called "Numerical Password" or "Recovery Password") to a USB and paper.
-
-You never use the recovery key unless you need it. This is equivalent to key escrow.
-
-Beware, this requires you to have used storage spaces to softraid multiple drives if necessary, NTFS compression enabled, for your hardware to have TPM enabled and for your hardware to have a preboot input capability. Certain tablets do not have preboot input capability (which requires a USB keyboard connected at preboot). Surface Pros 2, 3, and 4 have it, but I don't know if Surface Pro 1 supports it.
-
-Unlike the Linux method, the keys are not password-protected. Even with TPMAndPin, all this means is that you need both the key inside the TPM and the Pin. If it were like Linux, you'd only need the key inside TPM, but the key itself would be password protected. This is a limitation we must live with... However it is possible for you to password protect the recovery key, and only backup the encrypted version, but that's up to you.
-
-Hibernation will cause bitlocker to lock the drive btw.
-
-Also unlike Linux, Bitlocker can work on top of Storage Spaces. Whereas on Linux until native ZFS encryption arrives, you're stuck with ZFS on top of LUKS (instead of LUKS on top of ZFS). This is where the complication of LUKS comes in, when you need to deal with multiple drives, each which needs to be unlocked prior to ZFS being able to mount its root. However there is one major issue, storage spaces are not bootable (unlike mdadm raid or lvm on Linux), so the bitlocker encryption for a storage space will be completely separate from the systemdrive that we assume above. If you would like the chain them together, it's generally sufficient to make a script that unlocks the storage space upon bootup of the OS.
-
-Linux:
-
-> It is possible to define up to 8 different keys per LUKS partition. This enables the user to create access keys for save backup storage: In a so-called key escrow, one key is used for daily usage, another kept in escrow to gain access to the partition in case the daily passphrase is forgotten or a keyfile is lost/damaged. Also a different key-slot could be used to grant access to a partition to a user by issuing a second key and later revoking it again.
-
-We can create a similar "Recovery Key" for Linux by using a second key slot. Key slots are numbered from 0 to 7. This recovery key should be further encrypted using GPG. That this "Recovery Key" should be a gpg password-protected key. This means anybody acquiring your recovery key will still need something you know before being able to use it. Back up this recovery key (along with the LUKS header) to USB and paper backup.
-
-The daily-usage key which should also be gpg-encrypted password-protected should be stored on a TPM module, or a HSM (or just a USB). The stage-1 booting should ask TPM to release this key to unlock the drive. In the process of unlocking, gpg should be engaged to ask the user for a password. This key does not need to be backed up, we rely on TPM hardware reliability. This requires using tpm-tools and gpg in the initramfs.
-
-When using this method on cloud OSes or remote servers, you need to also enable dropbear ssh server at stage-1 booting, which also requires enabling LAN or WLAN at stage-1 booting. LAN would be the most reliable, but it's also possible for WLAN to be connected at stage-1.
-
-LUKS will need to be setup on all drives, ZFS root is then built from the unlocked drives, if you use GRUB you can move the kernel and initramfs back into ZFS root, and make GRUB try to unlock the drives and mount the ZFS root to acquire the kernel and initramfs.
-
----
-
-Setting up prey (on windows) (you must call from administrator mode):
-
-```
-prey config gui
-```
-
-Follow the prompts to sign into prey. (This is done after installing the package).
-
----
-
-One problem with using windows symlinks is that Cygwin actually understands them as normal symlinks, which means relative addressing from those programs will work in Cygwin. However if you run this in Powershell, it actually doesn't work because it also understands windows symlinks but it doesn't change current working directory to where the symlink is when it is executing them.
-
-This appears to occur more often than not for cmd scripts. Like `npm.cmd` and `prey.cmd`.
-
-Also note that cygwin can't seem to execute the cmd scripts without having the cmd suffix.
-
-While this usually won't be a problem since I prefer executing things inside Cygwin, it does become a problem in the case of using winpty, which appears to run the program like Windows Powershell or CMD would execute it and therefore fail to work as relative addressing fails.
-
-According to https://cygwin.com/cygwin-ug-net/using-specialnames.html it shows that only `.exe` is auto-added. All other extensions must be called directly. This means if you're going to use Windows symlinks to Windows applications, if it is `.exe`, that's fine, but if it's not and it is an executable that you want to call, you're going to want to use non-extension based program. Better yet, remove all extensions from the global and local symlink mapping.
-
-I just noticed by removing the `.cmd` extension from the symlink to the `%WinDir%\Prey\current\bin\prey.cmd`, it results in Powershell being able to execute it, but it gets executed in a new CMD console that then immediately exits. No more relative addressing errors. However if you access it directly with `%WinDir%\Prey\current\bin\prey.cmd` then it actually does properly attach itself to the current Powershell terminal.
-
-So the best of both worlds is to make sure all bin symlinks have no extension on them. What a weird issue on Windows...
-
-Unfortunately by doing so, the `winpty` can no longer find `prey` with this error:
-
-```
-Could not start 'prey': The system cannot find the file specified. (error 0x2)
-```
-
-A whole heap of things start working once you use the non-extension based form. Only winpty suffers.
-
-Ok everything changed to non-extension based. Now applications that didn't work in Powershell now work, and also in Cygwin.
-
-Only problem left is CMD and Winpty: https://github.com/rprichard/winpty/issues/98
-
-Ultimately in many cases, CMD won't execute windows symlinks to executables. Some executables do work as symlinks like Python does, others like Windows git don't. So it's a case by case basis. For the ones that don't work as symlinks in CMD, you will need to add their location to the Windows PATH.
-
-Binaries that don't work as Windows Symlinks:
-
-* npm
-* node
-* git
-
-Binaries that do work:
-
-* python
-* go
-
----
-
-# Not all executables work using Windows symlinks due to relative addressing
-# A little hack to solve this problem is by removing the extension for the symlink name
-# Symlinks without extensions won't be executable directly in CMD
-# However you can explicitly use `start program-name` in CMD
-# Powershell will autostart executables that have no extension
-# Cygwin doesn't care
-# Occasionally the extension will be needed for some reason
-# You can either add both the extension-less and extension-full versions
-# Or you can just add one of them
-# It relies on testing on what works and what doesn't
-
-So basically if it can't be found in CMD, it also can't be found in winpty.
-
----
-
-Haskell stack
-
-After running run this without administrator mode: `stack setup`.
-
-Then use `stack install pretty-show`.
-
----
-
-Make sure to disable most Windows 10 Applications from Running in the Background.
-
-Allowing them to do so, would mean when you click close on their window, their application is still runnig in suspended status.
-
-Most of time if I close something, I really want it to close. Allow whichever applications you think is appropriate.
-
-Search "Background Apps" in your search bar.
-
----
-
-Set default photoviewer to xnview (it's much faster than the photo viewer).
-Set default browser to chrome
-Set default music player to musicbee or spotify
-Set default email to thunderbird
-Set default media player to VLC
 
 ---
 
@@ -1026,60 +814,16 @@ Need a command to change connection profile names for local connections. This is
 HOWEVER it is important to be able to set the network category for the ethernet networks, and without the necessary labels, you can't do this!? And the registry doesn't support it. It's because they are still unidentified, the first method doesn't work!
 
 That is basically it.
+
 ```
 devcon64 find '*MSLOOP'
 devcon64 install ${Env:WINDIR}\INF\netloop.inf '*MSLOOP'
 devcon64 remove @ROOT\NET\0000
 ```
 
-
-OH SHIT i lost my npcap adapter. I need to add it again by reinstalling the npcap.
-
 ---
 
 Any unidentified networks are all put into the public category. For virtual interfaces, they are often directly connected to some unindentified network, the computer doesn't ask you what category you want to put them in, and the only way to set their categories is via `Get-NetConnectionProfile` and `Set-NetConnectionProfile`. This results in a minor problem. One way to get around this is to have Public category firewall rules that address this particular issue. These rules apply to the Public Category, but they specify that the remote address must be a local subnet. This appears to refer to a set of addresses that Microsoft considers to be a local subnet. I don't know exactly what these are addresses are, but I know that loopback addresses are considered to be from the a local subnet.
-
-The scopes of reserved IP addresses are relevant here: https://en.wikipedia.org/wiki/Reserved_IP_addresses
-
-My guess is that these 2 are definitely considered to be part of "local subnet" from Microsoft's firewall point of view.
-
-```
-127.0.0.0/8
-169.254.0.0/16
-```
-
-When you activate Docker's shared drive feature, it appears to add an extra rule called the `DockerProxy` rule, that says that the firewall should accept on all profiles any connection originating from 10.0.75.2 to 10.0.75.1 for TCP port 445. Now the 10.0.75.1 is the primary address of the `vEthernet (DockerNAT)` interface. While `10.0.75.2` is assigned to the MobyLinuxVM. The fact that this rule exists suggests that the `10.0.0.0/8` addresses are not part of local subnet.
-
-Anyway, the main problem with doing the above, is that this may lead to an actual ethernet connection being considered part of a local subnet. So the best solution is to change network category to private, and then set to allow 445 SMB on Private and Domain networks unconditonally.
-
-Note that the Linux Equivalent of Connection Profiles is Network Zones. However support for this has only been implemented with Network Manager + firewalld. Without firewalld, there's no ability to have Network Zones. Actually Shorewall also has a zoning concept, but has no network location awareness. As in the zones are applied to each interface, rather than to a particular connection that the interface is on. NLA (network location awareness) is important to have properly functioning firewall zones, as you can associate a firewall set with a particular identifying characteristics of the network. Firewalld is the closest implementation on Network Location Awareness similar to the Windows features.
-
-> Existing firewall tools, however, fall short in two ways. First, they know only about network interfaces, not about the networks themselves (trust information in particular). Second, they require stopping and restarting the firewall in order to change any settings. Red Hat's Thomas Woerner developed a solution tackling both issues based on GNOME's NetworkManager, and a new firewall application named Firewalld.
-> https://lwn.net/Articles/484506/
-
-So while shorewall probably has more featuers than firewalld, firewalld seems more user friendly usable for laptops/desktop linux. You don't really need this feature for server linux.
-
-Figure out how to integrate firewalld into NixOS: https://devhen.org/using-firewalld/ Especially since iptables appears to be set by NixOS firewall module.
-
-On Windows, inbound rules appears not to apply to loopback sources. That is when you are contacting from loopback, everything appears to be always accessible. At least, when I removed rules enabling inbound SMB, I was still able to access it via loopback.
-
-`Set-NetConnectionProfile -Name 'Undentified network' -NetworkCategory Private` - sets all unidentified networks to private category. Not a good idea.
-
-169.254.34.160
-
-
----
-
-Regarding unindentified networks on Windows: https://github.com/docker/for-win/issues/367
-
-> The DockerNAT switch is named so historically. It used to provide external connectivity, but now it's just used for host local communication and the main network connectivity for containers is done via VPNKit
-> https://forums.docker.com/t/no-external-network-connectivity-from-inside-docker-container/8045/18
-
-Yea I thought so, that interface is essentially a private network interface with no bridge to the outside internet. To do that you need other tricks. (Like bridging into a public network). It seems Hyper-V and Docker uses VPNKit to do this.
-
-Ultimately I'm keeping the Unidentified networks as public for now. Made the ipv4 network for docker identifiable and made that private.
-
-I just need to write a script that exposes connection profiles.
 
 ---
 
@@ -1140,154 +884,6 @@ Fonts use `fc-list` to show which fonts are available. This works on Cygwin and 
 
 ---
 
-Waiting 10 seconds for key file /dev/mapper/luks-key-encrypted to appear ..... ok?
-
-Enter passphrase for /luks-key.img.
-
-killall: cryptsetup: no process killed
-
-What is all that for?
-
----
-
-NiXxOS has a nat module. It switches on NAT for Linux. All it does is use iptables and enable /proc/sys/net/ipv4/ip_forward. The relevant table is the NAT table. And it has chains:
-
-1. PREROUTING
-2. POSTROUTING
-
-NAT is what we need to use when a computer has multiple network interfaces, and we need to take packets from one interface and inject them into another interface.
-
-The prerouting is responsible for the packets that just arrived. At this point, it is not known if the packets are to be forwarded to another machine, or to be interpreted locally. After the packet has passed the prerouting chain, the routing decision is to be made. In case the local machine is the recipient, the packet is directed to the process. On the other case, it is sent to another machine. If it is about the leave, it goes through the POSTROUTING chain. For locally generated packets, instead of passing through the prerouting chain, it passes through an OUTPUT chain, and then moved to the POSTROUTING chain.
-
-IPV4 has a ip_forward setting, and the IPv6 seems like it doesn't.
-
-We need these kernel modules:
-
-```
-modprobe ip_tables
-modprobe ip_conntrack
-modprobe ip_conntrack_irc
-modprobe ip_conntrack_ftp
-```
-
-The NixOS module is: nixpkgs/nixos/modules/services/networking/nat.nix.
-
-It shows that if nat is enabled, we bring in the iptables package and the `nf_nat_ftp` kernel module `nf_nat_ftp` which might be superseding the old ftp module.
-
-It also uses the `kernel.sysctl` setting to set `net.ipv4.conf.all.forwarding` and `net.ipv4.conf.default.forwarding`. What does these do? It appears that these basically set it up so that ipv4 forwarding is done by default at bootup. There are corresponding settings for ipv6, but it doesn't appear to be used by the nat service module.
-
-IPv6 shouldn't be using NAT, it has alternative mechanisms.
-
-The module then sets up some firewall commands. Which is to flush their NAT rules prior to running the setupNat, all of this is merged into the existing extraCommands. I'm not sure how `mkMerge` works, but I think it's meant to merge this into existing commands. When the service is terminated, it flushes all the NAT commands as well.
-
-A service is assigned if the firewall is not enabled, because if it was enabled, it would already be a service. But this means NAT can be used without a firewall.
-
-It specifically runs a command like `iptables -w -t nat -A nixos-nat-pre -i ... -j MARK --set-mark 1`. What happens is that in the PREROUTING chain, service activation automatically makes the PREROUTING send all packets to the user defined chain which is `nixos-nat-pre`. Inside this chain, a rule is applied where any packet coming from the interface specified under `-i` is then jumped to MARK with the option `--set-mark 1`. Note that the interface name can have 2 modalities on it. If you have a name like `!wlp6s0`, it means match any interfaces that doesn't have this name. While if you use `wlp6s0+` it means match any interfaces that start with this name. If we use them both, it would be match any interfaces that doesn't start with this name. For now, we are going to be using our WiFi interface as a internal interface, our own network, and our ethernet as the external interface, so we know exactly what our interface names will be, and they will have persistent names. Not entirely sure how systemd works out persistent names...
-
-This is how persistent names are done in systemd, so yes, each laptop or machine will have persistent names based on how the hardware is situated (PCI bus, slot numbers, function indexes... etc).
-
-https://major.io/2015/08/21/understanding-systemds-predictable-network-device-names/
-
-But my generic configuration will now have specific configuration inside Github. So that's ok for small fleets. In the future, larger fleets will need a better system.
-
-The MARK target inside iptables essentially associates a number to a packet, the packet itself does not contain the number, but the number is maintained by the kernel. We can use this to mark a packet, and then react to the markings of the packet downstream.
-
-Later another command is in nixos-nat-post. Here we use the -m to check against the mark extension, and to see if the packet has been marked as 1. If so, it outputs to the external interface with a destination. This is only done if there are internal interfaces specified. The dest specification has 2 styles, one is `-j MASQUERADE`, and the other is `-j SNAT --to-source ${cfg.externalIP}`.
-
-So if I don't specif an external IP, is it defaulting on the assigned external IP? That would be more useful!?
-
-The masquerade target is exactly that. It automatically finds the IP being assigned to the external interface. It is good for DHCP assigned IPs, but static IPs it can be more efficient to specify the exact IP and to use the SNAT target.
-
-It appears that it's possible to specify internalIPs AND/OR internalInterfaces. If all you have is an interfaceInterface, it is NATTED by marking all packets from theinternalInterface and then sent to the postrouting and then NATTED to the external interface. On the other hand, if you have specified internal IPs (which has no relation to whether there's an internal interface or not, and remember this can happen if you setup virtual ethernets), then it just adds a rule to the postrouting chain, which checks that if the packet comes from a certain IP, it will output them to the external interface. So we don't even need to specify an internal IP range, an interface is enough.
-
-Remember that the SNAT target changes the source ip address of the packet (mangles the packet). Whereas DNAT target changes the destination ip address of the packet.
-
-NixOS only supports forwarding TCP ports at this point, with nothing specify UDP ports.
-
-One thing that doesn't make sense is that when marking, it's done in prerouting, when NATTING to the external interface, it's in the post routing chain, but NATTING back from external to internal interface is done at the prerouting chain. Why is this like this?
-
-It's beacuse the DNAT target is only available in the prerouting chain, while SNAT target is only available in the postrouting chain. This might be because, prerouting is where you decide where a packet is going, whereas postrouting is when you decide how the packet is leaving. So you can use DNAT when a packet enters the system, but just as when it's leaving the system, you can mangle aspects of the target such as the source IP addresss.
-
-Ok so we have our NAT ready to go, but we still need to convert our WiFi interface into infrastructure mode or adhoc mode. Not sure which.
-
-Given that all packets from internal interface is marked as 1, how does this work if we intend to contact the router directly? I think they would be marked 1, but they won't go to the postrouting system, because their destination doesn't point to the external IP address (which the routing system would send to the gateway), if they point to the router itself, it will go into some local process.
-
-Nothing in the rules indiciate how NAT keeps tracks of packets coming back into the external interface as a response to a request coming from an internal interface. Perhaps this is the default behaviour.
-
-Oh I get it now, inside each iptables rules, the `-o` and `-m` and `-s` are all conditions. They all have to be true, for the rule to be applied. The rule is actually the `-j`, it is the command that is executed for the packet. So we can see now that in the post routing, it checks not only that the packet is marked with 1, but it is also leaving for the external interface. It is the job of the routing table to know where to send packets. Remember the packet may be looking for 192.168.1.2, but your external interface IP address is actually 192.168.1.1. The routing table woul tell the packet that to get to 192.168.1.2, you must go through 192.168.1.1, and the iptables postrouting rule is the one that captures this condition and performs a NAT command either `-j MASQUERADE` or `-j SNAT`...
-
-So remember that -o is not about where the packet is intending to go, but which interface the packet is leaving on (which itself is named as an IP address).
-
-Cool, we're almost there. Running the hostapd service requires network manager to state that wlp6s0 is unmanaged. However hostapd doesn't assign IPs to the interface itself, now you need DHCP to do that. But since you are the router, you need to statically set the IP address for the interface now. I wonder how that can be done inside NiXOS configuration. Furthermore, even after hostapd is setup, a DHCP service needs to be running, either dhcpd or something else. I wonder if the routing needs to be configured as well. The configuration here has made me realise that the system configuration should be generic and optionally load up a wireless profile or a a region profile if it exists, and uses that to configure wireless stuff and monitor setup, this is independent of generic hardware. Of course, I can always just add more fleet profiles to the NixOS fleets.
-
----
-
-Ok we are going to setup our internal network to use the router's IP address to be:
-
-10.0.0.1. The subnet will be 10.0.0.0/24, which gives addresses from 10.0.0.0 to 10.0.0.255. In total there will be 255 - 1 for the broadcast - 1 for the router - 1 for the subnet. So there will be 252 addresses available for the router.
-
-For IPv6, we also need to assign an address and prefix length. What can it be?
-
-Well there is a unique local address range for Ipv6 intended for private usage. I am bit confused. It says that the address block `fc00::/7` is for private IPv6 address. This is further split into 2 `/8` blocks. Why? Well `/7` means the first 7 bits are fixed, which means the 8th bit can either be 0 or 1. If we fix the 8th bit to 0, we get `fc00::/8`. If we fix the 8th bit to 1, then we get `fd00::/8`. Remember that hex digits are 2 digits to 1 byte. So this is a change in byte. `fc` + 1 equals `fd`. The first block is reserved for a central allocation authority, so we are not meant to be using this. The second block has a specific protocol that we are meant to follow to prevent the likelihood of private network IP conflicts in case there is ever a network merge.
-
-You first get a random 40 bits. There's a thing called the SIXXS registry, it's a voluntary registry, where you can ask to generate a unique random 40 bits that don't conflict with anybody else. This random 40 bits will act as your "organisation" unique local prefix.
-
-So let's do it. Here's my randomly generated 40 bit prefix (we'll call it the Matrix address):
-
-```
-Prefix: fd99:cbc4:692::/48
-1st Subnet: fd99:cbc4:692::/64
-Last Subnet: fd99:cbc4:692:ffff::/64
-```
-
-So within this organisation, we're going to create the very first subnet.
-
-The interface address is:
-
-```
-fd99:cbc4:692::1/64
-```
-
-The hostapd configuration requires some PULL Requests as well. We need to pull into our NixOS configuration, and change it, add it as a remote to pull in, and then push it to Nixpkgs proper. Specifically channel limit needs to be lifted, as you can select channel 0 for automatic selection.
-
-However the wlp6s0 is down currently, and I can't bring it up.
-
-What does scope global tentative mean?
-
-Also you can manually addresses easily like here:
-
-```
-ip add addr fd99:cbc4:692::1/64 dev wlp6s0
-```
-
-But this doesn't change the fact that we still have a problem with it.
-
-Disabling network manager appears to have an effect here. Without it enabled, the setting of IP addresses is possible on the interface, it still has a state of down, but there is an big UP or DOWN. And we no longer get repeating log messages of the sort we had before. However hostapd now doesn't work.
-
-Ok it appears by setting the interface down, then forcing a restart with `sudo systemctl restart hostapd`, appears to make it work.
-
-Setting it to `a` which is 5 Ghz doesn't work for some reason. There is some stateful failure possible, one can remove the IP even when specified inside the NixOS configuration.
-
-If we enable DFS, country code set to AU, and wpa set to 2, and our own wpa_passphrase, it all works nicely. But changing hwMode to a does mean it fails.
-
-Since the IP is actaully set via a service, it's possible to force restart the service which is `sudo systemctl restart network-addresses-wlp6s0.service`. However this didn't work properly for me, because it's probably stateful as well.
-
-Yea even though my card definitely supports 5ghz, the ac mode a settings or channel = 0 ACS setting simply doesn't work. So no point moving forward with this.
-
-Various NixOS configuration is not truly purely declarative and not atomic. Mostly things related to kernel settings, dbus settings and networking settings. Alot of these may require restarting of the computer to fully atomically set these settings. Many modules may have conflicts or just plain not work depending on the state of the OS.
-
-Cool I finally understand bridged networking.
-
-Ok so I need to setup a bridge (while I don't need to, since I only have WiFi and no physical ethernet). 
-
-The bridge stuff is too flaky and I don't need it for now.
-
-The other thing is that network manager is useless now because you don't need it for wired connections, only really for wireless connections, if the wireless is intended to act as a router, it doesn't make sense to keep network manager around.
-
-It is fine for the wifi interface to have scope global and scope link. The link local address always exists for any IPv6 enabled interface remember that. And your router will be handing out addresses from your own assigned IP. Just setup your DHCP to handle this. Also it turns I'm using networkd now, it worked and no problems after reboot. When switching network stuff, the first test to see if it works is via: `nixos-rebuild switch boot && shutdown --reboot now`.
-
----
-
 To upload the new firmware to Ergodox EZ you need to run:
 
 ```
@@ -1310,43 +906,7 @@ Also where are the desktop files located? They are in ~/.nix-profile/share/appli
 
 ---
 
-For Windows, spacemacs and atom are too slow, instead use gvim. Use windows native vim and terminal vim, best of both worlds. On NixOS use spacemacs. Simple! Notice how both cygwin will supply python2, python3, and windows will have wpython2 and wpython3 to get the best of both worlds. Use choco to install gvim.
-
----
-
-Let's Encrypt best way and most natural would be DNS based authorisation. However, this is no automatic renewal this way, unless you can gain API access to the DNS. Acme.sh does support this, and in the future, it would a good idea to consolidate all domains into a good DNS registrar that has a proper API so that lets encrypt certificates can be maintained in this way. However while this would work for personal certificates, each self contained application may require DNS API just to change provide automatic renewal of their certificate. Which is why there is the web server style of renewal, which doesn't require DNS API support, but also means you need to provide a server just for this renewal, which is another moving part you have to maintain. Using acme.sh currently is using DNS, however that means it's not automatic, you need to change the DNS details each time you want to renew. Remember that different DNS management interfaces have different ways of interacting with it.
-
----
-
-Databases
-
-(this will be a living state, make sure to gitignore it)
-Project specific databases:
-
-```
-rm -rf './testdb'
-mkdir './testdb'
-mysqld --datadir='./testdb' --defaults-file='./path/to/my.cnf' --tmpdir='/tmp' --initialize-insecure --user cmcdragonkai
-mysqld --datadir='./testdb'
-```
-
-We can also pass options to it for development.
-
-Will these options also be part of the production instance? Perhaps, it depends.
-
-Defaults file is not really necessary. User option is not necessary if you're not starting from root user. Point is that now we have a local mysql instance just for this project. Note that there's no port or address or /tmp isolation. Such things require a container. If you don't want to run a container just yet, then look into randomisation of the listening port and other stuff. But you'll need to pass that random port and propagate it to the client services.
-
----
-
-Do not develop on /nix/nixpkgs. Do not development on /etc/nixos. These are root owned, and you won't be able to access them unless you use ssh auth and ssh-agent and propagate it to root. That means the repositories are use https remotes. There's an alternative which is that use http for pull, and ssh for push. But this means configuring it after setting up the remotes. Easier is just to have nixpkgs and your own nixos configuration inside a Project directory, develop on that, and push it, and then pull it from HTTPS.
-
----
-
 Trash cli has been installed, when attempting to reclaim space, make sure to use `trash-empty`.
-
----
-
-While vagrant and qemu can be installed in the user-profile. The vagrant providers are actually system installed as they require global resources in a side-effectful manner. So you don't install virtualbox in a user profile, you enable virtualbox as a virtualisation option in your configuration.nix.
 
 ---
 
@@ -1358,56 +918,4 @@ Windows Defender can slow down compilation times, make sure to go to Windows Def
 
 ---
 
-Elixir
-
-Elixir on Windows is just about using all the commands via powershell. Otherwise things will break.
-
-Unfortunately alot of the commands don't work with winpty.
-
-So if you really want to use iex from Cygwin, you cannot and you just have to run `iex --werl`.
-
-But from powershell, you can just use `iex.bat`. Note that powershell has a special function for `iex`. So you cannot directly use it!
-
----
-
-GnuPG supports the usage of hardware security tokens in the form of smartcards.
-
-An example of a smartcard is the Ledger Nano S. It is more than a smart card, but exposes the API.
-
-With the GnuPG app installed onto the Ledger Nano S, we can use as a hardware security token for our GnuPG.
-
-We intend to use it store our master keys. And only have master keys in our hardware tokens.
-
-However this means we need to backup the digital data in our hardware tokens.
-
-One can use `paperkey` to turn it into paper and then print it out.
-
-Note that the Ledger Nano S must be usable when connected to your computer, this means on Linux you need to appropriate udev rules.
-
-Right now it just makes the cmcdragonkai user own it.
-
-The GPG system is used as the SSH agent instead of the default SSH agent. It handles all the same operations. Nothing really changes here.
-
-By using the smart card in this way, you need to keep using Ledger Nano S or equivalent smart cards to contain these keys.
-
-Note that `ssh-add` still works the same way, and utilises GPG as the ssh agent now.
-
-Also keybase as well.
-
-So you need to enable the `pcscd` service on your NixOS.
-
-Then you also need `pcsdtools` package. And run the `pcsc_scan` to scan for smart card readers.
-
-https://github.com/LedgerHQ/blue-app-openpgp-card
-
-It appears that the latest firmware does not support the application yet. Once it does, we can continue with the tutorial.
-
-We still have to figure out how to back up these keys. Most likely via paperkey.
-
-Ok for the future:
-
-1. Use the Ledger Nano S Manager Chrome App to install updated GPG application
-2. Store master keys on the Ledger Nano S
-3. Make sure to backup the master key using paperkey (need to transport the encrypted key for printing)
-4. Using pcsctools and pscsd service and get the udev system working with the ledger system
-5. Need to carry around a USB cable for this
+Manage xrandr profiles using `autorandr`. You can always setup your windows and then use `autorandr --save default`.
