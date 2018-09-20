@@ -150,7 +150,6 @@
           awscli
           unetbootin
           # Nix
-          nix-repl
           nix-prefetch-scripts
           nix-index
           nix-bundle
