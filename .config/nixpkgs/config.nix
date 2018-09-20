@@ -63,6 +63,7 @@
           conky
           python36Packages.glances
           stress-ng
+          fio
           powertop
           # Keyboard
           teensy-loader-cli
