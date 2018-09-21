@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
-umask 022 && git -C /nix/nixpkgs pull
+nixpkgs="$(printf '%s' "$NIX_PATH" | sed 's/.*nixpkgs=\([^:]\+\).*/\1/')"
+
+umask 022 && git -C "$nixpkgs" pull

@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
-exec chmod --recursive u=rwX,g=,g=rX,o=,o=rX /nix/nixpkgs
+nixpkgs="$(printf '%s' "$NIX_PATH" | sed 's/.*nixpkgs=\([^:]\+\).*/\1/')"
+
+exec chmod --recursive u=rwX,g=,g=rX,o=,o=rX "$nixpkgs"
