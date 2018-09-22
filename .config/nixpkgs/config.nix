@@ -66,6 +66,8 @@
               gnum4
               ag
               dex
+              dunst
+              libnotify
               hicolor_icon_theme
               numix-gtk-theme
               gnome3.nautilus

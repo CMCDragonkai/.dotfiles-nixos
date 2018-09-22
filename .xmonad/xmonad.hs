@@ -146,6 +146,7 @@ main = do
     Env.putEnv "_JAVA_AWT_WM_NONREPARENTING=1"
     Run.unsafeSpawn "feh --bg-fill ~/Pictures/wallpaper.png"
     Run.unsafeSpawn "dex --autostart"
+    Run.unsafeSpawn "dunst"
     xmproc <- Run.spawnPipe "xmobar"
     xmonad $ Docks.docks $ Ewmh.ewmh $ myConfig $ def
       {
