@@ -62,7 +62,7 @@
               proot
               lsof
               picocom
-              kdeApplications.konsole
+              kitty
               gnum4
               ag
               dex

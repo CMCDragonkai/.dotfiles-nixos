@@ -269,7 +269,7 @@ zle -N _ctrl-z
 bindkey '^Z' _ctrl-z
 
 # Shift + Tab will now always enter a literal tab
-# Works on Cygwin and Konsole
+# Works on Cygwin and Kitty
 # Also it does prevent reverse tabbing when autocomplete starts, but you can use arrow keys instead
 bindkey -s '\e[Z' '^V^I'
 

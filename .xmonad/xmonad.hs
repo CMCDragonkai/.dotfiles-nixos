@@ -51,7 +51,7 @@ data NATO = Alpha
 
 myConfig config = config
   {
-    terminal          = "konsole",
+    terminal          = "kitty",
     modMask           = mod4Mask,
     borderWidth       = 2,
     focusFollowsMouse = True,
