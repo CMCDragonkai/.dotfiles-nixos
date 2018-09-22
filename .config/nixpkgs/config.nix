@@ -21,11 +21,6 @@
           base = buildEnv {
             name = "env-base";
             paths = [
-              # Fonts
-              fira
-              fira-mono
-              fira-code
-              dejavu_fonts
               # Web
               firefox
               chromium
@@ -167,6 +162,15 @@
               # Radio
               gnuradio-with-packages
               gqrx
+            ];
+          };
+          fonts = buildEnv {
+            name = "env-fonts";
+            paths = [
+              fira
+              fira-mono
+              fira-code
+              corefonts
             ];
           };
           documents = buildEnv {
