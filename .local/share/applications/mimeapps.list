@@ -1,5 +1,6 @@
 [Default Applications]
 text/html=chromium.desktop
 text/plain=emacs.desktop
+text/csv=emacs.desktop
 application/pdf=zathura.desktop
 image/jpeg=feh.desktop
