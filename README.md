@@ -1,4 +1,4 @@
-# .dotfiles #
+# .dotfiles
 
 This directory is meant to be located in `~/.dotfiles`.
 
@@ -40,13 +40,11 @@ rm --recursive --force ~/Downloads/.dotfiles-master && tar xvzf ~/Downloads/.dot
 
 However some steps needs to be reversed. On NixOS, we must first install all the tools before bringing in all the other .dotfiles. So our install.sh must copy `config.nix` first, then install everything with `nix-env -i env-all`.
 
-Permissions
------------
+## Permissions
 
 Git only persists 755 or 644 for files, and directories are always 755. This means without any further processing after installation all files will appear either as executables or non-executables with read permission for the group and others, while directories are always readable and executable for the group and others. Sensitive folders should be explicitly modified to have their read and execute permissions for non-owners removed.
 
-PowerShell Execution of Windows Symlinks to Executables
--------------------------------------------------------
+## PowerShell Execution of Windows Symlinks to Executables
 
 You actually have to use `Start-Process` or the shorcut `start`. You cannot just
 execute it directly by calling its executable name or using the call operator `&`.
@@ -54,8 +52,7 @@ execute it directly by calling its executable name or using the call operator `&
 This is however not necessary in Cygwin shells, which will automatically launch
 them.
 
-DNS
----
+## DNS
 
 Run acrylic with these configuration.
 
@@ -77,13 +74,11 @@ You can also set it for Local Area Connection. But you'll need to find what your
 
 If you're using Hyper-V and bridging into your WiFi, you will find that WiFi is no longer available, and instead you'll need to configure your DNS via an interface that begins with `vEthernet` interface.
 
-Java
-----
+## Java
 
 Java applets are a dieing breed. Google Chrome does not support JRE at all. While only Firefox 32 bit supports JRE, and it requires 32 bit JRE. On Windows 10, if you need to run Java applets, after installing JRE, you can use Internet Explorer.
 
-Interesting Paths
------------------
+## Interesting Paths
 
 `%ALLUSERSPROFILE%` - Points to a common user profile directory (that is viewable by all users on the OS). We should create a `%ALLUSERSPROFILE%/bin` directory to add PATH symlinks to all Windows executables that we install into here (this makes sense as installed Windows executables are usually installed on the entire system, not for a particular user). This refers to any natively installed Windows executable, or any extracted Windows executable.
 
@@ -104,8 +99,7 @@ Path hierarchy on Windows:
 
 To take advantage of Home paths in CMD, make sure to set startup task to: `cmd /K %USERPROFILE%/.cmd_profile`
 
-Keyboard Control
------------------------
+## Keyboard Control
 
 Since we have many applications, and we are customising all of them, we will have a different set of keyboard shortcuts for every application.
 
@@ -138,11 +132,6 @@ For ConEmu:
 
 We prefer ASCII DEL `^?` to be used for backwards delete instead of ASCII BS `^H`. Instead `^H` can be mapped to other functions. Forwards delete still uses `\e[3~`. Preferably if the design of keyboards and terminals were standardised, we could have ASCII DEL for forwards delete, and ASCII BS for backwards delete, but alas it is not so.
 
-For Konsole:
-
-* <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Left</kbd>/<kbd>Right</kbd> - Move Tab Position
-* <kbd>Shift</kbd> + <kbd>Left</kbd>/<kbd>Right</kbd> - Move to Left/Right Tab
-
 Shell Commands:
 
 * <kbd>Shift</kbd> + <kbd>Tab</kbd> - Enter literal tab
@@ -159,35 +148,28 @@ For Spacemacs (not all keybindings are shown here, only the important ones):
 
 Hotkey Hierarchy:
 
-* Linux Commands -> XMonad Commands -> Konsole Commands -> Tmux Commands -> Shell Commands -> Application Commands
+* Linux Commands -> XMonad Commands -> Terminal Emulator Commands -> Tmux Commands -> Shell Commands -> Application Commands
 * Windows Commands -> ConEmu Commands -> Mintty Commands -> Tmux Commands -> Shell Commands -> Application Commands
 
 Linux Commands:
 
 * <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>F*</kbd> - Switch between TTYs and also X.
 
-Terminal Emulator
------------------
+## Terminal Emulator
 
-Our terminal emulator would preferably support sixel graphics, W3M images, and ligatures. Here we have the different terminal emulators to work with:
+Our terminal emulator would preferably support sixel graphics, W3M images, and ligatures.
 
-* Konsole - Supports Ligatures, only on Linux
-* Gnome-Terminal - Supports W3m Images, only on Linux.
-* Xterm - Supports sixel graphics, w3m images, only on Linux. Probably no ligature support.
+On Linux we have the kitty terminal.
+
+On Windows we use these 3:
+
 * Mintty - No sixel, no w3m images, no ligatures, only on Windows.
 * Conhost - Windows default terminal emulator for Powershell and CMD.
 * ConEmu - Wraps up both Mintty and ConHost and other gui applications and manages them.
 
-So for Windows, the stack is: ConEmu + Mintty/Conhost.
-
-For Linux, the stack will be: Konsole. Because w3m images isn't that important, and sixel graphics is an oddity. We can use graphical Emacs instead for graphics and executable documents, no need for the terminal. But in the future if Konsole could support sixel graphics or w3m images, then it would be great! That being said, over SSH, support for sixel depends on client terminal emulator. And w3mimages doesn't work on Linux console anyway. The only way to get image support into terminals in modern day systems is to create a new standard such as iTerm2, or Black screen, or use support sixel graphics eventually. Until that day comes, we stick with KDE Konsole.
-
 The Search Field in ConEmu only applies to ConHost applications. Things like Powershell and CMD that uses Windows ConHost. If you are running mintty, the search field in ConEmu does not work. Instead Mintty has its own search functionality. This is because mintty is a terminal emulator itself, and ConHost is  Windows terminal emulator!
 
-Note that "window management" in Cygwin occurs via ConEmu and Tmux. Need to design hotkeys around this, and prefer most of the time for ConEmu to intercept hotkeys.
-
-Fonts
------
+## Fonts
 
 The most ideal ones are those that are multilingual, monospaced, supports ligatures, supports box drawing, supports powerline, supports a good number of unicode symbols and support even APL, but this probably doesn't exist. So we have a number fonts available to choose from in different situations:
 
@@ -208,8 +190,17 @@ Fallback Fonts:
 * Consolas - Windows
 * Inconsalata - Linux
 
-ZSH as Default Shell
---------------
+```sh
+# shows fonts available
+# cyginw doesn't show all available Windows fonts
+fc-list
+# after installing or uninstalling fonts use this to refresh the cache
+fc-cache --really-force --verbose
+# also run it for root
+sudo fc-cache --really-force --verbose
+```
+
+## ZSH as Default Shell
 
 The `/etc/passwd` has been changed to match ZSH. For the 2 ways of launching the terminal.
 
@@ -235,8 +226,7 @@ The startup task for ConEmu for a non-login shell should be: `%ALLUSERSPROFILE%\
 
 The startup task for ConEmu for a login shell should be: `%ALLUSERSPROFILE%\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -`.
 
-Process Hierarchy on Cygwin
----------------------------
+## Process Hierarchy on Cygwin
 
 Make sure to use Process Explorer to view this. Ideally the process tree of using ConEmu, Cygwin, Mintty.. etc is like this (this is not a real tree!):
 
@@ -288,8 +278,7 @@ According to ZSH docs, simply `setopt HUP` should just result in ZSH closing all
 
 Don't use orphan processes to create services/daemons. Create services using a service wrapper! Use your init's service wrapper capabilities. Systemd has services. So does Windows. Using orphan processes for services/daemons is totally deficient!! But you ask, what about user local processes!? Well systemd has user services too! Then you ask, what if I just want to run a long running process, and not look at it, and log out of SSH? I don't have the ability to create service! Well then that's when you us a terminal multiplexer called tmux or screen to create detached sessions! In no situation is orphaned processes the right answer. EXCEPT under one/two circumstance. When launching X applications or DE applications from the command line. That's the only time it makes sense to orphan a process, when it's like a GUI application that you want to launch independently. In that case, you're creating a "launcher", which is really a specific situation! It makes sense in this case, because firstly you don't want to control the process from the terminal (not even send signals), and it's not a long running daemon either, so it's not a service. Alternatively, if you do have tmux or screen, orphaning may not be required either. As you can just launch into detached sessions. HOWEVER this is kind of inefficient, as there's lots of baggage being carried around. Or you can just orphan it and make it be handled as an independent process. The only time where this makes sense is GUI applications like launching firefox.. etc. Make sure to attach its error handling into the X or DE based error handling. Which should be journald or syslog or .xsession-errors.
 
-Development
-----------------
+## Development
 
 On adding new dependencies:
 
@@ -314,6 +303,7 @@ On updating dependencies to the latest in their branch:
 ```
 cd "$(git rev-parse --show-toplevel)"
 git submodule update --init --recursive --remote --merge .dotfiles-modules/<repo-name>
+# to change the working index, go into the submodule and use git checkout
 ```
 
 On changing dependency upstream URL:
@@ -438,12 +428,6 @@ Ctrl-W C - Close current window
 :tabn - Next tab
 :tabp - Previous tab
 ```
-
-Spacemacs have equivalent commands all using the spacebar.
-
-Finally your window manager has it's own commands, and so does your terminal emulator.
-
-It can be a good idea to use window manager to split various GUI applications. Use your terminal emulator to split between terminals, or use tmux for this instead, so it works across whichever terminal emulator you have (conemu/konsole/mintty no problem). Then use vim or spacemacs to split for text editing.
 
 ---
 
@@ -827,29 +811,6 @@ Any unidentified networks are all put into the public category. For virtual inte
 
 ---
 
-https://en.wikipedia.org/wiki/Zero-configuration_networking ultimately boils down to 3 things:
-
-* Address Selection - Autoconfiguration or DHCP
-* Name Resolution - mDNS
-* Service Discovery - dns-sd
-
-Many competing protocols but the one that is most popular and most accepted right now is mDNS + DNS-SD. Implemented as Bonjour on Mac and Windows, and as Avahi on Linux and Cygwin.
-
-Zeroconf is the umbrella name given to mdns + DNS SD + link local address autoconfiguration.
-
-https://news.ycombinator.com/item?id=8565704
-
-It replaces NetBIOS, UPnP, LLMNR and whole bunch of stuff!
-
-http://www.zeroconf.org/zeroconfandupnp.html
-
-Mac addresses are mapped to IP addresses are mapped to Domain names lol!
-Each operating at a different level of abstraction.
-
-> When you understand that IP-to-IP communication is really just a series of MAC-to-MAC communication taking place at each router hop, then you'll see why both are necessary.
-
----
-
 On Windows, the path hierarchy goes SYSTEM PATH + USER PATH. This means the SYSTEM PATH always takes precedence over the USER PATH. This means USER PATH executables can never shadow SYSTEM PATH executables.
 
 However on Linux, it is the other way around, local PATH customisations are intended be prepended to the PATH (although you do have the option of appending it), that way you can wrap system executables. This is in fact what we do, while leaving the Windows user path to be appended to the system path, Cygwin path additions are always prepended.
@@ -859,28 +820,6 @@ Just something to beaware of you intend to wrap Windows executables
 ---
 
 Node and Node-Gyp. Some Node packages require the usage of Node-Gyp and Windows Python to compile on Windows. For this to work you must first run `npm config set msvs_version 2015`, in this case, I have already set it to the 2015 version, because I have the 2015 Visual C++ Build tools. But then afterwards, you may need to run the entire `npm install -g ...` command inside the Visual C++ 201* x64 Build Tools Command Prompt so it can find the necessary tools (MSBuild.. etc).
-
----
-
-Python Z3 needs to be installed from source on Windows.
-
-Git clone the directory into `~/.src`, follow the build instructions (use the Visual C++ 2015 x64 Native Build Tools Prompt). Build the python binding by running `python scripts/mk_make.py -x --python`.
-
-To make use of it:
-
-1. Run `cp ~/.src/z3/build/z3.exe ~/.src/z3/build/libz3.dll ~/binw`.
-2. Copy `~/.src/z3/build/python/z3` directory into Python site packages. You can find the Python site packages using: `wpython3 -c 'import site; print(site.getsitepackages())'`.
-3. Run `wpython3 -c 'from z3 import *; x = Int('x')'`.
-
-The libz3.dll is used by Python and other things to link to it. While z3.exe is independent and the program works by itself.
-
-The build process seems to be able to use `python` as `python2`, and build something for `python3`.
-
-For Pytables to work, HDF5 needs to be installed, this should be packaged as a Chocolatey package. There's a windows installation package that requires automation. It will add to the PATH as well.
-
----
-
-Fonts use `fc-list` to show which fonts are available. This works on Cygwin and NixOS, however, Cygwin doesn't show all available Windows fonts. So those fonts in `fc-list` would be ones that Cygwin apps can find.
 
 ---
 
