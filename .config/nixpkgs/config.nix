@@ -69,7 +69,7 @@
               dunst
               libnotify
               hicolor_icon_theme
-              numix-gtk-theme
+              gnome3.adwaita-icon-theme
               gnome3.nautilus
               gnome3.dconf
               rlwrap
