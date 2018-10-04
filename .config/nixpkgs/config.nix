@@ -120,7 +120,6 @@
               openvpn
               # Storage
               filezilla
-              nfs-utils
               samba4
               netatalk
               awscli
