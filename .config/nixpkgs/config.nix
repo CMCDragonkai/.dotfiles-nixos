@@ -233,8 +233,10 @@
               go
               gocode
               godef
-              haskellPackages.stylish-haskell
               haskellPackages.pretty-show
+              haskellPackages.stylish-haskell
+              haskellPackages.brittany
+              haskellPackages.hlint
             ];
           };
           graphics = buildEnv {
