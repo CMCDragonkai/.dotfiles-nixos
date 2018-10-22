@@ -36,6 +36,7 @@
               iptraf
               nethogs
               iotop
+              sysstat
               powertop
               stress-ng
               fio
