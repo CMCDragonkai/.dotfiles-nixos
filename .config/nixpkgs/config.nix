@@ -268,6 +268,7 @@
               hdf5                    # hdf5
               hdfview
               go-pup                  # html
+              # visidata              # pending
             ];
           };
           sql = buildEnv {
