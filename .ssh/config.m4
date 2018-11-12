@@ -15,4 +15,7 @@ m4_ifelse(PH_SYSTEM, CYGWIN, ,
     ControlPath /tmp/ssh-control:%h:%p:%r
 )
 
+# Disable host authentication for localhost addresses
+NoHostAuthenticationForLocalhost yes
+
 Include hosts
