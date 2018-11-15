@@ -41,6 +41,8 @@
               stress-ng
               fio
               conky
+              bench
+              hyperfine
               python36Packages.glances
               # Keyboard
               teensy-loader-cli
