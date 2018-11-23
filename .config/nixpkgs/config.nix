@@ -249,6 +249,7 @@
               imagemagick
               perlPackages.ImageExifTool
               gimp
+              inkscape
               libtiff
             ];
           };
