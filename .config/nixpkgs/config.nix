@@ -185,6 +185,7 @@
               poppler_utils
               pdftk
               pandoc
+              texlive.combined.scheme-small
               aspell
               aspellDicts.en
             ];
