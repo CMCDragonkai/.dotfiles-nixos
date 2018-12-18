@@ -61,7 +61,8 @@
               lsof
               rmlint
               pv
-              cv
+              mbuffer
+              progress
               proot
               lsof
               picocom
