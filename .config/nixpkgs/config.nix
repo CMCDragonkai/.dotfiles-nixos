@@ -121,6 +121,7 @@
               iperf
               conntrack_tools
               openvpn
+              autossh
               # Storage
               filezilla
               samba4
