@@ -93,6 +93,7 @@
               unzip
               gzip
               bzip2
+              unrar
               lzma
               dpkg
               # Network
