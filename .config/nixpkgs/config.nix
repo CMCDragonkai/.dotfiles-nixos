@@ -79,6 +79,7 @@
               rlwrap
               trash-cli
               inotify-tools
+              expect
               # Security
               plasma5.polkit-kde-agent
               oathToolkit
