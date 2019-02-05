@@ -1,6 +1,20 @@
 [Default Applications]
-text/html=chromium.desktop
+
+inode/x-empty=emacs.desktop
 text/plain=emacs.desktop
-text/csv=emacs.desktop
+
+text/html=chromium-browser.desktop
+image/svg+xml=inkscape.desktop
+
+application/msword=writer.desktop
+text/csv=calc.desktop
+application/vnd.ms-excel=calc.desktop
 application/pdf=zathura.desktop
+message/rfc822=thunderbird.desktop
+
 image/jpeg=feh.desktop
+image/png=feh.desktop
+image/bmp=feh.desktop
+image/gif=feh.desktop
+
+video/mp4=vlc.desktop
