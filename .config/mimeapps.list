@@ -18,3 +18,5 @@ image/bmp=feh.desktop
 image/gif=feh.desktop
 
 video/mp4=vlc.desktop
+
+application/x-hdf=hdfview.desktop

@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=hdfview
+Type=Application
+Exec=hdfview
+Terminal=false
