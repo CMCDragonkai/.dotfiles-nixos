@@ -96,6 +96,7 @@
               unrar
               lzma
               dpkg
+              rpmextract
               # Network
               mitmproxy
               openssl
