@@ -160,6 +160,7 @@
               v4l_utils
               vlc
               ffmpeg
+              obs-studio
               sox
               mplayer
               beets
