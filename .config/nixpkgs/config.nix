@@ -167,7 +167,6 @@
               ffcast
               mediainfo
               python36Packages.youtube-dl
-              electrum
               # Radio
               gnuradio-with-packages
               gqrx
@@ -296,6 +295,12 @@
               gdal
               proj
               qgis
+            ];
+          };
+          crypto = buildEnv {
+            name = "env-crypto";
+            paths = [
+              electrum
             ];
           };
           gaming = buildEnv {
