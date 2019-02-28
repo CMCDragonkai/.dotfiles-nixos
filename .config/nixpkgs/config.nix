@@ -149,6 +149,7 @@
               xorg.xdpyinfo
               xdotool
               xclip
+              xrectsel
               hsetroot
               haskellPackages.xmobar
               feh
@@ -165,6 +166,7 @@
               mplayer
               beets
               ffcast
+              peek
               mediainfo
               python36Packages.youtube-dl
               # Radio
