@@ -64,7 +64,6 @@
               mbuffer
               progress
               proot
-              lsof
               picocom
               kitty
               gnum4
@@ -80,6 +79,7 @@
               trash-cli
               inotify-tools
               expect
+              libcgroup
               # Security
               plasma5.polkit-kde-agent
               oathToolkit
