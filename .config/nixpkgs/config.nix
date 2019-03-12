@@ -64,7 +64,6 @@
               mbuffer
               progress
               proot
-              lsof
               picocom
               kitty
               gnum4
@@ -80,6 +79,7 @@
               trash-cli
               inotify-tools
               expect
+              libcgroup
               # Security
               plasma5.polkit-kde-agent
               oathToolkit
@@ -149,6 +149,7 @@
               xorg.xdpyinfo
               xdotool
               xclip
+              xrectsel
               hsetroot
               haskellPackages.xmobar
               feh
@@ -160,13 +161,14 @@
               v4l_utils
               vlc
               ffmpeg
+              obs-studio
               sox
               mplayer
               beets
               ffcast
+              peek
               mediainfo
               python36Packages.youtube-dl
-              electrum
               # Radio
               gnuradio-with-packages
               gqrx
@@ -295,6 +297,12 @@
               gdal
               proj
               qgis
+            ];
+          };
+          crypto = buildEnv {
+            name = "env-crypto";
+            paths = [
+              electrum
             ];
           };
           gaming = buildEnv {
