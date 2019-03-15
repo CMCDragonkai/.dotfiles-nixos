@@ -85,7 +85,7 @@
               oathToolkit
               certbot
               keepass
-              keybase
+              keybase-gui
               pcsctools
               paperkey
               # Archive Management
