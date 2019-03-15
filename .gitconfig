@@ -7,6 +7,11 @@
 [user]
     name = Roger Qiu
     email = roger.qiu@polyhack.io
+    signingkey = 0D3FB2EEAF121097
+[commit]
+    gpgsign = true
+[tag]
+    gpgsign = true
 [credential]
     helper = cache --timeout=1800
 [alias]
