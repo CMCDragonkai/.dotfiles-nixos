@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 " Want vim not vi
 set nocompatible
 
