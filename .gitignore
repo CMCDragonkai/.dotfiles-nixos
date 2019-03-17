@@ -15,16 +15,3 @@ Session.vim
 
 # Do not ignore any `.gitkeep` files #
 !.gitkeep
-
-# Ignore generated files #
-/.ssh/config
-/.stack/config.yaml
-/.bash_env
-/.bash_profile
-/.bashrc
-/.my.cnf
-/.pam_environment
-/.xprofile
-/.zlogin
-/.zshenv
-/.zshrc

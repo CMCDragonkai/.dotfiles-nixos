@@ -1,6 +1,3 @@
-m4_dnl Changing quoting/escaping characters to something that won't be used!
-m4_changequote(`<<<@@||',`||@@>>>')
-
 # This .pam_environment is sourced for session-wide logins.
 # This means a textual or graphical login shell.
 # This allows us to have environment variables setup after logging into our graphical display manager.

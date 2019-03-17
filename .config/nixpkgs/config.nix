@@ -120,7 +120,6 @@
               udptunnel
               httptunnel
               pwnat
-              ngrok
               sslh
               geoipWithDatabase
               iperf

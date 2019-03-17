@@ -1,6 +1,3 @@
-m4_dnl Changing quoting/escaping characters to something that won't be used!
-m4_changequote(`<<<@@||',`||@@>>>')
-
 # This .bashrc is sourced only on interactive sessions.
 # This script sets up interactive utilities.
 
@@ -44,7 +41,7 @@ export TTY="$(tty)"
 
 # Bash Functions
 
-m4_include(shell_functions.conf.m4)
+source "${HOME}/.includes_sh/shell_functions_common.conf"
 
 : '
 repeat - Repeatedly run a command. Basically the same as ZSH `repeat`.
@@ -61,7 +58,7 @@ repeat () {
 
 # Bash Aliases
 
-m4_include(shell_aliases.conf.m4)
+source "${HOME}/.includes_sh/shell_aliases_common.conf"
 
 # Bash Prompt
 

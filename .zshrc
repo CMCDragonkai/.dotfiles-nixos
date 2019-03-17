@@ -1,6 +1,3 @@
-m4_dnl Changing quoting/escaping characters to something that won't be used!
-m4_changequote(`<<<@@||',`||@@>>>')
-
 # This .zshrc is sourced only on interactive sessions.
 # This script sets up interactive utilities.
 
@@ -40,11 +37,7 @@ compinit
 
 export TTY="$(tty)"
 
-m4_ifelse(PH_SYSTEM, NIXOS,
-    HELPDIR="${HELPDIR:-/run/current-system/sw/share/zsh/${ZSH_VERSION}/help}"
-, PH_SYSTEM, CYGWIN,
-    HELPDIR="${HELPDIR:-/usr/share/zsh/${ZSH_VERSION}/help}"
-)
+HELPDIR="${HELPDIR:-/run/current-system/sw/share/zsh/${ZSH_VERSION}/help}"
 
 # ZSH Functions
 
