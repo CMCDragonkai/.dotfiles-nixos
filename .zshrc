@@ -41,7 +41,7 @@ HELPDIR="${HELPDIR:-/run/current-system/sw/share/zsh/${ZSH_VERSION}/help}"
 
 # ZSH Functions
 
-m4_include(shell_functions.conf.m4)
+source "${HOME}/.includes_sh/shell_functions_common.conf"
 
 : '
 eval-unpack - Evaluate an expression and unpack its STDOUT, STDERR and exit code
@@ -97,7 +97,7 @@ set_title() {
 
 # ZSH Aliases
 
-m4_include(shell_aliases.conf.m4)
+source "${HOME}/.includes_sh/shell_aliases_common.conf"
 
 # Sets up `help` command similar to bash.
 unalias run-help 2>/dev/null
