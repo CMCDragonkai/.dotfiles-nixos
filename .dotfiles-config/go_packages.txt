@@ -1,5 +1,0 @@
-github.com/whyrusleeping/gx
-github.com/whyrusleeping/gx-go
-github.com/motemen/gore
-github.com/kisielk/godepgraph
-github.com/ericchiang/pup

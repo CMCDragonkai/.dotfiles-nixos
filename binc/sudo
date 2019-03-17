@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-
-# this is a plain wrapper around your already existing command
-# this is because there's no such thing as sudo with the same semantics on cygwin
-# if you want to run something as administrator, see `winsudo.sh`
-# it does have same semantics as linux sudo
-
-exec "$@"

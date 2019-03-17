@@ -1,5 +1,0 @@
-# shell/system utilities
-parallel
-
-# media
-ffmpeg

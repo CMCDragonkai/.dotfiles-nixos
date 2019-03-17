@@ -1,6 +1,0 @@
-# cygwin pip3
-awscli==1.11.53
-csvkit==1.0.1
-httpie==0.9.9
-GPlayCli==3.2
-asciinema==1.4.0
