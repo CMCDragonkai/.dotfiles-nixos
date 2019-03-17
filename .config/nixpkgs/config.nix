@@ -66,6 +66,7 @@
               proot
               picocom
               kitty
+              kitty.terminfo
               gnum4
               ag
               dex
