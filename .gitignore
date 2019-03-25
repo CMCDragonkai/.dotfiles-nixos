@@ -1,3 +1,5 @@
+# Directories with exceptions
+
 /.config/*
 !/.config/dunst
 !/.config/feh
@@ -30,6 +32,8 @@
 /.xmonad/*
 !/.xmonad/xmonad.hs
 
+# Directories
+
 /.dbus/*
 /.cache/*
 /.compose-cache/*
@@ -42,6 +46,8 @@
 /Desktop/*
 /Downloads/*
 /Projects/*
+
+# Files
 
 /.nix-profile
 /.Xauthority
