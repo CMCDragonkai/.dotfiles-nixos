@@ -12,6 +12,8 @@
     gpgsign = true
 [tag]
     gpgsign = true
+[submodule]
+    recurse = true
 [credential]
     helper = cache --timeout=1800
 [alias]
