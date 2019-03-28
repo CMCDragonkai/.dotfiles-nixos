@@ -85,14 +85,14 @@ endif
 " Show literal tabs as 4 spaces width
 set tabstop=4
 
-" 4 columns are used when tab is hit in insert mode
-set softtabstop=4
+" 2 columns are used when tab is hit in insert mode
+set softtabstop=2
 
-" Tabs are inserted as 4 spaces
+" Tabs are inserted as 2 spaces
 set expandtab
 
-" When indenting with '>', use 4 spaces width
-set shiftwidth=4
+" When indenting with '>', use 2 spaces width
+set shiftwidth=2
 
 " Show last keystroke commands on the bottom right
 set showcmd
