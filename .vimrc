@@ -83,7 +83,7 @@ else
 endif
 
 " Show literal tabs as 4 spaces width
-set tabstop=4
+set tabstop=2
 
 " 2 columns are used when tab is hit in insert mode
 set softtabstop=2
