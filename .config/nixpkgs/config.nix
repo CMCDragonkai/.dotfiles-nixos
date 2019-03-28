@@ -3,7 +3,6 @@
   pulseaudio = true;
   chromium = {
     pulseSupport = true;
-    enableNaCl = true;
   };
   packageOverrides = pkgs:
     with pkgs;
@@ -17,9 +16,12 @@
       {
         # all qt applications have to be part of the same buildEnv
         # they rely on shared libraries that is shared across all packages
+        # default priority is 5, we set these to be lower priority
+        # and when there's a conflict, increment by 10
         env = {
           base = buildEnv {
             name = "env-base";
+            meta.priority = 10;
             paths = [
               # Web
               firefox
@@ -47,7 +49,6 @@
               # Keyboard
               teensy-loader-cli
               # Math
-              R
               bc
               # Shell and Environment Utilities
               file
@@ -85,7 +86,6 @@
               plasma5.polkit-kde-agent
               oathToolkit
               certbot
-              keepass
               keybase-gui
               pcsctools
               paperkey
@@ -98,39 +98,6 @@
               lzma
               dpkg
               rpmextract
-              # Network
-              mitmproxy
-              openssl
-              putty
-              wget
-              httpie
-              aria
-              mailutils
-              bind
-              ldns
-              ipfs
-              nodePackages_8_x.dat
-              rsync
-              wireshark
-              nmap
-              ncat
-              socat
-              hans
-              iodine
-              udptunnel
-              httptunnel
-              pwnat
-              sslh
-              geoipWithDatabase
-              iperf
-              conntrack_tools
-              openvpn
-              autossh
-              # Storage
-              filezilla
-              samba4
-              netatalk
-              awscli
               unetbootin
               # Nix
               nix-prefetch-scripts
@@ -174,8 +141,46 @@
               gqrx
             ];
           };
+          network = buildEnv {
+            name = "env-network";
+            meta.priority = 10;
+            paths = [
+              mitmproxy
+              openssl
+              putty
+              wget
+              httpie
+              aria
+              mailutils
+              bind
+              ldns
+              ipfs
+              nodePackages.dat
+              rsync
+              wireshark
+              nmap
+              ncat
+              socat
+              hans
+              iodine
+              udptunnel
+              httptunnel
+              pwnat
+              sslh
+              geoipWithDatabase
+              iperf
+              conntrack_tools
+              openvpn
+              autossh
+              filezilla
+              samba4
+              netatalk
+              awscli
+            ];
+          };
           fonts = buildEnv {
             name = "env-fonts";
+            meta.priority = 10;
             paths = [
               fira
               fira-mono
@@ -185,6 +190,7 @@
           };
           documents = buildEnv {
             name = "env-documents";
+            meta.priority = 10;
             paths = [
               libreoffice
               zathura
@@ -199,6 +205,7 @@
           };
           development = buildEnv {
             name = "env-development";
+            meta.priority = 20;
             paths = [
               # Development
               emacs
@@ -245,12 +252,14 @@
               godef
               haskellPackages.pretty-show
               haskellPackages.stylish-haskell
-              haskellPackages.brittany
+              # haskellPackages.brittany
               haskellPackages.hlint
+              R
             ];
           };
           graphics = buildEnv {
             name = "env-graphics";
+            meta.priority = 10;
             paths = [
               dcraw
               graphicsmagick
@@ -263,6 +272,7 @@
           };
           graphs = buildEnv {
             name = "env-graphs";
+            meta.priority = 10;
             paths = [
               plantuml
               graphviz
@@ -272,10 +282,11 @@
           };
           data = buildEnv {
             name = "env-data";
+            meta.priority = 10;
             paths = [
               jq                      # json
               libxml2                 # xml
-              python36Packages.csvkit # csv
+              csvkit                  # csv
               hdf5                    # hdf5
               hdfview
               go-pup                  # html
@@ -284,6 +295,7 @@
           };
           sql = buildEnv {
             name = "env-sql";
+            meta.priority = 10;
             paths = [
               schemaspy
               dbeaver
@@ -293,6 +305,7 @@
           };
           gis = buildEnv {
             name = "env-gis";
+            meta.priority = 20;
             paths = [
               gdal
               proj
@@ -301,18 +314,21 @@
           };
           crypto = buildEnv {
             name = "env-crypto";
+            meta.priority = 30;
             paths = [
               electrum
             ];
           };
           gaming = buildEnv {
             name = "env-gaming";
+            meta.priority = 10;
             paths = [
               steam
             ];
           };
           android = buildEnv {
             name = "env-android";
+            meta.priority = 10;
             paths = [
               libmtp
               go-mtpfs
@@ -324,6 +340,7 @@
           # so we need to follow master for these
           proprietary = with pkgsMaster; buildEnv {
             name = "env-proprietary";
+            meta.priority = 20;
             paths = [
               masterpdfeditor
               skype
