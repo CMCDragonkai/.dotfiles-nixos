@@ -28,7 +28,8 @@ hide_duplicate_count = false
 show_indicators = yes
 icon_position = left
 max_icon_size = 32
-icon_path = /home/cmcdragonkai/.nix-profile/share/icons/Adwaita/16x16/status/:/home/cmcdragonkai/.nix-profile/share/icons/Adwaita/16x16/devices/:/home/cmcdragonkai/.nix-profile/share/icons/hicolor/16x16/status/:/home/cmcdragonkai/.nix-profile/share/icons/hicolor/16x16/devices/
+icon_path = 
+~/.nix-profile/share/icons/Adwaita/16x16/status/:~/.nix-profile/share/icons/Adwaita/16x16/devices/:~/.nix-profile/share/icons/hicolor/16x16/status/:~/.nix-profile/share/icons/hicolor/16x16/devices/
 sticky_history = yes
 history_length = 20
 title = Dunst
