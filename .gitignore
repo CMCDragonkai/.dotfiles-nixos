@@ -35,6 +35,10 @@
 /.xmonad/*
 !/.xmonad/xmonad.hs
 
+/.vim/*
+!/.vim/autoload
+!/.vim/bundle
+
 # Directories
 
 /.dbus/*
