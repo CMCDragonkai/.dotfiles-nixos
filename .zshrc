@@ -23,7 +23,9 @@ setopt \
     hup \
     monitor \
     notify \
-    prompt_subst
+    prompt_subst \
+    prompt_cr \
+    prompt_sp
 
 unsetopt beep
 
