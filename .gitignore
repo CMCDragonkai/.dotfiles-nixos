@@ -44,6 +44,7 @@
 /.dbus/*
 /.cache/*
 /.compose-cache/*
+/.kube/*
 /.mozilla/*
 /.nix-defexpr/*
 /.node-gyp/*
