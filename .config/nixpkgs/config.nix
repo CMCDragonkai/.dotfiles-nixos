@@ -230,7 +230,13 @@
               rr
               docker_compose
               runc
-              # IDE dependencies
+              kubectl
+              aws-iam-authenticator
+              # R
+              R
+              # Rust
+              rustracer
+              # Python
               (
                 with python36Packages;
                 python.buildEnv.override {
@@ -244,17 +250,19 @@
                   ];
                 }
               )
+              # Node
               nodePackages.tern
               nodePackages.js-beautify
-              rustracer
+              # Go
               go
               gocode
               godef
+              # Haskell
+              cabal2nix
               haskellPackages.pretty-show
               haskellPackages.stylish-haskell
               # haskellPackages.brittany
               haskellPackages.hlint
-              R
             ];
           };
           graphics = buildEnv {
