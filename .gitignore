@@ -41,9 +41,11 @@
 
 # Directories
 
-/.dbus/*
 /.cache/*
+/.cabal/*
 /.compose-cache/*
+/.dbus/*
+/.docker/*
 /.kube/*
 /.mozilla/*
 /.nix-defexpr/*
