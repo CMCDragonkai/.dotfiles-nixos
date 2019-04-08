@@ -252,7 +252,7 @@
               godef
               haskellPackages.pretty-show
               haskellPackages.stylish-haskell
-              # haskellPackages.brittany
+              haskellPackages.brittany
               haskellPackages.hlint
               R
             ];
