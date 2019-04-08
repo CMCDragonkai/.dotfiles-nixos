@@ -82,7 +82,7 @@ else
     let &t_EI = "\e[2 q"
 endif
 
-" Show literal tabs as 4 spaces width
+" Show literal tabs as 2 spaces width
 set tabstop=2
 
 " 2 columns are used when tab is hit in insert mode
