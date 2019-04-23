@@ -46,6 +46,7 @@
 /.compose-cache/*
 /.dbus/*
 /.docker/*
+/.ghc/*
 /.kube/*
 /.mozilla/*
 /.nix-defexpr/*
@@ -69,6 +70,7 @@
 /.nix-profile
 /.node_repl_history
 /.python_history
+/.sqlite_history
 /.viminfo
 /.xsession-errors
 /.Xauthority
