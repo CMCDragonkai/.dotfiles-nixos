@@ -17,3 +17,5 @@ image/svg=inkscape.desktop
 video/mp4=vlc.desktop
 application/x-hdf=hdfview.desktop
 x-scheme-handler/mailto=thunderbird.desktop
+x-scheme-handler/irc=chromium-browser.desktop
+x-scheme-handler/ircs=chromium-browser.desktop
