@@ -258,6 +258,7 @@
               gocode
               godef
               # Haskell
+              ghc
               cabal2nix
               haskellPackages.pretty-show
               haskellPackages.stylish-haskell
