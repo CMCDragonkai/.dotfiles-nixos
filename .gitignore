@@ -39,6 +39,9 @@
 !/.vim/autoload
 !/.vim/bundle
 
+/.mplayer/*
+!/.mplayer/config
+
 # Directories
 
 /.cache/*
@@ -46,7 +49,10 @@
 /.compose-cache/*
 /.dbus/*
 /.docker/*
+/.eclipse/*
+/.electrum/*
 /.ghc/*
+/.java/*
 /.kube/*
 /.mozilla/*
 /.nix-defexpr/*
@@ -58,6 +64,8 @@
 /Desktop/*
 /Downloads/*
 /Projects/*
+/Music/*
+/Videos/*
 
 # Files
 
@@ -71,6 +79,7 @@
 /.node_repl_history
 /.python_history
 /.sqlite_history
+/.psql_history
 /.viminfo
 /.xsession-errors
 /.Xauthority
