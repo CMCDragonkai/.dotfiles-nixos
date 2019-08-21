@@ -103,6 +103,7 @@
               nix-prefetch-scripts
               nix-index
               nix-bundle
+              nix-diff
               vulnix
               # Chat
               weechat
@@ -253,6 +254,8 @@
               # Node
               nodePackages.tern
               nodePackages.js-beautify
+              nodePackages.node2nix
+              nodePackages.typescript
               # Go
               go
               gocode
