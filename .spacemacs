@@ -11,6 +11,7 @@
    dotspacemacs-configuration-layers
    '(
      typescript
+     graphviz
      asm
      c-c++
      sql
@@ -296,6 +297,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 (defun dotspacemacs/user-config ()
   ;; Setup indent mode
   (defun my-setup-indent (n)
+    (setq-default default-tab-width n)
     (setq-default haskell-indent-spaces n)
     (setq-default c-basic-offset n)
     (setq-default javascript-indent-level n)
