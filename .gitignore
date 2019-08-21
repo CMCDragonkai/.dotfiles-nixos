@@ -60,6 +60,7 @@
 /.npm/*
 /.nv/*
 /.pki/*
+/.swt/*
 /.thunderbird/*
 /Desktop/*
 /Downloads/*
