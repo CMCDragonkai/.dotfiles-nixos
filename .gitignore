@@ -16,6 +16,9 @@
 !/.gnupg/gpg-agent.conf
 !/.gnupg/gpg.conf
 
+/.jupyter/*
+!/.jupyter/jupyter_notebook_config.py
+
 /.keras/*
 !/.keras/keras.json
 
@@ -52,6 +55,7 @@
 /.eclipse/*
 /.electrum/*
 /.ghc/*
+/.googleearth/*
 /.java/*
 /.kube/*
 /.mozilla/*
@@ -79,8 +83,9 @@
 /.nix-profile
 /.node_repl_history
 /.python_history
-/.sqlite_history
 /.psql_history
+/.rnd
+/.sqlite_history
 /.viminfo
 /.xsession-errors
 /.Xauthority
