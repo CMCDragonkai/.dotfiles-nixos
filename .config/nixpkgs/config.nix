@@ -137,6 +137,9 @@
               peek
               mediainfo
               python36Packages.youtube-dl
+              gmtp
+              libmtp
+              #olive-editor
               # Radio
               gnuradio-with-packages
               gqrx
@@ -329,6 +332,7 @@
             meta.priority = 30;
             paths = [
               electrum
+              ledger-live-desktop
             ];
           };
           gaming = buildEnv {
@@ -342,8 +346,6 @@
             name = "env-android";
             meta.priority = 10;
             paths = [
-              libmtp
-              go-mtpfs
               apktool
               python36Packages.gplaycli
             ];
