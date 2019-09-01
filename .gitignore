@@ -50,12 +50,14 @@
 /.cache/*
 /.cabal/*
 /.compose-cache/*
+/.dbeaver*/*
 /.dbus/*
 /.docker/*
 /.eclipse/*
 /.electrum/*
 /.ghc/*
 /.googleearth/*
+/.hdfview**/*
 /.java/*
 /.kube/*
 /.mozilla/*
@@ -66,6 +68,7 @@
 /.pki/*
 /.swt/*
 /.thunderbird/*
+/.wine/*
 /Desktop/*
 /Downloads/*
 /Projects/*
