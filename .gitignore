@@ -16,6 +16,9 @@
 !/.gnupg/gpg-agent.conf
 !/.gnupg/gpg.conf
 
+/.ipython/*
+!/.ipython/profile_default/ipython_config.py
+
 /.jupyter/*
 !/.jupyter/jupyter_notebook_config.py
 
