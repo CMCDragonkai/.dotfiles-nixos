@@ -88,6 +88,7 @@
 /.lesshst
 /.nix-profile
 /.node_repl_history
+/.npmrc
 /.python_history
 /.psql_history
 /.rnd
