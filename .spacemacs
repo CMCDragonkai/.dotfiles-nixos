@@ -339,6 +339,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq indent-tabs-mode nil)
   ;; Prefer UTF-8
   (prefer-coding-system 'utf-8-unix)
+  (set-selection-coding-system 'utf-8-unix)
+  (set-buffer-file-coding-system 'utf-8-unix)
   ;; Scroll n lines at a time
   (setq mouse-wheel-scroll-amount '(2 ((shift) . 1)))
   ;; Don't accelerate scrolling
