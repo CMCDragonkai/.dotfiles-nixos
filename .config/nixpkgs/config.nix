@@ -137,12 +137,7 @@
               peek
               mediainfo
               python36Packages.youtube-dl
-              gmtp
-              libmtp
               #olive-editor
-              # Radio
-              gnuradio-with-packages
-              gqrx
             ];
           };
           network = buildEnv {
@@ -180,6 +175,16 @@
               samba4
               netatalk
               awscli
+            ];
+          };
+          devices = buildEnv {
+            name = "env-devices";
+            meta.priority = 20;
+            paths = [
+              libmtp
+              gmtp
+              gnuradio-with-packages
+              gqrx
             ];
           };
           fonts = buildEnv {
