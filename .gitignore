@@ -61,6 +61,7 @@
 /.ghc/*
 /.googleearth/*
 /.hdfview**/*
+/.httpie/*
 /.java/*
 /.kube/*
 /.mozilla/*
