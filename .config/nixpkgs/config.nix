@@ -82,6 +82,7 @@
               inotify-tools
               expect
               libcgroup
+              criu
               # Security
               plasma5.polkit-kde-agent
               oathToolkit
