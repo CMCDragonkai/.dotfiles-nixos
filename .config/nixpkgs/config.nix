@@ -45,7 +45,7 @@
               conky
               bench
               hyperfine
-              python36Packages.glances
+              python3Packages.glances
               # Keyboard
               teensy-loader-cli
               # Math
@@ -123,22 +123,12 @@
               haskellPackages.xmobar
               feh
               autorandr
-              # Media
+              # Audio Video
               pavucontrol
-              kdeApplications.spectacle
               playerctl
-              v4l_utils
-              vlc
-              ffmpeg
-              obs-studio
-              sox
-              mplayer
               beets
-              ffcast
-              peek
-              mediainfo
-              python36Packages.youtube-dl
-              #olive-editor
+              vlc
+              mplayer
             ];
           };
           network = buildEnv {
@@ -155,7 +145,6 @@
               bind
               ldns
               ipfs
-              nodePackages.dat
               rsync
               wireshark
               nmap
@@ -229,8 +218,8 @@
               shellcheck
               universal-ctags
               global
-              python36Packages.binwalk-full
-              python36Packages.pygments
+              python3Packages.binwalk-full
+              python3Packages.pygments
               man-pages
               posix_man_pages
               libcap_manpages
@@ -248,7 +237,7 @@
               rustracer
               # Python
               (
-                with python36Packages;
+                with python3Packages;
                 python.buildEnv.override {
                   extraLibs = [
                     setuptools
@@ -276,6 +265,22 @@
               haskellPackages.stylish-haskell
               haskellPackages.brittany
               haskellPackages.hlint
+            ];
+          };
+          media = buildEnv {
+            name = "env-media";
+            meta.priority = 10;
+            paths = [
+              v4l_utils
+              sox
+              ffmpeg
+              ffcast
+              peek
+              kdeApplications.spectacle
+              python3Packages.youtube-dl
+              mediainfo
+              olive-editor
+              obs-studio
             ];
           };
           graphics = buildEnv {
@@ -330,7 +335,7 @@
             paths = [
               gdal
               proj
-              qgis
+              # qgis
             ];
           };
           crypto = buildEnv {
@@ -353,7 +358,7 @@
             meta.priority = 10;
             paths = [
               apktool
-              python36Packages.gplaycli
+              python3Packages.gplaycli
             ];
           };
           # proprietary applications tend to expire quickly
