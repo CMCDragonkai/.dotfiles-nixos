@@ -214,6 +214,7 @@
               patchelf
               dos2unix
               qemu
+              libguestfs
               vagrant
               shellcheck
               universal-ctags
