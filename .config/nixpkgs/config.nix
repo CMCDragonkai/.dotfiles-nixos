@@ -119,6 +119,7 @@
               xdotool
               xclip
               xrectsel
+              glxinfo
               hsetroot
               haskellPackages.xmobar
               feh
@@ -230,6 +231,8 @@
               rr
               docker_compose
               runc
+              ipmitool
+              ipmiutil
               kubectl
               aws-iam-authenticator
               # R
