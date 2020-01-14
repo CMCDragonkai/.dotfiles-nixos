@@ -119,6 +119,7 @@
               xdotool
               xclip
               xrectsel
+              xhost
               glxinfo
               hsetroot
               haskellPackages.xmobar
@@ -136,6 +137,8 @@
             name = "env-network";
             meta.priority = 10;
             paths = [
+              (lib.lowPrio inetutils)
+              iputils
               mitmproxy
               openssl
               putty
