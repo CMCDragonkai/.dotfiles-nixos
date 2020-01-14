@@ -116,10 +116,10 @@
               xorg.xmessage
               xorg.xwininfo
               xorg.xdpyinfo
+              xorg.xhost
               xdotool
               xclip
               xrectsel
-              xhost
               glxinfo
               hsetroot
               haskellPackages.xmobar
