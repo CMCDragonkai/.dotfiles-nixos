@@ -140,6 +140,7 @@
               (lib.lowPrio inetutils)
               iputils
               mitmproxy
+              nssTools
               openssl
               putty
               wget
