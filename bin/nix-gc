@@ -4,8 +4,6 @@
 dir="${1:-.}"
 while IFS= read -r -d '' file; do
   store_path="$(readlink "$file")"
-  if [ "${store_path##/nix/store/}" != "${store_path}" ]; then
-    rm --verbose "$file"
-    nix-store --delete "$store_path"
-  fi
-done < <(find "$dir" -maxdepth 1 -type l -name 'result*' -print0)
+  rm --verbose "$file"
+  nix-store --delete "$store_path"
+done < <(find "$dir" -maxdepth 1 -type l -lname '/nix/store/*' -print0)
