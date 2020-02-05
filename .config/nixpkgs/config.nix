@@ -295,7 +295,7 @@
             name = "env-graphics";
             meta.priority = 10;
             paths = [
-              dcraw
+              #dcraw
               graphicsmagick
               imagemagick
               perlPackages.ImageExifTool
@@ -334,7 +334,6 @@
               schemaspy
               dbeaver
               sqlite-interactive
-              sqlite3_analyzer
             ];
           };
           gis = buildEnv {
