@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+eval kitty +kitten ssh "$@"
