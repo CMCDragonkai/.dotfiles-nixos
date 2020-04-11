@@ -378,6 +378,7 @@
               skype
               slack
               spotify
+              zoom-us
             ];
           };
         };
