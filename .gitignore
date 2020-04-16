@@ -92,9 +92,11 @@
 /.nix-profile
 /.node_repl_history
 /.npmrc
+/.openvpn
 /.python_history
 /.psql_history
 /.rnd
+/.step
 /.sqlite_history
 /.viminfo
 /.xsession-errors
