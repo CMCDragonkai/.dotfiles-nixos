@@ -90,6 +90,7 @@
               keybase-gui
               pcsctools
               paperkey
+              step-cli
               # Archive Management
               zip
               unzip
@@ -284,11 +285,12 @@
               ffmpeg
               ffcast
               peek
-              kdeApplications.spectacle
+              flameshot
               python3Packages.youtube-dl
               mediainfo
               olive-editor
               obs-studio
+              darktable
             ];
           };
           graphics = buildEnv {
