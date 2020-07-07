@@ -75,6 +75,7 @@
 /.wine/*
 /.zoom/*
 /Desktop/*
+/Documents/Zoom/*
 /Downloads/*
 /keybase/*
 /Projects/*
@@ -96,6 +97,7 @@
 /.psql_history
 /.rnd
 /.sqlite_history
+/.ts_node_repl_history
 /.viminfo
 /.xsession-errors
 /.Xauthority
