@@ -105,7 +105,6 @@
               nix-index
               nix-bundle
               nix-diff
-              vulnix
               # Chat
               weechat
               # X Window and XMonad
