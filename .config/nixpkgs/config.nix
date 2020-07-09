@@ -251,11 +251,10 @@
                     jedi
                     flake8
                     isort
-                    yapf
-                    pytest
                   ];
                 }
               )
+              autoflake
               # Node
               nodePackages.tern
               nodePackages.js-beautify

@@ -1,16 +1,40 @@
 # .dotfiles-nixos
 
-Installation on a clean home directory:
+## Installation
+
+Go to TTY1. Login as a normal user.
 
 ```sh
-git clone --recurse-submodules https://github.com/CMCDragonkai/.dotfiles-nixos "$HOME"
+git clone --no-checkout https://github.com/CMCDragonkai/.dotfiles-nixos /tmp/.dotfiles-nixos
+mv /tmp/.dotfiles-nixos/.git "$HOME"
+rmdir /tmp/.dotfiles-nixos
+git checkout master
+git submodule update --init --recursive
 ```
+
+Exit and relogin to TTY1.
+
+Install the base packages:
+
+```sh
+nix-env -iA env.base
+```
+
+Now you can got to TTY7 and continue the installation.
+
+If you have problems, go back to TTY1 and fix them.
+
+You can always kill XMonad with <kbd>Mod</kbd> + <kbd>Shift</kbd> + <kbd>Q</kbd>.
 
 ## Permissions
 
 Git only persists 755 or 644 for files and directories are always 755. This means without any further processing after installation all files will appear either as executables or non-executables with read permission for the group and others, while directories are always readable and executable for the group and others. Sensitive folders should be explicitly modified to have their read and execute permissions for non-owners removed.
 
 The `umask` setting is `027` by default, but when running with `sudo`, it changes to `022`. This is so that root created files will be readable by `other`.
+
+```sh
+chmod --recursive u=rw,u=rwX,g=,o= ~/.ssh
+```
 
 ## Vim Packages
 
