@@ -211,6 +211,7 @@
             meta.priority = 20;
             paths = [
               # Development
+              cachix
               emacs
               vimHugeX
               tmux
@@ -282,7 +283,7 @@
               ffmpeg
               ffcast
               peek
-              kdeApplications.spectacle
+              flameshot
               python3Packages.youtube-dl
               mediainfo
               olive-editor
