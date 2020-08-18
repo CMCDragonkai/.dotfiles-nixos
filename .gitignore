@@ -81,6 +81,7 @@
 /Projects/*
 /Music/*
 /Videos/*
+/VirtualBox VMs/*
 
 # Files
 
@@ -89,6 +90,7 @@
 /.esd_auth
 /.fehbg
 /.gtkrc-2.0
+/.history
 /.lesshst
 /.nix-profile
 /.node_repl_history
