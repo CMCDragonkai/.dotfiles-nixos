@@ -6,7 +6,7 @@
 !/.config/git
 !/.config/kitty
 !/.config/nixpkgs
-!/.config/psysh
+!/.config/psysh/config.php
 !/.config/pulse/default.pa
 !/.config/zathura
 !/.config/mimeapps.list
