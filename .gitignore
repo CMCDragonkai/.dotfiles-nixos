@@ -35,6 +35,8 @@
 !/.ssh/config
 !/.ssh/authorized_keys
 
+/.openvpn/*
+
 /.aws/*
 !/.aws/config
 
