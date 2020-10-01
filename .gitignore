@@ -28,6 +28,8 @@
 /.local/*
 !/.local/share/applications
 
+/.ngrok2/*
+
 /Pictures/*
 !/Pictures/wallpaper.png
 
