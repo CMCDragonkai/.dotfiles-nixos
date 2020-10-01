@@ -170,6 +170,7 @@
               samba4
               netatalk
               awscli
+              ngrok
             ];
           };
           devices = buildEnv {
