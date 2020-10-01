@@ -6,7 +6,7 @@
 !/.config/git
 !/.config/kitty
 !/.config/nixpkgs
-!/.config/psysh
+!/.config/psysh/config.php
 !/.config/pulse/default.pa
 !/.config/zathura
 !/.config/mimeapps.list
@@ -34,6 +34,8 @@
 /.ssh/*
 !/.ssh/config
 !/.ssh/authorized_keys
+
+/.openvpn/*
 
 /.aws/*
 !/.aws/config
@@ -75,11 +77,13 @@
 /.wine/*
 /.zoom/*
 /Desktop/*
+/Documents/Zoom/*
 /Downloads/*
 /keybase/*
 /Projects/*
 /Music/*
 /Videos/*
+/VirtualBox VMs/*
 
 # Files
 
@@ -88,6 +92,7 @@
 /.esd_auth
 /.fehbg
 /.gtkrc-2.0
+/.history
 /.lesshst
 /.nix-profile
 /.node_repl_history
@@ -98,6 +103,7 @@
 /.rnd
 /.step
 /.sqlite_history
+/.ts_node_repl_history
 /.viminfo
 /.xsession-errors
 /.Xauthority

@@ -40,10 +40,10 @@ import "base" Text.Show.Functions     -- Function showing
 :def statusi (\_ -> return ":seti\n:show imports\n:show modules")
 
 -- Pretty prints a showable expression or binding
-:def pp (\s -> return $ ":cmd return $ \":! echo '\" ++ show " ++ s ++ " ++ \"' | ppsh\"")
+:def pp (\s -> return (":cmd return $ \":! echo '\" ++ show " ++ s ++ " ++ \"' | ppsh\""))
 
 -- Pretty prints a string expression or binding
-:def pps (\s -> return $ ":cmd return $ \":! echo '\" ++ " ++ s ++ " ++ \"' | ppsh\"")
+:def pps (\s -> return (":cmd return $ \":! echo '\" ++ " ++ s ++ " ++ \"' | ppsh\""))
 
 -- Timing and Type Output and Multiline Input
 -- These must be last to prevent noise

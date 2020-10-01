@@ -6,7 +6,7 @@ set softwrap
 set noconvert
 set locking
 set historylog
-set poslog
-set const
+set positionlog
+set constantshow
 set autoindent
 set morespace

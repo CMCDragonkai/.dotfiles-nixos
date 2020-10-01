@@ -106,7 +106,6 @@
               nix-index
               nix-bundle
               nix-diff
-              vulnix
               # Chat
               weechat
               # X Window and XMonad
@@ -213,6 +212,7 @@
             meta.priority = 20;
             paths = [
               # Development
+              cachix
               emacs
               vimHugeX
               tmux
@@ -253,11 +253,10 @@
                     jedi
                     flake8
                     isort
-                    yapf
-                    pytest
                   ];
                 }
               )
+              autoflake
               # Node
               nodePackages.tern
               nodePackages.js-beautify
