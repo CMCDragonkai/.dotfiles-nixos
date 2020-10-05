@@ -288,6 +288,7 @@
               mediainfo
               olive-editor
               obs-studio
+              obs-v4l2sink
             ];
           };
           graphics = buildEnv {
