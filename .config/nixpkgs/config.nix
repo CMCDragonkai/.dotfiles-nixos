@@ -90,6 +90,7 @@
               keybase-gui
               pcsctools
               paperkey
+              step-cli
               # Archive Management
               zip
               unzip
@@ -169,6 +170,7 @@
               samba4
               netatalk
               awscli
+              ngrok
             ];
           };
           devices = buildEnv {
@@ -289,6 +291,7 @@
               olive-editor
               obs-studio
               obs-v4l2sink
+              darktable
             ];
           };
           graphics = buildEnv {
