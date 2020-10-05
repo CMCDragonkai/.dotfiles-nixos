@@ -15,6 +15,7 @@ image/gif=feh.desktop
 image/tiff=feh.desktop
 image/svg=inkscape.desktop
 video/mp4=vlc.desktop
+video/x-matroska=vlc.desktop
 application/x-hdf=hdfview.desktop
 x-scheme-handler/mailto=thunderbird.desktop
 x-scheme-handler/irc=chromium-browser.desktop
