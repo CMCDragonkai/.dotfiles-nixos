@@ -299,6 +299,7 @@
             meta.priority = 10;
             paths = [
               #dcraw
+              drawpile
               graphicsmagick
               imagemagick
               perlPackages.ImageExifTool
