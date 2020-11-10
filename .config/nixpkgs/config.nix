@@ -35,7 +35,7 @@
               htop
               atop
               iftop
-              iptraf
+              iptraf-ng
               nethogs
               iotop
               sysstat
@@ -45,7 +45,7 @@
               conky
               bench
               hyperfine
-              python3Packages.glances
+              glances
               # Keyboard
               teensy-loader-cli
               # Math
@@ -221,8 +221,7 @@
               patchelf
               dos2unix
               qemu
-              libguestfs
-              vagrant
+              #libguestfs
               shellcheck
               universal-ctags
               global
@@ -324,7 +323,7 @@
             paths = [
               jq                      # json
               libxml2                 # xml
-              csvkit                  # csv
+              xsv                     # csv
               hdf5                    # hdf5
               hdfview
               go-pup                  # html
@@ -346,7 +345,7 @@
             paths = [
               gdal
               proj
-              # qgis
+              qgis
             ];
           };
           crypto = buildEnv {
