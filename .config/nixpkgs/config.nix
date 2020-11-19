@@ -213,11 +213,11 @@
             meta.priority = 20;
             paths = [
               # Development
+              gcc
               cachix
               emacs
               vimHugeX
               tmux
-              binutils
               patchelf
               dos2unix
               qemu
@@ -259,9 +259,10 @@
               autoflake
               # Node
               nodePackages.tern
-              nodePackages.js-beautify
               nodePackages.node2nix
               nodePackages.typescript
+              nodePackages.prettier
+              nodePackages.eslint
               # Go
               go
               gocode
