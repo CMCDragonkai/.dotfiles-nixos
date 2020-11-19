@@ -382,6 +382,7 @@
               slack
               spotify
               zoom-us
+              googleearth
             ];
           };
         };
