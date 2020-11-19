@@ -258,6 +258,7 @@
               )
               autoflake
               # Node
+              nodejs
               nodePackages.tern
               nodePackages.node2nix
               nodePackages.typescript
