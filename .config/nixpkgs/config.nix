@@ -83,6 +83,7 @@
               expect
               libcgroup
               criu
+              appimage-run
               # Security
               plasma5.polkit-kde-agent
               oathToolkit
