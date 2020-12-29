@@ -172,6 +172,8 @@
               netatalk
               awscli
               ngrok
+              tigervnc
+              remmina
             ];
           };
           devices = buildEnv {
