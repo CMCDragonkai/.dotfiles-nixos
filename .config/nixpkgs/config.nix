@@ -46,6 +46,7 @@
               bench
               hyperfine
               glances
+              gptfdisk
               # Keyboard
               teensy-loader-cli
               # Math
@@ -153,7 +154,7 @@
               ipfs
               rsync
               wireshark
-              nmap
+              (lib.lowPrio nmap-graphical)
               ncat
               socat
               hans
