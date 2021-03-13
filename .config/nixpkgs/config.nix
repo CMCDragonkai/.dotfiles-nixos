@@ -86,7 +86,7 @@
               criu
               appimage-run
               # Security
-              plasma5.polkit-kde-agent
+              polkit-kde-agent
               oathToolkit
               certbot
               keybase-gui
