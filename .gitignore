@@ -68,6 +68,7 @@
 /.httpie/*
 /.java/*
 /.kube/*
+/.mono/*
 /.mozilla/*
 /.nix-defexpr/*
 /.node-gyp/*
