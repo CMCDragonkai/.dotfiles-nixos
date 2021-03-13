@@ -4,6 +4,9 @@
   chromium = {
     pulseSupport = true;
   };
+  permittedInsecurePackages = [
+    "dcraw-9.28.0"
+  ];
   packageOverrides = pkgs:
     with pkgs;
     let
@@ -86,7 +89,7 @@
               criu
               appimage-run
               # Security
-              plasma5.polkit-kde-agent
+              polkit-kde-agent
               oathToolkit
               certbot
               keybase-gui
@@ -108,8 +111,6 @@
               nix-index
               nix-bundle
               nix-diff
-              # Chat
-              weechat
               # X Window and XMonad
               xdg_utils
               xdg-user-dirs
@@ -220,12 +221,45 @@
               gcc
               cachix
               emacs
+              (
+                vscode-with-extensions.override {
+                  vscodeExtensions = (
+                    (with vscode-extensions; [
+                      vscodevim.vim
+                      jnoortheen.nix-ide
+                      ms-python.python
+                      ms-vscode.cpptools
+                      haskell.haskell
+                      golang.Go
+                    ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
+                      {
+                        name = "nix-env-selector";
+                        publisher = "arrterian";
+                        version = "1.0.6";
+                        sha256 = "19k60nrhimwf61ybnn1qqb0n0zh2wdr8pp1x5bla9r76hz5srqdl";
+                      }
+                      {
+                        name = "vspacecode";
+                        publisher = "VSpaceCode";
+                        version = "0.9.0";
+                        sha256 = "1rhn5avb4icw3930n5bn9qqm7xrpasm87lv2is2k72ks3nxmhsid";
+                      }
+                      {
+                        name = "whichkey";
+                        publisher = "VSpaceCode";
+                        version = "0.8.4";
+                        sha256 = "0bhx3r08rw9b9gw5pmhyi1g8cb1bb2xmhwg4vpikfkbrs8a30bvi";
+                      }
+                    ]
+                  );
+                }
+              )
               vimHugeX
               tmux
               patchelf
               dos2unix
               qemu
-              #libguestfs
+              libguestfs
               shellcheck
               universal-ctags
               global
@@ -246,8 +280,6 @@
               aws-iam-authenticator
               # R
               R
-              # Rust
-              rustracer
               # Python
               (
                 with python3Packages;
@@ -303,7 +335,7 @@
             name = "env-graphics";
             meta.priority = 10;
             paths = [
-              #dcraw
+              dcraw
               drawpile
               graphicsmagick
               imagemagick
