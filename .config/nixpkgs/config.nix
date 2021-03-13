@@ -226,7 +226,7 @@
               patchelf
               dos2unix
               qemu
-              #libguestfs
+              libguestfs
               shellcheck
               universal-ctags
               global
