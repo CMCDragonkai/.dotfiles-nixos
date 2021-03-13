@@ -247,8 +247,6 @@
               aws-iam-authenticator
               # R
               R
-              # Rust
-              rustracer
               # Python
               (
                 with python3Packages;
