@@ -221,6 +221,39 @@
               gcc
               cachix
               emacs
+              (
+                vscode-with-extensions.override {
+                  vscodeExtensions = (
+                    (with vscode-extensions; [
+                      vscodevim.vim
+                      jnoortheen.nix-ide
+                      ms-python.python
+                      ms-vscode.cpptools
+                      haskell.haskell
+                      golang.Go
+                    ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
+                      {
+                        name = "nix-env-selector";
+                        publisher = "arrterian";
+                        version = "1.0.6";
+                        sha256 = "19k60nrhimwf61ybnn1qqb0n0zh2wdr8pp1x5bla9r76hz5srqdl";
+                      }
+                      {
+                        name = "vspacecode";
+                        publisher = "VSpaceCode";
+                        version = "0.9.0";
+                        sha256 = "1rhn5avb4icw3930n5bn9qqm7xrpasm87lv2is2k72ks3nxmhsid";
+                      }
+                      {
+                        name = "whichkey";
+                        publisher = "VSpaceCode";
+                        version = "0.8.4";
+                        sha256 = "0bhx3r08rw9b9gw5pmhyi1g8cb1bb2xmhwg4vpikfkbrs8a30bvi";
+                      }
+                    ]
+                  );
+                }
+              )
               vimHugeX
               tmux
               patchelf

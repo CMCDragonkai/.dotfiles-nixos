@@ -11,6 +11,8 @@
 !/.config/zathura
 !/.config/mimeapps.list
 !/.config/user-dirs.dirs
+!/.config/Code/User/settings.json
+!/.config/Code/User/keybindings.json
 
 /.gnupg/*
 !/.gnupg/gpg-agent.conf
