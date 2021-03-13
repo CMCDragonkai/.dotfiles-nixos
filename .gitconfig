@@ -28,3 +28,5 @@
     srv-rcv-all = !git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose
 [pull]
     rebase = false
+[init]
+	defaultBranch = master
