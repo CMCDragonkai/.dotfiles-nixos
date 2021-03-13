@@ -4,6 +4,9 @@
   chromium = {
     pulseSupport = true;
   };
+  permittedInsecurePackages = [
+    "dcraw-9.28.0"
+  ];
   packageOverrides = pkgs:
     with pkgs;
     let
@@ -301,7 +304,7 @@
             name = "env-graphics";
             meta.priority = 10;
             paths = [
-              #dcraw
+              dcraw
               drawpile
               graphicsmagick
               imagemagick
