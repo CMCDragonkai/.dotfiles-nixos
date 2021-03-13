@@ -108,8 +108,6 @@
               nix-index
               nix-bundle
               nix-diff
-              # Chat
-              weechat
               # X Window and XMonad
               xdg_utils
               xdg-user-dirs
