@@ -9,6 +9,9 @@
 *.ini -text
 *.eml -text
 *.txt -text
+*.crt -text
+*.pub -text
+*.key -text
 
 # Archives
 *.gz binary
