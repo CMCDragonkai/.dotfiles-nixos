@@ -1,7 +1,9 @@
 [Default Applications]
-inode/x-empty=emacs.desktop
-text/plain=emacs.desktop
+inode/x-empty=code.desktop
+inode/directory=org.gnome.Nautilus.desktop
+text/plain=code.desktop
 text/html=chromium-browser.desktop
+application/json=code.desktop
 image/svg+xml=inkscape.desktop
 application/msword=writer.desktop
 text/csv=calc.desktop
