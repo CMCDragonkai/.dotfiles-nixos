@@ -256,6 +256,24 @@
                         version = "0.16.4";
                         sha256 = "0fa4h9hk1xq6j3zfxvf483sbb4bd17fjl5cdm3rll7z9kaigdqwg";
                       }
+                      {
+                        name = "file-browser";
+                        publisher = "bodil";
+                        version = "0.2.10";
+                        sha256 = "1gw46sq49nm85i0mnbrlnl0fg09qi72fqsl46wgd16zf86djyvj5";
+                      }
+                      {
+                        name = "fuzzy-search";
+                        publisher = "jacobdufault";
+                        version = "0.0.3";
+                        sha256 = "0hvg4ac4zdxmimfwab1lzqizgq8bjfq6rksc9n7953m9gk6m5pd0";
+                      }
+                      {
+                        name = "magit";
+                        publisher = "kahole";
+                        version = "0.6.6";
+                        sha256 = "0gimkq3jihdikh2bdk9ljv7hc4rn92zsshf5awykd8pa0la8gxsh";
+                      }
                     ]
                   );
                 }
