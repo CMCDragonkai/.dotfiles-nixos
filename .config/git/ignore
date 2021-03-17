@@ -23,3 +23,6 @@ Session.vim
 
 # Emacs Files #
 .\#*
+
+# VSCode Files #
+.vscode
