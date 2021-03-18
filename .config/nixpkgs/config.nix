@@ -280,6 +280,12 @@
                         version = "0.33.1";
                         sha256 = "1iq2h87j7dr4vf9zgzihd5q4d95grc0iirz68az5dnvy19nvfv57";
                       }
+                      {
+                        name = "vscode-typescript-next";
+                        publisher = "ms-vscode";
+                        version = "4.3.20210317";
+                        sha256 = "0rc2pxj2x0afygbz2l8dbmhm9lgc4xz54crf1plnmiip78rnmz9g";
+                      }
                     ]
                   );
                 }
