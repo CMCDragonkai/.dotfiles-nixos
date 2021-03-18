@@ -46,5 +46,6 @@
         }
     ],
     "editor.fontFamily": "Fira Code, DejaVu Sans Mono, monospace",
-    "editor.fontLigatures": true
+    "editor.fontLigatures": true,
+    "editor.minimap.enabled": false
 }
