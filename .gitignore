@@ -13,6 +13,7 @@
 !/.config/user-dirs.dirs
 !/.config/Code/User/settings.json
 !/.config/Code/User/keybindings.json
+!/.config/autorandr
 
 /.gnupg/*
 !/.gnupg/gpg-agent.conf
