@@ -67,7 +67,7 @@ This shows some common important keyboard controls that is configured.
 
 ### Notation
 
-This notation is used in some configuration files such as `.inputrc` and Emacs:
+This notation is used in some configuration files such as `.inputrc`:
 
 * `\C` - <kbd>Ctrl</kbd>
 * `\S` - <kbd>Shift</kbd>
@@ -89,11 +89,6 @@ We prefer ASCII DEL `^?` to be used for backwards delete instead of ASCII BS `^H
 * <kbd>Ctrl</kbd> + <kbd>\</kbd> - Send SIGQUIT
 * <kbd>Ctrl</kbd> + <kbd>U</kbd> - Send SIGTERM
 
-### Emacs
-
-* <kbd>"</kbd> + <kbd>+</kbd> + <kbd>y</kbd> - Copy to system clipboard
-* <kbd>"</kbd> + <kbd>+</kbd> + <kbd>p</kbd> - Paste from system clipboard
-
 ### Vim
 
 ```
@@ -112,6 +107,9 @@ Ctrl-W C - Close current window
 :tabn - Next tab
 :tabp - Previous tab
 ```
+
+* <kbd>"</kbd> + <kbd>+</kbd> + <kbd>y</kbd> - Copy to system clipboard
+* <kbd>"</kbd> + <kbd>+</kbd> + <kbd>p</kbd> - Paste from system clipboard
 
 ### Linux
 
