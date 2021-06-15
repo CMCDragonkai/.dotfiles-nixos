@@ -463,6 +463,7 @@
               spotify
               zoom-us
               googleearth
+              teams
             ];
           };
         };
