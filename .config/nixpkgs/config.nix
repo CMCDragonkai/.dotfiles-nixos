@@ -218,9 +218,6 @@
             meta.priority = 20;
             paths = [
               # Development
-              gcc
-              cachix
-              emacs
               (
                 vscode-with-extensions.override {
                   vscodeExtensions = (
@@ -296,8 +293,9 @@
                   );
                 }
               )
+              gcc
+              cachix
               vimHugeX
-              tmux
               patchelf
               dos2unix
               qemu
@@ -323,25 +321,10 @@
               # R
               R
               # Python
-              (
-                with python3Packages;
-                python.buildEnv.override {
-                  extraLibs = [
-                    setuptools
-                    jedi
-                    flake8
-                    isort
-                  ];
-                }
-              )
-              autoflake
+              python3
               # Node
               nodejs
-              nodePackages.tern
               nodePackages.node2nix
-              nodePackages.typescript
-              nodePackages.prettier
-              nodePackages.eslint
               # Go
               go
               gocode
@@ -350,9 +333,6 @@
               ghc
               cabal2nix
               haskellPackages.pretty-show
-              haskellPackages.stylish-haskell
-              haskellPackages.brittany
-              haskellPackages.hlint
             ];
           };
           media = buildEnv {
