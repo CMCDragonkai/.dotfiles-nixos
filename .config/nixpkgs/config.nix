@@ -6,6 +6,7 @@
   };
   permittedInsecurePackages = [
     "dcraw-9.28.0"
+    "python2.7-Pillow-6.2.2"
   ];
   packageOverrides = pkgs:
     with pkgs;
