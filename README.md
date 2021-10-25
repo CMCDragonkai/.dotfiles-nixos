@@ -20,7 +20,7 @@ Install the base packages:
 nix-env -iA env.base
 ```
 
-Now you can got to TTY7 and continue the installation.
+Now you can go to TTY7 and continue the installation.
 
 If you have problems, go back to TTY1 and fix them.
 
