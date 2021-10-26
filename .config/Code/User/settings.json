@@ -49,5 +49,6 @@
     "editor.fontLigatures": true,
     "editor.minimap.enabled": false,
     "editor.lineNumbers": "relative",
-    "js/ts.implicitProjectConfig.experimentalDecorators": true
+    "js/ts.implicitProjectConfig.experimentalDecorators": true,
+    "editor.fontSize": 16
 }
