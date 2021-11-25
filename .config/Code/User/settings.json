@@ -50,5 +50,9 @@
     "editor.minimap.enabled": false,
     "editor.lineNumbers": "relative",
     "js/ts.implicitProjectConfig.experimentalDecorators": true,
-    "editor.fontSize": 16
+    "editor.fontSize": 16,
+    "explorer.confirmDragAndDrop": false,
+    "editor.renderWhitespace": "all",
+    "terminal.integrated.tabs.enabled": true,
+    "debug.javascript.autoAttachFilter": "smart"
 }
