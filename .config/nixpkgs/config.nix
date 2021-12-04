@@ -415,13 +415,6 @@
               ledger-live-desktop
             ];
           };
-          gaming = buildEnv {
-            name = "env-gaming";
-            meta.priority = 10;
-            paths = [
-              steam
-            ];
-          };
           android = buildEnv {
             name = "env-android";
             meta.priority = 10;
