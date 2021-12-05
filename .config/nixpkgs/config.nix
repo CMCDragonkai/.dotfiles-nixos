@@ -433,7 +433,7 @@
               slack
               spotify
               zoom-us
-              googleearth
+              #googleearth
             ];
           };
         };
