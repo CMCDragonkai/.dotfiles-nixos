@@ -92,7 +92,6 @@
               polkit-kde-agent
               oathToolkit
               certbot
-              keybase-gui
               pcsctools
               paperkey
               step-cli
