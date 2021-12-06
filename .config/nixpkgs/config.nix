@@ -236,14 +236,14 @@
                       {
                         name = "vspacecode";
                         publisher = "VSpaceCode";
-                        version = "0.9.0";
-                        sha256 = "1rhn5avb4icw3930n5bn9qqm7xrpasm87lv2is2k72ks3nxmhsid";
+                        version = "0.10.4";
+                        sha256 = "1vgg70h1asi5wf7lcg6bla8cgk435q8xjp2ryfaqgm1fx3ysahnj";
                       }
                       {
                         name = "whichkey";
                         publisher = "VSpaceCode";
-                        version = "0.8.4";
-                        sha256 = "0bhx3r08rw9b9gw5pmhyi1g8cb1bb2xmhwg4vpikfkbrs8a30bvi";
+                        version = "0.11.2";
+                        sha256 = "18ipwxs95c5771mp36xr28qblvzsz2kfhjyqgm344m4z5ilnjm67";
                       }
                       {
                         name = "EditorConfig";
