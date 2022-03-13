@@ -1,6 +1,5 @@
 set tabstospaces
 set tabsize 4
-set smooth
 set nonewlines
 set softwrap
 set noconvert
@@ -9,4 +8,3 @@ set historylog
 set positionlog
 set constantshow
 set autoindent
-set morespace
