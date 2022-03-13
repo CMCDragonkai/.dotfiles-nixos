@@ -430,7 +430,7 @@
             meta.priority = 20;
             paths = [
               masterpdfeditor
-              skype
+              skypeforlinux
               slack
               spotify
               zoom-us
