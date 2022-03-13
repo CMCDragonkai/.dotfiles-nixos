@@ -226,6 +226,7 @@
                       ms-vscode.cpptools
                       haskell.haskell
                       golang.Go
+                      eamodio.gitlens
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
                       {
                         name = "nix-env-selector";
