@@ -225,38 +225,26 @@
                       ms-python.python
                       ms-vscode.cpptools
                       haskell.haskell
-                      golang.Go
+                      golang.go
                       eamodio.gitlens
+                      arrterian.nix-env-selector
+                      editorconfig.editorconfig
+                      bodil.file-browser
+                      kahole.magit
+                      octref.vetur
+                      zxh404.vscode-proto3
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
-                      {
-                        name = "nix-env-selector";
-                        publisher = "arrterian";
-                        version = "1.0.6";
-                        sha256 = "19k60nrhimwf61ybnn1qqb0n0zh2wdr8pp1x5bla9r76hz5srqdl";
-                      }
                       {
                         name = "vspacecode";
                         publisher = "VSpaceCode";
-                        version = "0.10.4";
-                        sha256 = "1vgg70h1asi5wf7lcg6bla8cgk435q8xjp2ryfaqgm1fx3ysahnj";
+                        version = "0.10.7";
+                        sha256 = "1m2fjnid355n5y6bj4x4k0hk9wkl00fac0xiwr6kr8dpw2jpf5qf";
                       }
                       {
                         name = "whichkey";
                         publisher = "VSpaceCode";
-                        version = "0.11.2";
-                        sha256 = "18ipwxs95c5771mp36xr28qblvzsz2kfhjyqgm344m4z5ilnjm67";
-                      }
-                      {
-                        name = "EditorConfig";
-                        publisher = "EditorConfig";
-                        version = "0.16.4";
-                        sha256 = "0fa4h9hk1xq6j3zfxvf483sbb4bd17fjl5cdm3rll7z9kaigdqwg";
-                      }
-                      {
-                        name = "file-browser";
-                        publisher = "bodil";
-                        version = "0.2.10";
-                        sha256 = "1gw46sq49nm85i0mnbrlnl0fg09qi72fqsl46wgd16zf86djyvj5";
+                        version = "0.11.3";
+                        sha256 = "0zix87vl2rig8wn3f6f3n6zdi0c61za3lw7xgm28sjhwwb08wxiy";
                       }
                       {
                         name = "fuzzy-search";
@@ -265,28 +253,10 @@
                         sha256 = "0hvg4ac4zdxmimfwab1lzqizgq8bjfq6rksc9n7953m9gk6m5pd0";
                       }
                       {
-                        name = "magit";
-                        publisher = "kahole";
-                        version = "0.6.6";
-                        sha256 = "0gimkq3jihdikh2bdk9ljv7hc4rn92zsshf5awykd8pa0la8gxsh";
-                      }
-                      {
-                        name = "vetur";
-                        publisher = "octref";
-                        version = "0.33.1";
-                        sha256 = "1iq2h87j7dr4vf9zgzihd5q4d95grc0iirz68az5dnvy19nvfv57";
-                      }
-                      {
                         name = "vscode-typescript-next";
                         publisher = "ms-vscode";
-                        version = "4.3.20210317";
-                        sha256 = "0rc2pxj2x0afygbz2l8dbmhm9lgc4xz54crf1plnmiip78rnmz9g";
-                      }
-                      {
-                        name = "vscode-proto3";
-                        publisher = "zxh404";
-                        version = "0.5.3";
-                        sha256 = "1piih7q2fp81hh356h10xi0v0xvicc9698yp9hj7c08xws3s4i51";
+                        version = "4.7.20220327";
+                        sha256 = "1w4j48fwci5ylmvn4sc4l8c1h3q3xidhqb82zj6lk0ml5ag0zin7";
                       }
                     ]
                   );
@@ -348,7 +318,6 @@
               mediainfo
               olive-editor
               obs-studio
-              obs-v4l2sink
               darktable
             ];
           };
