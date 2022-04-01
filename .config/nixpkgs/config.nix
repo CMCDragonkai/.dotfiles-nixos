@@ -127,6 +127,7 @@
               haskellPackages.xmobar
               feh
               autorandr
+              arandr
               # Audio Video
               pavucontrol
               playerctl
