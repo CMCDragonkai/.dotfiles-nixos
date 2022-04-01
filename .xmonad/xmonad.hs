@@ -121,16 +121,10 @@ myKeys (XConfig { modMask }) =
         Run.safeSpawn "pactl" ["set-sink-volume", "@DEFAULT_SINK@", "+10%"]),
       ((noModMask, xF86XK_MonBrightnessDown),
         Run.unsafeSpawn
-          "read -r level </sys/class/backlight/acpi_video0/brightness\n\
-          \read -r max </sys/class/backlight/acpi_video0/max_brightness\n\
-          \factor=$((100/max))\n\
-          \xbacklight -set \"$((level * factor))\""),
+          "light -U 30"),
       ((noModMask, xF86XK_MonBrightnessUp),
         Run.unsafeSpawn
-          "read -r level </sys/class/backlight/acpi_video0/brightness\n\
-          \read -r max </sys/class/backlight/acpi_video0/max_brightness\n\
-          \factor=$((100/max))\n\
-          \xbacklight -set \"$((level * factor))\"")
+          "light -A 30")
     ]
     ++
     [
@@ -156,7 +150,3 @@ main = do
             DynamicLog.ppTitle  = DynamicLog.xmobarColor "green" "" . DynamicLog.shorten 50
           }
       }
-
--- todo:
--- http://thinkingeek.com/2011/11/21/simple-guide-configure-xmonad-dzen2-conky/
--- https://pbrisbin.com/posts/xmonad_statusbars/
