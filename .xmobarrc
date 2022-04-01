@@ -8,10 +8,27 @@ Config {
     position = TopW L 100,
     commands =
         [
-            Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10,
+            Run Cpu [
+              "-L", "3",
+              "-H", "50",
+              "--normal", "green",
+              "--high","red"
+            ] 10,
+            Run Memory [
+              "-t", "Mem: <usedratio>%"
+            ] 10,
+            Run Battery [
+              "-t", "<acstatus>: <left>% - <timeleft>",
+              "--",
+              "-O", "AC",
+              "-o", "Bat",
+              "-h", "green",
+              "-l", "red"
+            ] 10,
+            Run Date "%k:%M:%S" "date" 10,
             Run StdinReader
         ],
     sepChar = "%",
     alignSep = "}{",
-    template = "%StdinReader% | %cpu% "
+    template = "%StdinReader% }{ %cpu% | %memory% | %battery% | %date% "
 }
