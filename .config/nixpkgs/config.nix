@@ -381,7 +381,7 @@
             name = "env-crypto";
             meta.priority = 30;
             paths = [
-              electrum
+              mycrypto
               ledger-live-desktop
             ];
           };
