@@ -6,6 +6,7 @@
   };
   permittedInsecurePackages = [
     "dcraw-9.28.0"
+    "googleearth-pro-7.3.4.8248"
   ];
   packageOverrides = pkgs:
     with pkgs;
@@ -382,7 +383,6 @@
             meta.priority = 30;
             paths = [
               mycrypto
-              ledger-live-desktop
             ];
           };
           android = buildEnv {
@@ -404,7 +404,8 @@
               slack
               spotify
               zoom-us
-              #googleearth
+              ledger-live-desktop
+              googleearth-pro
             ];
           };
         };
