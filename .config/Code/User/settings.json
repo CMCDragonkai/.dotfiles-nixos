@@ -1,6 +1,6 @@
 {
     "vim.easymotion": true,
-    "vim.useSystemClipboard": true,
+    "vim.useSystemClipboard": false,
     "vim.normalModeKeyBindingsNonRecursive": [
         {
             "before": [
