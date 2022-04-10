@@ -1,34 +1,34 @@
 [core]
-    autocrlf = input
-    safecrlf = true
-    eol = lf
-    excludesfile = ~/.config/git/ignore
-    attributesfile = ~/.config/git/attributes
+  autocrlf = input
+  safecrlf = true
+  eol = lf
+  excludesfile = ~/.config/git/ignore
+  attributesfile = ~/.config/git/attributes
 [user]
-    name = Roger Qiu
-    email = roger.qiu@polyhack.io
-    signingkey = 0D3FB2EEAF121097
+  name = Roger Qiu
+  email = roger.qiu@polyhack.io
+  signingkey = 0D3FB2EEAF121097
 [commit]
-    gpgsign = true
+  gpgsign = true
 [tag]
-    gpgsign = true
+  gpgsign = true
 [submodule]
-    recurse = true
+  recurse = true
 [credential]
-    helper = cache --timeout=1800
+  helper = cache --timeout=1800
 [alias]
-    cloner = clone --recursive
-    pullr = pull --recurse-submodules
-    tree = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit
-    tree-stat = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit --stat
-    tree-patch = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit --patch
-    srv = !git daemon --base-path=. --reuseaddr --informative-errors --verbose
-    srv-all = !git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose
-    srv-rcv = !git daemon --base-path=. --enable=receive-pack --reuseaddr --informative-errors --verbose
-    srv-rcv-all = !git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose
+  cloner = clone --recursive
+  pullr = pull --recurse-submodules
+  tree = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit
+  tree-stat = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit --stat
+  tree-patch = log --graph --branches --remotes --tags --decorate --pretty=oneline --abbrev-commit --patch
+  srv = !git daemon --base-path=. --reuseaddr --informative-errors --verbose
+  srv-all = !git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose
+  srv-rcv = !git daemon --base-path=. --enable=receive-pack --reuseaddr --informative-errors --verbose
+  srv-rcv-all = !git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose
 [pull]
-    rebase = false
+  rebase = false
 [init]
-    defaultBranch = master
+  defaultBranch = master
 [diff "sqlite3"]
   textconv = "f(){ sqlite3 -batch \"$1\" .dump; }; f"
