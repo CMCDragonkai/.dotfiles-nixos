@@ -393,6 +393,14 @@
               python3Packages.gplaycli
             ];
           };
+          wine = buildEnv {
+            name = "env-wine";
+            meta.priority = 10;
+            paths = [
+              wineWowPackages.stableFull
+              winetricks
+            ];
+          };
           # proprietary applications tend to expire quickly
           # so we need to follow master for these
           proprietary = with pkgsMaster; buildEnv {
