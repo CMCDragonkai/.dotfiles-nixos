@@ -238,8 +238,8 @@
                       {
                         name = "vspacecode";
                         publisher = "VSpaceCode";
-                        version = "0.10.7";
-                        sha256 = "1m2fjnid355n5y6bj4x4k0hk9wkl00fac0xiwr6kr8dpw2jpf5qf";
+                        version = "0.10.9";
+                        sha256 = "01d43dcd5293nlp6vskdv85h0qr8xlq8j9vdzn0vjqr133c05anp";
                       }
                       {
                         name = "whichkey";
