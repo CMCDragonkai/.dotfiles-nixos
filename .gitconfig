@@ -32,3 +32,5 @@
   defaultBranch = master
 [diff "sqlite3"]
   textconv = "f(){ sqlite3 -batch \"$1\" .dump; }; f"
+[safe]
+  directory = /etc/nixos
