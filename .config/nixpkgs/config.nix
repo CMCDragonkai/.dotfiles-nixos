@@ -74,14 +74,14 @@
               kitty
               kitty.terminfo
               gnum4
-              ag
+              silver-searcher
               dex
               dunst
               libnotify
-              hicolor_icon_theme
+              hicolor-icon-theme
               gnome3.adwaita-icon-theme
               gnome3.nautilus
-              gnome3.dconf
+              dconf
               rlwrap
               trash-cli
               inotify-tools
@@ -156,8 +156,7 @@
               ipfs
               rsync
               wireshark
-              (lib.lowPrio nmap-graphical)
-              ncat
+              nmap
               socat
               hans
               iodine
@@ -167,7 +166,7 @@
               sslh
               geoipWithDatabase
               iperf
-              conntrack_tools
+              conntrack-tools
               openvpn
               autossh
               filezilla
@@ -278,12 +277,12 @@
               python3Packages.pygments
               man-pages
               posix_man_pages
-              libcap_manpages
+              libcap.doc
               valgrind
               gdb
               lldb
               rr
-              docker_compose
+              docker-compose
               runc
               ipmitool
               ipmiutil
@@ -318,7 +317,7 @@
               flameshot
               python3Packages.youtube-dl
               mediainfo
-              olive-editor
+              # olive-editor
               obs-studio
               darktable
             ];
@@ -356,7 +355,7 @@
               xsv                     # csv
               hdf5                    # hdf5
               hdfview
-              go-pup                  # html
+              pup                     # html
               visidata                # spreadsheet
             ];
           };
