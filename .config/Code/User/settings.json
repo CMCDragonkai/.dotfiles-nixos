@@ -54,5 +54,6 @@
     "explorer.confirmDragAndDrop": false,
     "editor.renderWhitespace": "all",
     "terminal.integrated.tabs.enabled": true,
-    "debug.javascript.autoAttachFilter": "smart"
+    "debug.javascript.autoAttachFilter": "smart",
+    "workbench.startupEditor": "none"
 }
