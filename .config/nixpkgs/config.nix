@@ -228,7 +228,6 @@
                       haskell.haskell
                       golang.go
                       eamodio.gitlens
-                      arrterian.nix-env-selector
                       editorconfig.editorconfig
                       bodil.file-browser
                       kahole.magit
@@ -258,12 +257,6 @@
                         publisher = "ms-vscode";
                         version = "4.7.20220327";
                         sha256 = "1w4j48fwci5ylmvn4sc4l8c1h3q3xidhqb82zj6lk0ml5ag0zin7";
-                      }
-                      {
-                        name = "vscode-jest";
-                        publisher = "Orta";
-                        version = "4.6.0";
-                        sha256 = "1dmssylvfzyadyrc061kyycm1zah4z1k02f1v4kb82hpv3kaag91";
                       }
                     ]
                   );
