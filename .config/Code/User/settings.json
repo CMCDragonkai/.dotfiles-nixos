@@ -56,5 +56,8 @@
     "terminal.integrated.tabs.enabled": true,
     "debug.javascript.autoAttachFilter": "smart",
     "workbench.startupEditor": "none",
-    "telemetry.telemetryLevel": "crash"
+    "telemetry.telemetryLevel": "crash",
+    "files.associations": {
+        ".env": "shellscript"
+    }
 }
