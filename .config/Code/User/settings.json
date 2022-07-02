@@ -59,5 +59,6 @@
     "telemetry.telemetryLevel": "crash",
     "files.associations": {
         ".env": "shellscript"
-    }
+    },
+    "redhat.telemetry.enabled": false
 }

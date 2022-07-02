@@ -233,6 +233,7 @@
                       kahole.magit
                       octref.vetur
                       zxh404.vscode-proto3
+                      redhat.vscode-yaml
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
                       {
                         name = "vspacecode";
