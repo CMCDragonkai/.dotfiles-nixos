@@ -20,7 +20,13 @@ EOF
 fi
 
 governor="$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
-boost="$(cat /sys/devices/system/cpu/cpufreq/boost)"
+if [ -e '/sys/devices/system/cpu/intel_pstate/no_turbo' ]; then
+  boost="$(cat /sys/devices/system/cpu/intel_pstate/no_turbo)"
+  intel=true
+else
+  boost="$(cat /sys/devices/system/cpu/cpufreq/boost)"
+  intel=false
+fi
 
 cleanup () {
   sudo sh << EOF
@@ -28,18 +34,26 @@ set -o errexit
 set -o nounset
 set -o pipefail
 cpupower frequency-set -g "$governor" >/dev/null
-echo "$boost" > /sys/devices/system/cpu/cpufreq/boost
+if "$intel"; then
+  echo "$boost" > /sys/devices/system/cpu/intel_pstate/no_turbo
+else
+  echo "$boost" > /sys/devices/system/cpu/cpufreq/boost
+fi
 EOF
 }
 
 trap cleanup EXIT
 
-sudo sh << "EOF"
+sudo sh << EOF
 set -o errexit
 set -o nounset
 set -o pipefail
 cpupower frequency-set -g performance >/dev/null
-echo 0 > /sys/devices/system/cpu/cpufreq/boost
+if "$intel"; then
+  echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+else
+  echo 0 > /sys/devices/system/cpu/cpufreq/boost
+fi
 EOF
 
 "$@"
