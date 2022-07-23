@@ -288,6 +288,7 @@
               ipmiutil
               kubectl
               aws-iam-authenticator
+              git-lfs
               # R
               R
               # Python

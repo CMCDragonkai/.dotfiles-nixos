@@ -34,3 +34,8 @@
   textconv = "f(){ sqlite3 -batch \"$1\" .dump; }; f"
 [safe]
   directory = /etc/nixos
+[filter "lfs"]
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
