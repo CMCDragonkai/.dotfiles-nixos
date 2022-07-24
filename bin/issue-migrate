@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+shopt -s inherit_errexit
+
+count=0
+
+glab api 'projects/:fullpath/issues?state=opened' --paginate | jq -c '.[]' | while read -r issue_object; do
+  gl_issue_author="$(jq -r '.author.username' <<< "$issue_object")"
+  gl_issue_id="$(jq -r '.iid' <<< "$issue_object")"
+  gl_issue_title="$(jq -r '.title' <<< "$issue_object")"
+  gl_issue_description="$(jq -r '.description' <<< "$issue_object")"
+  gh_issue_url=$(gh issue create --title "$gl_issue_title" --body "Original Author: $gl_issue_author"$'\n\n'"$gl_issue_description")
+  count=$((count+1))
+  echo "Created: $gh_issue_url"
+  echo $count
+  glab api \
+      "projects/:fullpath/issues/$gl_issue_id/notes?sort=asc" \
+      --paginate \
+    | jq -c '.[] | select(.system == false)' \
+    | while read -r comment_object; do
+    gl_comment_body="$(jq -r '.body' <<< "$comment_object")"
+    gl_comment_author="$(jq -r '.author.username' <<< "$comment_object")"
+    gh issue comment "$gh_issue_url" --body "Original Author: $gl_comment_author"$'\n\n'"$gl_comment_body"
+    sleep 1
+  done
+  sleep 5
+done

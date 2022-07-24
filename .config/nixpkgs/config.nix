@@ -288,7 +288,6 @@
               ipmiutil
               kubectl
               aws-iam-authenticator
-              git-lfs
               # R
               R
               # Python
@@ -304,6 +303,10 @@
               ghc
               cabal2nix
               haskellPackages.pretty-show
+              # Git
+              git-lfs
+              gitAndTools.gh
+              gitAndTools.glab
             ];
           };
           media = buildEnv {
