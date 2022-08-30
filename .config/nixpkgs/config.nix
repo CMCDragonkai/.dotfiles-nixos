@@ -236,6 +236,12 @@
                       redhat.vscode-yaml
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
                       {
+                        name = "copilot";
+                        publisher = "GitHub";
+                        version = "1.43.6621";
+                        sha256 = "0m52zkc2vnh6gikdc33n7ci5zahvwh3x79rysqckzgqjrjvz9c16";
+                      }
+                      {
                         name = "vspacecode";
                         publisher = "VSpaceCode";
                         version = "0.10.9";

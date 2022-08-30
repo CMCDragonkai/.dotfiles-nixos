@@ -60,5 +60,6 @@
     "files.associations": {
         ".env": "shellscript"
     },
-    "redhat.telemetry.enabled": false
+    "redhat.telemetry.enabled": false,
+    "editor.inlineSuggest.enabled": true
 }
