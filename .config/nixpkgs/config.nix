@@ -238,8 +238,8 @@
                       {
                         name = "copilot";
                         publisher = "GitHub";
-                        version = "1.43.6621";
-                        sha256 = "0m52zkc2vnh6gikdc33n7ci5zahvwh3x79rysqckzgqjrjvz9c16";
+                        version = "1.56.7152";
+                        sha256 = "00v8q0w0wx0ddynjckaqy22rddp744z5d2a1sc2j7zsqqm6jyqgm";
                       }
                       {
                         name = "vspacecode";

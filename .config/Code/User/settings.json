@@ -61,5 +61,11 @@
         ".env": "shellscript"
     },
     "redhat.telemetry.enabled": false,
-    "editor.inlineSuggest.enabled": true
+    "editor.inlineSuggest.enabled": true,
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": false,
+        "plaintext": false,
+        "markdown": true
+    },
 }
