@@ -79,6 +79,7 @@
 /.nv/*
 /.pkg-cache/*
 /.pki/*
+/.secrets/*
 /.steam/*
 /.swt/*
 /.thunderbird/*
