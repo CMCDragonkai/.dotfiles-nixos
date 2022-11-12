@@ -235,6 +235,7 @@
                       zxh404.vscode-proto3
                       redhat.vscode-yaml
                       matklad.rust-analyzer
+                      tamasfe.even-better-toml
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
                       {
                         name = "copilot";
