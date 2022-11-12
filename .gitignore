@@ -59,6 +59,7 @@
 
 /.cache/*
 /.cabal/*
+/.cargo/*
 /.compose-cache/*
 /.dbeaver*/*
 /.dbus/*

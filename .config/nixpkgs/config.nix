@@ -234,6 +234,7 @@
                       octref.vetur
                       zxh404.vscode-proto3
                       redhat.vscode-yaml
+                      matklad.rust-analyzer
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
                       {
                         name = "copilot";
@@ -309,6 +310,9 @@
               ghc
               cabal2nix
               haskellPackages.pretty-show
+              # Rust
+              rustc
+              cargo
               # Git
               git-lfs
               gitAndTools.gh
