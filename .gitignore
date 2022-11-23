@@ -83,6 +83,7 @@
 /.secrets/*
 /.steam/*
 /.swt/*
+/.terminfo/*
 /.thunderbird/*
 /.wine/*
 /.wrangler/*
