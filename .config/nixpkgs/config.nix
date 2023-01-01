@@ -272,6 +272,7 @@
                 }
               )
               gcc
+              scc
               cachix
               vimHugeX
               patchelf
