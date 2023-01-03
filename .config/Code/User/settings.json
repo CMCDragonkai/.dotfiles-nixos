@@ -68,4 +68,6 @@
         "plaintext": false,
         "markdown": true
     },
+    "editor.inlayHints.enabled": false,
+    "explorer.confirmDelete": false,
 }
