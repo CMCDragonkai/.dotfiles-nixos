@@ -236,6 +236,7 @@
                       redhat.vscode-yaml
                       matklad.rust-analyzer
                       tamasfe.even-better-toml
+                      jock.svg
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
                       {
                         name = "copilot";
