@@ -7,6 +7,7 @@
   permittedInsecurePackages = [
     "dcraw-9.28.0"
     "googleearth-pro-7.3.4.8248"
+    "qtwebkit-5.212.0-alpha4"
   ];
   packageOverrides = pkgs:
     with pkgs;
@@ -63,6 +64,7 @@
               tree
               parallel
               asciinema
+              asciinema-agg
               reptyr
               lsof
               rmlint
