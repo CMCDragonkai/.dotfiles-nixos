@@ -244,14 +244,14 @@
                       {
                         name = "copilot";
                         publisher = "GitHub";
-                        version = "1.56.7152";
-                        sha256 = "00v8q0w0wx0ddynjckaqy22rddp744z5d2a1sc2j7zsqqm6jyqgm";
+                        version = "1.73.8685";
+                        sha256 = "sha256-W1j1VAuSM1sgxHRIahqVncUlknT+MPi7uutY+0NURZQ=";
                       }
                       {
                         name = "vspacecode";
                         publisher = "VSpaceCode";
-                        version = "0.10.9";
-                        sha256 = "01d43dcd5293nlp6vskdv85h0qr8xlq8j9vdzn0vjqr133c05anp";
+                        version = "0.10.14";
+                        sha256 = "sha256-iTFwm/P2wzbNahozyLbdfokcSDHFzLrzVDHI/g2aFm0=";
                       }
                       {
                         name = "whichkey";
