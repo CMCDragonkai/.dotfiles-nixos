@@ -65,6 +65,7 @@
               parallel
               asciinema
               asciinema-agg
+              asciinema-scenario
               reptyr
               lsof
               rmlint
