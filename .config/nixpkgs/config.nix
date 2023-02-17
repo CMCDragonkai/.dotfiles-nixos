@@ -232,7 +232,6 @@
                       golang.go
                       eamodio.gitlens
                       editorconfig.editorconfig
-                      bodil.file-browser
                       kahole.magit
                       octref.vetur
                       zxh404.vscode-proto3
@@ -252,6 +251,12 @@
                         publisher = "VSpaceCode";
                         version = "0.10.14";
                         sha256 = "sha256-iTFwm/P2wzbNahozyLbdfokcSDHFzLrzVDHI/g2aFm0=";
+                      }
+                      {
+                        name = "file-browser";
+                        publisher = "bodil";
+                        version = "0.2.11";
+                        sha256 = "sha256-yPVhhsAUZxnlhj58fXkk+yhxop2q7YJ6X4W9dXGKJfo=";
                       }
                       {
                         name = "whichkey";
