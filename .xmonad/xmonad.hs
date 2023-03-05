@@ -141,7 +141,7 @@ main = do
     Run.unsafeSpawn "feh --bg-fill ~/Pictures/wallpaper.png"
     Run.unsafeSpawn "dex --autostart"
     Run.unsafeSpawn "dunst"
-    xmproc <- Run.spawnPipe "xmobar"
+    xmproc <- Run.spawnPipe "xmobar -x 0"
     xmonad $ Docks.docks $ Ewmh.ewmh $ myConfig $ def
       {
         logHook = DynamicLog.dynamicLogWithPP $ def

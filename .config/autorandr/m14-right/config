@@ -1,6 +1,6 @@
 output HDMI-1
 off
-output DP-2
+output DP-1
 off
 output eDP-1
 crtc 0
@@ -13,7 +13,7 @@ x-prop-colorspace Default
 x-prop-max_bpc 12
 x-prop-non_desktop 0
 x-prop-scaling_mode Full aspect
-output DP-1
+output DP-2
 crtc 1
 mode 1920x1080
 pos 1920x0
