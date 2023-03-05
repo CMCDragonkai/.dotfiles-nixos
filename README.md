@@ -26,6 +26,10 @@ If you have problems, go back to TTY1 and fix them.
 
 You can always kill XMonad with <kbd>Mod</kbd> + <kbd>Shift</kbd> + <kbd>Q</kbd>.
 
+## Migration
+
+Remember to migrate your `~/.ssh/keys`,`~/.gnupg` and `~/.aws` keys.
+
 ## Permissions
 
 Git only persists 755 or 644 for files and directories are always 755. This means without any further processing after installation all files will appear either as executables or non-executables with read permission for the group and others, while directories are always readable and executable for the group and others. Sensitive folders should be explicitly modified to have their read and execute permissions for non-owners removed.
@@ -34,6 +38,8 @@ The `umask` setting is `027` by default, but when running with `sudo`, it change
 
 ```sh
 chmod --recursive u=rw,u=rwX,g=,o= ~/.ssh
+chmod --recursive u=rw,u=rwX,g=,o= ~/.gnupg
+chmod --recursive u=rw,u=rwX,g=,o= ~/.aws
 ```
 
 ## Vim Packages
