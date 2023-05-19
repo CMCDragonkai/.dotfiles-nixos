@@ -156,6 +156,7 @@
               ipfs
               rsync
               wireshark
+              charles
               nmap
               socat
               hans
@@ -210,6 +211,7 @@
               texlive.combined.scheme-small
               aspell
               aspellDicts.en
+              monolith
             ];
           };
           development = buildEnv {
@@ -237,12 +239,13 @@
                       matklad.rust-analyzer
                       tamasfe.even-better-toml
                       jock.svg
+                      arrterian.nix-env-selector
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
                       {
                         name = "copilot";
                         publisher = "GitHub";
-                        version = "1.56.7152";
-                        sha256 = "00v8q0w0wx0ddynjckaqy22rddp744z5d2a1sc2j7zsqqm6jyqgm";
+                        version = "1.84.51";
+                        sha256 = "1w6ir3g1fh51k0ysa1kc1y4czij9x0iangfiw50566vnixzm7d96";
                       }
                       {
                         name = "vspacecode";
@@ -319,6 +322,8 @@
               git-lfs
               gitAndTools.gh
               gitAndTools.glab
+              # Biscuit
+              biscuit-cli
             ];
           };
           media = buildEnv {
