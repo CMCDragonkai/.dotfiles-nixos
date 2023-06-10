@@ -7,6 +7,7 @@
   permittedInsecurePackages = [
     "dcraw-9.28.0"
     "googleearth-pro-7.3.4.8248"
+    "qtwebkit-5.212.0-alpha4"
   ];
   packageOverrides = pkgs:
     with pkgs;
@@ -63,6 +64,8 @@
               tree
               parallel
               asciinema
+              asciinema-agg
+              asciinema-scenario
               reptyr
               lsof
               rmlint
@@ -231,7 +234,6 @@
                       golang.go
                       eamodio.gitlens
                       editorconfig.editorconfig
-                      bodil.file-browser
                       kahole.magit
                       octref.vetur
                       zxh404.vscode-proto3
@@ -250,8 +252,14 @@
                       {
                         name = "vspacecode";
                         publisher = "VSpaceCode";
-                        version = "0.10.9";
-                        sha256 = "01d43dcd5293nlp6vskdv85h0qr8xlq8j9vdzn0vjqr133c05anp";
+                        version = "0.10.14";
+                        sha256 = "sha256-iTFwm/P2wzbNahozyLbdfokcSDHFzLrzVDHI/g2aFm0=";
+                      }
+                      {
+                        name = "file-browser";
+                        publisher = "bodil";
+                        version = "0.2.11";
+                        sha256 = "sha256-yPVhhsAUZxnlhj58fXkk+yhxop2q7YJ6X4W9dXGKJfo=";
                       }
                       {
                         name = "whichkey";
@@ -276,6 +284,7 @@
                 }
               )
               gcc
+              scc
               cachix
               vimHugeX
               patchelf
