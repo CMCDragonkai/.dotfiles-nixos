@@ -180,6 +180,7 @@
               ngrok
               tigervnc
               remmina
+              websocat
             ];
           };
           devices = buildEnv {
@@ -242,6 +243,7 @@
                       tamasfe.even-better-toml
                       jock.svg
                       arrterian.nix-env-selector
+                      bradlc.vscode-tailwindcss
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
                       {
                         name = "copilot";
@@ -289,6 +291,7 @@
               vimHugeX
               patchelf
               dos2unix
+              flyctl
               qemu
               libguestfs
               shellcheck
@@ -412,6 +415,7 @@
             meta.priority = 30;
             paths = [
               mycrypto
+              bisq-desktop
             ];
           };
           android = buildEnv {
