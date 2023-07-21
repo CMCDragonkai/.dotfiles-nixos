@@ -60,12 +60,14 @@
 /.cache/*
 /.cabal/*
 /.cargo/*
+/.charles/*
 /.compose-cache/*
 /.dbeaver*/*
 /.dbus/*
 /.docker/*
 /.eclipse/*
 /.electrum/*
+/.fly/*
 /.ghc/*
 /.googleearth/*
 /.hdfview**/*
@@ -80,6 +82,7 @@
 /.nv/*
 /.pkg-cache/*
 /.pki/*
+/.rocketpool/*
 /.secrets/*
 /.steam/*
 /.swt/*
@@ -90,7 +93,7 @@
 /.zenmap/*
 /.zoom/*
 /Desktop/*
-/Documents/Zoom/*
+/Documents/*
 /Downloads/*
 /go/*
 /keybase/*
@@ -102,6 +105,7 @@
 # Files
 
 /.bash_history
+/.charles.config
 /.directory
 /.esd_auth
 /.fehbg
@@ -123,6 +127,7 @@
 /.sqlite_history
 /.ts_node_repl_history
 /.viminfo
+/.wget-hsts
 /.xsession-errors
 /.Xauthority
 /.zcompdump
