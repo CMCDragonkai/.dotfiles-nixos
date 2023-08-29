@@ -443,6 +443,7 @@
               masterpdfeditor
               skypeforlinux
               slack
+              discord
               spotify
               zoom-us
               ledger-live-desktop
