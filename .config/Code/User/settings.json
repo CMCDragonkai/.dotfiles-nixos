@@ -64,9 +64,11 @@
     "editor.inlineSuggest.enabled": true,
     "github.copilot.enable": {
         "*": true,
-        "yaml": false,
         "plaintext": false,
-        "markdown": true
+        "markdown": false,
+        "json": false,
+        "yaml": true,
+        "shellscript": false
     },
     "editor.inlayHints.enabled": false,
     "explorer.confirmDelete": false
