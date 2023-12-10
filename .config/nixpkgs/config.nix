@@ -342,7 +342,7 @@
             name = "env-media";
             meta.priority = 10;
             paths = [
-              v4l_utils
+              v4l-utils
               sox
               ffmpeg
               ffcast
