@@ -244,42 +244,17 @@
                       jock.svg
                       arrterian.nix-env-selector
                       bradlc.vscode-tailwindcss
+                      vspacecode.vspacecode
+                      vspacecode.whichkey
+                      bodil.file-browser
+                      github.copilot
+                      github.copilot-chat
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
-                      {
-                        name = "copilot";
-                        publisher = "GitHub";
-                        version = "1.84.51";
-                        sha256 = "1w6ir3g1fh51k0ysa1kc1y4czij9x0iangfiw50566vnixzm7d96";
-                      }
-                      {
-                        name = "vspacecode";
-                        publisher = "VSpaceCode";
-                        version = "0.10.14";
-                        sha256 = "sha256-iTFwm/P2wzbNahozyLbdfokcSDHFzLrzVDHI/g2aFm0=";
-                      }
-                      {
-                        name = "file-browser";
-                        publisher = "bodil";
-                        version = "0.2.11";
-                        sha256 = "sha256-yPVhhsAUZxnlhj58fXkk+yhxop2q7YJ6X4W9dXGKJfo=";
-                      }
-                      {
-                        name = "whichkey";
-                        publisher = "VSpaceCode";
-                        version = "0.11.3";
-                        sha256 = "0zix87vl2rig8wn3f6f3n6zdi0c61za3lw7xgm28sjhwwb08wxiy";
-                      }
                       {
                         name = "fuzzy-search";
                         publisher = "jacobdufault";
                         version = "0.0.3";
                         sha256 = "0hvg4ac4zdxmimfwab1lzqizgq8bjfq6rksc9n7953m9gk6m5pd0";
-                      }
-                      {
-                        name = "vscode-typescript-next";
-                        publisher = "ms-vscode";
-                        version = "4.7.20220327";
-                        sha256 = "1w4j48fwci5ylmvn4sc4l8c1h3q3xidhqb82zj6lk0ml5ag0zin7";
                       }
                     ]
                   );
