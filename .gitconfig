@@ -27,7 +27,7 @@
   srv-rcv = !git daemon --base-path=. --enable=receive-pack --reuseaddr --informative-errors --verbose
   srv-rcv-all = !git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose
 [pull]
-  rebase = false
+  rebase = true
 [init]
   defaultBranch = master
 [diff "sqlite3"]
