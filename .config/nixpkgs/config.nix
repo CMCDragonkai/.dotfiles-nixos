@@ -247,6 +247,7 @@
                       vspacecode.vspacecode
                       vspacecode.whichkey
                       bodil.file-browser
+                      dotenv.dotenv-vscode
                       github.copilot
                       github.copilot-chat
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
@@ -311,6 +312,7 @@
               gitAndTools.glab
               # Biscuit
               biscuit-cli
+              steam-run
             ];
           };
           media = buildEnv {
