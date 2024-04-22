@@ -69,6 +69,7 @@
 /.electrum/*
 /.fly/*
 /.ghc/*
+/.gnome/*
 /.googleearth/*
 /.hdfview**/*
 /.httpie/*
@@ -112,6 +113,7 @@
 /.gdb_history
 /.gtkrc-2.0
 /.history
+/.icons
 /.lesshst
 /.netrc
 /.nix-profile
