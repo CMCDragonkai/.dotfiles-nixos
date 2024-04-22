@@ -258,6 +258,12 @@
                         version = "0.0.3";
                         sha256 = "0hvg4ac4zdxmimfwab1lzqizgq8bjfq6rksc9n7953m9gk6m5pd0";
                       }
+                      {
+                        name = "vscode-edit-csv";
+                        publisher = "janisdd";
+                        version = "0.9.1";
+                        sha256 = "0b2bgz9r06ks2yaryg7s4dnxv5j1c1p87c3r49wj844w8rgk8xz5";
+                      }
                     ]
                   );
                 }
