@@ -24,7 +24,7 @@ glab api 'projects/:fullpath/issues?state=opened' --paginate | jq -c '.[]' | whi
     gl_comment_body="$(jq -r '.body' <<< "$comment_object")"
     gl_comment_author="$(jq -r '.author.username' <<< "$comment_object")"
     gh issue comment "$gh_issue_url" --body "Original Author: $gl_comment_author"$'\n\n'"$gl_comment_body"
-    sleep 1
+    sleep 3
   done
   sleep 5
 done
