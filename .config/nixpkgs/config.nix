@@ -181,6 +181,7 @@
               tigervnc
               remmina
               websocat
+              signal-desktop
             ];
           };
           devices = buildEnv {
