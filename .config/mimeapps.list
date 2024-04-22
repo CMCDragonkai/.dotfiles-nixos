@@ -10,6 +10,7 @@ text/csv=calc.desktop
 application/vnd.ms-excel=calc.desktop
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=calc.desktop
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=writer.desktop;
+application/vnd.oasis.opendocument.text=writer.desktop
 application/pdf=org.pwmt.zathura.desktop
 message/rfc822=thunderbird.desktop
 image/jpeg=feh.desktop
