@@ -52,6 +52,8 @@
 !/.vim/autoload
 !/.vim/bundle
 
+/.vscode/*
+
 /.mplayer/*
 !/.mplayer/config
 
