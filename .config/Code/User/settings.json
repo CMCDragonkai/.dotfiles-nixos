@@ -58,7 +58,15 @@
     "workbench.startupEditor": "none",
     "telemetry.telemetryLevel": "crash",
     "files.associations": {
-        ".env": "shellscript"
+        ".env": "shellscript",
+        ".env*": "dotenv",
+        "md5.h": "c",
+        "string": "cpp",
+        "cstdint": "cpp",
+        "iostream": "cpp",
+        "cstdlib": "cpp",
+        "cstddef": "cpp",
+        "ranges": "cpp"
     },
     "redhat.telemetry.enabled": false,
     "editor.inlineSuggest.enabled": true,
@@ -66,10 +74,42 @@
         "*": true,
         "plaintext": false,
         "markdown": false,
+        "scminput": false,
         "json": false,
         "yaml": true,
         "shellscript": false
     },
     "editor.inlayHints.enabled": false,
-    "explorer.confirmDelete": false
+    "explorer.confirmDelete": false,
+    "git.openRepositoryInParentFolders": "never",
+    "editor.tokenColorCustomizations": {
+        "[*Light*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#000"
+                    }
+                }
+            ]
+        },
+        "[*Dark*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#fff"
+                    }
+                }
+            ]
+        },
+        "textMateRules": [
+            {
+                "scope": "keyword.other.dotenv",
+                "settings": {
+                    "foreground": "#FF000000"
+                }
+            }
+        ]
+    }
 }
