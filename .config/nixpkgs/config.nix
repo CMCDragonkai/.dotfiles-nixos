@@ -83,7 +83,7 @@
               dunst
               libnotify
               hicolor-icon-theme
-              gnome.adwaita-icon-theme
+              adwaita-icon-theme
               gnome.nautilus
               dconf
               rlwrap

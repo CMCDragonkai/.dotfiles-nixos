@@ -4,6 +4,8 @@
 !/.config/dunst
 !/.config/feh
 !/.config/git
+!/.config/gtk-3.0/settings.ini
+!/.config/gtk-4.0/settings.ini
 !/.config/kitty
 !/.config/nixpkgs
 !/.config/psysh/config.php
