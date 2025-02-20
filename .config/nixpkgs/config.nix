@@ -281,10 +281,10 @@
               shellcheck
               universal-ctags
               global
-              python3Packages.binwalk-full
+              binwalk
               python3Packages.pygments
               man-pages
-              posix_man_pages
+              man-pages-posix
               libcap.doc
               valgrind
               gdb
