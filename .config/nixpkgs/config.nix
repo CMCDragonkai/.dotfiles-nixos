@@ -83,8 +83,8 @@
               dunst
               libnotify
               hicolor-icon-theme
-              gnome3.adwaita-icon-theme
-              gnome3.nautilus
+              gnome.adwaita-icon-theme
+              gnome.nautilus
               dconf
               rlwrap
               trash-cli
@@ -94,6 +94,8 @@
               criu
               appimage-run
               # Security
+              libsecret
+              seahorse
               polkit-kde-agent
               oathToolkit
               certbot
@@ -339,6 +341,7 @@
               darktable
               upscayl
               mkchromecast
+              libwebp
             ];
           };
           graphics = buildEnv {
