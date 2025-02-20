@@ -34,7 +34,7 @@
 /.ngrok2/*
 
 /Pictures/*
-!/Pictures/wallpaper.png
+!/Pictures/wallpaper.webp
 
 /.ssh/*
 !/.ssh/config
