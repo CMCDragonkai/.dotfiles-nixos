@@ -54,6 +54,7 @@
               gptfdisk
               # Keyboard
               teensy-loader-cli
+              keymapp
               # Math
               bc
               # Shell and Environment Utilities
@@ -240,7 +241,7 @@
                       octref.vetur
                       zxh404.vscode-proto3
                       redhat.vscode-yaml
-                      matklad.rust-analyzer
+                      rust-lang.rust-analyzer
                       tamasfe.even-better-toml
                       jock.svg
                       arrterian.nix-env-selector
@@ -249,8 +250,7 @@
                       vspacecode.whichkey
                       bodil.file-browser
                       dotenv.dotenv-vscode
-                      github.copilot
-                      github.copilot-chat
+                      unifiedjs.vscode-mdx
                     ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
                       {
                         name = "fuzzy-search";
@@ -304,7 +304,7 @@
               nodePackages.node2nix
               # Go
               go
-              gocode
+              gopls
               godef
               # Haskell
               ghc
@@ -332,11 +332,13 @@
               ffcast
               peek
               flameshot
-              python3Packages.youtube-dl
               mediainfo
-              # olive-editor
+              yt-dlp
+              davinci-resolve
               obs-studio
               darktable
+              upscayl
+              mkchromecast
             ];
           };
           graphics = buildEnv {
@@ -400,6 +402,7 @@
             paths = [
               mycrypto
               bisq-desktop
+              framesh
             ];
           };
           android = buildEnv {
