@@ -69,7 +69,6 @@
               asciinema-scenario
               reptyr
               lsof
-              rmlint
               pv
               mbuffer
               progress
