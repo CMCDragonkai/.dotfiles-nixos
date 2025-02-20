@@ -1,7 +1,5 @@
 output DP-1
 off
-output DP-2
-off
 output DP-3
 off
 output DP-4
@@ -13,6 +11,8 @@ off
 output DP-7
 off
 output DP-8
+off
+output DP-2
 off
 output eDP-1
 crtc 0
