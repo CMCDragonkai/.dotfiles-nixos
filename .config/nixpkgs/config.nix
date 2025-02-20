@@ -84,7 +84,7 @@
               libnotify
               hicolor-icon-theme
               adwaita-icon-theme
-              gnome.nautilus
+              nautilus
               dconf
               rlwrap
               trash-cli
