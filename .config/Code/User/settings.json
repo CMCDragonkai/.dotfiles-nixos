@@ -111,5 +111,9 @@
                 }
             }
         ]
-    }
+    },
+    "editor.rulers": [
+        80
+    ],
+    "dotenv.enableAutocloaking": true
 }
