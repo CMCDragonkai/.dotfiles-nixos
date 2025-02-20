@@ -108,7 +108,7 @@
               gzip
               bzip2
               unrar
-              lzma
+              xz
               dpkg
               rpmextract
               unetbootin
@@ -118,7 +118,7 @@
               nix-bundle
               nix-diff
               # X Window and XMonad
-              xdg_utils
+              xdg-utils
               xdg-user-dirs
               dmenu
               xorg.xev
