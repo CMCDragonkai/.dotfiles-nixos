@@ -265,5 +265,14 @@ bindkey '^Z' _ctrl-z
 # Also it does prevent reverse tabbing when autocomplete starts, but you can use arrow keys instead
 bindkey -s '\e[Z' '^V^I'
 
+# Alt + Y will copy the current command line prompt to X clipboard
+if [ -n "$DISPLAY" ]; then
+    copy_current_command_line() {
+        echo -n $BUFFER | xclip -selection clipboard
+    }
+    zle -N copy_current_command_line
+    bindkey '^[y' copy_current_command_line
+fi
+
 # Add Syntax Highlighting to ZSH
 source "${HOME}/.dotfiles-modules/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
