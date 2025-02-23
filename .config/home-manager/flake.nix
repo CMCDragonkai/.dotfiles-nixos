@@ -8,7 +8,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-matrix-private/nixpkgs-matrix/nixpkgs";
     };
-    polykey.url = "github:MatrixAI/Polykey-CLI";
+    polykey-cli.url = "github:MatrixAI/Polykey-CLI";
   };
   outputs = { nixpkgs-matrix-private, home-manager, ... }@inputs:
     let
@@ -17,10 +17,7 @@
     in {
       homeConfigurations.${username} =
         home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
+          pkgs = nixpkgs-matrix-private.nixpkgs;
           extraSpecialArgs = { inherit inputs system username; };
           modules = [ ./home.nix ];
         };

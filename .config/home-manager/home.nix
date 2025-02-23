@@ -10,13 +10,13 @@
       vscode 
       discord
     ];
-    programs = {
-      home-manager.enable = true;
-      polykey = {
-        enable = true;
-        passwordFilePath = "%h/.polykeypass";
-        recoveryCodeOutPath = "%h/.polykeyrecovery";
-      };
+  };
+  programs = {
+    home-manager.enable = true;
+    polykey = {
+      enable = true;
+      passwordFilePath = "%h/.polykeypass";
+      recoveryCodeOutPath = "%h/.polykeyrecovery";
     };
   };
 }
