@@ -74,6 +74,7 @@
 /.electrum/*
 /.fly/*
 /.ghc/*
+/.gk/*
 /.gnome/*
 /.googleearth/*
 /.hdfview**/*
