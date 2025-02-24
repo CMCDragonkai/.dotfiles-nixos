@@ -1,5 +1,8 @@
 {
   inputs = {
+    # Need nixpkgsMaster for proprietary packages (use `master` to always load from the tip)
+    nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
+    # Using Matrix AI's private package set
     nixpkgs-matrix-private = {
       type = "indirect";
       id = "nixpkgs-matrix-private";

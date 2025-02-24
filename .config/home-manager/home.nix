@@ -5,12 +5,18 @@
   nixpkgs.config = {
     allowUnfree = true;
     permittedInsecurePackages = [
-      "googleearth-pro-7.3.6.9796"
+      "dcraw-9.28.0"
+      "googleearth-pro-7.3.6.10201"
     ];
-    chromium = {
-      pulseSupport = true;
-    };
   };
+  nixpkgs.overlays = [
+    (self: super: {
+      pkgsMaster = import inputs.nixpkgsMaster {
+        system = self.system;
+        config = super.config;
+      };
+    })
+  ];
   home = {
     inherit username;
     homeDirectory = "/home/${username}";
@@ -18,7 +24,6 @@
     packages = with pkgs; [
       # Web
       firefox
-      chromium
       # Email
       thunderbird
       # System Management & Monitoring
@@ -297,6 +302,7 @@
       upscayl
       libwebp
       # Graphics
+      dcraw
       drawpile
       graphicsmagick
       imagemagick
@@ -332,18 +338,47 @@
       # Wine
       wineWowPackages.stableFull
       winetricks
-      # Proprietary
-      skypeforlinux
-      slack
-      discord
-      spotify
-      zoom-us
-      ledger-live-desktop
-      googleearth-pro
+      # Proprietary (always fetch from master)
+      pkgsMaster.skypeforlinux
+      pkgsMaster.slack
+      pkgsMaster.discord
+      pkgsMaster.spotify
+      pkgsMaster.zoom-us
+      pkgsMaster.ledger-live-desktop
+      pkgsMaster.googleearth-pro
     ];
   };
   programs = {
     home-manager.enable = true;
+    chromium = {
+      enable = true;
+      extensions = [
+        {
+          # Vimium
+          id = "dbepggeogbaibhgnhhndojpepiihcmeb";
+        }
+        {
+          # LastPass
+          id = "hdokiejnpimakedhajhdlcegeplioahd";
+        }
+        {
+          # React-Developer-Tools
+          id = "fmkadmapgofadopljbjfkapdkoienihi";
+        }
+        {
+          # ChatGPT Exporter
+          id = "ilmdofdhpnhffldihboadndccenlnfll";
+        }
+        {
+          # GitHub to Linear
+          id = "hlambaminaoofejligodincejhcbljik";
+        }
+        {
+          # SVG Navigator
+          id = "pefngfjmidahdaahgehodmfodhhhofkl";
+        }
+      ];
+    };
     polykey = {
       enable = true;
       passwordFilePath = "%h/.polykeypass";
