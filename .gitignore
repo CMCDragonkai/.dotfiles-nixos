@@ -67,6 +67,7 @@
 /.cargo/*
 /.charles/*
 /.compose-cache/*
+/.continue/*
 /.dbeaver*/*
 /.dbus/*
 /.docker/*

@@ -218,6 +218,7 @@
               bodil.file-browser
               dotenv.dotenv-vscode
               unifiedjs.vscode-mdx
+              continue.continue
             ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
               {
                 name = "fuzzy-search";
