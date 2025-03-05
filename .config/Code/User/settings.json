@@ -58,7 +58,7 @@
     "workbench.startupEditor": "none",
     "telemetry.telemetryLevel": "crash",
     "files.associations": {
-        ".env": "shellscript",
+        ".env": "dotenv",
         ".env*": "dotenv",
         "md5.h": "c",
         "string": "cpp",
@@ -70,16 +70,7 @@
     },
     "redhat.telemetry.enabled": false,
     "editor.inlineSuggest.enabled": true,
-    "github.copilot.enable": {
-        "*": true,
-        "plaintext": false,
-        "markdown": false,
-        "scminput": false,
-        "json": false,
-        "yaml": true,
-        "shellscript": false
-    },
-    "editor.inlayHints.enabled": false,
+    "editor.inlayHints.enabled": "off",
     "explorer.confirmDelete": false,
     "git.openRepositoryInParentFolders": "never",
     "editor.tokenColorCustomizations": {
@@ -115,5 +106,32 @@
     "editor.rulers": [
         80
     ],
-    "dotenv.enableAutocloaking": true
+    "dotenv.enableAutocloaking": true,
+    "vspacecode.bindingOverrides": [
+        {
+            "keys": "a",
+            "name": "AI Commands",
+            "type": "bindings",
+            "bindings": [
+                {
+                    "key": "l",
+                    "name": "Continue: Add Highlighted Code to Context",
+                    "type": "command",
+                    "command": "continue.focusContinueInput"
+                },
+                {
+                    "key": "L",
+                    "name": "Continue: Add Highlighted Code to Context (No Clear)",
+                    "type": "command",
+                    "command": "continue.focusContinueInputWithoutClear"
+                },
+                {
+                    "key": "i",
+                    "name": "Continue: Generate Code",
+                    "type": "command",
+                    "command": "continue.quickEdit"
+                }
+            ]
+        }
+    ]
 }

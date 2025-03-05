@@ -205,13 +205,10 @@
               eamodio.gitlens
               editorconfig.editorconfig
               kahole.magit
-              octref.vetur
               zxh404.vscode-proto3
               redhat.vscode-yaml
-              rust-lang.rust-analyzer
               tamasfe.even-better-toml
               jock.svg
-              arrterian.nix-env-selector
               bradlc.vscode-tailwindcss
               vspacecode.vspacecode
               vspacecode.whichkey
