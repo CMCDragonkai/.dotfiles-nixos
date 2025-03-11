@@ -134,8 +134,7 @@
             ]
         }
     ],
-    "continue.enableTabAutocomplete": true,
-    "continue.enableDebugLogs": true,
+    "continue.enableTabAutocomplete": false,
     "continue.telemetryEnabled": false,
     "continue.showInlineTip": false
 }
