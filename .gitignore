@@ -139,6 +139,7 @@
 /.ts_node_repl_history
 /.viminfo
 /.wget-hsts
+/.xorgxrdp*.log
 /.xsession-errors
 /.Xauthority
 /.zcompdump
