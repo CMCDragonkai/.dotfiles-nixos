@@ -216,11 +216,11 @@
         "nixpkgs-matrix": "nixpkgs-matrix_3"
       },
       "locked": {
-        "lastModified": 1740035407,
-        "narHash": "sha256-JKtk1Zd9+XIVpaeYsDmEfpzGoy3yW0Qz/RDeJGDQc4c=",
+        "lastModified": 1747013754,
+        "narHash": "sha256-9riwfGS6zm6qf2AD0GSUxnmfQlHdxN52tasOznePPN4=",
         "owner": "MatrixAI",
         "repo": "Polykey-CLI",
-        "rev": "f325edefc2b6f74b049811c8c9d4c36306cd7efd",
+        "rev": "e56a11eccac34091abb168261bd1c4abcf3c2dc9",
         "type": "github"
       },
       "original": {

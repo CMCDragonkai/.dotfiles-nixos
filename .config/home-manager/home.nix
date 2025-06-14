@@ -138,6 +138,7 @@
       iputils
       mitmproxy
       nssTools
+      mkcert
       openssl
       putty
       wget
