@@ -217,6 +217,7 @@
               dotenv.dotenv-vscode
               unifiedjs.vscode-mdx
               continue.continue
+              github.vscode-github-actions
             ]) ++ vscode-utils.extensionsFromVscodeMarketplace [
               {
                 name = "fuzzy-search";
