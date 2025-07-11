@@ -154,8 +154,10 @@ Thumbs.db
 
 # Vim Files #
 *~
+.*~
+*.sw?
+.*.sw?
 .*.un~
-.*.sw[m-p]
 Session.vim
 
 # Emacs Files #
