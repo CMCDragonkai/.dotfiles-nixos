@@ -26,6 +26,7 @@ application/x-hdf=hdfview.desktop
 x-scheme-handler/http=chromium-browser.desktop
 x-scheme-handler/https=chromium-browser.desktop
 x-scheme-handler/mailto=thunderbird.desktop
+x-scheme-handler/mid=thunderbird.desktop
 x-scheme-handler/irc=chromium-browser.desktop
 x-scheme-handler/ircs=chromium-browser.desktop
 x-scheme-handler/webcal=chromium-browser.desktop
