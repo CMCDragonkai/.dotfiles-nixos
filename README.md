@@ -2,7 +2,7 @@
 
 ## Installation
 
-Go to TTY1. Login as a normal user.
+Go to TTY3. Login as a normal user.
 
 ```sh
 git clone --no-checkout https://github.com/CMCDragonkai/.dotfiles-nixos /tmp/.dotfiles-nixos
@@ -10,19 +10,10 @@ mv /tmp/.dotfiles-nixos/.git "$HOME"
 rmdir /tmp/.dotfiles-nixos
 git checkout master
 git submodule update --init --recursive
+home-manager switch
 ```
 
-Exit and relogin to TTY1.
-
-Install the base packages:
-
-```sh
-nix-env -iA env.base
-```
-
-Now you can go to TTY7 and continue the installation.
-
-If you have problems, go back to TTY1 and fix them.
+Now you can go to TTY2 and continue logging in.
 
 You can always kill XMonad with <kbd>Mod</kbd> + <kbd>Shift</kbd> + <kbd>Q</kbd>.
 
