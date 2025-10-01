@@ -88,7 +88,7 @@
       # Security
       libsecret
       seahorse
-      polkit-kde-agent
+      kdePackages.polkit-kde-agent-1
       oathToolkit
       certbot
       pcsctools
@@ -242,6 +242,7 @@
       patchelf
       dos2unix
       flyctl
+      quickemu
       qemu
       libguestfs
       shellcheck
@@ -296,7 +297,7 @@
       flameshot
       mediainfo
       yt-dlp
-      davinci-resolve
+      # davinci-resolve
       obs-studio
       darktable
       upscayl
@@ -315,10 +316,11 @@
       graphviz
       gnuplot
       dia
+      yed
       # Data
       jq                      # json
       libxml2                 # xml
-      xsv                     # csv
+      xan                     # csv
       hdf5                    # hdf5
       pup                     # html
       visidata                # spreadsheet
@@ -339,7 +341,6 @@
       wineWowPackages.stableFull
       winetricks
       # Proprietary (always fetch from master)
-      pkgsMaster.skypeforlinux
       pkgsMaster.slack
       pkgsMaster.discord
       pkgsMaster.spotify
