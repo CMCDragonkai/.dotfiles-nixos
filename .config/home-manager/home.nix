@@ -299,7 +299,7 @@
       yt-dlp
       # davinci-resolve
       obs-studio
-      darktable
+      # darktable
       upscayl
       libwebp
       # Graphics
