@@ -54,7 +54,6 @@
       file
       findutils
       redshift
-      i3lock
       tree
       parallel
       asciinema
