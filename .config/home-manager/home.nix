@@ -379,6 +379,9 @@
         }
       ];
     };
+    brave = {
+      enable = true;
+    };
     polykey = {
       enable = true;
       passwordFilePath = "%h/.polykeypass";
