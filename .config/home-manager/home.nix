@@ -305,6 +305,7 @@
       pkgsMaster.zoom-us
       pkgsMaster.ledger-live-desktop
       pkgsMaster.googleearth-pro
+      pkgsMaster.wechat
     ];
   };
   programs = {
