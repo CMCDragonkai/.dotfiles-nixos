@@ -99,8 +99,10 @@
 /.swt/*
 /.terminfo/*
 /.thunderbird/*
+/.visidata/*
 /.wine/*
 /.wrangler/*
+/.xwechat/*
 /.zenmap/*
 /.zoom/*
 /Desktop/*
