@@ -56,6 +56,7 @@
 !/.vim/bundle
 
 /.vscode/*
+/.vscode-oss/*
 
 /.mplayer/*
 !/.mplayer/config
