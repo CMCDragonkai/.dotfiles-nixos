@@ -181,9 +181,19 @@ precmd_rprompt () {
 }
 
 TRAPUSR1 () {
-    RPROMPT="$(cat "$TMPDIR/zsh_rprompt_$$")"
+    # Always update RPROMPT from the async file if it exists
+    local f="$TMPDIR/zsh_rprompt_$$"
+    if [[ -r $f ]]; then
+        RPROMPT="$(<"$f")"
+    fi
     ph_async_rprompt_pid=0
-    zle reset-prompt
+
+    # Only try to redraw the prompt when:
+    # - this is an interactive shell, and
+    # - ZLE is currently active (we're actually at a prompt)
+    if [[ -o interactive && -n ${ZLE-} ]]; then
+        zle reset-prompt
+    fi
 }
 
 
