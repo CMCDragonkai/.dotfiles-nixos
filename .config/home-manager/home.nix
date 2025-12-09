@@ -269,6 +269,7 @@
       gimp
       inkscape
       libtiff
+      freecad
       # Graphs
       plantuml
       graphviz
@@ -344,7 +345,8 @@
     };
     vscode = {
       enable = true;
-      package = pkgs.vscodium;
+      # Using FHS-wrapped VSCodium instead of the pure one
+      package = pkgs.vscodium.fhs;
       profiles.default = {
         userSettings = {
           "vim.easymotion" = true;
