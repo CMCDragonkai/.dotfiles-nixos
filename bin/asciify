@@ -1,0 +1,214 @@
+#!/usr/bin/env bash
+
+# asciify — bash-native Unicode → keyboard ASCII normalizer (prose-wide LaTeX for math)
+# deps: bash (4+), sed, iconv, mktemp
+# usage:
+#   asciify < file.txt
+#   asciify --in-place file1.md file2.txt
+#   asciify --allow '→←≤≥≠°×÷±' < in.txt > out.txt
+#   asciify --ellipsis '..' --emdash '-' --endash '-' < in > out
+#
+set -euo pipefail
+
+# Defaults
+ALLOW_CHARS=""
+ELLIPSIS="..."   # or '..'
+EMDASH="-"       # or '--'
+ENDASH="-"       # or '--'
+IN_PLACE=0
+BACKUP_SUFFIX=".bak"
+
+# Parse args
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --allow)        ALLOW_CHARS="${2:-}"; shift 2 ;;
+    --ellipsis)     ELLIPSIS="${2:-...}"; shift 2 ;;
+    --emdash)       EMDASH="${2:-"-"}"; shift 2 ;;
+    --endash)       ENDASH="${2:-"-"}"; shift 2 ;;
+    --in-place)     IN_PLACE=1; shift ;;
+    --suffix)       BACKUP_SUFFIX="${2:-}"; shift 2 ;;
+    --help|-h)
+      cat <<'HLP'
+asciify — normalize to keyboard-only ASCII (and map Unicode math to $LaTeX$)
+
+Policy:
+  - Convert math-like Unicode to LaTeX in prose: ⊂ ⊆ ∈ ∉ ∪ ∩ ∅ ∖ ≡ ≅ ≈ ≃ ∝ ¬ ∧ ∨ ∀ ∃ × ÷ ± ∑ ∏ √ ∞ · ∘ → $...$
+  - Keep basics in ASCII: ≤ → <=, ≥ → >=, ≠ → !=, arrows → ASCII
+
+Options:
+  --allow 'CHARS'     Keep these Unicode chars through transliteration (default: none)
+  --ellipsis '..|...' Choose ellipsis replacement (default: ...)
+  --emdash '-'|'--'   Choose em dash replacement (default: -)
+  --endash '-'|'--'   Choose en dash replacement (default: -)
+  --in-place          Edit files in place (use --suffix for backups)
+  --suffix '.bak'     Backup suffix when using --in-place (default: .bak)
+
+Examples:
+  echo 'A ⊆ B and x ∈ A' | asciify
+  asciify --allow '°' --in-place notes.md
+HLP
+      exit 0 ;;
+    *) break ;;
+  esac
+done
+
+# Build a sed script with precise mappings.
+# Order matters: do LaTeX math BEFORE generic ASCII fallbacks.
+mapfile -t SED_RULES < <(cat <<'SEDMAP'
+# --- Unicode math → LaTeX (wrapped) ---
+# Sets
+s/\xE2\x8A\x82/\$\\subset\$/g;        # ⊂ → $\subset$
+s/\xE2\x8A\x86/\$\\subseteq\$/g;      # ⊆ → $\subseteq$
+s/\xE2\x8A\x8A/\$\\subsetneq\$/g;     # ⊊ → $\subsetneq$
+s/\xE2\x8A\x83/\$\\supset\$/g;        # ⊃ → $\supset$
+s/\xE2\x8A\x87/\$\\supseteq\$/g;      # ⊇ → $\supseteq$
+s/\xE2\x88\x88/\$\\in\$/g;            # ∈ → $\in$
+s/\xE2\x88\x89/\$\\notin\$/g;         # ∉ → $\notin$
+s/\xE2\x88\xAA/\$\\cup\$/g;           # ∪ → $\cup$
+s/\xE2\x88\xA9/\$\\cap\$/g;           # ∩ → $\cap$
+s/\xE2\x88\x85/\$\\emptyset\$/g;      # ∅ → $\emptyset$
+s/\xE2\x88\x96/\$\\setminus\$/g;      # ∖ → $\setminus$
+# Relations (non-basic)
+s/\xE2\x89\xA1/\$\\equiv\$/g;         # ≡ → $\equiv$
+s/\xE2\x89\x85/\$\\cong\$/g;          # ≅ → $\cong$
+s/\xE2\x89\x88/\$\\approx\$/g;        # ≈ → $\approx$
+s/\xE2\x89\x83/\$\\simeq\$/g;         # ≃ → $\simeq$
+s/\xE2\x88\x9D/\$\\propto\$/g;        # ∝ → $\propto$
+# Logic / quantifiers
+s/\xC2\xAC/\$\\neg\$/g;               # ¬ → $\neg$
+s/\xE2\x88\xA7/\$\\land\$/g;          # ∧ → $\land$
+s/\xE2\x88\xA8/\$\\lor\$/g;           # ∨ → $\lor$
+s/\xE2\x88\x80/\$\\forall\$/g;        # ∀ → $\forall$
+s/\xE2\x88\x83/\$\\exists\$/g;        # ∃ → $\exists$
+# Arithmetic / misc
+s/\xC3\x97/\$\\times\$/g;             # × → $\times$
+s/\xC3\xB7/\$\\div\$/g;               # ÷ → $\div$
+s/\xC2\xB1/\$\\pm\$/g;                # ± → $\pm$
+s/\xE2\x88\x91/\$\\sum\$/g;           # ∑ → $\sum$
+s/\xE2\x88\x8F/\$\\prod\$/g;          # ∏ → $\prod$
+s/\xE2\x88\x9A/\$\\sqrt{}\$/g;        # √ → $\sqrt{}$
+s/\xE2\x88\x9E/\$\\infty\$/g;         # ∞ → $\infty$
+s/\xC2\xB7/\$\\cdot\$/g;              # · → $\cdot$
+s/\xE2\x88\x98/\$\\circ\$/g;          # ∘ → $\circ$
+
+# --- Keep basics in ASCII ---
+s/\xE2\x89\xA4/<=/g;          # ≤
+s/\xE2\x89\xA5/>=/g;          # ≥
+s/\xE2\x89\xA0/!=/g;          # ≠
+
+# --- Quotes & dashes & ellipsis ---
+s/\xE2\x80\x98/'/g;          # ‘
+s/\xE2\x80\x99/'/g;          # ’
+s/\xE2\x80\x9A/'/g;          # ‚
+s/\xE2\x80\x9B/'/g;          # ‛
+s/\xCA\xB9/'/g;              # ʹ
+s/\xE2\x80\x9C/"/g;          # “
+s/\xE2\x80\x9D/"/g;          # ”
+s/\xE2\x80\x9E/"/g;          # „
+s/\xE2\x80\x9F/"/g;          # ‟
+s/\xC2\xAB/"/g;              # «
+s/\xC2\xBB/"/g;              # »
+s/\xE2\x80\xB9/'/g;          # ‹
+s/\xE2\x80\xBA/'/g;          # ›
+# dashes & hyphens (placeholders; set below)
+s/\xE2\x80\x93/@EN_DASH@/g;  # –
+s/\xE2\x80\x94/@EM_DASH@/g;  # —
+s/\xE2\x80\x95/@EM_DASH@/g;  # ―
+s/\xE2\x88\x92/-/g;          # −
+s/\xE2\x80\xA6/@ELLIPSIS@/g; # …
+
+# --- Spaces / zero-width ---
+s/\xC2\xA0/ /g;              # NBSP
+s/\xE2\x80[\x80-\x8A]/ /g;   # en/em/thin/hair spaces
+s/\xE2\x80\xAF/ /g; s/\xE2\x81\x9F/ /g; s/\xE3\x80\x80/ /g;
+s/\xE2\x80\x8B//g; s/\xE2\x80\x8C//g; s/\xE2\x80\x8D//g; s/\xE2\x81\xA0//g;
+
+# --- Bullets / primes ---
+s/\xE2\x80\xA2/*/g; s/\xE2\x97\xA6/*/g; s/\xE2\x80\xA3/*/g; s/\xE2\x96\xAA/*/g;
+s/\xE2\x80\xB2/'/g; s/\xE2\x80\xB3/""/g; s/\xE2\x80\xB4/'''/g;
+
+# --- Arrows to ASCII ---
+s/\xE2\x86\x92/->/g; s/\xE2\x86\x90/<-/g; s/\xE2\x86\x94/<->/g;
+s/\xE2\x87\x92/=>/g; s/\xE2\x87\x90/<=/g; s/\xE2\x87\x94/<=>/g;
+
+# --- Fractions (ASCII) ---
+s/\xC2\xBD/1\/2/g; s/\xC2\xBC/1\/4/g; s/\xC2\xBE/3\/4/g;
+s/\xE2\x85\x93/1\/3/g; s/\xE2\x85\x94/2\/3/g; s/\xE2\x85\x95/1\/5/g; s/\xE2\x85\x96/2\/5/g; s/\xE2\x85\x97/3\/5/g; s/\xE2\x85\x98/4\/5/g;
+s/\xE2\x85\x99/1\/6/g; s/\xE2\x85\x9A/5\/6/g; s/\xE2\x85\x9B/1\/8/g; s/\xE2\x85\x9C/3\/8/g; s/\xE2\x85\x9D/5\/8/g; s/\xE2\x85\x9E/7\/8/g;
+
+# --- Trademarks ---
+s/\xC2\xA9/(c)/g; s/\xC2\xAE/(r)/g; s/\xE2\x84\xA2/(tm)/g;
+SEDMAP
+)
+
+# Prepare sed program string
+join_sed() {
+  local IFS=$'\n'; printf "%s" "${SED_RULES[*]}"
+}
+SED_PROG="$(join_sed)"
+
+# Escape replacement
+escape_sed_repl() {
+  local s="$1"
+  s="${s//\\/\\\\}"   # \
+  s="${s//&/\\&}"     # &
+  s="${s//\//\\/}"    # /
+  printf '%s' "$s"
+}
+
+# Inject user-chosen dash/ellipsis values
+SED_PROG="${SED_PROG//@ELLIPSIS@/$(escape_sed_repl "$ELLIPSIS")}"
+SED_PROG="${SED_PROG//@EM_DASH@/$(escape_sed_repl "$EMDASH")}"
+SED_PROG="${SED_PROG//@EN_DASH@/$(escape_sed_repl "$ENDASH")}"
+
+# Build allowlist placeholders to protect chosen Unicode through iconv
+ALLOW_PLACEHOLDERS=()
+if [[ -n "$ALLOW_CHARS" ]]; then
+  i=0
+  while IFS= read -r -n1 ch; do
+    [[ -z "$ch" ]] && continue
+    ph="__ALLOW_${i}__"
+    SED_PROG+="
+s/$(escape_sed_repl "$ch")/$(escape_sed_repl "$ph")/g;
+"
+    ALLOW_PLACEHOLDERS+=("$ph=$ch")
+    ((i++))
+  done <<<"$ALLOW_CHARS"
+fi
+
+# Build a sed script to restore allowlisted characters after iconv
+RESTORE_SED=""
+if [[ ${#ALLOW_PLACEHOLDERS[@]} -gt 0 ]]; then
+  for kv in "${ALLOW_PLACEHOLDERS[@]}"; do
+    ph="${kv%%=*}"
+    ch="${kv#*=}"
+    RESTORE_SED+="s/$(escape_sed_repl "$ph")/$(escape_sed_repl "$ch")/g;"
+  done
+fi
+
+process() {
+  if [[ ${#ALLOW_PLACEHOLDERS[@]} -gt 0 ]]; then
+    LC_ALL=C sed -Ee "$SED_PROG" \
+      | iconv -f UTF-8 -t ASCII//TRANSLIT//IGNORE -c \
+      | LC_ALL=C sed -Ee "$RESTORE_SED"
+  else
+    LC_ALL=C sed -Ee "$SED_PROG" \
+      | iconv -f UTF-8 -t ASCII//TRANSLIT//IGNORE -c
+  fi
+}
+
+# I/O paths (stdin by default; in-place edits if requested)
+if [[ $IN_PLACE -eq 1 ]]; then
+  if [[ $# -lt 1 ]]; then
+    echo "asciify: --in-place requires file paths" >&2; exit 2
+  fi
+  for f in "$@"; do
+    [[ -f "$f" ]] || { echo "skip non-file: $f" >&2; continue; }
+    [[ -n "$BACKUP_SUFFIX" ]] && cp -f -- "$f" "$f$BACKUP_SUFFIX" || true
+    tmp="$(mktemp)"
+    LC_ALL=C process < "$f" > "$tmp"
+    mv -- "$tmp" "$f"
+  done
+else
+  LC_ALL=C process
+fi
