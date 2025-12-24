@@ -31,3 +31,5 @@ x-scheme-handler/irc=chromium-browser.desktop
 x-scheme-handler/ircs=chromium-browser.desktop
 x-scheme-handler/webcal=chromium-browser.desktop
 x-scheme-handler/slack=slack.desktop
+x-scheme-handler/tg=org.telegram.desktop.desktop
+x-scheme-handler/tonsite=org.telegram.desktop.desktop

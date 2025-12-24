@@ -307,6 +307,7 @@
       pkgsMaster.ledger-live-desktop
       pkgsMaster.googleearth-pro
       pkgsMaster.wechat
+      pkgsMaster.telegram-desktop
     ];
   };
   programs = {
