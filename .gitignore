@@ -84,6 +84,7 @@
 /.httpie/*
 /.java/*
 /.kube/*
+/.masterpdfeditor/*
 /.mono/*
 /.mozilla/*
 /.nix-defexpr/*

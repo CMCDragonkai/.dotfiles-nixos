@@ -181,12 +181,15 @@
       fira-code
       corefonts
       # Documents
+      kdePackages.okular
       libreoffice
       zathura
       ghostscriptX
       poppler_utils
       pdftk
       pandoc
+      # This is math/LaTeX + XeTeX + MetaPost + mainstream european languages 
+      # and some standard fonts and recommended tools
       texlive.combined.scheme-small
       aspell
       aspellDicts.en
@@ -308,6 +311,7 @@
       pkgsMaster.googleearth-pro
       pkgsMaster.wechat
       pkgsMaster.telegram-desktop
+      pkgsMaster.masterpdfeditor
     ];
   };
   programs = {
@@ -591,6 +595,12 @@
               publisher = "janisdd";
               version = "0.9.1";
               sha256 = "0b2bgz9r06ks2yaryg7s4dnxv5j1c1p87c3r49wj844w8rgk8xz5";
+            }
+            {
+              name = "vscode-pdf";
+              publisher = "mathematic";
+              version = "0.1.6";
+              hash = "sha256-vJvINGtAAhXPMC4VOg99vNSf9izu2hNG+M4t3iYEJUU=";
             }
           ]
         );
