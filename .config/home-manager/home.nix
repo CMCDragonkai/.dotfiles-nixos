@@ -336,10 +336,6 @@
           id = "ilmdofdhpnhffldihboadndccenlnfll";
         }
         {
-          # GitHub to Linear
-          id = "hlambaminaoofejligodincejhcbljik";
-        }
-        {
           # SVG Navigator
           id = "pefngfjmidahdaahgehodmfodhhhofkl";
         }
@@ -347,6 +343,28 @@
     };
     brave = {
       enable = true;
+      extensions = [
+        {
+          # Vimium
+          id = "dbepggeogbaibhgnhhndojpepiihcmeb";
+        }
+        {
+          # LastPass
+          id = "hdokiejnpimakedhajhdlcegeplioahd";
+        }
+        {
+          # React-Developer-Tools
+          id = "fmkadmapgofadopljbjfkapdkoienihi";
+        }
+        {
+          # ChatGPT Exporter
+          id = "ilmdofdhpnhffldihboadndccenlnfll";
+        }
+        {
+          # SVG Navigator
+          id = "pefngfjmidahdaahgehodmfodhhhofkl";
+        }
+      ];
     };
     vscode = {
       enable = true;
