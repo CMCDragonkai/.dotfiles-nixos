@@ -16,6 +16,7 @@
       openvsx.dotenv.dotenvx-vscode
       openvsx.waderyan.gitblame
       openvsx.kahole.magit
+      openvsx.rooveterinaryinc.roo-cline
       openvsx.detachhead.basedpyright
       openvsx.jnoortheen.nix-ide
       openvsx.llvm-vs-code-extensions.vscode-clangd
@@ -36,6 +37,12 @@
     "extensions.autoCheckUpdates" = false;
     "update.mode" = "none";
     "rust-analyzer.server.path" = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+    # Roo Code settings (safe defaults; no API keys in Nix)
+    # - enableCodeActions is true by default in Roo Code; kept explicit here.
+    # - autoImportSettingsPath stays empty to avoid accidentally importing an
+    #   exported config JSON that may contain API keys in plaintext.
+    "roo-cline.enableCodeActions" = true;
+    "roo-cline.autoImportSettingsPath" = "";
     "vim.easymotion" = true;
     "vim.useSystemClipboard" = false;
     "vim.normalModeKeyBindingsNonRecursive" = [
@@ -126,22 +133,82 @@
         type = "bindings";
         bindings = [
           {
-            key = "l";
-            name = "Continue: Add Highlighted Code to Context";
+            key = "n";
+            name = "Roo: New Task";
             type = "command";
-            command = "continue.focusContinueInput";
+            command = "roo-cline.plusButtonClicked";
           }
           {
-            key = "L";
-            name = "Continue: Add Highlighted Code to Context (No Clear)";
+            key = "l";
+            name = "Roo: Add selection → Context + Focus";
+            type = "commands";
+            commands = [ "roo-cline.addToContext" "roo-cline.focusInput" ];
+          }
+          {
+            key = "a";
+            name = "Roo: Add selection to context";
             type = "command";
-            command = "continue.focusContinueInputWithoutClear";
+            command = "roo-cline.addToContext";
+          }
+          {
+            key = "s";
+            name = "Roo: Focus input";
+            type = "command";
+            command = "roo-cline.focusInput";
+          }
+          {
+            key = "o";
+            name = "Roo: Open in new tab";
+            type = "command";
+            command = "roo-cline.openInNewTab";
+          }
+          {
+            key = "e";
+            name = "Roo: Explain selected code";
+            type = "command";
+            command = "roo-cline.explainCode";
+          }
+          {
+            key = "f";
+            name = "Roo: Fix selected code";
+            type = "command";
+            command = "roo-cline.fixCode";
           }
           {
             key = "i";
-            name = "Continue: Generate Code";
+            name = "Roo: Improve selected code";
             type = "command";
-            command = "continue.quickEdit";
+            command = "roo-cline.improveCode";
+          }
+          {
+            key = "t";
+            name = "Roo: Terminal → Add to context";
+            type = "command";
+            command = "roo-cline.terminalAddToContext";
+          }
+          {
+            key = "T";
+            name = "Roo: Terminal → Explain command";
+            type = "command";
+            command = "roo-cline.terminalExplainCommand";
+          }
+          {
+            key = "F";
+            name = "Roo: Terminal → Fix command";
+            type = "command";
+            command = "roo-cline.terminalFixCommand";
+          }
+          {
+            key = "p";
+            name = "Roo: Toggle auto-approve";
+            type = "command";
+            command = "roo-cline.toggleAutoApprove";
+          }
+          {
+            key = "r";
+            name = "Roo: Accept input / primary action";
+            type = "command";
+            command = "roo-cline.acceptInput";
           }
         ];
       }
@@ -233,5 +300,11 @@
     { key = "ctrl+j"; command = "selectNextCodeAction"; when = "codeActionMenuVisible"; }
     { key = "ctrl+k"; command = "selectPrevCodeAction"; when = "codeActionMenuVisible"; }
     { key = "ctrl+l"; command = "acceptSelectedCodeAction"; when = "codeActionMenuVisible"; }
+    # Roo
+    {
+      key = "ctrl+enter";
+      command = "roo-cline.acceptInput";
+      when = "view == roo-cline.SidebarProvider || activeWebviewPanelId == roo-cline.TabPanelProvider";
+    }
   ];
 }

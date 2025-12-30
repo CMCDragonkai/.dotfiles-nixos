@@ -348,7 +348,7 @@
     vscode = {
       enable = true;
       # Using FHS-wrapped VSCodium instead of the pure one
-      package = pkgs.vscodium.fhs;
+      package = pkgs.vscodium.fhsWithPackages (ps: [ ps.libsecret ]);
       mutableExtensionsDir = false;
       profiles.default = import ./vscode-profile.nix { inherit pkgs; };
     };
