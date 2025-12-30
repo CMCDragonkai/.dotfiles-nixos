@@ -1,9 +1,8 @@
-# This .zshenv is sourced on all shell invocations
-# This script only sets up environment variables and environmental functions
-# It must not contain any output side effects
+# ~/.zshenv
+# Sourced by *every* zsh invocation (interactive + non-interactive).
+# Keep it *environment-only* (no output, no prompts, no aliases, no completion).
 
-source "${HOME}/.includes_sh/shell_environment_common.conf"
-
-# ZSH Environment
-
-export SHELL="${SHELL:-zsh}"
+# Load the shared session environment (HM vars + your exports)
+if [ -r "$HOME/.profile" ]; then
+  source "$HOME/.profile"
+fi

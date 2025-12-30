@@ -1,14 +1,13 @@
-# This .xprofile is read by display managers during a graphical login.
+# ~/.xprofile
+# SDDM (and most display managers) source this for X11 sessions.
+# Keep it *environment-only* (no interactive shell config).
 # It is not read from `xinit`. So starting X from a text mode will not
 # load .xprofile unless it is configured inside .xinitrc.
-# Here we just setup environment variables.
 
-source "${HOME}/.includes_sh/shell_environment_common.conf"
+# Guard against double sourcing
+[ -n "$__XPROFILE_SOURCED" ] && return
+export __XPROFILE_SOURCED=1
 
-# If your computer is intended to be portable,
-# here is where you should write your (xrandr) multi-monitor configuration.
-# If those monitors are not present, xrandr will silently fail.
-# As in there will be no error codes.
-# They shouldn't be committed to source control, as your user profile may be 
-# used in many different monitor configurations.
-# Example: xrandr --output DP-1 --right-of DP-0
+if [ -r "$HOME/.profile" ]; then
+  source "$HOME/.profile"
+fi

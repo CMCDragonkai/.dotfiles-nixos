@@ -1,7 +1,13 @@
-# This .bash_profile is sourced for login shells which can be interactive/non-interactive.
-# If this is read, then ~/.bashrc will not automatically be read.
-# This file will setup things related to initial logins.
+# ~/.bash_profile
+# Login shell setup (TTY login, ssh login, etc).
+# Goal: establish the session environment once, then load interactive config.
 
-# if it is interactive, load ~/.bashrc, which will subsequently load ~/.bash_env
-# if it is not interactive, only load the ~/.bash_env
-[[ $- == *i* ]] && source "${HOME}/.bashrc" || source "${HOME}/.bash_env"
+# Shared session environment (HM vars + your exports)
+if [ -r "$HOME/.profile" ]; then
+  source "$HOME/.profile"
+fi
+
+# If interactive, load interactive config.
+case "$-" in
+  *i*) [ -r "$HOME/.bashrc" ] && source "$HOME/.bashrc" ;;
+esac

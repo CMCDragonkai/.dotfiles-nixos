@@ -1,10 +1,8 @@
-# This .bashenv is meant to be used inside BASH_ENV and sourced in ~/.bashrc.
-# We attempt to simulate ZSH behaviour of ~/.zshenv
-# This will be therefore be loaded on all Bash invocations.
-# Therefore this should only be used to setup environment variables.
+# ~/.bash_env
+# Bash environment hook used by ~/.bashrc (and optionally BASH_ENV if you ever choose).
+# Keep it *environment-only* (no output, no aliases, no prompt).
 
-source "${HOME}/.includes_sh/shell_environment_common.conf"
-
-# Bash Environment
-
-export SHELL="${SHELL:-bash}"
+# Load the shared session environment
+if [ -r "$HOME/.profile" ]; then
+  source "$HOME/.profile"
+fi

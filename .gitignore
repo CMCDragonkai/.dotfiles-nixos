@@ -169,3 +169,4 @@ Session.vim
 
 # Do not ignore any `.gitkeep` files #
 !.gitkeep
+.aider*
