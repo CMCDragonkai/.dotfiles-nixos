@@ -1,8 +1,6 @@
 { pkgs, ...}:
 
 {
-  enableUpdateCheck = false;
-  enableExtensionUpdateCheck = false;
   extensions =
     let
       ext = pkgs.nix-vscode-extensions;
@@ -35,6 +33,8 @@
       openvsx.zxh404.vscode-proto3
     ];
   userSettings = {
+    "extensions.autoCheckUpdates" = false;
+    "update.mode" = "none";
     "rust-analyzer.server.path" = "${pkgs.rust-analyzer}/bin/rust-analyzer";
     "vim.easymotion" = true;
     "vim.useSystemClipboard" = false;
@@ -81,11 +81,11 @@
       ".env*" = "dotenv";
       "string" = "cpp";
       "cstdint" = "cpp";
+      "flake.lock" = "json";
       "iostream" = "cpp";
       "cstdlib" = "cpp";
       "cstddef" = "cpp";
       "ranges" = "cpp";
-      "flake.lock" = "json";
     };
     "redhat.telemetry.enabled" = false;
     "editor.inlineSuggest.enabled" = true;
