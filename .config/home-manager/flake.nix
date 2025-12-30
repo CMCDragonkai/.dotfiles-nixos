@@ -7,6 +7,10 @@
       type = "indirect";
       id = "nixpkgs-matrix-private";
     };
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs-matrix-private/nixpkgs-matrix/nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-matrix-private/nixpkgs-matrix/nixpkgs";
