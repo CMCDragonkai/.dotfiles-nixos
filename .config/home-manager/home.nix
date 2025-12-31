@@ -347,8 +347,13 @@
     };
     vscode = {
       enable = true;
-      # Using FHS-wrapped VSCodium instead of the pure one
-      package = pkgs.vscodium.fhsWithPackages (ps: [ ps.libsecret ]);
+      # Using FHS-wrapped VSCodium instead of the pure one, with gnome-libsecret 
+      # and libsecret to communicate with the OS keyring
+      package = (
+        pkgs.vscodium.override {
+          commandLineArgs = "--password-store=gnome-libsecret";
+        }
+      ).fhsWithPackages (ps: [ ps.libsecret ]);
       mutableExtensionsDir = false;
       profiles.default = import ./vscode-profile.nix { inherit pkgs; };
     };

@@ -37,12 +37,6 @@
     "extensions.autoCheckUpdates" = false;
     "update.mode" = "none";
     "rust-analyzer.server.path" = "${pkgs.rust-analyzer}/bin/rust-analyzer";
-    # Roo Code settings (safe defaults; no API keys in Nix)
-    # - enableCodeActions is true by default in Roo Code; kept explicit here.
-    # - autoImportSettingsPath stays empty to avoid accidentally importing an
-    #   exported config JSON that may contain API keys in plaintext.
-    "roo-cline.enableCodeActions" = true;
-    "roo-cline.autoImportSettingsPath" = "";
     "vim.easymotion" = true;
     "vim.useSystemClipboard" = false;
     "vim.normalModeKeyBindingsNonRecursive" = [
@@ -212,6 +206,18 @@
           }
         ];
       }
+    ];
+    # Roo Code settings (safe defaults; no API keys in Nix)
+    # - enableCodeActions is true by default in Roo Code; kept explicit here.
+    # - autoImportSettingsPath stays empty to avoid accidentally importing an
+    #   exported config JSON that may contain API keys in plaintext.
+    # - allowedCommands list of commands allowed for roo to run
+    "roo-cline.enableCodeActions" = true;
+    "roo-cline.autoImportSettingsPath" = "";
+    "roo-cline.allowedCommands" = [
+      "git log"
+      "git diff"
+      "git show"
     ];
   };
   keybindings = [
