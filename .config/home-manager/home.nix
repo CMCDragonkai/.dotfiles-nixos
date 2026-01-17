@@ -343,6 +343,10 @@
           # SVG Navigator
           id = "pefngfjmidahdaahgehodmfodhhhofkl";
         }
+        {
+          # FoxyProxy
+          id = "gcknhkkoolaabfmlnjonogaaifnjlfnp";
+        }
       ];
     };
     vscode = {
