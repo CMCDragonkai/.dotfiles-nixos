@@ -17,6 +17,7 @@ EMDASH="-"       # or '--'
 ENDASH="-"       # or '--'
 IN_PLACE=0
 BACKUP_SUFFIX=".bak"
+LOG_REPLACEMENTS=0
 
 # Parse args
 while [[ $# -gt 0 ]]; do
@@ -27,6 +28,7 @@ while [[ $# -gt 0 ]]; do
     --endash)       ENDASH="${2:-"-"}"; shift 2 ;;
     --in-place)     IN_PLACE=1; shift ;;
     --suffix)       BACKUP_SUFFIX="${2:-}"; shift 2 ;;
+    --log|--verbose) LOG_REPLACEMENTS=1; shift ;;
     --help|-h)
       cat <<'HLP'
 asciify — normalize to keyboard-only ASCII (and map Unicode math to $LaTeX$)
@@ -42,6 +44,7 @@ Options:
   --endash '-'|'--'   Choose en dash replacement (default: -)
   --in-place          Edit files in place (use --suffix for backups)
   --suffix '.bak'     Backup suffix when using --in-place (default: .bak)
+  --log, --verbose    Print changed lines to STDERR (high volume); warns when '?' is introduced
 
 Examples:
   echo 'A ⊆ B and x ∈ A' | asciify
@@ -138,6 +141,9 @@ s/\xE2\x85\x99/1\/6/g; s/\xE2\x85\x9A/5\/6/g; s/\xE2\x85\x9B/1\/8/g; s/\xE2\x85\
 
 # --- Trademarks ---
 s/\xC2\xA9/(c)/g; s/\xC2\xAE/(r)/g; s/\xE2\x84\xA2/(tm)/g;
+
+# --- Legal symbols ---
+s/\xC2\xA7/\\S{}/g;              # § → \S{}
 SEDMAP
 )
 
@@ -163,17 +169,21 @@ SED_PROG="${SED_PROG//@EN_DASH@/$(escape_sed_repl "$ENDASH")}"
 
 # Build allowlist placeholders to protect chosen Unicode through iconv
 ALLOW_PLACEHOLDERS=()
+ALLOW_SED=""
 if [[ -n "$ALLOW_CHARS" ]]; then
   i=0
   while IFS= read -r -n1 ch; do
     [[ -z "$ch" ]] && continue
     ph="__ALLOW_${i}__"
-    SED_PROG+="
-s/$(escape_sed_repl "$ch")/$(escape_sed_repl "$ph")/g;
-"
+    # IMPORTANT: these rules must run BEFORE the main mapping rules so that
+    # allowlisted characters are protected from being converted to LaTeX/ASCII.
+    ALLOW_SED+="s/$(escape_sed_repl "$ch")/$(escape_sed_repl "$ph")/g;\n"
     ALLOW_PLACEHOLDERS+=("$ph=$ch")
-    ((i++))
+    i=$((i+1))
   done <<<"$ALLOW_CHARS"
+
+  # Prefix allowlist rules so they run before all other mappings.
+  SED_PROG="$ALLOW_SED$SED_PROG"
 fi
 
 # Build a sed script to restore allowlisted characters after iconv
@@ -197,6 +207,34 @@ process() {
   fi
 }
 
+log_changes() {
+  local before="$1"
+  local after="$2"
+  local label="$3"
+
+  # Logs at line granularity (not per-character). Useful for spotting where '?' appeared.
+  awk -v label="$label" '
+    NR==FNR { b[NR]=$0; max=NR; next }
+    {
+      old=b[FNR]
+      if ($0 != old) {
+        printf "asciify[%s]: line %d changed\n", label, FNR > "/dev/stderr"
+        printf "  - %s\n", old > "/dev/stderr"
+        printf "  + %s\n", $0 > "/dev/stderr"
+        if (index($0, "?") && !index(old, "?")) {
+          printf "asciify[%s]: WARNING '?' introduced on line %d\n", label, FNR > "/dev/stderr"
+        }
+      }
+    }
+    END {
+      for (i=FNR+1; i<=max; i++) {
+        printf "asciify[%s]: line %d removed\n", label, i > "/dev/stderr"
+        printf "  - %s\n", b[i] > "/dev/stderr"
+      }
+    }
+  ' "$before" "$after"
+}
+
 # I/O paths (stdin by default; in-place edits if requested)
 if [[ $IN_PLACE -eq 1 ]]; then
   if [[ $# -lt 1 ]]; then
@@ -207,8 +245,21 @@ if [[ $IN_PLACE -eq 1 ]]; then
     [[ -n "$BACKUP_SUFFIX" ]] && cp -f -- "$f" "$f$BACKUP_SUFFIX" || true
     tmp="$(mktemp)"
     LC_ALL=C process < "$f" > "$tmp"
+    if [[ $LOG_REPLACEMENTS -eq 1 ]]; then
+      log_changes "$f" "$tmp" "$f"
+    fi
     mv -- "$tmp" "$f"
   done
 else
-  LC_ALL=C process
+  if [[ $LOG_REPLACEMENTS -eq 1 ]]; then
+    tmp_in="$(mktemp)"
+    tmp_out="$(mktemp)"
+    cat > "$tmp_in"
+    LC_ALL=C process < "$tmp_in" > "$tmp_out"
+    log_changes "$tmp_in" "$tmp_out" "stdin"
+    cat "$tmp_out"
+    rm -f -- "$tmp_in" "$tmp_out"
+  else
+    LC_ALL=C process
+  fi
 fi
