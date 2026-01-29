@@ -21,12 +21,23 @@
     let
       system = "x86_64-linux";
       username = "cmcdragonkai";
-    in {
-      homeConfigurations.${username} =
+
+      mkHome = extraModules:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs-matrix-private.nixpkgs;
-          extraSpecialArgs = { inherit inputs system username; };
-          modules = [ ./home.nix ];
+          extraSpecialArgs = {
+            inherit inputs system username;
+            mutableStateLib = import ./lib/mutable-state.nix;
+          };
+          modules = [ ./home.nix ] ++ extraModules;
         };
+    in {
+      homeConfigurations.${username} = mkHome [ ];
+      # "Reset" profile: opt-in, explicit activation that may overwrite mutable app-owned state.
+      homeConfigurations."${username}-reset" = mkHome [
+        ({ ... }: {
+          programs.vscode.reset = true;
+        })
+      ];
     };
 }
