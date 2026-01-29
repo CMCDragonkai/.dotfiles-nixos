@@ -1,9 +1,10 @@
 [Default Applications]
-inode/x-empty=code.desktop
+inode/x-empty=codium.desktop
 inode/directory=org.gnome.Nautilus.desktop
-text/plain=code.desktop
+text/plain=codium.desktop
 text/html=brave-browser.desktop
-application/json=code.desktop
+application/json=codium.desktop
+application/schema+json=codium.desktop
 image/svg+xml=inkscape.desktop
 application/msword=writer.desktop
 text/csv=calc.desktop
