@@ -10,17 +10,21 @@ let
 
   rooMcpSettingsTemplate = json.generate "mcp_settings.roo.template.json" {
     mcpServers = {
+      # Brave Search MCP relies on npx running a node program
+      # This isn't the most secure, but nix package of it doesn't exist
+      # Furthermore systemd-run could be used to isolate and pull it, but it's a pain to debug
       "brave-search" = {
         command = "${pkgs.nodejs}/bin/npx";
         args = [
           "-y"
-          "@brave/brave-search-mcp-server"
+          "@brave/brave-search-mcp-server@2.0.72"
           "--transport"
           "stdio"
         ];
         disabled = false;
         alwaysAllow = [ ];
         env = {
+          # Use the Brave API key with Data for AI subscription
           # Note: must escape `${...}` from Nix interpolation.
           BRAVE_API_KEY = "\${env:BRAVE_API_KEY}";
         };
