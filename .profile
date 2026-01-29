@@ -15,3 +15,10 @@ fi
 if [ -r "$HOME/.includes_sh/shell_environment_common.conf" ]; then
   . "$HOME/.includes_sh/shell_environment_common.conf"
 fi
+
+# Shared exported secrets for the entire user-session
+if [ -r "$HOME/.config/environment.d/90-secrets.conf" ]; then
+  set -a
+  . "$HOME/.config/environment.d/90-secrets.conf"
+  set +a
+fi
