@@ -49,7 +49,8 @@
     kitty
     kitty.terminfo
     gnum4
-    silver-searcher
+    ripgrep
+    ripgrep-all
     dex
     dunst
     libnotify
