@@ -14,7 +14,7 @@ let
       # This isn't the most secure, but nix package of it doesn't exist
       # Furthermore systemd-run could be used to isolate and pull it, but it's a pain to debug
       "brave-search" = {
-        command = "${pkgs.nodejs}/bin/npx";
+        command = lib.getExe' pkgs.nodejs "npx";
         args = [
           "-y"
           "@brave/brave-search-mcp-server@2.0.72"
@@ -28,6 +28,48 @@ let
           # Note: must escape `${...}` from Nix interpolation.
           BRAVE_API_KEY = "\${env:BRAVE_API_KEY}";
         };
+      };
+      # Fetch URL MCP
+      # This automatically converts web pages to markdown
+      "fetch" = {
+        command = lib.getExe' pkgs.uv "uvx";
+        args = [
+          "--from" "mcp-server-fetch==2025.4.7"
+          "mcp-server-fetch"
+          # Common UA
+          "--user-agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36'"
+        ];
+        disabled = false;
+        alwaysAllow = [ ];
+        env = { };
+      };
+      # GitHub's official MCP server (stdio, nixpkgs)
+      "github" = {
+        command = lib.getExe pkgs.github-mcp-server;
+        args = [
+          "stdio"
+          "--read-only"
+          "--toolsets"
+          "default"
+        ];
+        disabled = false;
+        alwaysAllow = [ ];
+        env = {
+          # GitHub MCP server expects this name. :contentReference[oaicite:2]{index=2}
+          GITHUB_PERSONAL_ACCESS_TOKEN = "\${env:GITHUB_PERSONAL_ACCESS_TOKEN}";
+        };
+      };
+      "playwright" = {
+        command = lib.getExe pkgs.playwright-mcp;
+        args = [
+          "--headless"
+          "--browser" "chrome"
+          "--executable-path" (lib.getExe' pkgs.brave "brave")
+          "--user-data-dir" "${config.xdg.stateHome}/roo/playwright/brave-profile"
+        ];
+        disabled = false;
+        alwaysAllow = [ ];
+        env = { };
       };
     };
   };

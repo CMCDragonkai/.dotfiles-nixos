@@ -55,6 +55,8 @@
 
   # Terminal
   "terminal.integrated.tabs.enabled" = true;
+  "terminal.integrated.shellIntegration.enabled" = true;
+  "terminal.integrated.inheritEnv" = true;
 
   # Debug
   "debug.javascript.autoAttachFilter" = "onlyWithFlag";

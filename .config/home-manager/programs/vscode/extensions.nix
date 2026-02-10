@@ -18,6 +18,7 @@ in
   openvsx.rooveterinaryinc.roo-cline
   openvsx.detachhead.basedpyright
   openvsx.jnoortheen.nix-ide
+  openvsx.mkhl.direnv
   openvsx.llvm-vs-code-extensions.vscode-clangd
   openvsx.redhat.vscode-yaml
   openvsx.tamasfe.even-better-toml
@@ -31,6 +32,7 @@ in
   openvsx.haskell.haskell
   openvsx.golang.go
   openvsx.zxh404.vscode-proto3
+  openvsx.github.vscode-pull-request-github
   marketplace.briandooley.explorer-file-sizes
   marketplace.randomfractalsinc.vscode-vega-viewer
 ]

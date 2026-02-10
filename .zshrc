@@ -286,3 +286,8 @@ fi
 
 # Add Syntax Highlighting to ZSH
 source "${HOME}/.dotfiles-modules/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# Setup direnv
+if command -v direnv >/dev/null; then
+  eval "$(direnv hook zsh)"
+fi

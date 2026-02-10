@@ -65,3 +65,8 @@ source "${HOME}/.includes_sh/shell_aliases_common.conf"
 PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u ➜ \h  ➜ \[\e[33m\]\w\[\e[0m\]\n \$ '
 PS2='$> ';
 PS4='$0 - $LINENO $+ '
+
+# Setup direnv
+if command -v direnv >/dev/null; then
+  eval "$(direnv hook bash)"
+fi
