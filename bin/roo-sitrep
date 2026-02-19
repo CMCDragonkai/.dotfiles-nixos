@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+[[ $# -eq 0 ]] || { echo "roo-sitrep: no arguments allowed" >&2; exit 64; }
+
+PS4='+ '
+set -x
+
+git rev-parse --abbrev-ref HEAD
+git status --porcelain=v1 -- . ':(exclude)plans/**'
+git diff --stat -- . ':(exclude)plans/**'
+git diff --staged --stat -- . ':(exclude)plans/**'

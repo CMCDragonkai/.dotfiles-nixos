@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+[[ $# -eq 0 ]] || { echo "roo-commit: no arguments allowed" >&2; exit 64; }
+
+git_dir="$(git rev-parse --git-dir 2>/dev/null)" || { echo "roo-commit: not in a git repo" >&2; exit 2; }
+msg_file="$git_dir/ROO_COMMIT_MSG"
+[[ -s "$msg_file" ]] || { echo "roo-commit: missing/empty commit message file: $msg_file" >&2; exit 3; }
+
+PS4='+ '
+set -x
+
+git rev-parse --abbrev-ref HEAD
+git -c core.pager=cat diff --stat
+git -c core.pager=cat diff --staged --stat
+git add -A
+git -c core.pager=cat diff --staged --stat
+git commit -F "$msg_file"

@@ -1,5 +1,30 @@
 { pkgs }:
 
+let
+  # Make Roo allowed and denied commands, auto-generating the denied "chaining"
+  # variants.
+  mkRooAllowedDeniedCommmands = allow:
+    let
+      suf  = [ " " "\t" ">" ">>" "<" "<<" ];
+      deny = c: map (s: c + s) suf;
+      cmds = allow;
+    in {
+      allowed = allow;
+      denied  = builtins.concatLists (map deny cmds);
+    };
+  rooCommands = mkRooAllowedDeniedCommmands
+    [
+      # Mandatory in roo code extension
+      "git log"
+      "git diff"
+      "git show"
+      # Special commands
+      "roo-save"
+      "roo-resume"
+      "roo-sitrep"
+      "roo-commit"
+    ];
+in
 {
   # Updates
   "extensions.autoCheckUpdates" = false;
@@ -225,15 +250,12 @@
   # - enableCodeActions is true by default in Roo Code; kept explicit here.
   # - autoImportSettingsPath stays empty to avoid accidentally importing an
   #   exported config JSON that may contain API keys in plaintext.
-  # - allowedCommands list of commands allowed for roo to run
+  # - roo code matches commands on longest-prefix match
   "roo-cline.enableCodeActions" = true;
   "roo-cline.autoImportSettingsPath" = "";
-  "roo-cline.allowedCommands" = [
-    "git log"
-    "git diff"
-    "git show"
-  ];
-  "roo-cline.deniedCommands" = [ ];
+  "roo-cline.allowedCommands" = rooCommands.allowed;
+  "roo-cline.deniedCommands" = rooCommands.denied;
+  "roo-cline.debug" = true;
 
   # Explorer File Sizes
   "explorerFileSizes.badgeMode" = "subtle";
