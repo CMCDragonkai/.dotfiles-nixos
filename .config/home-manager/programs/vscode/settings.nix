@@ -82,6 +82,8 @@ in
   "terminal.integrated.tabs.enabled" = true;
   "terminal.integrated.shellIntegration.enabled" = true;
   "terminal.integrated.inheritEnv" = true;
+  # GPU acceleration is sometimes flaky - using canvas is more stable
+  "terminal.integrated.gpuAcceleration" = "canvas";
 
   # Debug
   "debug.javascript.autoAttachFilter" = "onlyWithFlag";
