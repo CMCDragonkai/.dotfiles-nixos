@@ -64,7 +64,7 @@ let
         args = [
           "--headless"
           "--browser" "chrome"
-          "--executable-path" (lib.getExe' pkgs.brave "brave")
+          "--executable-path" (lib.getExe pkgs.brave)
           "--user-data-dir" "${config.xdg.stateHome}/roo/playwright/brave-profile"
         ];
         disabled = false;
