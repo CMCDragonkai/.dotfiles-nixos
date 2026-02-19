@@ -191,7 +191,6 @@
     libguestfs
     shellcheck
     universal-ctags
-    global
     binwalk
     python3Packages.pygments
     man-pages
