@@ -6,6 +6,7 @@
     ./packages.nix
     ./files.nix
     ./programs
+    ./services
   ];
   nixpkgs.config = {
     allowUnfree = true;
