@@ -1,9 +1,14 @@
 { pkgs }:
 
 let
-  ext = pkgs.nix-vscode-extensions;
-  openvsx = ext.open-vsx-release;
-  marketplace = ext.vscode-marketplace-release;
+  # 3 sets of vscode extensions
+  compatible = pkgs.nix-vscode-extensions.forVSCodeVersion pkgs.vscodium.version;
+  # Upstream nixpkgs
+  nixpkgs = pkgs.vscode-extensions;
+  # OpenVSX
+  openvsx = compatible.open-vsx-release;
+  # Marketplace
+  marketplace = compatible.vscode-marketplace-release;
 in
 [
   openvsx.vscodevim.vim
@@ -32,7 +37,8 @@ in
   openvsx.haskell.haskell
   openvsx.golang.go
   openvsx.zxh404.vscode-proto3
-  openvsx.github.vscode-pull-request-github
+  openvsx.neo4j-extensions.neo4j-for-vscode
+  nixpkgs.github.vscode-pull-request-github
   marketplace.briandooley.explorer-file-sizes
   marketplace.randomfractalsinc.vscode-vega-viewer
 ]
