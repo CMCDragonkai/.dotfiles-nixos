@@ -94,11 +94,11 @@
     xdg-utils
     xdg-user-dirs
     dmenu
-    xorg.xev
-    xorg.xmessage
-    xorg.xwininfo
-    xorg.xdpyinfo
-    xorg.xhost
+    xev
+    xmessage
+    xwininfo
+    xdpyinfo
+    xhost
     xdotool
     xclip
     xrectsel
@@ -283,7 +283,7 @@
     # Android
     apktool
     # Wine
-    wineWowPackages.stableFull
+    wineWow64Packages.stableFull
     winetricks
     # Proprietary (always fetch from master)
     pkgsMaster.slack
