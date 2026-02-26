@@ -10,14 +10,14 @@ let
     propagatedBuildInputs =
       (old.propagatedBuildInputs or [ ]) ++ pythonPackages.litellm.optional-dependencies.proxy;
   });
-  # Wrapt the litellm to authenticate with credentials
+  # Wrap the litellm to authenticate with credentials
   litellmWrapped = pkgs.symlinkJoin {
     name = "litellm-authenticated";
     paths = [ litellm ];
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/litellm \
-        --run 'export OPENAI_API_KEY="$(cat "$CREDENTIALS_DIRECTORY/${secretNamespace}.openai_api_key")"'
+        --run 'export OPENAI_API_KEY="$(<"$CREDENTIALS_DIRECTORY/${secretNamespace}.openai_api_key")"'
     '';
   };
 in
