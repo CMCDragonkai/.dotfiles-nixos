@@ -21,7 +21,6 @@
     stress-ng
     fio
     conky
-    bench
     hyperfine
     glances
     gptfdisk
